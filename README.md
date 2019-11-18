@@ -18,5 +18,4 @@ Fritz van Deventer
 Lars Tijsma
 
 ### Skills 
-
 Helen Visser
