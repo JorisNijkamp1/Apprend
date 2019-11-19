@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const Deck = require('./decks');
+const Deck = require('./deck');
 
 //Create schema
-const usersSchema = new mongoose.Schema({
-    username: {
+const userSchema = new mongoose.Schema({
+    _id: {
         type: String,
     },
     email: {
@@ -18,6 +18,6 @@ const usersSchema = new mongoose.Schema({
 });
 
 //Create model
-mongoose.model("Users", usersSchema);
+mongoose.model("User", userSchema);
 
-module.exports = usersSchema;
+module.exports = userSchema;
