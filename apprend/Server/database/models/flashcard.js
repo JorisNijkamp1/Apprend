@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 //Create schema
-const flashcardsSchema = new mongoose.Schema({
+const flashcardSchema = new mongoose.Schema({
     _id: {
         type: String,
     },
@@ -14,6 +14,6 @@ const flashcardsSchema = new mongoose.Schema({
 });
 
 //Create model
-mongoose.model("Flashcards", flashcardsSchema);
+mongoose.model("Flashcard", flashcardSchema);
 
-module.exports = flashcardsSchema;
+module.exports = flashcardSchema;

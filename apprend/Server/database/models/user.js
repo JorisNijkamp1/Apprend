@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Deck = require('./decks');
+const Deck = require('./deck');
 
 //Create schema
 const usersSchema = new mongoose.Schema({
