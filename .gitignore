@@ -70,4 +70,4 @@ typings/
 
 # MSOffice temp files
 ~$*
-!/apprend/Server/config.js
+/apprend/Server/config.js
