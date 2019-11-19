@@ -1,52 +1,48 @@
-const express = require('express')
-const app = express()
-const session = require('express-session')
+'use strict';
+const express = require('express');
+const http = require('http');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
-const http = require('http')
-const path = require('path')
+const mongoose = require('mongoose');
+const db = mongoose.connection;
+const srvConfig = require('./config');
 
-const mongoose = require('mongoose')
-const db = ''
+const cors = require('cors');
+const apiRoute = require('./routes/api/api');
 
-const httpPort = 3001
+const app = express();
 
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const corsOptions = {
+//Middleware
+app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true
-}
+}));
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(session({
+    saveUninitialized: true,
+    secret: 'DFJDFjfkgafjgkf$%dfgjlsdg',
+    resave: true
+}));
 
-const apiRoute = require('./routes/api/api')
+//Routes
+app.use('/api', apiRoute);
 
-app.use(bodyParser.json({limit: '5mb'}))
+// Create HTTP server by ourselves
+const httpServer = http.createServer(app);
 
-app.use(cors(corsOptions))
+//ToDo: Websocket upgrade
 
-app.options('*', cors())
-const sessionParser = session({
-    saveUninitialized: false,
-    secret: 'kiwi',
-    resave: false
-})
-app.use(sessionParser)
-
-app.use('/api/*', apiRoute)
-
-const httpServer = http.createServer(app)
-
-httpServer.on('upgrade', (req, networkSocket, head) => {
-    sessionParser(req, {}, () => {
-        wsServer.handleUpgrade(req, networkSocket, head, newWebSocket => {
-            wsServer.emit('connection', newWebSocket, req)
-        })
-    })
-})
-
-app.use(express.static(path.join(__dirname, 'client-side')))
-
-httpServer.listen(httpPort,
-    function() {
-        console.log(`The server is listening on port ${httpPort}`)
-    }
-)
+// Start the server.
+const port = 3000;
+httpServer.listen(port, () => {
+    // mongoose.connect(`mongodb://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}:${srvConfig.PORT}/${srvConfig.DB}`, {  // <- Localhost
+    mongoose.connect(`mongodb+srv://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}/${srvConfig.DB}?retryWrites=true&w=majority`, {   // <- Deployment server
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }, () => {
+        console.log(`Server started on port ${port}`);
+    });
+});

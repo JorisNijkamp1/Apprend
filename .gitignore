@@ -65,8 +65,9 @@ typings/
 # macOS hidden file
 .DS_Store
 
-# JetBrains IDE 
+# JetBrains IDE
 .idea
 
 # MSOffice temp files
 ~$*
+!/apprend/Server/config.js
