@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
-require('./database/models/deck');
-require('./database/models/flashcard');
 require('./database/models/user');
 const db = mongoose.connection;
-const Deck = require('./database/models/deck');
-const Flashcard = require('./database/models/flashcard');
-const User = require('./database/models/user');
+const Users = mongoose.model('User');
 const dbConfig = require('./config');
 
 //First code line is for Localhost
@@ -14,7 +10,7 @@ mongoose.connect(`mongodb+srv://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbCo
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
-    console.log("connection success")
+    console.log("connection success");
     return seedUsers();
 }).catch(err => {
     console.log(err);
@@ -23,9 +19,9 @@ mongoose.connect(`mongodb+srv://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbCo
 });
 
 async function seedUsers() {
-    await User.deleteMany();
+    await Users.deleteMany();
 
-    await User.insertMany([
+    await Users.insertMany([
         {
             "username": "Joris",
             "email": "jorisnijkamp@gmail.com",
