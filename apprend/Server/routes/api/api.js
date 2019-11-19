@@ -1,10 +1,12 @@
-const express = require('express')
-const api = express.Router()
-const path = require('path')
-const session = require('express-session')
+const express = require('express');
+const api = express.Router();
+const path = require('path');
+const session = require('express-session');
 
-api.use('/', (req, res, next) => {
-    
-})
+api.get('/', (req, res) => {
+    res.json({
+        success: true
+    })
+});
 
-module.exports = api
+module.exports = api;
