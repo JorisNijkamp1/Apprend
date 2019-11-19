@@ -3,7 +3,7 @@ const Deck = require('./deck');
 
 //Create schema
 const userSchema = new mongoose.Schema({
-    username: {
+    _id: {
         type: String,
     },
     email: {

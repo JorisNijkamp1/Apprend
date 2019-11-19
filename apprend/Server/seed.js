@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 require('./database/models/user');
+require('./database/models/deck');
 const db = mongoose.connection;
 const Users = mongoose.model('User');
+const Decks = mongoose.model('Deck');
 const dbConfig = require('./config');
 
 //First code line is for Localhost
@@ -23,14 +25,28 @@ async function seedUsers() {
 
     await Users.insertMany([
         {
-            "username": "Joris",
+            "_id": "Joris",
             "email": "jorisnijkamp@gmail.com",
             "password": "han",
+            "decks": [{
+                "name": "Frans woordjes",
+                "description": "Mooie lijst met 50 woordjes frans erg gaaf!",
+                "creatorId": "Joris",
+                // "creatorId": ,
+                // "lastPlayedDate": ,
+                "status": "isEdited",
+                "flashcards": [{
+                    "_id": "Apprende",
+                    "type": "Text only",
+                    "question": "Hello"
+                }]
+            }]
         },
         {
-            "username": "Aaron",
+            "_id": "Aaron",
             "email": "aaron@gmail.com",
             "password": "ica",
+
         },
     ])
 }
