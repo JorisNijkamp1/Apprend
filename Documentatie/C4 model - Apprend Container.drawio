@@ -1,0 +1,87 @@
+<mxfile host="www.draw.io" modified="2019-11-19T09:38:24.470Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36" etag="_azMO0-UvrR3MmHonrUM" version="12.2.6" type="github" pages="1">
+  <diagram id="QCh163y3iXzEPTwO4bWS" name="Page-1">
+    <mxGraphModel dx="1278" dy="499" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--1" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="220" y="258.5" width="620" height="590" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="N0aR-ho8zA3VO1rL7k0--2" target="N0aR-ho8zA3VO1rL7k0--15" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="N0aR-ho8zA3VO1rL7k0--2" target="N0aR-ho8zA3VO1rL7k0--16" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--2" value="Anonieme gebruiker" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="220" y="128.5" width="30" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="N0aR-ho8zA3VO1rL7k0--7" target="N0aR-ho8zA3VO1rL7k0--16" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="N0aR-ho8zA3VO1rL7k0--7" target="N0aR-ho8zA3VO1rL7k0--15" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--7" value="Ingelogde gebruiker" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="810" y="128.5" width="30" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--8" value="Quizlet" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="160" y="918.5" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--9" value="Anki" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="780" y="918.5" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="N0aR-ho8zA3VO1rL7k0--11" target="N0aR-ho8zA3VO1rL7k0--8" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="N0aR-ho8zA3VO1rL7k0--11" target="N0aR-ho8zA3VO1rL7k0--9" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="N0aR-ho8zA3VO1rL7k0--11" target="N0aR-ho8zA3VO1rL7k0--12" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="N0aR-ho8zA3VO1rL7k0--11" target="N0aR-ho8zA3VO1rL7k0--14" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--11" value="NodeJS server&lt;br&gt;&lt;br&gt;Benadert de database en file system." style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="455" y="511.5" width="150" height="84" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--12" value="File system&lt;br&gt;&lt;br&gt;Beheert afbeeldingen en audio." style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="270" y="730" width="150" height="75" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--14" value="MongoDB database&lt;br&gt;&lt;br&gt;Beheert gegevens van gebruikers." style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="650" y="730" width="140" height="75" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="N0aR-ho8zA3VO1rL7k0--15" target="N0aR-ho8zA3VO1rL7k0--11" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--15" value="React WebApp&lt;br&gt;&lt;br&gt;Benadert de server door middel van gebruikersacties." style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="270" y="340" width="160" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="N0aR-ho8zA3VO1rL7k0--16" target="N0aR-ho8zA3VO1rL7k0--11" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="750" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--16" value="React Native App&lt;br&gt;&lt;br&gt;Benadert de server door middel van gebruikersacties." style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="630" y="340" width="160" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--19" value="(HTTP) Haalt gegevens op van Quizlet en Anki voor het importeren van decks." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="415" y="930" width="230" height="82" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--24" value="Voeren acties uit op de applicatie." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="470" y="88.5" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--33" value="Slaat audio en afbeeldingen op en kan deze ontvangen." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="250" y="504" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--34" value="Stuurt gegevens naar de database en kan deze ontvangen." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="680" y="504" width="130" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="N0aR-ho8zA3VO1rL7k0--38" value="(HTTP) Stuurt en ontvangt gegevens." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="470" y="320" width="120" height="80" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
