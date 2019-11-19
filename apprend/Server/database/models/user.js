@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Deck = require('./deck');
 
 //Create schema
-const usersSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
     },
@@ -18,6 +18,6 @@ const usersSchema = new mongoose.Schema({
 });
 
 //Create model
-mongoose.model("Users", usersSchema);
+mongoose.model("User", userSchema);
 
-module.exports = usersSchema;
+module.exports = userSchema;
