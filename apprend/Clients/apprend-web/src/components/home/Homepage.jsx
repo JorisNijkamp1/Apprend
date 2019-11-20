@@ -1,8 +1,14 @@
 import React from "react";
 import * as ReactRedux from "react-redux"
+import {NavigatieBar} from "../shared/navbar/NavigatieBar";
+import Container from "react-bootstrap/Container";
 
 function HomepageUI(props) {
-    return <h1>Test</h1>
+    return (
+        <Container>
+            <NavigatieBar/>
+        </Container>
+    )
 }
 
 function mapStateToProps(state) {
