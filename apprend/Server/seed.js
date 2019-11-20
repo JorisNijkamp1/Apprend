@@ -46,7 +46,6 @@ async function seedUsers() {
             "_id": "Aaron",
             "email": "aaron@gmail.com",
             "password": "ica",
-
         },
     ])
 }
