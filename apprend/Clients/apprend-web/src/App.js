@@ -1,26 +1,19 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { Switch, Route } from 'react-router-dom'
+import {Switch, Route} from 'react-router-dom'
+// import {Homepage} from "./components/home/Homepage";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div>
+            <Switch>
+                <Route exact path={"/"}>
+                    {/*<Homepage/>*/}
+                </Route>
+            </Switch>
+        </div>
+    );
 }
 
 export default App;
