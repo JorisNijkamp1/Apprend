@@ -48,3 +48,11 @@
 .bg-gray {
     background-color: #EEEEEE;
 }
+
+.hover-shadow{
+    transition: all .3s ease-in-out;
+}
+
+.hover-shadow:hover{
+    box-shadow: 0px 0px 30px 10px rgba(0,0,0,.2)
+}

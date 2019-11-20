@@ -38,14 +38,14 @@ const HomepageUI = (props) => {
                                 aria-describedby="Search"
                             />
                             <InputGroup.Append>
-                                <Button className={"bg-blue text-white"}>Submit</Button>
+                                <Button className={"bg-blue text-white hover-shadow"}>Submit</Button>
                             </InputGroup.Append>
                         </InputGroup>
                     </Col>
                 </Row>
                 <Row className={"mt-5 mb-5"}>
                     <Col lg={{span: 4}} md={{span: 6}}>
-                        <Card>
+                        <Card className={"hover-shadow"}>
                             <Card.Header className={"bg-blue text-white"} style={{textAlign: 'center'}}>Deck
                                 #1</Card.Header>
                             <Card.Body>
@@ -59,7 +59,7 @@ const HomepageUI = (props) => {
                         </Card>
                     </Col>
                     <Col lg={{span: 4}} md={{span: 6}}>
-                        <Card>
+                        <Card className={"hover-shadow"}>
                             <Card.Header className={"bg-blue text-white"} style={{textAlign: 'center'}}>Deck
                                 #2</Card.Header>
                             <Card.Body>
@@ -73,7 +73,7 @@ const HomepageUI = (props) => {
                         </Card>
                     </Col>
                     <Col lg={{span: 4}} md={{span: 6}}>
-                        <Card>
+                        <Card className={"hover-shadow"}>
                             <Card.Header className={"bg-blue text-white"} style={{textAlign: 'center'}}>Deck
                                 #3</Card.Header>
                             <Card.Body>
