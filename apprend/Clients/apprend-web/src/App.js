@@ -16,7 +16,7 @@ function App() {
                 <Route path="/decks/create">
                   <CreateDeckForm />
                 </Route>
-                <Route exact path={"/add-flashcard"}>
+                <Route exact path={"/decks/flashcards/add"}>
                     <Flashcards/>
                 </Route>
             </Switch>
