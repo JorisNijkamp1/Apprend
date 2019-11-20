@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 const TemplateComponent = (props) => {
 
     return (
+        <>
 
+        </>
     )
 }
 
