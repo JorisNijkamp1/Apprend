@@ -10,7 +10,7 @@ const RegisterPageComponent = props => {
                     <Col>
                         <h1>Registeren</h1>
                         <form>
-
+                            <input type="text"/>
                         </form>
                     </Col>
                 </Row>
