@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {RegisterPageComponent} from './RegisterPage';
+import {RegisterPageComponent} from '../components/RegisterPage';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
