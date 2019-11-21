@@ -15,8 +15,8 @@ import {getHomepageDecks} from "../../redux-store/actions/home/async-actions";
 const HomepageUI = (props) => {
 
     useEffect(() => {
-        getHomepageDecks();
-    });
+        props.getHomepageDecks();
+    },[]);
 
     return (
         <>
@@ -99,11 +99,15 @@ const HomepageUI = (props) => {
 }
 
 function mapStateToProps(state) {
-    return {}
+    return {
+        deckName: state.client.deckName,
+    }
 }
 
 function mapDispatchToProps(dispatch) {
-    return {}
+    return {
+        getHomepageDecks: (deckName) => dispatch(getHomepageDecks(deckName)),
+    }
 }
 
 export const Homepage = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(HomepageUI);
