@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {connect} from "react-redux";
 import Card from "react-bootstrap/Card";
 import {Container} from "react-bootstrap";
@@ -7,27 +7,31 @@ import EditableFlashcard from "./sub-components/editable-flashcard";
 import {changeDeckFlashcards} from "../../redux-store/actions/flashcards/actions";
 import {AddFlashcardIcon} from "./sub-components/add-flashcard-icon";
 
-const allFlashcards = (props) => {
-    let allFlashcards = props.deckFlashcards.cards.map((flashcard) =>
-        <EditableFlashcard key={flashcard.id}/>
-    );
-};
-
 const Flashcards = (props) => {
-        
-    const [numbers, setNumbers] = useState([0,1,2,3])
 
-//     let numbers = [0, 1, 2, 3];
+    const addFlashcardToDeck = () => {
+        const flashcards = [...props.deckFlashcards];
 
-    let addFlashcardToDeck = () => {
-        console.log(numbers);
-        const newArray = ...numbers
-        newArray.push(numbers.length)
-        setNumbers(newArray)
+        const highestId = Math.max.apply(Math, flashcards.map(function (o) {
+            return o.id;
+        }));
+
+        console.log(props.deckFlashcards)
+        console.log(highestId)
+
+        flashcards.push({
+            id: highestId + 1,
+            term: null,
+            definition: null
+        });
+        props.changeDeckFlashcards(flashcards)
     };
 
-    let listItems = numbers.map((number) =>
-        <li key={number}>{number}</li>
+    const allFlashcards = props.deckFlashcards.map((flashcard) =>
+        <EditableFlashcard key={flashcard.id}
+                           flashcardId={flashcard.id}
+            // term={flashcard.term}
+        />
     );
 
     return (
@@ -35,8 +39,7 @@ const Flashcards = (props) => {
             <Card>
                 <Card.Body>
                     <Row>
-                        <ul>{listItems}</ul>
-                        <EditableFlashcard/>
+                        {allFlashcards}
                         <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
                     </Row>
                 </Card.Body>

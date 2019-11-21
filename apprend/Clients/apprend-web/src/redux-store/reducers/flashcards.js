@@ -1,7 +1,11 @@
 import {FLASHCARDS_DECKFLASHCARDS} from '../actions/action-types'
 
 const initialState = {
-    deckFlashcards: []
+    deckFlashcards: [{
+        id: 0,
+        term: null,
+        definition: null
+    }]
 };
 
 export default function createFlashcardReducer(state = initialState, action) {

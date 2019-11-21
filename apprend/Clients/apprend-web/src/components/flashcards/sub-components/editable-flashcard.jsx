@@ -5,26 +5,33 @@ import {Form} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrash} from '@fortawesome/free-solid-svg-icons'
-import {AddFlashcardIcon} from "./add-flashcard-icon";
 import {changeDeckFlashcards} from "../../../redux-store/actions/flashcards/actions";
 
-let deck = {
-    deckName: 'MyDeck',
-    cards: []
-};
-
-
-
 const EditableFlashcard = (props) => {
-    console.log(deck)
-    const [flashcardTerm, setFlashcardTerm] = useState('New Flashcard');
+    const [flashcardTerm, setFlashcardTerm] = useState(null);
     const [flashcardDefinition, setFlashcardDefinition] = useState(null);
     const flashcardName = !(flashcardTerm) ? 'New Flashcard' : flashcardTerm;
 
     const flashcardData = {
-        id: deck.cards.length,
+        id: props.flashcardId,
         term: flashcardTerm,
         definition: flashcardDefinition,
+    };
+
+    let deckFlashcards = props.deckFlashcards;
+    deckFlashcards.forEach(function (arrayItem, key) {
+        if (arrayItem['id'] === flashcardData.id) {
+            deckFlashcards[key].term = flashcardData.term;
+            deckFlashcards[key].definition = flashcardData.definition;
+        }
+    });
+    props.changeDeckFlashcards(deckFlashcards);
+
+    const deleteFlashcard = (flashcardId) => {
+        let deckFlashcards = props.deckFlashcards.filter(fc => {
+            return fc.id !== flashcardId
+        });
+        props.changeDeckFlashcards(deckFlashcards)
     };
 
     return (
@@ -34,7 +41,10 @@ const EditableFlashcard = (props) => {
                     <Card.Header className={"text-center"}>
                         <b>{flashcardName}</b>
                         <span className={"float-right"}>
-                        <FontAwesomeIcon icon={faTrash} className={'trash-icon'}/>
+                        <FontAwesomeIcon icon={faTrash}
+                                         className={'trash-icon'}
+                                         onClick={() => deleteFlashcard(props.flashcardId)}
+                        />
                     </span>
                     </Card.Header>
                     <Card.Body>
@@ -43,7 +53,6 @@ const EditableFlashcard = (props) => {
                             <Form.Control type="text"
                                           placeholder="Pets"
                                           onChange={(e) => setFlashcardTerm(e.target.value)}
-                                          // onBlur={() => props.changeDeckFlashcards(flashcardData)}
                             />
                             <Form.Text className="text-muted">
                                 Vul hier de term in waarvan je de definitie wilt leren.
@@ -53,7 +62,7 @@ const EditableFlashcard = (props) => {
                             <Form.Control type="text"
                                           placeholder="Haustiere"
                                           onChange={(e) => setFlashcardDefinition(e.target.value)}
-                                          // onBlur={() => props.changeDeckFlashcards(flashcardData)}
+                                // onBlur={() => props.changeDeckFlashcards(flashcardData)}
                             />
                             <Form.Text className="text-muted">
                                 Enter the definition of the term entered above.
