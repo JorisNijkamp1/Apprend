@@ -21,6 +21,19 @@
     color: #09d3ac;
 }
 
+.trash-icon:hover {
+  color: #dc3545;
+  transition: all .2s ease-in-out;
+}
+
+.hover-shadow-editable-flashcard{
+  transition: all .3s ease-in-out;
+}
+
+.hover-shadow-editable-flashcard:hover{
+  box-shadow: 0px 0px 30px 10px rgba(0,0,0,.2)
+}
+
 .bg-blue {
     background-color: #758BFE;
 }
