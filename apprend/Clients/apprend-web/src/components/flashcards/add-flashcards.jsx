@@ -13,13 +13,16 @@ const allFlashcards = (props) => {
     );
 };
 
-const Flashcards = () => {
+const Flashcards = (props) => {
+        
+    const [numbers, setNumbers] = useState([0,1,2,3])
 
-    let numbers = [0, 1, 2, 3];
+//     let numbers = [0, 1, 2, 3];
 
     let addFlashcardToDeck = () => {
         console.log(numbers);
-        return numbers.push(numbers.length)
+        const newArray = numbers.push(numbers.length)
+        setNumbers(newArray)
     };
 
     let listItems = numbers.map((number) =>
