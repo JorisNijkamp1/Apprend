@@ -16,9 +16,6 @@ const Flashcards = (props) => {
             return o.id;
         }));
 
-        console.log(props.deckFlashcards)
-        console.log(highestId)
-
         flashcards.push({
             id: highestId + 1,
             term: null,

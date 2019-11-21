@@ -37,7 +37,7 @@ const EditableFlashcard = (props) => {
     return (
         <>
             <Col xs={12} md={6} lg={4}>
-                <Card border="primary" className={'mb-4 hover-shadow-editable-flashcard'}>
+                <Card border={(flashcardData.term && flashcardData.definition) ? 'success' : 'danger'} className={'mb-4 hover-shadow-editable-flashcard'}>
                     <Card.Header className={"text-center"}>
                         <b>{flashcardName}</b>
                         <span className={"float-right"}>
