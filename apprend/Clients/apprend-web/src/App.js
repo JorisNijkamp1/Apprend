@@ -15,6 +15,7 @@ function App() {
                 </Route>
                 <Route path="/decks/create">
                   <CreateDeckForm />
+                </Route>
                 <Route path={"/register"}>
                     <RegisterPage/>
                 </Route>
