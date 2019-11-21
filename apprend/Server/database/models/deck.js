@@ -3,9 +3,6 @@ const Flashcard = require('./flashcard');
 
 //Create schema
 const deckSchema = new mongoose.Schema({
-    _id: {
-        type: String,
-    },
     name: {
         type: String,
     },

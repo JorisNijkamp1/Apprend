@@ -1,19 +1,35 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Form, Row, Col, 
-        Button
          } from 'react-bootstrap'
 
 import { changeDeckName } from '../../redux-store/actions/create-deck/actions'
 
 import { PageTitle } from '../shared/PageTitle'
+import { createDeck } from '../../redux-store/actions/create-deck/async-actions'
+import { CreateButton } from './sub-components/CreateButton';
+import { useHistory } from 'react-router'
 
 const CreateDeckFormComponent = (props) => {
 
+    let history = useHistory()
+
     const showDeckNameOrThis = (text) => props.deckName ? <b>'{props.deckName}'</b> : text
 
-    const handleCreateDeck = (e) => {
+    const handleCreateDeck = async (e) => {
         e.preventDefault()
+        const deck = {
+            deckName: props.deckName,
+            description: e.target.description.value
+        }
+        const response = await props.createNewDeck(deck)
+        let deckId;
+        if (response.decks){
+            deckId = response.decks[0]._id.toString()
+        } else {
+            deckId = response._id.toString()
+        }
+        history.push(`/decks/${deckId}`)
     }
 
     return (
@@ -58,14 +74,7 @@ const CreateDeckFormComponent = (props) => {
                     </Form.Group>
                     <Row>
                         <Col sm={{span: 6, offset: 3}}>
-                            <Button 
-                                className="w-100" 
-                                variant="primary" 
-                                type="submit"
-                                disabled={props.deckName ? false: true}
-                            >
-                                {props.deckName ? 'Create deck!' : 'Please fill in a deckname'}
-                            </Button>
+                            <CreateButton />
                         </Col>
                     </Row>
                 </Form>
@@ -77,12 +86,14 @@ const CreateDeckFormComponent = (props) => {
 const mapStateToProps = state => {
     return {
         deckName: state.createDeck.deckName,
+        isLoading: state.createDeck.isLoading,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         changeDeckName: (name) => dispatch(changeDeckName(name)),
+        createNewDeck: (deck) => dispatch(createDeck(deck)), 
     }
 }
 

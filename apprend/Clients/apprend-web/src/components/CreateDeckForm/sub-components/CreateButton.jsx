@@ -1,0 +1,63 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { Container, Form, Row, Col, 
+        Button,
+        Spinner
+         } from 'react-bootstrap'
+
+import { changeDeckName } from '../../../redux-store/actions/create-deck/actions'
+
+import { createDeck } from '../../../redux-store/actions/create-deck/async-actions'
+
+const CreateButtonComponent = (props) => {
+
+    const createButton = () => {
+        if (props.isLoading){
+            return (
+                <Button variant="primary" disabled className="w-100">
+                    <Spinner
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                    />
+                    Creating...
+                </Button>
+            )
+        } else {
+            return (
+                <Button 
+                    className="w-100" 
+                    variant="primary" 
+                    type="submit"
+                    disabled={props.deckName ? false: true}
+                >
+                    {props.deckName ? 'Create deck!' : 'Please fill in a deckname'}
+                </Button>
+            )
+        }
+    }
+
+    return (
+        <>
+            {createButton()}
+        </>
+    )
+}
+
+const mapStateToProps = state => {
+    return {
+        deckName: state.createDeck.deckName,
+        isLoading: state.createDeck.isLoading,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        changeDeckName: (name) => dispatch(changeDeckName(name)),
+        createNewDeck: (deck) => dispatch(createDeck(deck)), 
+    }
+}
+
+export const CreateButton = connect(mapStateToProps, mapDispatchToProps)(CreateButtonComponent);
