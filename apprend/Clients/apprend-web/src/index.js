@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as Redux from 'redux'
-import { Provider } from 'react-redux'
+import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
-import { allReducers} from './redux-store/reducers'
-import { BrowserRouter } from 'react-router-dom'
+import {allReducers} from './redux-store/reducers'
+import {BrowserRouter} from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
 
 const logger = (store) => (next) => (action) => {
@@ -20,7 +20,7 @@ const logger = (store) => (next) => (action) => {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__() || Redux.compose
 
 
-const middleware = [thunk]
+const middleware = [thunk, logger]
 const store = Redux.createStore(
     allReducers,
     Redux.compose(
@@ -30,11 +30,11 @@ const store = Redux.createStore(
 )
 
 const mainComponent =
-        <Provider store={store}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </Provider>
+    <Provider store={store}>
+        <BrowserRouter>
+            <App/>
+        </BrowserRouter>
+    </Provider>
 
 ReactDOM.render(mainComponent, document.getElementById('root'));
 
