@@ -20,7 +20,6 @@ function App() {
                 </Route>
                 <Route path={"/register"}>
                     <RegisterPage/>
-                  <CreateDeckForm />
                 </Route>
                 <Route exact path={"/decks/flashcards/add"}>
                     <Flashcards/>
