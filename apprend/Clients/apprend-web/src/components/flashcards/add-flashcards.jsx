@@ -2,8 +2,7 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import {Container} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
-import {EditableFlashcard} from "./sub-components/editable-flashcard";
-import {AddFlashcardIcon} from "./sub-components/add-flashcard-icon";
+import EditableFlashcard from "./sub-components/editable-flashcard";
 
 const allFlashcards = () => {
     let rows = [];
@@ -19,9 +18,7 @@ export const Flashcards = () => {
             <Card>
                 <Card.Body>
                     <Row>
-                        {/*<EditableFlashcard/>*/}
-                        {allFlashcards()}
-                        <AddFlashcardIcon/>
+                        <EditableFlashcard/>
                     </Row>
                 </Card.Body>
             </Card>
