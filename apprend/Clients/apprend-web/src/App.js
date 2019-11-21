@@ -4,6 +4,8 @@ import './App.css';
 import {Switch, Route} from 'react-router-dom'
 import {Homepage} from "./components/home/Homepage";
 import {RegisterPage} from './components/RegisterPage';
+// import {Homepage} from "./components/home/Homepage";
+import { CreateDeckForm } from './components/CreateDeckForm/CreateDeckForm'
 
 function App() {
     return (
@@ -12,6 +14,8 @@ function App() {
                 <Route exact path={"/"}>
                     <Homepage/>
                 </Route>
+                <Route path="/decks/create">
+                  <CreateDeckForm />
                 <Route path={"/register"}>
                     <RegisterPage/>
                 </Route>
