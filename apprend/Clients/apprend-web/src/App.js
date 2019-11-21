@@ -2,6 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import {Switch, Route} from 'react-router-dom'
+import {RegisterPage} from './components/RegisterPage';
 // import {Homepage} from "./components/home/Homepage";
 import { CreateDeckForm } from './components/CreateDeckForm/CreateDeckForm'
 
@@ -14,6 +15,8 @@ function App() {
                 </Route>
                 <Route path="/decks/create">
                   <CreateDeckForm />
+                <Route path={"/register"}>
+                    <RegisterPage/>
                 </Route>
             </Switch>
         </div>
