@@ -36,7 +36,7 @@ const httpServer = http.createServer(app);
 //ToDo: Websocket upgrade
 
 // Start the server.
-const port = 3000;
+const port = 3001;
 httpServer.listen(port, () => {
     // mongoose.connect(`mongodb://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}:${srvConfig.PORT}/${srvConfig.DB}`, {  // <- Localhost
     mongoose.connect(`mongodb+srv://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}/${srvConfig.DB}?retryWrites=true&w=majority`, {   // <- Deployment server
