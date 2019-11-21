@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
 import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
@@ -7,12 +7,17 @@ import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
-import FormLabel from "react-bootstrap/FormLabel";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import {Footer} from "../shared/footer/Footer"
+import {getHomepageDecks} from "../../redux-store/actions/home/async-actions";
 
 const HomepageUI = (props) => {
+
+    useEffect(() => {
+        getHomepageDecks();
+    });
+
     return (
         <>
             <NavigatieBar/>

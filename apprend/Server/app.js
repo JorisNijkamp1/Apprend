@@ -4,11 +4,11 @@ const http = require('http');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-
 const mongoose = require('mongoose');
 const db = mongoose.connection;
 const srvConfig = require('./config');
-
+require('./database/models/deck');
+const Decks = mongoose.model('Deck');
 const cors = require('cors');
 const apiRoute = require('./routes/api/api');
 
@@ -27,8 +27,27 @@ app.use(session({
     resave: true
 }));
 
+/*====================================
+| GET ALL DECKS FOR HOMEPAGE
+*/
+app.get('/decks', async (req, res) => {
+    let decks = await Decks.find({});
+    console.log(decks)
+    const homeDecks = [];
+
+    decks.forEach((i) => {
+        homeDecks.push(i.name);
+    });
+    console.log(homeDecks)
+    await res.json({
+        succes: true,
+        homeDecks: homeDecks
+    })
+});
+
 //Routes
 app.use('/api', apiRoute);
+
 
 // Create HTTP server by ourselves
 const httpServer = http.createServer(app);

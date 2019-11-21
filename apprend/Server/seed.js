@@ -46,6 +46,19 @@ async function seedUsers() {
             "_id": "Aaron",
             "email": "aaron@gmail.com",
             "password": "ica",
+            "decks": [{
+                "name": "Engels woordjes",
+                "description": "english",
+                "creatorId": "Aaron",
+                // "creatorId": ,
+                // "lastPlayedDate": ,
+                "status": "isEdited",
+                "flashcards": [{
+                    "_id": "Apprende",
+                    "type": "Text only",
+                    "question": "Hello"
+                }]
+            }]
         },
     ])
 }
