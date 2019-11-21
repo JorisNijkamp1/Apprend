@@ -1,24 +1,31 @@
+import React, {useState} from "react";
+import {connect} from "react-redux";
 import Col from "react-bootstrap/Col";
 import {Form} from "react-bootstrap";
-import React, {useState} from "react";
 import Card from "react-bootstrap/Card";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import {AddFlashcardIcon} from "./add-flashcard-icon";
-import {connect} from "react-redux";
 import {changeDeckFlashcards} from "../../../redux-store/actions/flashcards/actions";
 
+let deck = {
+    deckName: 'MyDeck',
+    cards: []
+};
+
+
+
 const EditableFlashcard = (props) => {
+    console.log(deck)
     const [flashcardTerm, setFlashcardTerm] = useState('New Flashcard');
     const [flashcardDefinition, setFlashcardDefinition] = useState(null);
-    const flashcardName = !(flashcardTerm) ?'New Flashcard' : flashcardTerm;
+    const flashcardName = !(flashcardTerm) ? 'New Flashcard' : flashcardTerm;
 
     const flashcardData = {
+        id: deck.cards.length,
         term: flashcardTerm,
         definition: flashcardDefinition,
     };
-
-    const addFlashcard = (flashcardData.term && flashcardData.definition) ? <AddFlashcardIcon/> : null;
 
     return (
         <>
@@ -33,18 +40,20 @@ const EditableFlashcard = (props) => {
                     <Card.Body>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Term</Form.Label>
-                            <Form.Control type="text" placeholder="Pets"
+                            <Form.Control type="text"
+                                          placeholder="Pets"
                                           onChange={(e) => setFlashcardTerm(e.target.value)}
-                                          onBlur={() => props.changeDeckFlashcards(flashcardData)}
+                                          // onBlur={() => props.changeDeckFlashcards(flashcardData)}
                             />
                             <Form.Text className="text-muted">
                                 Vul hier de term in waarvan je de definitie wilt leren.
                             </Form.Text>
                             <hr/>
                             <Form.Label>Definition</Form.Label>
-                            <Form.Control type="text" placeholder="Haustiere"
+                            <Form.Control type="text"
+                                          placeholder="Haustiere"
                                           onChange={(e) => setFlashcardDefinition(e.target.value)}
-                                          onBlur={() => props.changeDeckFlashcards(flashcardData)}
+                                          // onBlur={() => props.changeDeckFlashcards(flashcardData)}
                             />
                             <Form.Text className="text-muted">
                                 Enter the definition of the term entered above.
@@ -52,9 +61,6 @@ const EditableFlashcard = (props) => {
                         </Form.Group>
                     </Card.Body>
                 </Card>
-            </Col>
-            <Col xs={12} md={6} lg={4}>
-                {addFlashcard}
             </Col>
         </>
     )
