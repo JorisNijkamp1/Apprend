@@ -1,8 +1,9 @@
 import {API_URL} from '../../urls'
 import {setHomepageDecksAction} from "./actions";
 
-export const getHomepageDecks = (async (dispatch) => {
-    const url = `${API_URL}/decks/home`;
+export function getHomepageDecks(){
+    return async dispatch => {
+            const url = `${API_URL}/decks/home`;
     const options = {
         method: 'GET',
         headers: {
@@ -22,4 +23,5 @@ export const getHomepageDecks = (async (dispatch) => {
         console.log("Er gaat iets goed fout!");
         console.log(err);
     }))
-});
+    }
+}
