@@ -21,7 +21,8 @@ const Flashcards = (props) => {
 
     let addFlashcardToDeck = () => {
         console.log(numbers);
-        const newArray = numbers.push(numbers.length)
+        const newArray = ...numbers
+        newArray.push(numbers.length)
         setNumbers(newArray)
     };
 
