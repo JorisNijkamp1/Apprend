@@ -4,6 +4,7 @@ import './App.css';
 import {Switch, Route} from 'react-router-dom'
 import {Homepage} from "./components/home/Homepage";
 import {RegisterPage} from './components/RegisterPage';
+import {CreateDeckForm} from './components/CreateDeckForm/CreateDeckForm'
 
 function App() {
     return (
@@ -12,12 +13,15 @@ function App() {
                 <Route exact path={"/"}>
                     <Homepage/>
                 </Route>
+                <Route path="/decks/create">
+                    <CreateDeckForm/>
+                </Route>
                 <Route path={"/register"}>
                     <RegisterPage/>
                 </Route>
             </Switch>
         </div>
-    );
+    )
 }
 
 export default App;

@@ -1,0 +1,2 @@
+export const CREATEDECK_EDITDECKNAME = 'CREATEDECK_EDITDECKNAME'
+export const set_DecksHome = 'GETDECKS_DECKNAME'
