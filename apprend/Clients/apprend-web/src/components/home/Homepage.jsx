@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import * as ReactRedux from "react-redux"
 import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
@@ -16,7 +16,27 @@ const HomepageUI = (props) => {
 
     useEffect(() => {
         props.getHomepageDecks();
-    },[]);
+    }, []);
+
+    const decksHomepage = () => {
+        if (props.deckName) {
+            return props.deckName.map(deck => (
+                <Col lg={{span: 4}} md={{span: 6}} key={deck.deckName}>
+                    <Card className={"hover-shadow mb-4"}>
+                        <Card.Header className={"bg-blue text-white text-center"}>{deck.deckName}</Card.Header>
+                        <Card.Body>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Label column={true}
+                                            className={"text-center"}>
+                                    {deck.deckDescription}
+                                </Form.Label>
+                            </Form.Group>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            ));
+        }
+    };
 
     return (
         <>
@@ -49,48 +69,7 @@ const HomepageUI = (props) => {
                     </Col>
                 </Row>
                 <Row className={"mt-5 mb-5"}>
-                    <Col lg={{span: 4}} md={{span: 6}}>
-                        <Card className={"hover-shadow"}>
-                            <Card.Header className={"bg-blue text-white"} style={{textAlign: 'center'}}>Deck
-                                #1</Card.Header>
-                            <Card.Body>
-                                <Form.Group controlId="formBasicEmail">
-                                    <Form.Label column={true}
-                                                className={"text-center"}>
-                                        This Deck contains cool words about nothing
-                                    </Form.Label>
-                                </Form.Group>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col lg={{span: 4}} md={{span: 6}}>
-                        <Card className={"hover-shadow"}>
-                            <Card.Header className={"bg-blue text-white"} style={{textAlign: 'center'}}>Deck
-                                #2</Card.Header>
-                            <Card.Body>
-                                <Form.Group controlId="formBasicEmail">
-                                    <Form.Label column={true}
-                                                className={"text-center"}>
-                                        This Deck contains cool words about nothing
-                                    </Form.Label>
-                                </Form.Group>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col lg={{span: 4}} md={{span: 6}}>
-                        <Card className={"hover-shadow"}>
-                            <Card.Header className={"bg-blue text-white"} style={{textAlign: 'center'}}>Deck
-                                #3</Card.Header>
-                            <Card.Body>
-                                <Form.Group controlId="formBasicEmail">
-                                    <Form.Label column={true}
-                                                className={"text-center"}>
-                                        This Deck contains cool words about nothing
-                                    </Form.Label>
-                                </Form.Group>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+                    {decksHomepage()}
                 </Row>
             </Container>
             <Footer/>
@@ -100,7 +79,7 @@ const HomepageUI = (props) => {
 
 function mapStateToProps(state) {
     return {
-        deckName: state.client.deckName,
+        deckName: state.client.decksHome,
     }
 }
 

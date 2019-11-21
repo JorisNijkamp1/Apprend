@@ -16,17 +16,20 @@ decks.get('/', (req, res) => {
 | GET ALL DECKS FOR HOMEPAGE
 */
 decks.get('/home', async (req, res) => {
-    let decks = await Decks.find({});
-    console.log(decks)
+    let decks = await Decks.find({}).limit(3);
+
     const homeDecks = [];
 
-    decks.forEach((i) => {
-        homeDecks.push(i.name);
+    decks.forEach((deck) => {
+        homeDecks.push({
+            deckName: deck.name,
+            deckDescription: deck.description
+        });
     });
-    console.log(homeDecks)
+
     await res.json({
         success: true,
-        homeDecks: homeDecks
+        homeDecks: homeDecks,
     })
 });
 
