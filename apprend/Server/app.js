@@ -4,7 +4,6 @@ const http = require('http');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-
 const mongoose = require('mongoose');
 const db = mongoose.connection;
 const srvConfig = require('./config');
@@ -29,6 +28,7 @@ app.use(session({
 
 //Routes
 app.use('/api', apiRoute);
+
 
 // Create HTTP server by ourselves
 const httpServer = http.createServer(app);
