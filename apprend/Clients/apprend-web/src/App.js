@@ -5,6 +5,8 @@ import {Switch, Route} from 'react-router-dom'
 import {Homepage} from "./components/home/Homepage";
 import {RegisterPage} from './components/RegisterPage';
 import {CreateDeckForm} from './components/CreateDeckForm/CreateDeckForm'
+import Flashcards from "./components/flashcards/add-flashcards";
+
 
 function App() {
     return (
@@ -18,6 +20,9 @@ function App() {
                 </Route>
                 <Route path={"/register"}>
                     <RegisterPage/>
+                </Route>
+                <Route exact path={"/decks/flashcards/add"}>
+                    <Flashcards/>
                 </Route>
             </Switch>
         </div>

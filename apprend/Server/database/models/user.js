@@ -14,10 +14,20 @@ const userSchema = new mongoose.Schema({
     },
     decks: {
         type: [{type: Deck}],
+    },
+    signupDate: {
+        type: Date, default: Date.now
     }
 });
 
+userSchema.methods.addDeck = async function(deck){
+    this.decks.push(deck)
+    this.markModified('decks')
+    await this.save()
+    return this.decks[this.decks.length-1]
+}
 //Create model
 mongoose.model("User", userSchema);
 
-module.exports = userSchema;
+// module.exports = userSchema;
+module.exports = mongoose.model('User', userSchema)
