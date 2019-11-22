@@ -9,6 +9,8 @@ import { PageTitle } from '../shared/PageTitle'
 import { createDeck } from '../../redux-store/actions/create-deck/async-actions'
 import { CreateButton } from './sub-components/CreateButton';
 import { useHistory } from 'react-router'
+import { NavigatieBar } from '../shared/navbar/NavigatieBar';
+import { Footer } from '../shared/footer/Footer';
 
 const CreateDeckFormComponent = (props) => {
 
@@ -29,11 +31,12 @@ const CreateDeckFormComponent = (props) => {
         } else {
             deckId = response._id.toString()
         }
-        history.push(`/decks/${deckId}/cards/create`)
+        history.push(`/decks/${deckId}/cards/`)
     }
 
     return (
         <>
+            <NavigatieBar />
             <Container> 
                 <PageTitle title="Create your deck" />
 
@@ -79,6 +82,7 @@ const CreateDeckFormComponent = (props) => {
                     </Row>
                 </Form>
             </Container>
+            <Footer />
         </>
     )
 }
