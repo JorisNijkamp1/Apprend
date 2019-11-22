@@ -25,7 +25,7 @@ function App() {
                 <Route exact path={"/decks/flashcards/add"}>
                     <Flashcards/>
                 </Route>
-                <Route exact path={"/@:username/decks"}>
+                <Route exact path={"/:username/decks"}>
                     <MyDeck/>
                 </Route>
             </Switch>
