@@ -11,6 +11,7 @@ import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import {Footer} from "../shared/footer/Footer"
 import {getHomepageDecks} from "../../redux-store/actions/home/async-actions";
+import {Link} from "react-router-dom";
 
 const HomepageUI = (props) => {
 
@@ -32,7 +33,11 @@ const HomepageUI = (props) => {
                                 </Form.Label>
                                 <Form.Label column={true}
                                             className={""}>
-                                    <strong>{deck.deckCreator}</strong>
+                                    <strong>
+                                        <Link to={`/${deck.deckUserId}/decks`}>
+                                            {deck.deckCreator}
+                                        </Link>
+                                    </strong>
                                 </Form.Label>
                             </Form.Group>
                         </Card.Body>
