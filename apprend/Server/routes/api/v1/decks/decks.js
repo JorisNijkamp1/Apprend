@@ -34,8 +34,6 @@ decks.get('/home', async (req, res) => {
         });
     });
 
-    console.log(homeDecks)
-
     await res.json({
         success: true,
         homeDecks: homeDecks,
