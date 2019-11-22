@@ -3,8 +3,8 @@ const decks = express.Router();
 const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
-require('../../../../database/models/deck');
-const Decks = mongoose.model('Deck');
+require('../../../../database/models/user');
+const Users = mongoose.model('User');
 const User = require('../../../../database/models/user')
 
 decks.get('/', (req, res) => {
@@ -14,17 +14,22 @@ decks.get('/', (req, res) => {
 });
 
 /*====================================
-| GET ALL DECKS FOR HOMEPAGE
+| GET ALL DECKS FOR HOMEPAGE FROM USERS
 */
 decks.get('/home', async (req, res) => {
-    let decks = await Decks.find({}).limit(3);
+    let allDecksUsers = await User.find({}).limit(3);
 
     const homeDecks = [];
 
-    decks.forEach((deck) => {
-        homeDecks.push({
-            deckName: deck.name,
-            deckDescription: deck.description
+    console.log(allDecksUsers[0].decks);
+
+    allDecksUsers.forEach((index, key) => {
+        allDecksUsers[key].decks.forEach((decksIndex, decksKey) => {
+            homeDecks.push({
+                deckName: allDecksUsers[key].decks[decksKey].name,
+                deckDescription: allDecksUsers[key].decks[decksKey].description,
+                deckCreator: allDecksUsers[key].decks[decksKey].creatorId,
+            });
         });
     });
 
@@ -33,10 +38,11 @@ decks.get('/home', async (req, res) => {
         homeDecks: homeDecks,
     })
 });
+
 decks.post('/', async (req, res) => {
     try {
         let response;
-        if (!req.session.username && !req.cookies.username){
+        if (!req.session.username && !req.cookies.username) {
             req.session.username = req.session.id
             const deck = {
                 name: req.body.deckName,
@@ -52,12 +58,12 @@ decks.post('/', async (req, res) => {
                 decks: [deck]
             }
             const cookie = req.cookies.username
-            if (cookie === undefined){
-                res.cookie('username', req.session.id, {maxAge: (10*365*24*60*60*1000)})
+            if (cookie === undefined) {
+                res.cookie('username', req.session.id, {maxAge: (10 * 365 * 24 * 60 * 60 * 1000)})
             }
             response = await User.create(user)
         } else {
-            const player = await User.findById(req.session.username ? req.session.username : req.cookies.username )
+            const player = await User.findById(req.session.username ? req.session.username : req.cookies.username)
             const deck = {
                 name: req.body.deckName,
                 description: req.body.description,
@@ -71,7 +77,7 @@ decks.post('/', async (req, res) => {
                 return
             }
         }
-        
+
         res.status(201).json(response)
 
     } catch (e) {

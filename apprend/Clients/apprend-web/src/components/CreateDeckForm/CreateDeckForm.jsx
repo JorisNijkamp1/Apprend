@@ -44,7 +44,7 @@ const CreateDeckFormComponent = (props) => {
             <Container className={"pt-5 pb-5"}>
                 <PageTitle  title="Create your deck" />
 
-                <Form onSubmit={(e) => handleCreateDeck(e)}>
+                <Form name="create-deck" onSubmit={(e) => handleCreateDeck(e)}>
                     <Form.Group as={Row} controlId="create-deck-form-deckname">
                         <Form.Label 
                             className="text-center" 
