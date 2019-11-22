@@ -6,6 +6,8 @@ import Row from "react-bootstrap/Row";
 import EditableFlashcard from "./sub-components/editable-flashcard";
 import {changeDeckFlashcards} from "../../redux-store/actions/flashcards/actions";
 import {AddFlashcardIcon} from "./sub-components/add-flashcard-icon";
+import {NavigatieBar} from "../shared/navbar/NavigatieBar";
+import {Footer} from "../shared/footer/Footer";
 
 const Flashcards = (props) => {
 
@@ -32,16 +34,20 @@ const Flashcards = (props) => {
     );
 
     return (
-        <Container>
-            <Card>
-                <Card.Body>
-                    <Row>
-                        {allFlashcards}
-                        <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
-                    </Row>
-                </Card.Body>
-            </Card>
-        </Container>
+        <>
+            <NavigatieBar/>
+            <Container className={"pt-5 pb-5"}>
+                <Card>
+                    <Card.Body>
+                        <Row>
+                            {allFlashcards}
+                            <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
+                        </Row>
+                    </Card.Body>
+                </Card>
+            </Container>
+            <Footer/>
+        </>
     );
 };
 

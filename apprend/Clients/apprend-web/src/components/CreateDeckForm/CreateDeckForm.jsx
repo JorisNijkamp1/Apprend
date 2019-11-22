@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Form, Row, Col, 
+import { Container, Form, Row, Col,
          } from 'react-bootstrap'
 
 import { changeDeckName } from '../../redux-store/actions/create-deck/actions'
@@ -40,11 +40,11 @@ const CreateDeckFormComponent = (props) => {
 
     return (
         <>
-            <NavigatieBar />
-            <Container> 
-                <PageTitle title="Create your deck" />
+            <NavigatieBar/>
+            <Container className={"pt-5 pb-5"}>
+                <PageTitle  title="Create your deck" />
 
-                <Form onSubmit={(e) => handleCreateDeck(e)}>
+                <Form name="create-deck" onSubmit={(e) => handleCreateDeck(e)}>
                     <Form.Group as={Row} controlId="create-deck-form-deckname">
                         <Form.Label 
                             className="text-center" 
@@ -101,7 +101,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         changeDeckName: (name) => dispatch(changeDeckName(name)),
-        createNewDeck: (deck) => dispatch(createDeck(deck)), 
+        createNewDeck: (deck) => dispatch(createDeck(deck)),
     }
 }
 

@@ -20,15 +20,19 @@ const HomepageUI = (props) => {
 
     const decksHomepage = () => {
         if (props.deckName) {
-            return props.deckName.map(deck => (
-                <Col lg={{span: 4}} md={{span: 6}} key={deck.deckName}>
+            return props.deckName.map((deck, index) => (
+                <Col lg={{span: 4}} md={{span: 6}} key={deck.deckName + index}>
                     <Card className={"hover-shadow mb-4"}>
-                        <Card.Header className={"bg-blue text-white text-center"}>{deck.deckName}</Card.Header>
+                        <Card.Header className={"bg-blue text-white text-center"}><h2>{deck.deckName}</h2></Card.Header>
                         <Card.Body>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label column={true}
                                             className={"text-center"}>
                                     {deck.deckDescription}
+                                </Form.Label>
+                                <Form.Label column={true}
+                                            className={""}>
+                                    <strong>{deck.deckCreator}</strong>
                                 </Form.Label>
                             </Form.Group>
                         </Card.Body>

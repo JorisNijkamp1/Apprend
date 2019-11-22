@@ -3,8 +3,8 @@ const decks = express.Router();
 const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
-require('../../../../database/models/deck');
-const Decks = mongoose.model('Deck');
+require('../../../../database/models/user');
+const Users = mongoose.model('User');
 const User = require('../../../../database/models/user')
 
 decks.get('/', (req, res) => {
@@ -14,19 +14,26 @@ decks.get('/', (req, res) => {
 });
 
 /*====================================
-| GET ALL DECKS FOR HOMEPAGE
+| GET ALL DECKS FOR HOMEPAGE FROM USERS
 */
 decks.get('/home', async (req, res) => {
-    let decks = await Decks.find({}).limit(3);
+    let allDecksUsers = await User.find({});
 
     const homeDecks = [];
 
-    decks.forEach((deck) => {
-        homeDecks.push({
-            deckName: deck.name,
-            deckDescription: deck.description
+    allDecksUsers.forEach((index, key) => {
+        allDecksUsers[key].decks.forEach((decksIndex, decksKey) => {
+            if (homeDecks.length <= 2) {
+                homeDecks.push({
+                    deckName: allDecksUsers[key].decks[decksKey].name,
+                    deckDescription: allDecksUsers[key].decks[decksKey].description,
+                    deckCreator: allDecksUsers[key].decks[decksKey].creatorId,
+                });
+            }
         });
     });
+
+    console.log(homeDecks)
 
     await res.json({
         success: true,

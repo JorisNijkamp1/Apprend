@@ -74,6 +74,10 @@
     transition: all .3s ease-in-out;
 }
 
+h2{
+    font-size: 22px;
+}
+
 .hover-shadow-text:hover {
     transform: scale(1.2);
 }
