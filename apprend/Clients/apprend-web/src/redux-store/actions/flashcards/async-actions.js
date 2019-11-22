@@ -1,9 +1,8 @@
 import {API_URL} from '../../urls'
-import {setHomepageDecksAction} from "./actions";
 
-export const getHomepageDecks = () => {
+export const getUserDecks = (username) => {
     return async dispatch => {
-        const url = `${API_URL}/decks/home`;
+        const url = `${API_URL}/users/${username}/decks`;
         const options = {
             method: 'GET',
             headers: {
@@ -16,11 +15,8 @@ export const getHomepageDecks = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    dispatch(setHomepageDecksAction(data.homeDecks));
+                    console.log(data)
                 }
-            }).catch((err => {
-            console.log("Er gaat iets goed fout!");
-            console.log(err);
-        }))
+            }).catch((err => console.log(err)))
     }
 };

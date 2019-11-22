@@ -8,9 +8,9 @@ const Decks = mongoose.model('Deck');
 const User = require('../../../../database/models/user')
 
 decks.get('/', (req, res) => {
-    res.json(
-        'api/vi/decks is the name of the game'
-    )
+    res.json({
+        success: true
+    })
 });
 
 /*====================================
@@ -33,10 +33,11 @@ decks.get('/home', async (req, res) => {
         homeDecks: homeDecks,
     })
 });
+
 decks.post('/', async (req, res) => {
     try {
         let response;
-        if (!req.session.username && !req.cookies.username){
+        if (!req.session.username && !req.cookies.username) {
             req.session.username = req.session.id
             const deck = {
                 name: req.body.deckName,
@@ -52,12 +53,12 @@ decks.post('/', async (req, res) => {
                 decks: [deck]
             }
             const cookie = req.cookies.username
-            if (cookie === undefined){
-                res.cookie('username', req.session.id, {maxAge: (10*365*24*60*60*1000)})
+            if (cookie === undefined) {
+                res.cookie('username', req.session.id, {maxAge: (10 * 365 * 24 * 60 * 60 * 1000)})
             }
             response = await User.create(user)
         } else {
-            const player = await User.findById(req.session.username ? req.session.username : req.cookies.username )
+            const player = await User.findById(req.session.username ? req.session.username : req.cookies.username)
             const deck = {
                 name: req.body.deckName,
                 description: req.body.description,
@@ -71,7 +72,7 @@ decks.post('/', async (req, res) => {
                 return
             }
         }
-        
+
         res.status(201).json(response)
 
     } catch (e) {
