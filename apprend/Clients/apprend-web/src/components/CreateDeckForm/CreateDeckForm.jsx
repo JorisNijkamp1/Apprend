@@ -11,8 +11,6 @@ import { CreateButton } from './sub-components/CreateButton';
 import { useHistory } from 'react-router'
 import { NavigatieBar } from '../shared/navbar/NavigatieBar';
 import { Footer } from '../shared/footer/Footer';
-import {NavigatieBar} from "../shared/navbar/NavigatieBar";
-import {Footer} from "../shared/footer/Footer";
 
 const CreateDeckFormComponent = (props) => {
 
