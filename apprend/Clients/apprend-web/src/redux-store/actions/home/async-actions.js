@@ -23,4 +23,4 @@ export const getHomepageDecks = () => {
             console.log(err);
         }))
     }
-}
+};

@@ -8,9 +8,9 @@ const Users = mongoose.model('User');
 const User = require('../../../../database/models/user')
 
 decks.get('/', (req, res) => {
-    res.json(
-        'api/vi/decks is the name of the game'
-    )
+    res.json({
+        success: true
+    })
 });
 
 /*====================================

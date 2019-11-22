@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel, Row} from 'react-bootstrap';
+import {registerNewUser} from '../redux-store/actions/actions';
 import {NavigatieBar} from "./shared/navbar/NavigatieBar";
 import {Footer} from "./shared/footer/Footer";
 
@@ -54,11 +55,16 @@ export const RegisterPageComponent = props => {
 };
 
 const mapStateToProps = state => {
-    return {}
+    return {
+        'isLoading': state.register.isLoading,
+        'error': state.register.error
+    }
 };
 
 const mapDispatchToProps = dispatch => {
-    return {}
+    return {
+        'doRegisterNewUser': (username, email, password) => dispatch(registerNewUser(username, email, password))
+    }
 };
 
 export const RegisterPage = connect(mapStateToProps, mapDispatchToProps)(RegisterPageComponent);

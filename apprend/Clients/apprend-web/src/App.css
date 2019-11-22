@@ -67,9 +67,17 @@
 }
 
 .hover-shadow:hover{
-    box-shadow: 0px 0px 30px 10px rgba(0,0,0,.2)
+    box-shadow: 0 0 30px 10px rgba(0,0,0,.2)
+}
+
+.hover-shadow-text {
+    transition: all .3s ease-in-out;
 }
 
 h2{
     font-size: 22px;
+}
+
+.hover-shadow-text:hover {
+    transform: scale(1.2);
 }
