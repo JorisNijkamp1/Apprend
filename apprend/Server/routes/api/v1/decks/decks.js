@@ -17,21 +17,23 @@ decks.get('/', (req, res) => {
 | GET ALL DECKS FOR HOMEPAGE FROM USERS
 */
 decks.get('/home', async (req, res) => {
-    let allDecksUsers = await User.find({}).limit(3);
+    let allDecksUsers = await User.find({});
 
     const homeDecks = [];
 
-    console.log(allDecksUsers[0].decks);
-
     allDecksUsers.forEach((index, key) => {
         allDecksUsers[key].decks.forEach((decksIndex, decksKey) => {
-            homeDecks.push({
-                deckName: allDecksUsers[key].decks[decksKey].name,
-                deckDescription: allDecksUsers[key].decks[decksKey].description,
-                deckCreator: allDecksUsers[key].decks[decksKey].creatorId,
-            });
+            if (homeDecks.length <= 2) {
+                homeDecks.push({
+                    deckName: allDecksUsers[key].decks[decksKey].name,
+                    deckDescription: allDecksUsers[key].decks[decksKey].description,
+                    deckCreator: allDecksUsers[key].decks[decksKey].creatorId,
+                });
+            }
         });
     });
+
+    console.log(homeDecks)
 
     await res.json({
         success: true,
