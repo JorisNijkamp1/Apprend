@@ -11,6 +11,8 @@ import { CreateButton } from './sub-components/CreateButton';
 import { useHistory } from 'react-router'
 import { NavigatieBar } from '../shared/navbar/NavigatieBar';
 import { Footer } from '../shared/footer/Footer';
+import {NavigatieBar} from "../shared/navbar/NavigatieBar";
+import {Footer} from "../shared/footer/Footer";
 
 const CreateDeckFormComponent = (props) => {
 
@@ -40,9 +42,9 @@ const CreateDeckFormComponent = (props) => {
 
     return (
         <>
-            <NavigatieBar />
-            <Container> 
-                <PageTitle title="Create your deck" />
+            <NavigatieBar/>
+            <Container className={"pt-5 pb-5"}>
+                <PageTitle  title="Create your deck" />
 
                 <Form onSubmit={(e) => handleCreateDeck(e)}>
                     <Form.Group as={Row} controlId="create-deck-form-deckname">
@@ -86,7 +88,7 @@ const CreateDeckFormComponent = (props) => {
                     </Row>
                 </Form>
             </Container>
-            <Footer />
+            <Footer/>
         </>
     )
 }

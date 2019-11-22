@@ -1,11 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel, Row} from 'react-bootstrap';
+import {NavigatieBar} from "./shared/navbar/NavigatieBar";
+import {Footer} from "./shared/footer/Footer";
 
 export const RegisterPageComponent = props => {
     return (
         <>
-            <Container>
+            <NavigatieBar/>
+            <Container className={"pt-5 pb-5"}>
                 <Row>
                     <Col xs={{'span': 6, 'offset': 3}}>
                         <h3 className={'text-center'}>Register a new account</h3>
@@ -45,6 +48,7 @@ export const RegisterPageComponent = props => {
                     </Col>
                 </Row>
             </Container>
+            <Footer/>
         </>
     )
 };
