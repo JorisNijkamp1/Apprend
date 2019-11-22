@@ -1,6 +1,7 @@
 import {API_URL} from '../../urls'
+import {setUserDecksAction} from "./actions";
 
-export const getUserDecks = (username) => {
+export const getUserDecksAction = (username) => {
     return async dispatch => {
         const url = `${API_URL}/users/${username}/decks`;
         const options = {
@@ -11,12 +12,10 @@ export const getUserDecks = (username) => {
             credentials: 'include',
             mode: 'cors'
         };
-        fetch(url, options)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log(data)
-                }
-            }).catch((err => console.log(err)))
+        const response = await fetch(url, options);
+        const data = await response.json();
+        if (data.success) {
+            dispatch(setUserDecksAction(data.decks))
+        }
     }
 };
