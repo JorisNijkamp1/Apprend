@@ -7,6 +7,8 @@ import { Container, Form, Row, Col,
 import { changeDeckName } from '../../redux-store/actions/create-deck/actions'
 
 import { PageTitle } from '../shared/PageTitle'
+import {NavigatieBar} from "../shared/navbar/NavigatieBar";
+import {Footer} from "../shared/footer/Footer";
 
 const CreateDeckFormComponent = (props) => {
 
@@ -18,8 +20,9 @@ const CreateDeckFormComponent = (props) => {
 
     return (
         <>
-            <Container> 
-                <PageTitle title="Create your deck" />
+            <NavigatieBar/>
+            <Container className={"pt-5 pb-5"}>
+                <PageTitle  title="Create your deck" />
 
                 <Form onSubmit={(e) => handleCreateDeck(e)}>
                     <Form.Group as={Row} controlId="create-deck-form-deckname">
@@ -70,6 +73,7 @@ const CreateDeckFormComponent = (props) => {
                     </Row>
                 </Form>
             </Container>
+            <Footer/>
         </>
     )
 }
