@@ -29,7 +29,7 @@ const CreateDeckFormComponent = (props) => {
         } else {
             deckId = response._id.toString()
         }
-        history.push(`/decks/${deckId}`)
+        history.push(`/decks/${deckId}/cards/create`)
     }
 
     return (
