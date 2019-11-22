@@ -36,7 +36,7 @@ decks.get('/home', async (req, res) => {
 decks.post('/', async (req, res) => {
     try {
         let response;
-        if (!req.session.username){
+        if (!req.session.username && !req.cookies.username){
             req.session.username = req.session.id
             const deck = {
                 name: req.body.deckName,
@@ -51,9 +51,13 @@ decks.post('/', async (req, res) => {
                 password: '',
                 decks: [deck]
             }
+            const cookie = req.cookies.username
+            if (cookie === undefined){
+                res.cookie('username', req.session.id, {maxAge: (10*365*24*60*60*1000)})
+            }
             response = await User.create(user)
         } else {
-            const player = await User.findById(req.session.username)
+            const player = await User.findById(req.session.username ? req.session.username : req.cookies.username )
             const deck = {
                 name: req.body.deckName,
                 description: req.body.description,
@@ -61,11 +65,15 @@ decks.post('/', async (req, res) => {
                 status: 'original',
                 flashcards: [],
             }
-            response = await player.addDeck(deck)
+            if (player) response = await player.addDeck(deck)
+            else {
+                res.status(401).json('Not a user')
+                return
+            }
         }
-        console.log(response)
-
+        
         res.status(201).json(response)
+
     } catch (e) {
         console.log(e)
         res.status(500).json('Something went horribly wrong...Try again?')

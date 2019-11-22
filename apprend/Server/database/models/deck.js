@@ -12,8 +12,8 @@ const deckSchema = new mongoose.Schema({
     creatorId: {
         type: String,
     },
-    creationDates: {
-        type: Date,
+    creationDate: {
+        type: Date, default: Date.now
     },
     lastPlayedDate: {
         type: Date,

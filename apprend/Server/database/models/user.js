@@ -14,6 +14,9 @@ const userSchema = new mongoose.Schema({
     },
     decks: {
         type: [{type: Deck}],
+    },
+    signupDate: {
+        type: Date, default: Date.now
     }
 });
 
