@@ -6,6 +6,7 @@ import {Homepage} from "./components/home/Homepage";
 import {RegisterPage} from './components/RegisterPage';
 import {CreateDeckForm} from './components/CreateDeckForm/CreateDeckForm'
 import Flashcards from "./components/flashcards/add-flashcards";
+import MyDeck from "./components/my-deck/MyDeck";
 
 
 function App() {
@@ -23,6 +24,9 @@ function App() {
                 </Route>
                 <Route exact path={"/decks/flashcards/add"}>
                     <Flashcards/>
+                </Route>
+                <Route exact path={"/:username/decks"}>
+                    <MyDeck/>
                 </Route>
             </Switch>
         </div>
