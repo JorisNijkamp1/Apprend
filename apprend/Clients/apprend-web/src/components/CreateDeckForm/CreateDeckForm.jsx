@@ -9,6 +9,8 @@ import { PageTitle } from '../shared/PageTitle'
 import { createDeck } from '../../redux-store/actions/create-deck/async-actions'
 import { CreateButton } from './sub-components/CreateButton';
 import { useHistory } from 'react-router'
+import { NavigatieBar } from '../shared/navbar/NavigatieBar';
+import { Footer } from '../shared/footer/Footer';
 
 const CreateDeckFormComponent = (props) => {
 
@@ -17,23 +19,28 @@ const CreateDeckFormComponent = (props) => {
     const showDeckNameOrThis = (text) => props.deckName ? <b>'{props.deckName}'</b> : text
 
     const handleCreateDeck = async (e) => {
-        e.preventDefault()
-        const deck = {
-            deckName: props.deckName,
-            description: e.target.description.value
+        try {
+            e.preventDefault()
+            const deck = {
+                deckName: props.deckName,
+                description: e.target.description.value
+            }
+            const response = await props.createNewDeck(deck)
+            let deckId;
+            if (response.decks){
+                deckId = response.decks[0]._id.toString()
+            } else {
+                deckId = response._id.toString()
+            }
+            history.push(`/decks/${deckId}/cards/`)
+        } catch (e) {
+            console.log(e)
         }
-        const response = await props.createNewDeck(deck)
-        let deckId;
-        if (response.decks){
-            deckId = response.decks[0]._id.toString()
-        } else {
-            deckId = response._id.toString()
-        }
-        history.push(`/decks/${deckId}`)
     }
 
     return (
         <>
+            <NavigatieBar />
             <Container> 
                 <PageTitle title="Create your deck" />
 
@@ -79,6 +86,7 @@ const CreateDeckFormComponent = (props) => {
                     </Row>
                 </Form>
             </Container>
+            <Footer />
         </>
     )
 }

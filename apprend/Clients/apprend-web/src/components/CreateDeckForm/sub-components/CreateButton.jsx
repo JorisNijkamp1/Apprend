@@ -14,7 +14,7 @@ const CreateButtonComponent = (props) => {
     const createButton = () => {
         if (props.isLoading){
             return (
-                <Button variant="primary" disabled className="w-100">
+                <Button variant="primary" disabled className="w-100" id="create-deck-button">
                     <Spinner
                         as="span"
                         animation="grow"
@@ -31,6 +31,7 @@ const CreateButtonComponent = (props) => {
                     className="w-100" 
                     variant="primary" 
                     type="submit"
+                    id="create-deck-button"
                     disabled={props.deckName ? false: true}
                 >
                     {props.deckName ? 'Create deck!' : 'Please fill in a deckname'}
