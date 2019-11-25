@@ -6,7 +6,8 @@ import {Homepage} from "./components/home/Homepage";
 import {RegisterPage} from './components/register/RegisterPage';
 import {CreateDeckForm} from './components/CreateDeckForm/CreateDeckForm'
 import Flashcards from "./components/flashcards/add-flashcards";
-import MyDeck from "./components/my-deck/MyDeck";
+import UserDecks from "./components/user-decks/UserDecks";
+import Deck from "./components/user-decks/Deck";
 
 
 function App() {
@@ -25,8 +26,11 @@ function App() {
                 <Route exact path={"/decks/flashcards/add"}>
                     <Flashcards/>
                 </Route>
+                <Route path={"/decks/:deckId"}>
+                    <Deck/>
+                </Route>
                 <Route exact path={"/:username/decks"}>
-                    <MyDeck/>
+                    <UserDecks/>
                 </Route>
             </Switch>
         </div>

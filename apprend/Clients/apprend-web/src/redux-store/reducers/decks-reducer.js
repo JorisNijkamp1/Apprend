@@ -1,10 +1,14 @@
-import {DECKS_ADD_DECK, DECKS_SET_ISLOADING, DECKS_SET_USER_CHECKS,} from '../actions/action-types'
+import {
+    DECKS_ADD_DECK,
+    DECKS_SET_ISLOADING,
+    DECKS_SET_USER_DECKS,
+} from '../actions/action-types'
 import produce from 'immer'
 
 const initialState = {
-    decks: [],
+    deck: [],
     userDecks: {decks:[]},
-    userDecksIsLoading: false
+    isLoading: false
 };
 
 export default function decksReducer(state = initialState, action){
@@ -14,12 +18,12 @@ export default function decksReducer(state = initialState, action){
                 draft['decks'].push(action.payload);
                 break;
 
-            case DECKS_SET_USER_CHECKS:
+            case DECKS_SET_USER_DECKS:
                 draft['userDecks'] = action.payload;
                 break;
 
             case DECKS_SET_ISLOADING:
-                draft['userDecksIsLoading'] = action.payload;
+                draft['isLoading'] = action.payload;
                 break;
 
             default:

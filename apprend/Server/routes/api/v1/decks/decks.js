@@ -86,6 +86,34 @@ decks.post('/', async (req, res) => {
         res.status(500).json('Something went horribly wrong...Try again?')
     }
 
-})
+});
+
+/*====================================
+| GET ALL DECKS FOR HOMEPAGE FROM USERS
+*/
+decks.get('/:deckId', async (req, res) => {
+    const users = await User.find({});
+    const deckId = req.params.deckId;
+
+    let currentDeck;
+    users.forEach((user, userKey) => {
+        users[userKey].decks.forEach((deck, deckKey) => {
+            if (deck._id == deckId) {
+                currentDeck = deck;
+            }
+        });
+    });
+
+    if (currentDeck) {
+        await res.json({
+            success: true,
+            deck: currentDeck
+        })
+    } else {
+        await res.json({
+            success: false,
+        })
+    }
+});
 
 module.exports = decks;
