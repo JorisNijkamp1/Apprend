@@ -1,12 +1,12 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
-import {Switch, Route} from 'react-router-dom'
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import {Switch, Route} from "react-router-dom"
 import {Homepage} from "./components/home/Homepage";
-import {RegisterPage} from './components/RegisterPage';
-import {CreateDeckForm} from './components/CreateDeckForm/CreateDeckForm'
+import {RegisterPage} from "./components/RegisterPage";
+import {CreateDeckForm} from "./components/CreateDeckForm/CreateDeckForm"
 import Flashcards from "./components/flashcards/add-flashcards";
-import {PlayingDeck} from './components/PlayingDeck';
+import {PlayingDeck} from "./components/playing/PlayingDeck";
 
 function App() {
     return (
