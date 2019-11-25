@@ -4,13 +4,11 @@ import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {Footer} from "../shared/footer/Footer"
 import {getDeckAction} from "../../redux-store/actions/decks/async-actions";
 import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import Loader from "react-loaders";
 
