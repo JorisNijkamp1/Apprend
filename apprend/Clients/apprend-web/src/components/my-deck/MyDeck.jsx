@@ -11,6 +11,9 @@ import Card from "react-bootstrap/Card";
 import CardColumns from "react-bootstrap/CardColumns";
 import Loader from 'react-loaders'
 import 'loaders.css/src/animations/square-spin.scss'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import Button from "react-bootstrap/Button";
 
 const MyDeck = (props) => {
     let {username} = useParams();
@@ -31,13 +34,30 @@ const MyDeck = (props) => {
         userDecks = props.userDecks.decks.map((deck) =>
             <Card>
                 <Card.Body>
-                    <Card.Title>{deck.name}</Card.Title>
+                    <Card.Title>
+                        <Row>
+                            <Col xs={10}>
+                                {deck.name}
+                            </Col>
+                            <Col xs={2}>
+                                <span className={"float-right"}>
+                                    <FontAwesomeIcon icon={faTrash}
+                                                     className={'trash-icon'}
+                                                     size={'1x'}
+                                    />
+                                </span>
+                            </Col>
+                        </Row>
+                    </Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">With X flashcards</Card.Subtitle>
                     <Card.Text>
                         {deck.description}
                     </Card.Text>
-                    {/*<Card.Link href="#" className={'text-danger'}>Delete deck</Card.Link>*/}
-                    {/*<Card.Link href="#">Edit deck</Card.Link>*/}
+                    <Row>
+                        <Col xs={{span: 6, offset: 3}}>
+                            <Button variant="outline-primary" className={'w-100'}>View deck</Button>
+                        </Col>
+                    </Row>
                 </Card.Body>
             </Card>
         )
