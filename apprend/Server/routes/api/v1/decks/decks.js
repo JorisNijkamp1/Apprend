@@ -27,13 +27,12 @@ decks.get('/home', async (req, res) => {
                 homeDecks.push({
                     deckName: allDecksUsers[key].decks[decksKey].name,
                     deckDescription: allDecksUsers[key].decks[decksKey].description,
-                    deckCreator: allDecksUsers[key].decks[decksKey].creatorId,
+                    deckCreator: !(allDecksUsers[key].email && allDecksUsers[key]) ? 'anonymous user' : allDecksUsers[key].decks[decksKey].creatorId,
+                    deckUserId: allDecksUsers[key].decks[decksKey].creatorId
                 });
             }
         });
     });
-
-    console.log(homeDecks)
 
     await res.json({
         success: true,
