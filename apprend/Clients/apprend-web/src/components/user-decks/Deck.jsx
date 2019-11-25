@@ -12,48 +12,53 @@ import 'loaders.css/src/animations/square-spin.scss'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
+import Loader from "react-loaders";
 
 const UserDecks = (props) => {
     let {deckId} = useParams();
 
     useEffect(() => {
-        console.log(deckId)
+        props.getDeck(deckId)
     }, []);
 
-    let userDecks;
-    if (props.deck) {
-        userDecks = props.deck.map((deck, key) =>
-            <Card key={deck.name + key}>
+    let loader, deck;
+    if (props.isLoading) {
+        loader = (
+            <Row className="mx-auto align-items-center flex-column py-5">
+                <Loader type="square-spin" active={true} color={'#758BFE'}/>
+                <h2>Loading decks...</h2>
+            </Row>
+        )
+    } else {
+        let totalFlashcards = 0;
+        if (props.deck.flashcards) {
+            totalFlashcards = props.deck.flashcards.length
+        }
+        deck = (
+            <Card style={{width: '100%'}}>
                 <Card.Body>
-                    <Card.Title>
+                    <Card.Title>{props.deck.name}</Card.Title>
+                    <Card.Subtitle>
                         <Row>
-                            <Col xs={10}>
-                                {deck.name}
+                            <Col xs={12} md={4}>
+                                <b>Created on: </b>{props.deck.creationDate}
                             </Col>
-                            <Col xs={2}>
-                                <span className={"float-right"}>
-                                    <FontAwesomeIcon icon={faTrash}
-                                                     className={'trash-icon'}
-                                                     size={'1x'}
-                                    />
-                                </span>
+                            <Col xs={12} md={4}>
+                                <b>Created by: </b>{props.deck.userName}
+                            </Col>
+                            <Col xs={12} md={4}>
+                                <b>Total flashcards: </b>{totalFlashcards}
                             </Col>
                         </Row>
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">With X flashcards</Card.Subtitle>
+                    </Card.Subtitle>
                     <Card.Text>
-                        {deck.description}
+                        {props.deck.description}
                     </Card.Text>
-                    <Row>
-                        <Col xs={{span: 6, offset: 3}}>
-                            <Link to={`/decks/${deck._id}`}>
-                                <Button variant="outline-primary" className={'w-100'}>View deck</Button>
-                            </Link>
-                        </Col>
-                    </Row>
+                    <Button variant="warning">Deck bewerken</Button>
+                    <Button variant="success" className={'float-right'}>Deck spelen</Button>
                 </Card.Body>
             </Card>
-        );
+        )
     }
 
     return (
@@ -64,13 +69,14 @@ const UserDecks = (props) => {
                     <Col lg={{span: 8, offset: 2}}>
                         <div className="mx-auto text-green pt-5">
                             <h1 className="display-5 text-center">
-                                Deck ...
+                                Deck {props.deck.name}
                             </h1>
                         </div>
                     </Col>
                 </Row>
+                {loader}
                 <Row>
-                    {userDecks}
+                    {deck}
                 </Row>
             </Container>
             <Footer/>
@@ -81,7 +87,7 @@ const UserDecks = (props) => {
 function mapStateToProps(state) {
     return {
         deck: state.decks.deck,
-        setIsLoading: state.decks.setIsLoading,
+        isLoading: state.decks.isLoading,
     }
 }
 

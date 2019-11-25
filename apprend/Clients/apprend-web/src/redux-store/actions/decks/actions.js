@@ -1,6 +1,6 @@
 import {
     CREATEDECK_SET_ISLOADING,
-    DECKS_ADD_DECK, DECKS_SET_ISLOADING,
+    DECKS_ADD_DECK, DECKS_SET_DECK, DECKS_SET_ISLOADING,
     DECKS_SET_USER_DECKS
 } from "../action-types";
 
@@ -20,7 +20,7 @@ export function setUserDecksAction(decks) {
 
 export function setDeckAction(deckId) {
     return {
-        type: DECKS_SET_USER_DECKS,
+        type: DECKS_SET_DECK,
         payload: deckId
     }
 }

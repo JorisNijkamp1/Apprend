@@ -95,11 +95,12 @@ decks.get('/:deckId', async (req, res) => {
     const users = await User.find({});
     const deckId = req.params.deckId;
 
-    let currentDeck;
+    let currentDeck, anonymousUser;
     users.forEach((user, userKey) => {
         users[userKey].decks.forEach((deck, deckKey) => {
             if (deck._id == deckId) {
                 currentDeck = deck;
+                anonymousUser = !(user.email && user.password) ? 'anonymous user' : user._id
             }
         });
     });
@@ -107,7 +108,10 @@ decks.get('/:deckId', async (req, res) => {
     if (currentDeck) {
         await res.json({
             success: true,
-            deck: currentDeck
+            deck: {
+                ...currentDeck._doc,
+                userName: anonymousUser,
+            }
         })
     } else {
         await res.json({
