@@ -9,7 +9,7 @@ export default function loginReducer(state = initialState, action) {
     return produce(state, draft => {
         switch (action.type) {
             case SET_LOGINACTION:
-                draft['username'] = action.payload.username;
+                draft['username'] = action.payload;
                 break;
 
             default:

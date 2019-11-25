@@ -53,7 +53,7 @@ const LoginPageUI = (props) => {
 
 const mapStateToProps = state => {
     return {
-        user: state.login.user,
+        username: state.login.username,
     }
 }
 
