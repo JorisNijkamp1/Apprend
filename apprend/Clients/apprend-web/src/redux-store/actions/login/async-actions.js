@@ -22,9 +22,7 @@ export const userLogin = (username, password) => {
             .then(response => response.json())
             .then(data => {
                 if(data.success){
-                    console.log(data.username);
-                    console.log(data.password);
-                    dispatch(setLoginAction(data))
+                    dispatch(setLoginAction(data.username))
                 }
             }).catch(err => {
             console.log(err);

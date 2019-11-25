@@ -27,7 +27,7 @@ passport.use(new LocalStrategy(
             if (!user) {
                 return done(null, false, {message: 'username-incorrect'});
             }
-            if (password === '1') {
+            if (password !== user.password) {
                 return done(null, false, {message: 'password-incorrect'});
             }
             return done(null, user);
@@ -55,6 +55,7 @@ login.post('/',
 login.get('/success', (req, res) => {
     res.json({
         success: true,
+        username: req.user._id
     });
 });
 
