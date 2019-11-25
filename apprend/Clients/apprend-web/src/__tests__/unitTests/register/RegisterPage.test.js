@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {RegisterPageComponent, usernameValid} from '../components/register/RegisterPage';
+import {RegisterPageComponent, usernameValid} from '../../../components/register/RegisterPage';
 
 test('Component renders without crashing', () => {
     const div = document.createElement('div');

@@ -13,5 +13,6 @@ v1.get('/', (req, res) => {
 
 v1.use('/users/', usersRoute);
 v1.use('/decks/', decksRoute)
+v1.use('/users/', usersRoute)
 
 module.exports = v1

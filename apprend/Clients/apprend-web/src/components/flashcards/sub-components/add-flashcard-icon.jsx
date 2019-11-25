@@ -11,7 +11,7 @@ export const AddFlashcardIcon = (props) => {
                 <FontAwesomeIcon icon={faPlusCircle}
                                  size={"4x"}
                                  color={'#7ad765'}
-                                 className={'hover-shadow'}
+                                 className={'hover-shadow-text'}
                                  onClick={() => props.onClick()}
                 />
             </div>
