@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import * as ReactRedux from "react-redux";
 import {useHistory} from "react-router";
 import {NavLink} from "react-router-dom";
@@ -8,59 +8,48 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Footer} from "../shared/footer/Footer";
 import PlayingCard from "./sub-components/PlayingCard";
-import {API_URL} from "../../redux-store/urls";
-import {setCardsAction, setCorrectCardsAction, setWrongCardsAction} from "../../redux-store/actions/playing/actions";
+import {getCards} from "../../redux-store/actions/playing/async-actions";
+import {setCorrectCardsAction, setWrongCardsAction, setActiveCardAction} from "../../redux-store/actions/playing/actions";
 
 const PlayingComponent = (props) => {
     let history = useHistory();
-    const [card, setCard] = useState({_id: 0, term: "...", definition: "..."});
-    const [score, setScore] = useState({correct: 0, wrong: 0, i: 1});
-
-    const fetchData = () => {
-        fetch(`${API_URL}/decks/Frans woordjes/play`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                props.doSetCardsAction(data.cards);
-                let allCards = shuffleCards(data.cards);
-                setCard({_id: allCards[0].cardId, term: allCards[0].question, definition: allCards[0].answer});
-            }
-        }).catch((err => {
-            console.log("Er gaat iets fout!");
-            console.log(err);
-        }))
-    }
 
     useEffect(() => {
-        fetchData();
+        props.doGetCards()
+        .then(data => {
+            let allCards = shuffleCards(data);
+            props.doSetActiveCardAction(allCards[0]);
+        });
     }, []);
 
-    const shuffleCards = (max) => {
-        let rand, temp, i;
-        for (i = max.length - 1; i > 0; i -= 1) {
-            rand = Math.floor((i + 1) * Math.random());
-            temp = max[rand];
-            max[rand] = max[i];
-            max[i] = temp;
+    const shuffleCards = (array) => {
+        let random;
+        let temp;
+        for (let i = array.length - 1; i > 0; i -= 1) {
+            random = Math.floor((i + 1) * Math.random());
+            temp = array[random];
+            array[random] = array[i];
+            array[i] = temp;
         }
-        return max;
+        return array;
     }
 
     const changeScore = (id, status) => {
+        let i = props.correctCards.length + props.wrongCards.length + 1
         if (status === "correct") {
             props.doSetCorrectCardsAction(id);
-            if (score.i < props.cards.length) {
-                setCard({_id: props.cards[score.i].cardId, term: props.cards[score.i].question, definition: props.cards[score.i].answer});
-                setScore({correct: score.correct += 1, wrong: score.wrong, i: score.i += 1});
+            if (i < props.cards.length) {
+                props.doSetActiveCardAction(props.cards[i]);
             } else {
+                props.doSetActiveCardAction("");
                 history.push("/");
             }
         } else if (status === "wrong") {
             props.doSetWrongCardsAction(id);
-            if (score.i < props.cards.length) {
-                setCard({_id: props.cards[score.i].cardId, term: props.cards[score.i].question, definition: props.cards[score.i].answer});
-                setScore({wrong: score.wrong += 1, correct: score.correct, i: score.i += 1});
+            if (i < props.cards.length) {
+                props.doSetActiveCardAction(props.cards[i]);
             } else {
+                props.doSetActiveCardAction("");
                 history.push("/");
             }
         }
@@ -73,13 +62,16 @@ const PlayingComponent = (props) => {
         <NavLink to="/" className="btn btn-blue">
             Back
         </NavLink>
-        <PlayingCard changeScore={changeScore} id={card._id} front={card.term} back={card.definition}/>
+        <Col className={"text-center"}>
+            <b>Card {props.correctCards.length + props.wrongCards.length + 1} out of {props.cards.length}</b>
+        </Col>
+        <PlayingCard changeScore={changeScore} id={props.activeCard._id} front={props.activeCard.question} back={props.activeCard.answer}/>
         <Row className={"justify-content-between"}>
             <Col lg={{span: 4}} className={"text-center"}>
-                Correct cards: {score.correct}
+                Correct cards: {props.correctCards.length}
             </Col>
             <Col lg={{span: 4}} className={"text-center"}>
-                Wrong cards: {score.wrong}
+                Wrong cards: {props.wrongCards.length}
             </Col>
         </Row>
     </Container>
@@ -90,15 +82,19 @@ const PlayingComponent = (props) => {
 
 const mapStateToProps = state => {
     return {
-        cards: state.playing.cards
+        cards: state.playing.cards,
+        correctCards: state.playing.correctCards,
+        wrongCards: state.playing.wrongCards,
+        activeCard: state.playing.activeCard
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        doSetCardsAction: (cards) => dispatch(setCardsAction(cards)),
+        doGetCards: () => dispatch(getCards()),
         doSetCorrectCardsAction: (cards) => dispatch(setCorrectCardsAction(cards)),
-        doSetWrongCardsAction: (cards) => dispatch(setWrongCardsAction(cards))
+        doSetWrongCardsAction: (cards) => dispatch(setWrongCardsAction(cards)),
+        doSetActiveCardAction: (card) => dispatch(setActiveCardAction(card))
     }
 }
 

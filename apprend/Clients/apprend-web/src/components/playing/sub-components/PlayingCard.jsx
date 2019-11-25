@@ -25,10 +25,10 @@ const PlayingCard = (props) => {
             </Card.Header>
             <div className="card" id="card" onClick={(e) => turnCard(e)}>
                 <Card.Body className={"side"}>
-                    {props.front}
+                    {props.front || "No question"}
                 </Card.Body>
                 <Card.Body className={"side back"}>
-                    {props.back}
+                    {props.back || "No answer"}
                 </Card.Body>
             </div>
         </Card>

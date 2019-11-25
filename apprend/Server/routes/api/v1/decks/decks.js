@@ -88,20 +88,4 @@ decks.post('/', async (req, res) => {
 
 })
 
-decks.get("/:deckName/play", async (req, res) => {
-    let deck = await Decks.find({name: req.params.deckName});
-    const cards = [];
-    deck[0].flashcards.forEach(card => {
-        cards.push({
-            cardId: deck[0]._id,
-            question: card.question,
-            answer: card.answer
-        });
-    });
-    await res.json({
-        success: true,
-        cards: cards,
-    })
-});
-
 module.exports = decks;
