@@ -22,7 +22,10 @@ export const userLogin = (username, password) => {
             .then(response => response.json())
             .then(data => {
                 if(data.success){
+                    console.log('logged in')
                     dispatch(setLoginAction(data.username))
+                }else {
+                    console.log('Wrong username or password')
                 }
             }).catch(err => {
             console.log(err);
