@@ -33,7 +33,7 @@ const UserDecks = (props) => {
             totalFlashcards = props.deck.flashcards.length
         }
         deck = (
-            <Card style={{width: '100%'}}>
+            <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
                 <Card.Body>
                     <Card.Title>{props.deck.name}</Card.Title>
                     <Card.Subtitle>
