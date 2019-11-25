@@ -7,7 +7,7 @@ import {RegisterPage} from './components/RegisterPage';
 import {CreateDeckForm} from './components/CreateDeckForm/CreateDeckForm'
 import Flashcards from "./components/flashcards/add-flashcards";
 import MyDeck from "./components/my-deck/MyDeck";
-
+import {LoginPage} from "./components/LoginPage";
 
 function App() {
     return (
@@ -21,6 +21,9 @@ function App() {
                 </Route>
                 <Route path={"/register"}>
                     <RegisterPage/>
+                </Route>
+                <Route path={"/login"}>
+                    <LoginPage/>
                 </Route>
                 <Route exact path={"/decks/flashcards/add"}>
                     <Flashcards/>
