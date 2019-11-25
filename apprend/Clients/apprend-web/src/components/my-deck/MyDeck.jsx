@@ -4,7 +4,7 @@ import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {Footer} from "../shared/footer/Footer"
 import {getUserDecksAction} from "../../redux-store/actions/decks/async-actions";
 import Card from "react-bootstrap/Card";
@@ -31,8 +31,8 @@ const MyDeck = (props) => {
             </Row>
         )
     } else {
-        userDecks = props.userDecks.decks.map((deck) =>
-            <Card>
+        userDecks = props.userDecks.decks.map((deck, key) =>
+            <Card key={deck.name + key} style={{minWidth: '300px'}}>
                 <Card.Body>
                     <Card.Title>
                         <Row>
@@ -55,7 +55,9 @@ const MyDeck = (props) => {
                     </Card.Text>
                     <Row>
                         <Col xs={{span: 6, offset: 3}}>
-                            <Button variant="outline-primary" className={'w-100'}>View deck</Button>
+                            <Link to={`/decks/${deck._id}`}>
+                                <Button variant="outline-primary" className={'w-100'}>View deck</Button>
+                            </Link>
                         </Col>
                     </Row>
                 </Card.Body>
