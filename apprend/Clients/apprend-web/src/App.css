@@ -81,3 +81,59 @@ h2{
 .hover-shadow-text:hover {
     transform: scale(1.2);
 }
+
+.border {
+  text-align: center;
+  padding: 20px;
+  margin: 10px 300px;
+  border: 10px solid black;
+}
+
+.flipCard {
+  width: 400px;
+  height: 200px;
+  position: relative;
+  margin: 50px auto;
+}
+
+.flipCard .card.flipped {
+  transform: rotatey(-180deg);
+}
+
+.flipCard .card {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: 0.5s;
+}
+
+.flipCard .card .side {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3em;
+  background-color: white;
+  border: 5px solid #7AD765;
+  position: absolute;
+  box-sizing: border-box;
+  z-index: 2;
+  overflow: auto;
+}
+
+.flipCard .card .back {
+  transform: rotatey(-180deg);
+}
+
+.btn-green{
+  background-color: #7AD765;
+}
+
+.btn-red {
+  background-color: red;
+}
+
+.btn-blue {
+  background-color: #758BFE;
+}
