@@ -155,6 +155,30 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
+    
+    const { deckId, cards } = req.body
+    
+    const username = req.session.username ? req.session.username : req.cookies.username
+    if (!username) return res.status(401).json('Not a user)'
+                                               
+    const user = await User.findById(username)
+    const result = await user.setCardsToDeck(deckId, cards)
+    /*
+        
+        schema.method(deckId, cards)
+            this.decks = this.decks.map(deck => {
+                if (deck._id === deckId) deck.flashcards = cards
+                return deck
+            })
+            
+            this.markModified('decks')
+            await this.save()
+            return this
+    
+    */
+    
+    // passende response maken
+   
     const users = await User.find({});
     const flashcards = req.body.flashcards;
 
