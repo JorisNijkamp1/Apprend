@@ -6,19 +6,19 @@ import {PageTitle} from '../shared/PageTitle';
 import {NavigatieBar} from '../shared/navbar/NavigatieBar';
 import {Footer} from '../shared/footer/Footer';
 import {checkUsernameExists} from '../../redux-store/actions/register/async-actions';
+import {
+    emailValid,
+    passwordValid,
+    repeatPasswordValid,
+    usernameValid,
+    registerFormMaySubmit
+} from '../../redux-store/form-validation/validationRules';
 
 export const RegisterPageComponent = props => {
     const [username, setUsername] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [repeatPassword, setRepeatPassword] = useState();
-
-    const formMaySubmit = () => {
-        return usernameValid(username) &&
-            emailValid(email) &&
-            passwordValid(password) &&
-            repeatPasswordValid(password, repeatPassword);
-    };
 
     const handleSubmit = event => {
         event.preventDefault();
@@ -81,7 +81,7 @@ export const RegisterPageComponent = props => {
                                              isValid={repeatPasswordValid(password, repeatPassword)}
                                              required/>
                             </FormGroup>
-                            {(formMaySubmit()) ?
+                            {(registerFormMaySubmit(username, email, password, repeatPassword)) ?
                                 <Button className={'mx-auto'}
                                         variant={'primary'}
                                         type={'submit'}
@@ -100,23 +100,6 @@ export const RegisterPageComponent = props => {
             <Footer/>
         </>
     )
-};
-
-export const usernameValid = username => {
-    const REGEX_USERNAME = /[^A-Za-z0-9]+/g;
-    return username && !username.match(REGEX_USERNAME);
-};
-
-export const emailValid = email => {
-    return email && email.includes('@') && email.includes('.');
-};
-
-export const passwordValid = password => {
-    return !!password;
-};
-
-export const repeatPasswordValid = (password, repeatPassword) => {
-    return repeatPassword && password && password === repeatPassword;
 };
 
 const mapStateToProps = state => {

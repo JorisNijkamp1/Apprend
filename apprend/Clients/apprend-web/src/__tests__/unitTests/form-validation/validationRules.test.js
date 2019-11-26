@@ -1,15 +1,9 @@
 import {
     emailValid,
-    passwordValid,
+    passwordValid, registerFormMaySubmit,
     repeatPasswordValid,
     usernameValid
-} from '../../../components/register/RegisterPage';
-
-// test('Component renders without crashing', () => {
-//     const div = document.createElement('div');
-//     ReactDOM.render(<RegisterPageComponent/>, div);
-//     ReactDOM.unmountComponentAtNode(div);
-// });
+} from '../../../redux-store/form-validation/validationRules';
 
 test('Username should be valid', () => {
     const expected = true;
@@ -65,6 +59,28 @@ test('Repeat password is not same as password', () => {
     const password = 'Admin123#';
     const repeatPassword = 'Test456$';
     const result = repeatPasswordValid(password, repeatPassword);
+
+    expect(expected).toBe(result);
+});
+
+test('Register form may submit', () => {
+    const expected = true;
+    const username = 'Senkuu';
+    const email = 'test@gmail.com';
+    const password = 'Admin123#';
+    const repeatPassword = 'Admin123#';
+    const result = registerFormMaySubmit(username, email, password, repeatPassword);
+
+    expect(expected).toBe(result);
+});
+
+test('Register form may not submit', () => {
+    const expected = false;
+    const username = 'Senkuu#$';
+    const email = 'testgmail.com';
+    const password = 'Admin123#';
+    const repeatPassword = 'Test456$';
+    const result = repeatPasswordValid(username, email, password, repeatPassword);
 
     expect(expected).toBe(result);
 });
