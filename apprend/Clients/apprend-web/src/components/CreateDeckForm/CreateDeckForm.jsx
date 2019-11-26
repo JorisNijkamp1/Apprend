@@ -14,7 +14,7 @@ import { Footer } from '../shared/footer/Footer';
 
 const CreateDeckFormComponent = (props) => {
 
-    let history = useHistory()
+    const history = useHistory()
 
     const showDeckNameOrThis = (text) => props.deckName ? <b>'{props.deckName}'</b> : text
 
@@ -27,12 +27,16 @@ const CreateDeckFormComponent = (props) => {
             }
             const response = await props.createNewDeck(deck)
             let deckId;
-            if (response.decks){
-                deckId = response.decks[0]._id.toString()
+            if (response){
+                if (response.decks){
+                    deckId = response.decks[0]._id.toString()
+                } else {
+                    deckId = response._id.toString()
+                }
+                history.push(`/decks/${deckId}/cards/`)
             } else {
-                deckId = response._id.toString()
+                throw Error('No response')
             }
-            history.push(`/decks/${deckId}/cards/`)
         } catch (e) {
             console.log(e)
         }

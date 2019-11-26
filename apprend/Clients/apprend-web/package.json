@@ -11,6 +11,7 @@
     "bootstrap": "^4.3.1",
     "immer": "^5.0.0",
     "jest": "^24.9.0",
+    "mongoose": "^5.7.12",
     "puppeteer": "^2.0.0",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.15",

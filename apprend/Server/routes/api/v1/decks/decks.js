@@ -5,7 +5,9 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 require('../../../../database/models/deck');
 const Decks = mongoose.model('Deck');
-const User = require('../../../../database/models/user')
+const UserSchema = require('../../../../database/models/user')
+require('../../../../database/models/user')
+const User = mongoose.model('User')
 
 decks.get('/', (req, res) => {
     res.json(
@@ -71,7 +73,7 @@ decks.post('/', async (req, res) => {
                 return
             }
         }
-        
+        console.log(response)
         res.status(201).json(response)
 
     } catch (e) {
