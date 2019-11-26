@@ -40,3 +40,32 @@ export const getDeckFlashcardsAction = (deckId) => {
         }
     }
 };
+
+export const editDeckFlashcardsAction = (deckId, flashcards) => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/${deckId}/flashcards`;
+        let data = {
+            flashcards: flashcards,
+        };
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        const response = await fetch(url, options);
+        const result = await response.json();
+        if (result.success) {
+            setTimeout(function () {
+                console.log(result)
+            }, 750);
+        }else if (!result.flashcards) {
+            setTimeout(function () {
+                console.log(result)
+            }, 750);
+        }
+    }
+};
