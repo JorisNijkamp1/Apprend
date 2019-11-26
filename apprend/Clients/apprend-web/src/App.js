@@ -9,6 +9,9 @@ import Flashcards from "./components/flashcards/add-flashcards";
 import {PlayingDeck} from "./components/playing/PlayingDeck";
 import MyDeck from "./components/my-deck/MyDeck";
 import {LoginPage} from "./components/LoginPage";
+import UserDecks from "./components/user-decks/UserDecks";
+import Deck from "./components/user-decks/Deck";
+
 
 function App() {
     return (
@@ -29,8 +32,14 @@ function App() {
                 <Route exact path={"/decks/flashcards/add"}>
                     <Flashcards/>
                 </Route>
+                <Route exact path={"/decks/:deckId/flashcards"}>
+                    <Flashcards/>
+                </Route>
+                <Route path={"/decks/:deckId"}>
+                    <Deck/>
+                </Route>
                 <Route exact path={"/:username/decks"}>
-                    <MyDeck/>
+                    <UserDecks/>
                 </Route>
                 <Route path={"/play"}>
                     <PlayingDeck/>

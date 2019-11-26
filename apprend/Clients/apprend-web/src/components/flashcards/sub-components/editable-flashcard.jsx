@@ -8,14 +8,17 @@ import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import {changeDeckFlashcards} from "../../../redux-store/actions/flashcards/actions";
 
 const EditableFlashcard = (props) => {
-    const [flashcardTerm, setFlashcardTerm] = useState(null);
-    const [flashcardDefinition, setFlashcardDefinition] = useState(null);
-    const flashcardName = !(flashcardTerm) ? 'New Flashcard' : flashcardTerm;
+    const [flashcardTerm, setFlashcardTerm] = useState('');
+    const [flashcardTermEdited, setFlashcardTermEdited] = useState(false);
+
+    const [flashcardDefinition, setFlashcardDefinition] = useState('');
+    const [flashcardDefinitionEdited, setFlashcardDefinitionEdited] = useState(false);
+    const flashcardName = (flashcardTerm === '' && !props.term) ? 'Empty flashcard' : ((props.term && !flashcardTermEdited) ? props.term : flashcardTerm);
 
     const flashcardData = {
         id: props.flashcardId,
-        term: flashcardTerm,
-        definition: flashcardDefinition,
+        term: (props.term && !flashcardTermEdited) ? props.term : flashcardTerm,
+        definition: (props.definition && !flashcardDefinitionEdited) ? props.definition : flashcardDefinition,
     };
 
     let deckFlashcards = props.deckFlashcards;
@@ -34,17 +37,26 @@ const EditableFlashcard = (props) => {
         props.changeDeckFlashcards(deckFlashcards)
     };
 
+    let flashcardDeleteIcon;
+    if (props.deckFlashcards.length > 1) {
+        flashcardDeleteIcon = (
+            <FontAwesomeIcon icon={faTrash}
+                             className={'trash-icon'}
+                             onClick={() => deleteFlashcard(props.flashcardId)}
+            />
+        )
+    }
+
     return (
         <>
             <Col xs={12} md={6} lg={4}>
-                <Card border={(flashcardData.term && flashcardData.definition) ? 'success' : 'danger'} className={'mb-4 hover-shadow-editable-flashcard'}>
+                <Card border={(flashcardData.term && flashcardData.definition) ? 'success' : 'danger'}
+                      className={'mb-4 hover-shadow-editable-flashcard'}
+                      text={'dark'}>
                     <Card.Header className={"text-center"}>
                         <b>{flashcardName}</b>
                         <span className={"float-right"}>
-                        <FontAwesomeIcon icon={faTrash}
-                                         className={'trash-icon'}
-                                         onClick={() => deleteFlashcard(props.flashcardId)}
-                        />
+                            {flashcardDeleteIcon}
                     </span>
                     </Card.Header>
                     <Card.Body>
@@ -52,7 +64,12 @@ const EditableFlashcard = (props) => {
                             <Form.Label>Term</Form.Label>
                             <Form.Control type="text"
                                           placeholder="Pets"
-                                          onChange={(e) => setFlashcardTerm(e.target.value)}
+                                          onChange={(e) => {
+                                              setFlashcardTerm(e.target.value);
+                                              setFlashcardTermEdited(true);
+                                          }}
+                                          value={flashcardData.term}
+                                          isValid={(flashcardData.term !== null && flashcardData.term !== '')}
                             />
                             <Form.Text className="text-muted">
                                 Vul hier de term in waarvan je de definitie wilt leren.
@@ -61,8 +78,12 @@ const EditableFlashcard = (props) => {
                             <Form.Label>Definition</Form.Label>
                             <Form.Control type="text"
                                           placeholder="Haustiere"
-                                          onChange={(e) => setFlashcardDefinition(e.target.value)}
-                                // onBlur={() => props.changeDeckFlashcards(flashcardData)}
+                                          onChange={(e) => {
+                                              setFlashcardDefinition(e.target.value);
+                                              setFlashcardDefinitionEdited(true);
+                                          }}
+                                          value={flashcardData.definition}
+                                          isValid={(flashcardData.definition !== null && flashcardData.definition !== '')}
                             />
                             <Form.Text className="text-muted">
                                 Enter the definition of the term entered above.

@@ -85,7 +85,108 @@ decks.post('/', async (req, res) => {
         console.log(e)
         res.status(500).json('Something went horribly wrong...Try again?')
     }
+});
 
-})
+/*====================================
+| GET A SPECIFIC DECK
+*/
+decks.get('/:deckId', async (req, res) => {
+    const users = await User.find({});
+    const deckId = req.params.deckId;
+
+    let currentDeck, anonymousUser;
+    users.forEach((user, userKey) => {
+        users[userKey].decks.forEach((deck, deckKey) => {
+            if (deck._id == deckId) {
+                currentDeck = deck;
+                anonymousUser = !(user.email && user.password) ? 'anonymous user' : user._id
+            }
+        });
+    });
+
+    if (currentDeck) {
+        await res.json({
+            success: true,
+            deck: {
+                ...currentDeck._doc,
+                userName: anonymousUser,
+            }
+        })
+    } else {
+        await res.json({
+            success: false,
+        })
+    }
+});
+
+
+/*====================================
+| GET ALL FLASHCARDS FROM A DECK
+*/
+decks.get('/:deckId/flashcards', async (req, res) => {
+    const users = await User.find({});
+    const deckId = req.params.deckId;
+
+    let currentDeck;
+    users.forEach((user, userKey) => {
+        users[userKey].decks.forEach((deck, deckKey) => {
+            if (deck._id == deckId) {
+                currentDeck = deck;
+            }
+        });
+    });
+
+    if (currentDeck) {
+        await res.json({
+            success: true,
+            deckId: currentDeck._id,
+            name: currentDeck.name,
+            flashcards: currentDeck.flashcards,
+
+        })
+    } else {
+        await res.json({
+            success: false,
+        })
+    }
+});
+
+/*====================================
+| EDIT FLASHCARDS OF A DECK
+*/
+decks.post('/:deckId/flashcards', async (req, res) => {
+    
+    const { deckId, cards } = req.body
+    
+    const username = req.session.username ? req.session.username : req.cookies.username
+    if (!username) return res.status(401).json('Not a user)'
+                                               
+    const user = await User.findById(username)
+    const result = await user.setCardsToDeck(deckId, cards)
+    /*
+        
+        schema.method(deckId, cards)
+            this.decks = this.decks.map(deck => {
+                if (deck._id === deckId) deck.flashcards = cards
+                return deck
+            })
+            
+            this.markModified('decks')
+            await this.save()
+            return this
+    
+    */
+    
+    // passende response maken
+   
+    const users = await User.find({});
+    const flashcards = req.body.flashcards;
+
+    console.log(flashcards);
+
+    await res.json({
+        success: true,
+    })
+});
 
 module.exports = decks;
