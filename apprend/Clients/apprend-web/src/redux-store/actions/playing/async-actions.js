@@ -1,9 +1,10 @@
-import {API_URL} from '../../urls'
-import {setHomepageDecksAction} from "./actions";
+import {API_URL} from '../../urls';
+import {setCardsAction} from "./actions";
 
-export const getHomepageDecks = () => {
+export const getCards = () => {
     return async dispatch => {
-        const url = `${API_URL}/decks/home`;
+        //const url = `${API_URL}/users/` + username + `/decks/` + deckName;
+        const url = `${API_URL}/users/Joris/decks/Frans woordjes`;
         const options = {
             method: 'GET',
             headers: {
@@ -12,11 +13,12 @@ export const getHomepageDecks = () => {
             credentials: 'include',
             mode: 'cors'
         };
-        fetch(url, options)
+        return fetch(url, options)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    dispatch(setHomepageDecksAction(data.homeDecks));
+                    dispatch(setCardsAction(data.cards));
+                    return data.cards;
                 }
             }).catch((err => {
             console.log("Er gaat iets goed fout!");

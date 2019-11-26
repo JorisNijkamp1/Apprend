@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 
+jest.setTimeout(30000)
+
 describe(`Home`, () => {
     let browser, page;
 
@@ -25,14 +27,19 @@ describe(`Home`, () => {
 
     test(`Go to create deck`, async () => {
         await page.goto(`http://localhost:3000/decks/create`)
-        await page.type(`input#create-deck-form-deckname`, `Nederlands woordjes`)
-        await page.waitFor(`titel`);
-        await page.type(`textarea#create-deck-form-description`, `Het allermooiste deck van Nederland!`)
-        // const createDeckButton = await page.$(`form[createDeck] button`);
-        // expect(createDeckButton).toBeDefined()
-        // await createDeckButton.click()
-        // const theTitle = await page.title();
-        // expect(theTitle).toBe(`React App`)
+    })
+
+    test(`Fill deck name`, async () => {
+        await page.type(`input#create-deck-form-deckname`, `Nederlands woordjes`, {delay: 15});
+    })
+    test(`Fill deck description`, async () => {
+        await page.type(`textarea#create-deck-form-description`, `Gaaf deck`, {delay: 15})
+    })
+
+    test(`Go to create flashcards`, async () => {
+        const loginButton = await page.$(`form[name="create-deck"] button`)
+        expect(loginButton).toBeDefined()
+        await loginButton.click()
     })
 })
 
