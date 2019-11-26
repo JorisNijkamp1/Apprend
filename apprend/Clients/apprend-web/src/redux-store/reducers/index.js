@@ -13,6 +13,6 @@ export const allReducers = combineReducers({
     flashcards: flashcards,
     decks: decksReducer,
     register: registerReducer,
-    playing: playingReducer
+    playing: playingReducer,
     login: loginReducer,
 })
