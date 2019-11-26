@@ -5,6 +5,7 @@ import flashcards from "./flashcards";
 import decksReducer from './decks-reducer'
 import registerReducer from './register-reducer';
 import loginReducer from "./login-reducer";
+import playingReducer from './playing';
 
 export const allReducers = combineReducers({
     client: clientReducer,
@@ -12,5 +13,6 @@ export const allReducers = combineReducers({
     flashcards: flashcards,
     decks: decksReducer,
     register: registerReducer,
+    playing: playingReducer
     login: loginReducer,
 })

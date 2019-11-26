@@ -10,6 +10,9 @@ const flashcardSchema = new mongoose.Schema({
     },
     question: {
         type: String,
+    },
+    answer: {
+        type: String,
     }
 });
 
