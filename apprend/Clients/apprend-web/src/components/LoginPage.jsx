@@ -36,7 +36,7 @@ const LoginPageUI = (props) => {
                 <Row>
                     <Col xs={{'span': 10, 'offset': 1}} md={{'span': 6, 'offset': 3}}>
                         <h3 className={'text-center'}>Login with your account</h3>
-                        <Form onSubmit={handleSubmit}>
+                        <Form name={"login"} onSubmit={handleSubmit}>
                             <FormGroup>
                                 <FormLabel column={false}>Username</FormLabel>
                                 <FormControl placeholder={'johndoe'}
