@@ -1,10 +1,9 @@
 import {API_URL} from '../../urls';
 import {setCardsAction} from "./actions";
 
-export const getCards = () => {
+export const getCards = (username, deckName) => {
     return async dispatch => {
-        //const url = `${API_URL}/users/` + username + `/decks/` + deckName;
-        const url = `${API_URL}/users/Joris/decks/Frans woordjes`;
+        const url = `${API_URL}/users/` + username + `/decks/` + deckName;
         const options = {
             method: 'GET',
             headers: {

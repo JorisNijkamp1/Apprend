@@ -68,4 +68,27 @@ users.get('/:id/_id', async (req, res) => {
     }
 });
 
+/*=================================================
+| GET ALL CARDS FROM A DECK WHICH BELONGS TO A USER
+*/
+users.get('/:username/decks/:deckName', async (req, res) => {
+    await Users.findOne({ _id: req.params.username }, function (err, user) {
+        if (user) {
+            user.decks.forEach((deck) => {
+                if (deck.name === req.params.deckName) {
+                    return res.json({
+                        success: true,
+                        cards: deck.flashcards
+                    })
+                }
+            })
+        } else {
+            return res.json({
+                success: false,
+                error: "User doesn't exist"
+            })
+        }
+    });
+});
+
 module.exports = users;

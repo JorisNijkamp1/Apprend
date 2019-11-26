@@ -3,11 +3,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import {Switch, Route} from "react-router-dom"
 import {Homepage} from "./components/home/Homepage";
-import {RegisterPage} from "./components/RegisterPage";
+import {RegisterPage} from "./components/register/RegisterPage";
 import {CreateDeckForm} from "./components/CreateDeckForm/CreateDeckForm"
 import Flashcards from "./components/flashcards/add-flashcards";
 import {PlayingDeck} from "./components/playing/PlayingDeck";
 import MyDeck from "./components/my-deck/MyDeck";
+import {PlayingScore} from "./components/playing/sub-components/PlayingScore";
 
 function App() {
     return (
@@ -30,6 +31,9 @@ function App() {
                 </Route>
                 <Route path={"/play"}>
                     <PlayingDeck/>
+                </Route>
+                <Route path={"/score"}>
+                    <PlayingScore/>
                 </Route>
             </Switch>
         </div>

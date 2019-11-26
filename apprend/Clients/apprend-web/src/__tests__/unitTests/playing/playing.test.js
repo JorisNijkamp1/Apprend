@@ -20,38 +20,46 @@ const changeScore = (status) => {
     }
 }
 
-let array;
-let correct;
-let wrong;
+describe(`Updating score`, () => {
+    let array;
 
-beforeEach(async () => {
-    array = [1, 2, 3, 4, 5];
-    correct = 0;
-    wrong = 0;
-});
-
-test('Shuffle cards array', async () => {
-    const result = await shuffleCards(array);
+    beforeEach(async () => {
+        array = [1, 2, 3, 4, 5];
+    });
     
-    console.log(result)
+    test('Shuffle cards array', async () => {
+        const result = await shuffleCards(array);
+        
+        console.log(result)
+    });
 });
 
-test('Updating correct score', async () => {
-    const result = await changeScore('correct');
+describe(`Updating score`, () => {
+    let correct;
+    let wrong;
 
-    expect(result).toEqual(1);
-});
+    beforeEach(async () => {
+        correct = 0;
+        wrong = 0;
+    });
 
-test('Updating wrong score', async () => {
-    const result = await changeScore('wrong');
+    test('Updating correct score', async () => {
+        const result = await changeScore('correct');
 
-    expect(result).toEqual(1);
-});
+        expect(result).toEqual(1);
+    });
 
-test('Updating both scores', async () => {
-    await changeScore('correct');
-    await changeScore('wrong');
-    await changeScore('correct');
-
-    expect(correct).toEqual(2) && expect(wrong).toEqual(1);
+    test('Updating wrong score', async () => {
+        const result = await changeScore('wrong');
+    
+        expect(result).toEqual(1);
+    });
+    
+    test('Updating both scores', async () => {
+        await changeScore('correct');
+        await changeScore('wrong');
+        await changeScore('correct');
+    
+        expect(correct).toEqual(2) && expect(wrong).toEqual(1);
+    });
 });

@@ -3,19 +3,17 @@ import * as ReactRedux from "react-redux";
 import {useHistory} from "react-router";
 import {NavLink} from "react-router-dom";
 import {NavigatieBar} from "../shared/navbar/NavigatieBar";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import {Container, Row, Col} from "react-bootstrap";
 import {Footer} from "../shared/footer/Footer";
 import PlayingCard from "./sub-components/PlayingCard";
 import {getCards} from "../../redux-store/actions/playing/async-actions";
 import {setCorrectCardsAction, setWrongCardsAction, setActiveCardAction} from "../../redux-store/actions/playing/actions";
 
 const PlayingComponent = (props) => {
-    let history = useHistory();
+    const history = useHistory();
 
     useEffect(() => {
-        props.doGetCards()
+        props.doGetCards("Joris", "Engelse woordjes")
         .then(data => {
             let allCards = shuffleCards(data);
             props.doSetActiveCardAction(allCards[0]);
@@ -42,7 +40,7 @@ const PlayingComponent = (props) => {
                 props.doSetActiveCardAction(props.cards[i]);
             } else {
                 props.doSetActiveCardAction("");
-                history.push("/");
+                history.push("/score");
             }
         } else if (status === "wrong") {
             props.doSetWrongCardsAction(id);
@@ -50,7 +48,7 @@ const PlayingComponent = (props) => {
                 props.doSetActiveCardAction(props.cards[i]);
             } else {
                 props.doSetActiveCardAction("");
-                history.push("/");
+                history.push("/score");
             }
         }
     }
@@ -91,7 +89,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        doGetCards: () => dispatch(getCards()),
+        doGetCards: (username, deckName) => dispatch(getCards(username, deckName)),
         doSetCorrectCardsAction: (cards) => dispatch(setCorrectCardsAction(cards)),
         doSetWrongCardsAction: (cards) => dispatch(setWrongCardsAction(cards)),
         doSetActiveCardAction: (card) => dispatch(setActiveCardAction(card))
