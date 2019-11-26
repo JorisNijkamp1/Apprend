@@ -62,6 +62,7 @@ login.get('/success', (req, res) => {
 login.get('/error', (req, res) => {
     res.json({
         success: false,
+        username: ''
     });
 });
 

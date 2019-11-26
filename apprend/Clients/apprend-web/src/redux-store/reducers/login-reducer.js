@@ -3,6 +3,7 @@ import produce from "immer";
 
 const initialState = {
     username: null,
+    message: null,
 };
 
 export default function loginReducer(state = initialState, action) {

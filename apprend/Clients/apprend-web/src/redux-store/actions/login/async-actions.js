@@ -1,6 +1,7 @@
 import {API_URL} from "../../urls";
 import {setLoginAction} from './actions.js'
 
+
 export const userLogin = (username, password) => {
     return async dispatch => {
         const url = `${API_URL}/login`;
@@ -18,18 +19,20 @@ export const userLogin = (username, password) => {
             mode: 'cors'
         };
 
-        fetch(url, options)
+        return fetch(url, options)
             .then(response => response.json())
             .then(data => {
-                if(data.success){
-                    console.log('logged in')
+                if (data.success) {
+                    console.log('logged in');
                     dispatch(setLoginAction(data.username))
-                }else {
+                    return true
+                } else {
                     console.log('Wrong username or password')
+                    return false
                 }
             }).catch(err => {
-            console.log(err);
-            console.log("Er gaat iets fout met inloggen")
-        })
+                console.log(err);
+                console.log("Er gaat iets fout met inloggen")
+            })
     }
 };

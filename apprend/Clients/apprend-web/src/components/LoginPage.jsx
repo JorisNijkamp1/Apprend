@@ -5,15 +5,31 @@ import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel} from "r
 import Row from "react-bootstrap/Row";
 import {Footer} from "./shared/footer/Footer";
 import {userLogin} from "../redux-store/actions/login/async-actions";
+import {useHistory} from 'react-router'
 
 const LoginPageUI = (props) => {
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
+    const history = useHistory();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        props.userLogin(username, password);
+        const result = await props.userLogin(username, password);
+        if (result) {
+            history.push('/');
+        } else {
+
+        }
     };
+
+    const wrongData = () => {
+        if (props.message === 'Your login data seems to be wrong.... 😢') {
+            return props.message;
+        } else {
+            return null
+        }
+    };
+
 
     return (
         <>
@@ -39,6 +55,7 @@ const LoginPageUI = (props) => {
                                              required
                                              onChange={(e) => setPassword(e.target.value)}/>
                             </FormGroup>
+                            {wrongData()}
                             <Button variant={'primary'}
                                     type={'submit'}
                                     id={'loginSubmitButton'}>Login</Button>
@@ -53,7 +70,7 @@ const LoginPageUI = (props) => {
 
 const mapStateToProps = state => {
     return {
-        username: state.login.username,
+        username: state.login.username
     }
 }
 

@@ -48,7 +48,7 @@ const NavbarUI = (props) => {
 
 function mapStateToProps(state) {
     return {
-        username: state.login.username,
+        username: state.login.username
     }
 }
 
