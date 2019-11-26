@@ -11,25 +11,23 @@ const LoginPageUI = (props) => {
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
     const history = useHistory();
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const result = await props.userLogin(username, password);
-        if (result) {
+        if (result === 'success') {
             history.push('/');
         } else {
-
+            setErrorMessage(result)
         }
     };
 
-    const wrongData = () => {
-        if (props.message === 'Your login data seems to be wrong.... 😢') {
-            return props.message;
-        } else {
-            return null
-        }
-    };
-
+    const dataValidation = () => {
+        return (
+            <FormLabel column={false}>{errorMessage}</FormLabel>
+        )
+    }
 
     return (
         <>
@@ -55,8 +53,8 @@ const LoginPageUI = (props) => {
                                              required
                                              onChange={(e) => setPassword(e.target.value)}/>
                             </FormGroup>
-                            {wrongData()}
-                            <Button variant={'primary'}
+                            <FormLabel className={"text-danger w-100"} column={false}>{errorMessage}</FormLabel>
+                            <Button className={"bg-blue text-white hover-shadow"}
                                     type={'submit'}
                                     id={'loginSubmitButton'}>Login</Button>
                         </Form>
