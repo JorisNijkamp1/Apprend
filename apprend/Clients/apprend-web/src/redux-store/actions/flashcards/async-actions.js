@@ -1,5 +1,6 @@
 import {API_URL} from "../../urls";
 import {changeDeckFlashcards, setIsLoading} from "../flashcards/actions";
+import {setDeckDataAction} from "../decks/actions";
 
 export const getDeckFlashcardsAction = (deckId) => {
     return async dispatch => {
@@ -25,8 +26,11 @@ export const getDeckFlashcardsAction = (deckId) => {
                         definition: flashcard.answer
                     })
                 });
-
                 dispatch(changeDeckFlashcards(flashcards));
+                dispatch(setDeckDataAction({
+                    deckId: data.deckId,
+                    deckName: data.name
+                }));
                 dispatch(setIsLoading(false))
             }, 750);
         }else if (!data.flashcards) {

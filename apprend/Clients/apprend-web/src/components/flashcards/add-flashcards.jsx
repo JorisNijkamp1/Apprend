@@ -4,7 +4,8 @@ import {useParams} from "react-router-dom";
 import {
     Container,
     Card,
-    Row
+    Row,
+    Button
 } from "react-bootstrap";
 import EditableFlashcard from "./sub-components/editable-flashcard";
 import {changeDeckFlashcards} from "../../redux-store/actions/flashcards/actions";
@@ -62,9 +63,12 @@ const Flashcards = (props) => {
         <>
             <NavigatieBar/>
             <Container className={"py-5"}>
-                <Card bg={'dark'} className={'pt-3'} text={'white'}>
-                    <Card.Header>
-                        <Card.Title>Deckname</Card.Title>
+                <Card style={{backgroundColor: "#EEEEEE"}} className={'pt-3'} text={'dark'}>
+                    <Card.Header  style={{backgroundColor: "#EEEEEE"}}>
+                        <Card.Title>
+                            {props.deckData.deckName}
+                            <Button className={'float-right'}>Save deck</Button>
+                        </Card.Title>
                     </Card.Header>
                     <Card.Body>
                         {loader}
@@ -83,6 +87,7 @@ const Flashcards = (props) => {
 const mapStateToProps = state => {
     return {
         deckFlashcards: state.flashcards.deckFlashcards,
+        deckData: state.decks.deckData,
         isLoading: state.flashcards.isLoading,
     }
 };
