@@ -1,9 +1,9 @@
 import {API_URL} from '../../urls';
 import {setRegisterSuccess, setUsernameExists, setEmailExists, errorOccurred} from '../register/actions';
 
-export const registerNewUser = function () {
+export const registerNewUser = function (username, email, password) {
     return async dispatch => {
-        const url = `${API_URL}/users/`;
+        const url = `${API_URL}/users`;
 
         const options = {
             method: 'POST',
@@ -12,8 +12,10 @@ export const registerNewUser = function () {
             },
             credentials: 'include',
             mode: 'cors',
-            body: JSON.parse({
-
+            body: JSON.stringify({
+                'username': username,
+                'email': email,
+                'password': password
             })
         };
 
@@ -22,6 +24,12 @@ export const registerNewUser = function () {
         }).then(results => {
             if (results.success) {
                 dispatch(setRegisterSuccess(true));
+            } else {
+                if (results.error !== undefined) {
+                    dispatch(errorOccurred(results.error));
+                } else {
+                    dispatch(errorOccurred('Something went wrong, please try again.'));
+                }
             }
         }).catch(error => {
             dispatch(errorOccurred('Something went wrong, please try again.'));
