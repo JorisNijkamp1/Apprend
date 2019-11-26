@@ -25,10 +25,10 @@ export const userLogin = (username, password) => {
                 if (data.success) {
                     console.log('logged in');
                     dispatch(setLoginAction(data.username))
-                    return true
+                    return 'success'
                 } else {
                     console.log('Wrong username or password')
-                    return false
+                    return 'Wrong username or password'
                 }
             }).catch(err => {
                 console.log(err);
