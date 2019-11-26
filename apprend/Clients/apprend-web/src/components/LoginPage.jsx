@@ -18,7 +18,7 @@ const LoginPageUI = (props) => {
         if (result) {
             history.push('/');
         } else {
-            
+
         }
     };
 
