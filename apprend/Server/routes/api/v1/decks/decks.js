@@ -85,7 +85,70 @@ decks.post('/', async (req, res) => {
         console.log(e)
         res.status(500).json('Something went horribly wrong...Try again?')
     }
+});
 
-})
+/*====================================
+| GET A SPECIFIC DECK
+*/
+decks.get('/:deckId', async (req, res) => {
+    const users = await User.find({});
+    const deckId = req.params.deckId;
+
+    let currentDeck, anonymousUser;
+    users.forEach((user, userKey) => {
+        users[userKey].decks.forEach((deck, deckKey) => {
+            if (deck._id == deckId) {
+                currentDeck = deck;
+                anonymousUser = !(user.email && user.password) ? 'anonymous user' : user._id
+            }
+        });
+    });
+
+    if (currentDeck) {
+        await res.json({
+            success: true,
+            deck: {
+                ...currentDeck._doc,
+                userName: anonymousUser,
+            }
+        })
+    } else {
+        await res.json({
+            success: false,
+        })
+    }
+});
+
+
+/*====================================
+| GET ALL FLASHCARDS FROM A DECK
+*/
+decks.get('/:deckId/flashcards', async (req, res) => {
+    const users = await User.find({});
+    const deckId = req.params.deckId;
+
+    let currentDeck;
+    users.forEach((user, userKey) => {
+        users[userKey].decks.forEach((deck, deckKey) => {
+            if (deck._id == deckId) {
+                currentDeck = deck;
+            }
+        });
+    });
+
+    if (currentDeck) {
+        await res.json({
+            success: true,
+            deckId: currentDeck._id,
+            name: currentDeck.name,
+            flashcards: currentDeck.flashcards,
+
+        })
+    } else {
+        await res.json({
+            success: false,
+        })
+    }
+});
 
 module.exports = decks;
