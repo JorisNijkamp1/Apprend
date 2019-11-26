@@ -7,11 +7,9 @@ import {RegisterPage} from './components/register/RegisterPage';
 import {CreateDeckForm} from './components/CreateDeckForm/CreateDeckForm'
 import Flashcards from "./components/flashcards/add-flashcards";
 import {PlayingDeck} from "./components/playing/PlayingDeck";
-import MyDeck from "./components/my-deck/MyDeck";
 import {LoginPage} from "./components/LoginPage";
 import UserDecks from "./components/user-decks/UserDecks";
 import Deck from "./components/user-decks/Deck";
-
 
 function App() {
     return (

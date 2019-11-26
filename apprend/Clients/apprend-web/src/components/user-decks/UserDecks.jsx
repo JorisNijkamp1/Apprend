@@ -32,7 +32,7 @@ const Deck = (props) => {
         )
     } else {
         userDecks = props.userDecks.decks.map((deck, key) =>
-            <Card key={deck.name + key} style={{minWidth: '300px'}}>
+            <Card key={deck.name + key} style={{minWidth: '300px'}} id={'card-' + key}>
                 <Card.Body>
                     <Card.Title>
                         <Row>
@@ -56,7 +56,7 @@ const Deck = (props) => {
                     <Row>
                         <Col xs={{span: 6, offset: 3}}>
                             <Link to={`/decks/${deck._id}`}>
-                                <Button variant="outline-primary" className={'w-100'}>View deck</Button>
+                                <Button variant="outline-primary" className={'w-100'} id={'card-' + key + '-link'}>View deck</Button>
                             </Link>
                         </Col>
                     </Row>
