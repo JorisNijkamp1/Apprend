@@ -14,7 +14,13 @@ const gameSchema = new mongoose.Schema({
     },
     activeCard: {
         type: [{type: Flashcard}],
-    }
+    },
+    correctCards: {
+        type: [{type: Flashcard}],
+    },
+    wrongCards: {
+        type: [{type: Flashcard}],
+    },
 });
 
 //Create model

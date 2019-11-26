@@ -35,14 +35,14 @@ function App() {
                 <Route exact path={"/decks/:deckId/flashcards"}>
                     <Flashcards/>
                 </Route>
+                <Route path={"/decks/:deckId/play"}>
+                    <PlayingDeck/>
+                </Route>
                 <Route path={"/decks/:deckId"}>
                     <Deck/>
                 </Route>
                 <Route exact path={"/:username/decks"}>
                     <UserDecks/>
-                </Route>
-                <Route path={"/play"}>
-                    <PlayingDeck/>
                 </Route>
                 <Route path={"/score"}>
                     <PlayingScore/>

@@ -19,7 +19,7 @@ describe(`Playing`, () => {
   });
 
   test(`Page loads in the browser`, async () => {
-    await page.goto(`http://localhost:3000/play`)
+    await page.goto(`http://localhost:3000/decks/5ddba5d19fcdae4fd8149667/play`)
   	await page.waitFor(`title`)
     const title = await page.title()
   	expect(title).toBe(`React App`)

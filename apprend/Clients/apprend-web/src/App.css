@@ -137,3 +137,9 @@ h2{
 .btn-blue {
   background-color: #758BFE;
 }
+
+progress[value] {
+  appearance: none;
+  border: none;
+  width: 50%; height: 20px;
+}

@@ -1,23 +1,25 @@
 import React, {useEffect} from "react";
 import * as ReactRedux from "react-redux";
 import {useHistory} from "react-router";
-import {NavLink} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import {NavigatieBar} from "../shared/navbar/NavigatieBar";
-import {Container, Row, Col} from "react-bootstrap";
 import {Footer} from "../shared/footer/Footer";
+import {Container, Row, Col} from "react-bootstrap";
 import PlayingCard from "./sub-components/PlayingCard";
-import {getCards} from "../../redux-store/actions/playing/async-actions";
-import {setCorrectCardsAction, setWrongCardsAction, setActiveCardAction} from "../../redux-store/actions/playing/actions";
+import {getDeck} from "../../redux-store/actions/playing/async-actions";
+import {setCorrectCardsAction, setWrongCardsAction, setActiveCardAction, resetStateAction} from "../../redux-store/actions/playing/actions";
 
 const PlayingComponent = (props) => {
     const history = useHistory();
+    const {deckId} = useParams();
 
     useEffect(() => {
-        props.doGetCards("Joris", "Engelse woordjes")
-        .then(data => {
-            let allCards = shuffleCards(data);
+        props.doResetStateAction();
+        props.doGetDeck(deckId)
+        .then(response => {
+            let allCards = shuffleCards(response.flashcards);
             props.doSetActiveCardAction(allCards[0]);
-        });
+        })
     }, []);
 
     const shuffleCards = (array) => {
@@ -57,10 +59,13 @@ const PlayingComponent = (props) => {
     <>
     <NavigatieBar/>
     <Container>
-        <NavLink to="/" className="btn btn-blue">
+        <NavLink to={`/decks/${deckId}`} className="btn btn-blue">
             Back
         </NavLink>
         <Col className={"text-center"}>
+            <progress value={props.correctCards.length + props.wrongCards.length + 1} max={props.cards.length}/>
+        </Col>
+        <Col className={"text-center"}>       
             <b>Card {props.correctCards.length + props.wrongCards.length + 1} out of {props.cards.length}</b>
         </Col>
         <PlayingCard changeScore={changeScore} id={props.activeCard._id} front={props.activeCard.question} back={props.activeCard.answer}/>
@@ -71,6 +76,11 @@ const PlayingComponent = (props) => {
             <Col lg={{span: 4}} className={"text-center"}>
                 Wrong cards: {props.wrongCards.length}
             </Col>
+        </Row>
+        <Row className={"justify-content-center"}>
+            <NavLink to="/score" className="btn btn-blue">
+                Stop learning
+            </NavLink>
         </Row>
     </Container>
     <Footer/>
@@ -89,10 +99,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        doGetCards: (username, deckName) => dispatch(getCards(username, deckName)),
         doSetCorrectCardsAction: (cards) => dispatch(setCorrectCardsAction(cards)),
         doSetWrongCardsAction: (cards) => dispatch(setWrongCardsAction(cards)),
-        doSetActiveCardAction: (card) => dispatch(setActiveCardAction(card))
+        doSetActiveCardAction: (card) => dispatch(setActiveCardAction(card)),
+        doGetDeck: (deckId) => dispatch(getDeck(deckId)),
+        doResetStateAction: () => dispatch(resetStateAction())
     }
 }
 

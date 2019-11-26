@@ -55,7 +55,9 @@ const UserDecks = (props) => {
                     <Link to={`/decks/${props.deck._id}/flashcards`}>
                         <Button variant="warning">Deck bewerken</Button>
                     </Link>
-                    <Button variant="success" className={'float-right'}>Deck spelen</Button>
+                    <Link to={`/decks/${props.deck._id}/play`}>
+                        <Button variant="success" className={'float-right'}>Deck spelen</Button>
+                    </Link>
                 </Card.Body>
             </Card>
         )

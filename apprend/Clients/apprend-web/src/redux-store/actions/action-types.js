@@ -20,3 +20,5 @@ export const DECKS_SET_DECK_DATA = 'DECKS_SET_DECK_DATA';
 
 // login
 export const SET_LOGINACTION = 'SET_LOGINACTION';
+
+export const RESET_STATE ='RESET_STATE';

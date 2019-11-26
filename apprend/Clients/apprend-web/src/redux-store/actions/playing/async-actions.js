@@ -1,9 +1,9 @@
 import {API_URL} from '../../urls';
 import {setCardsAction} from "./actions";
 
-export const getCards = (username, deckName) => {
+export const getDeck = (deckId) => {
     return async dispatch => {
-        const url = `${API_URL}/users/` + username + `/decks/` + deckName;
+        const url = `${API_URL}/decks/${deckId}`;
         const options = {
             method: 'GET',
             headers: {
@@ -16,8 +16,8 @@ export const getCards = (username, deckName) => {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    dispatch(setCardsAction(data.cards));
-                    return data.cards;
+                    dispatch(setCardsAction(data.deck.flashcards));
+                    return data.deck;
                 }
             }).catch((err => {
             console.log("Er gaat iets goed fout!");
