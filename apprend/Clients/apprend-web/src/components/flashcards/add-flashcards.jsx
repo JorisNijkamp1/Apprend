@@ -12,7 +12,7 @@ import {changeDeckFlashcards} from "../../redux-store/actions/flashcards/actions
 import {AddFlashcardIcon} from "./sub-components/add-flashcard-icon";
 import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import {Footer} from "../shared/footer/Footer";
-import {getDeckFlashcardsAction} from "../../redux-store/actions/flashcards/async-actions";
+import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../redux-store/actions/flashcards/async-actions";
 import Loader from "react-loaders";
 
 const Flashcards = (props) => {
@@ -64,10 +64,12 @@ const Flashcards = (props) => {
             <NavigatieBar/>
             <Container className={"py-5"}>
                 <Card style={{backgroundColor: "#EEEEEE"}} className={'pt-3'} text={'dark'}>
-                    <Card.Header  style={{backgroundColor: "#EEEEEE"}}>
+                    <Card.Header style={{backgroundColor: "#EEEEEE"}}>
                         <Card.Title>
                             {props.deckData.deckName}
-                            <Button className={'float-right'}>Save deck</Button>
+                            <Button className={'float-right'}
+                                    onClick={editDeckFlashcardsAction(props.deckData.deckId, props.deckFlashcards)}
+                            >Save deck</Button>
                         </Card.Title>
                     </Card.Header>
                     <Card.Body>

@@ -151,4 +151,15 @@ decks.get('/:deckId/flashcards', async (req, res) => {
     }
 });
 
+/*====================================
+| EDIT FLASHCARDS OF A DECK
+*/
+decks.post('/:deckId/flashcards', async (req, res) => {
+    let users = await User.find({});
+    const deckId = req.params.deckId;
+
+    console.log(req.body)
+
+});
+
 module.exports = decks;
