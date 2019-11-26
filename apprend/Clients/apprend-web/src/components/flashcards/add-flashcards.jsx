@@ -1,15 +1,48 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {connect} from "react-redux";
-import Card from "react-bootstrap/Card";
-import {Container} from "react-bootstrap";
-import Row from "react-bootstrap/Row";
+import {useParams} from "react-router-dom";
+import {
+    Container,
+    Card,
+    Row,
+    Button
+} from "react-bootstrap";
 import EditableFlashcard from "./sub-components/editable-flashcard";
 import {changeDeckFlashcards} from "../../redux-store/actions/flashcards/actions";
 import {AddFlashcardIcon} from "./sub-components/add-flashcard-icon";
 import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import {Footer} from "../shared/footer/Footer";
+import {getDeckFlashcardsAction} from "../../redux-store/actions/flashcards/async-actions";
+import Loader from "react-loaders";
 
 const Flashcards = (props) => {
+    const {deckId} = useParams();
+
+    useEffect(() => {
+        props.getDeckFlashcards(deckId)
+    }, []);
+
+    let loader, flashcard, allFlashcards;
+    if (props.isLoading) {
+        loader = (
+            <Row className="mx-auto align-items-center flex-column py-5">
+                <Loader type="square-spin" active={true} color={'#758BFE'}/>
+                <h2>Loading decks...</h2>
+            </Row>
+        )
+    } else {
+        flashcard = (
+            <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
+        );
+
+        allFlashcards = props.deckFlashcards.map((flashcard) =>
+            <EditableFlashcard key={flashcard.id}
+                               flashcardId={flashcard.id}
+                               term={flashcard.term}
+                               definition={flashcard.definition}
+            />
+        );
+    }
 
     const addFlashcardToDeck = () => {
         const flashcards = [...props.deckFlashcards];
@@ -20,28 +53,28 @@ const Flashcards = (props) => {
 
         flashcards.push({
             id: highestId + 1,
-            term: null,
-            definition: null
+            term: '',
+            definition: ''
         });
         props.changeDeckFlashcards(flashcards)
     };
 
-    const allFlashcards = props.deckFlashcards.map((flashcard) =>
-        <EditableFlashcard key={flashcard.id}
-                           flashcardId={flashcard.id}
-            // term={flashcard.term}
-        />
-    );
-
     return (
         <>
             <NavigatieBar/>
-            <Container className={"pt-5 pb-5"}>
-                <Card>
+            <Container className={"py-5"}>
+                <Card style={{backgroundColor: "#EEEEEE"}} className={'pt-3'} text={'dark'}>
+                    <Card.Header  style={{backgroundColor: "#EEEEEE"}}>
+                        <Card.Title>
+                            {props.deckData.deckName}
+                            <Button className={'float-right'}>Save deck</Button>
+                        </Card.Title>
+                    </Card.Header>
                     <Card.Body>
+                        {loader}
                         <Row>
                             {allFlashcards}
-                            <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
+                            {flashcard}
                         </Row>
                     </Card.Body>
                 </Card>
@@ -54,11 +87,14 @@ const Flashcards = (props) => {
 const mapStateToProps = state => {
     return {
         deckFlashcards: state.flashcards.deckFlashcards,
+        deckData: state.decks.deckData,
+        isLoading: state.flashcards.isLoading,
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        getDeckFlashcards: (deckId) => dispatch(getDeckFlashcardsAction(deckId)),
         changeDeckFlashcards: (flashcards) => dispatch(changeDeckFlashcards(flashcards)),
     }
 };

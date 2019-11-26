@@ -4,7 +4,7 @@ import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {Footer} from "../shared/footer/Footer"
 import {getUserDecksAction} from "../../redux-store/actions/decks/async-actions";
 import Card from "react-bootstrap/Card";
@@ -15,7 +15,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 
-const MyDeck = (props) => {
+const Deck = (props) => {
     let {username} = useParams();
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const MyDeck = (props) => {
     }, []);
 
     let loader, userDecks;
-    if (props.userDecksIsLoading) {
+    if (props.isLoading) {
         loader = (
             <Row className="mx-auto align-items-center flex-column py-5">
                 <Loader type="square-spin" active={true} color={'#758BFE'}/>
@@ -31,8 +31,8 @@ const MyDeck = (props) => {
             </Row>
         )
     } else {
-        userDecks = props.userDecks.decks.map((deck) =>
-            <Card>
+        userDecks = props.userDecks.decks.map((deck, key) =>
+            <Card key={deck.name + key} style={{minWidth: '300px'}}>
                 <Card.Body>
                     <Card.Title>
                         <Row>
@@ -55,7 +55,9 @@ const MyDeck = (props) => {
                     </Card.Text>
                     <Row>
                         <Col xs={{span: 6, offset: 3}}>
-                            <Button variant="outline-primary" className={'w-100'}>View deck</Button>
+                            <Link to={`/decks/${deck._id}`}>
+                                <Button variant="outline-primary" className={'w-100'}>View deck</Button>
+                            </Link>
                         </Col>
                     </Row>
                 </Card.Body>
@@ -91,7 +93,7 @@ const MyDeck = (props) => {
 function mapStateToProps(state) {
     return {
         userDecks: state.decks.userDecks,
-        userDecksIsLoading: state.decks.userDecksIsLoading,
+        isLoading: state.decks.isLoading,
     }
 }
 
@@ -101,4 +103,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(MyDeck);
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Deck);
