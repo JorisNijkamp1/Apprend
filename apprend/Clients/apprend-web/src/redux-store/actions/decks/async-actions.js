@@ -40,7 +40,6 @@ export const getDeckAction = (deckId) => {
         const data = await response.json();
         if (data.success) {
             setTimeout(function () {
-                console.log('SUCCESSSSSSS')
                 dispatch(setDeckAction(data.deck));
                 dispatch(setIsLoading(false))
             }, 500);

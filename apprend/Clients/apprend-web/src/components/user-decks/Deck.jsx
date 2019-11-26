@@ -4,7 +4,7 @@ import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {Footer} from "../shared/footer/Footer"
 import {getDeckAction} from "../../redux-store/actions/decks/async-actions";
 import Card from "react-bootstrap/Card";
@@ -13,7 +13,7 @@ import Button from "react-bootstrap/Button";
 import Loader from "react-loaders";
 
 const UserDecks = (props) => {
-    let {deckId} = useParams();
+    const {deckId} = useParams();
 
     useEffect(() => {
         props.getDeck(deckId)
@@ -52,7 +52,9 @@ const UserDecks = (props) => {
                     <Card.Text>
                         {props.deck.description}
                     </Card.Text>
-                    <Button variant="warning">Deck bewerken</Button>
+                    <Link to={`/decks/${props.deck._id}/flashcards`}>
+                        <Button variant="warning">Deck bewerken</Button>
+                    </Link>
                     <Button variant="success" className={'float-right'}>Deck spelen</Button>
                 </Card.Body>
             </Card>

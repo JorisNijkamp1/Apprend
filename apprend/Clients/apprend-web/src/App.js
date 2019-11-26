@@ -26,6 +26,9 @@ function App() {
                 <Route exact path={"/decks/flashcards/add"}>
                     <Flashcards/>
                 </Route>
+                <Route exact path={"/decks/:deckId/flashcards"}>
+                    <Flashcards/>
+                </Route>
                 <Route path={"/decks/:deckId"}>
                     <Deck/>
                 </Route>

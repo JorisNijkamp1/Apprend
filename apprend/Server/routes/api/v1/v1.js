@@ -1,7 +1,7 @@
 const express = require('express');
 const v1 = express.Router();
-const decksRoute = require('./decks/decks')
 const usersRoute = require('./users/users')
+const decksRoute = require('./decks/decks')
 
 v1.get('/', (req, res) => {
     res.json(
