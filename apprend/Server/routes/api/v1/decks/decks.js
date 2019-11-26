@@ -155,11 +155,14 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    let users = await User.find({});
-    const deckId = req.params.deckId;
+    const users = await User.find({});
+    const flashcards = req.body.flashcards;
 
-    console.log(req.body)
+    console.log(flashcards);
 
+    await res.json({
+        success: true,
+    })
 });
 
 module.exports = decks;

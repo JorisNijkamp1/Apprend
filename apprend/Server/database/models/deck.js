@@ -26,7 +26,7 @@ const deckSchema = new mongoose.Schema({
     },
 });
 deckSchema.methods.editFlashcards = async function(flashcards){
-    this.flashcards.push(flashcards);
+    this.flashcards = flashcards;
     this.markModified('flashcards');
     await this.save();
     return this

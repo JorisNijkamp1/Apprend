@@ -45,7 +45,6 @@ export const editDeckFlashcardsAction = (deckId, flashcards) => {
     return async dispatch => {
         const url = `${API_URL}/decks/${deckId}/flashcards`;
         let data = {
-            deckId: deckId,
             flashcards: flashcards,
         };
         const options = {
