@@ -11,6 +11,7 @@ import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
 import Button from "react-bootstrap/Button";
 import Loader from "react-loaders";
+import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
@@ -93,6 +94,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        isLoggedIn: (username) => dispatch(isLoggedIn(username)),
         getDeck: (deckId) => dispatch(getDeckAction(deckId)),
     }
 }

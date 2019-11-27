@@ -17,6 +17,7 @@ import Loader from "react-loaders";
 
 const Flashcards = (props) => {
     const {deckId} = useParams();
+    const deckExist = !props.deckData.error;
 
     useEffect(() => {
         props.getDeckFlashcards(deckId)
@@ -31,20 +32,47 @@ const Flashcards = (props) => {
             </Row>
         )
     } else {
-        flashcard = (
-            <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
-        );
+        if (deckExist) {
+            flashcard = (
+                <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
+            );
 
-        allFlashcards = props.deckFlashcards.map((flashcard) => {
-            return (
-                <EditableFlashcard key={flashcard.id}
-                                   flashcardId={flashcard.id}
-                                   term={flashcard.term}
-                                   definition={flashcard.definition}
-                />
-            )
-        });
+            allFlashcards = props.deckFlashcards.map((flashcard) => {
+                return (
+                    <EditableFlashcard key={flashcard.id}
+                                       flashcardId={flashcard.id}
+                                       term={flashcard.term}
+                                       definition={flashcard.definition}
+                    />
+                )
+            });
+        }
     }
+
+    const deckHeader = () => {
+        if (deckExist && !props.isLoading) {
+            return (
+                <Card.Header style={{backgroundColor: "#EEEEEE"}}>
+                    <Card.Title>
+                        {props.deckData.deckName}
+                        <Button className={'float-right'}
+                                onClick={editDeckFlashcardsAction(props.deckData.deckId, props.deckFlashcards)}
+                        >Save deck</Button>
+                    </Card.Title>
+                </Card.Header>
+            )
+        }
+    };
+
+    const deckNotFound = () => {
+        if (!deckExist) {
+            return (
+                <Row className="mx-auto align-items-center flex-column py-5">
+                    <h2>This deck doesn't exist.. 😥</h2>
+                </Row>
+            )
+        }
+    };
 
     const addFlashcardToDeck = () => {
         const flashcards = [...props.deckFlashcards];
@@ -66,15 +94,10 @@ const Flashcards = (props) => {
             <NavigatieBar/>
             <Container className={"py-5"}>
                 <Card style={{backgroundColor: "#EEEEEE"}} className={'pt-3'} text={'dark'}>
-                    <Card.Header style={{backgroundColor: "#EEEEEE"}}>
-                        <Card.Title>
-                            {props.deckData.deckName}
-                            <Button className={'float-right'}
-                                    onClick={editDeckFlashcardsAction(props.deckData.deckId, props.deckFlashcards)}
-                            >Save deck</Button>
-                        </Card.Title>
-                    </Card.Header>
+                    {deckHeader()}
                     <Card.Body>
+                        {deckNotFound()}
+
                         {loader}
                         <Row>
                             {allFlashcards}

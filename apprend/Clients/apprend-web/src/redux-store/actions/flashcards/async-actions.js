@@ -45,6 +45,12 @@ export const getDeckFlashcardsAction = (deckId) => {
             }, 750);
         }else if (!data.flashcards) {
             setTimeout(function () {
+                console.log("Deck doesn't exits");
+                dispatch(setDeckDataAction({
+                    error: true,
+                    deckId: null,
+                    deckName: null
+                }));
                 dispatch(setIsLoading(false))
             }, 750);
         }

@@ -1,9 +1,9 @@
 function authenticationMiddleware() {
     return function (req, res, next) {
-        if (req.isAuthenticated()) {
+        if (req.isAuthenticated() || req.session.username) {
             return next()
         }
-        res.redirect('/')
+        res.redirect('/api/v1/login/error')
     }
 }
 
