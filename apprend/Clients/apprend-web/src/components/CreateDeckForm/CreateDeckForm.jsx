@@ -19,7 +19,7 @@ const CreateDeckFormComponent = (props) => {
     const showDeckNameOrThis = (text) => props.deckName ? <b>'{props.deckName}'</b> : text
 
     const handleCreateDeck = async (e) => {
-        try {
+        // try {
             e.preventDefault()
             const deck = {
                 deckName: props.deckName,
@@ -37,9 +37,9 @@ const CreateDeckFormComponent = (props) => {
             } else {
                 throw Error('No response')
             }
-        } catch (e) {
-            console.log(e)
-        }
+        // } catch (e) {
+        //     console.log(e)
+        // }
     }
 
     return (
