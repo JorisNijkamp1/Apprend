@@ -55,6 +55,7 @@ login.post('/',
 );
 
 login.get('/success', (req, res) => {
+    req.session.username = req.user._id
     res.json({
         success: true,
         username: req.user._id
