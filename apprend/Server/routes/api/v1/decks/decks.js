@@ -3,9 +3,11 @@ const decks = express.Router();
 const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
-require('../../../../database/models/user');
-const Users = mongoose.model('User');
-const User = require('../../../../database/models/user')
+require('../../../../database/models/deck');
+const Decks = mongoose.model('Deck');
+const UserSchema = require('../../../../database/models/user')
+require('../../../../database/models/user')
+const User = mongoose.model('User')
 
 decks.get('/', (req, res) => {
     res.json({
@@ -78,7 +80,6 @@ decks.post('/', async (req, res) => {
                 return
             }
         }
-
         res.status(201).json(response)
 
     } catch (e) {

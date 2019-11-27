@@ -25,10 +25,10 @@ userSchema.methods.addDeck = async function(deck){
     this.markModified('decks')
     await this.save()
     return this.decks[this.decks.length-1]
-};
+}
 
 //Create model
 mongoose.model("User", userSchema);
 
-// module.exports = userSchema;
-module.exports = mongoose.model('User', userSchema)
+module.exports = userSchema;
+// module.exports = mongoose.model('User', userSchema)

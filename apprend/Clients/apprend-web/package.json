@@ -11,6 +11,7 @@
     "bootstrap": "^4.3.1",
     "immer": "^5.0.0",
     "jest": "^24.9.0",
+    "mongoose": "^5.7.12",
     "loaders.css": "^0.1.2",
     "node-sass": "^4.13.0",
     "puppeteer": "^2.0.0",

@@ -15,9 +15,15 @@ const app = express();
 
 //Middleware
 app.use(cors({
-    origin: 'http://localhost:3000',
+    // origin: 'http://localhost:3000',
+    // origin: '*',
+    origin: function(origin, callback){
+        return callback(null, true)
+    },
+    optionsSuccessStatus: 200,
     credentials: true
 }));
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
@@ -28,7 +34,6 @@ app.use(session({
 
 //Routes
 app.use('/api', apiRoute);
-
 
 // Create HTTP server by ourselves
 const httpServer = http.createServer(app);
