@@ -19,7 +19,9 @@ decks.get('/', (req, res) => {
 | GET ALL DECKS FOR HOMEPAGE FROM USERS
 */
 decks.get('/home', async (req, res) => {
-    let allDecksUsers = await User.find({});
+    let allDecksUsers = await User.find({}).sort({signupDate: 'desc'});
+
+    console.log(allDecksUsers);
 
     const homeDecks = [];
 
