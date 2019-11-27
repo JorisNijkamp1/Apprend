@@ -20,17 +20,17 @@ export const createDeck = deck => {
 
             })
             await dispatch(setIsLoading(false))
-    
-            const data = await response.json()
-            console.log(data, '##############################')
-            let madeDeck
-            if (data.decks){
-                madeDeck = data.decks[data.decks.length-1]
-            } else {
-                madeDeck = data
+            if (response.status === 201){
+                const data = await response.json()
+                let madeDeck
+                if (data.decks){
+                    madeDeck = data.decks[data.decks.length-1]
+                } else {
+                    madeDeck = data
+                }
+                return data
             }
-            console.log(madeDeck)
-            return data
+
             
         // } catch (e) {
         //     await dispatch(setIsLoading(false))
