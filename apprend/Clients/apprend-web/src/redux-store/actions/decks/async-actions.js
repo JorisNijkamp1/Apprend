@@ -1,5 +1,5 @@
 import {API_URL} from '../../urls'
-import {setDeckAction, setIsLoading, setUserDecksAction} from "./actions";
+import {setDeckAction, setDeckEditAction, setIsLoading, setUserDecksAction} from "./actions";
 
 export const getUserDecksAction = (username) => {
     return async dispatch => {
@@ -46,3 +46,48 @@ export const getDeckAction = (deckId) => {
         }
     }
 };
+
+export const getDeckEditAction = (deckId) => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/${deckId}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        const response = await fetch(url, options)
+        const data = await response.json();
+        if (data.success) {
+            console.log(data);
+            dispatch(setDeckEditAction(data.deck))
+        }
+    }
+}
+
+export const setDeckEditedAction = (deckId, deckName, deckDescription) => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/${deckId}`;
+        let data = {
+            name: deckName,
+            description: deckDescription
+        };
+        const options = {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        const response = await fetch(url, options);
+        const result = await response.json();
+        if (result.success) {
+            console.log(data)
+            // dispatch(setDeckEditAction(data))
+        }
+    }
+}

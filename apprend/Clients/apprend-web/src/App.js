@@ -11,7 +11,7 @@ import MyDeck from "./components/my-deck/MyDeck";
 import {LoginPage} from "./components/LoginPage";
 import UserDecks from "./components/user-decks/UserDecks";
 import Deck from "./components/user-decks/Deck";
-
+import {DeckEdit} from "./components/user-decks/edit-deck/DeckEdit";
 
 function App() {
     return (
@@ -34,6 +34,9 @@ function App() {
                 </Route>
                 <Route exact path={"/decks/:deckId/flashcards"}>
                     <Flashcards/>
+                </Route>
+                <Route exact path={"/decks/:deckId/edit"}>
+                    <DeckEdit/>
                 </Route>
                 <Route path={"/decks/:deckId"}>
                     <Deck/>

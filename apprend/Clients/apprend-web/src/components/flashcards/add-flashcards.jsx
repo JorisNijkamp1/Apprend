@@ -69,7 +69,7 @@ const Flashcards = (props) => {
                             {props.deckData.deckName}
                             <Button className={'float-right'}
                                     onClick={editDeckFlashcardsAction(props.deckData.deckId, props.deckFlashcards)}
-                            >Save deck</Button>
+                            >Save flashcards</Button>
                         </Card.Title>
                     </Card.Header>
                     <Card.Body>

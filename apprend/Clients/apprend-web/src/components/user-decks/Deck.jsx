@@ -53,7 +53,10 @@ const UserDecks = (props) => {
                         {props.deck.description}
                     </Card.Text>
                     <Link to={`/decks/${props.deck._id}/flashcards`}>
-                        <Button variant="warning">Deck bewerken</Button>
+                        <Button variant="warning">Flashcards bewerken</Button>
+                    </Link>
+                    <Link to={`/decks/${props.deck._id}/edit`}>
+                        <Button className={"ml-4"} variant={"info"}>Deck bewerken</Button>
                     </Link>
                     <Button variant="success" className={'float-right'}>Deck spelen</Button>
                 </Card.Body>
