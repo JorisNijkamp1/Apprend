@@ -21,8 +21,6 @@ decks.get('/', (req, res) => {
 decks.get('/home', async (req, res) => {
     let allDecksUsers = await User.find({}).sort({signupDate: 'desc'});
 
-    console.log(allDecksUsers);
-
     const homeDecks = [];
 
     allDecksUsers.forEach((index, key) => {
@@ -164,9 +162,11 @@ decks.post('/:deckId/flashcards', async (req, res) => {
     const username = req.session.username ? req.session.username : req.cookies.username;
     if (!username) return res.status(401).json('Not a user');
 
-    console.log(username)
+    console.log(username);
+    console.log(flashcards);
+    console.log(deckId)
 
-    let user = await Users.findOne({_id: 'Joris'});
+    let user = await User.findOne({_id: username});
 
     let newFlashcards = [];
     flashcards.forEach(function (flashcard, key) {
