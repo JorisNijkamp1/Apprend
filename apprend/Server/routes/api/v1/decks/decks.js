@@ -155,38 +155,49 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    
-    const { deckId, cards } = req.body
-    
-    const username = req.session.username ? req.session.username : req.cookies.username
-    if (!username) return res.status(401).json('Not a user)'
-                                               
-    const user = await User.findById(username)
-    const result = await user.setCardsToDeck(deckId, cards)
-    /*
-        
-        schema.method(deckId, cards)
-            this.decks = this.decks.map(deck => {
-                if (deck._id === deckId) deck.flashcards = cards
-                return deck
+    const { flashcards } = req.body;
+    const { deckId } = req.params;
+
+    const username = req.session.username ? req.session.username : req.cookies.username;
+    if (!username) return res.status(401).json('Not a user');
+
+    console.log(username)
+
+    let user = await Users.findOne({_id: 'Joris'});
+
+    let newFlashcards = [];
+    flashcards.forEach(function (flashcard, key) {
+        newFlashcards.push({
+            _id: flashcard.id,
+            type: 'text-only',
+            question: flashcard.term,
+            answer: flashcard.definition
+        })
+    });
+
+    let currentDeck;
+    user.decks.forEach(function (deck, key) {
+        if (deck._id == deckId) {
+            currentDeck = key;
+        }
+    });
+
+    if (currentDeck) {
+        user.decks[currentDeck].flashcards = newFlashcards;
+
+        return user.save(async function (err) {
+            if (err) return console.error(err);
+            return await res.json({
+                success: true,
+                deck: user.decks[currentDeck]
             })
-            
-            this.markModified('decks')
-            await this.save()
-            return this
-    
-    */
-    
-    // passende response maken
-   
-    const users = await User.find({});
-    const flashcards = req.body.flashcards;
-
-    console.log(flashcards);
-
-    await res.json({
-        success: true,
-    })
+        })
+    }else {
+        return await res.json({
+            success: false,
+            error: "Deck doesn't exist"
+        })
+    }
 });
 
 module.exports = decks;
