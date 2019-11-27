@@ -19,7 +19,7 @@ const CreateDeckFormComponent = (props) => {
     const showDeckNameOrThis = (text) => props.deckName ? <b>'{props.deckName}'</b> : text
 
     const handleCreateDeck = async (e) => {
-        // try {
+        try {
             e.preventDefault()
             const deck = {
                 deckName: props.deckName,
@@ -27,6 +27,7 @@ const CreateDeckFormComponent = (props) => {
             }
             const response = await props.createNewDeck(deck)
             let deckId;
+            console.log(response)
             if (response){
                 if (response.decks){
                     deckId = response.decks[0]._id.toString()
@@ -35,11 +36,11 @@ const CreateDeckFormComponent = (props) => {
                 }
                 history.push(`/decks/${deckId}/cards/`)
             } else {
-                throw Error('No response')
+                throw Error('Something went wrong')
             }
-        // } catch (e) {
-        //     console.log(e)
-        // }
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     return (

@@ -1,7 +1,9 @@
 const express = require('express');
+const mongoose = require('mongoose')
 const login = express.Router();
 require('../../../../database/models/deck');
-const Users = require('../../../../database/models/user');
+require('../../../../database/models/user');
+const User = mongoose.model('User')
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
@@ -19,7 +21,7 @@ login.use(flash());
 //Passport middleware for Authentication
 passport.use(new LocalStrategy(
     function (username, password, done) {
-        Users.findOne({_id: username}, function (err, user) {
+        User.findOne({_id: username}, function (err, user) {
 
             if (err) {
                 return done(err);
@@ -53,6 +55,7 @@ login.post('/',
 );
 
 login.get('/success', (req, res) => {
+    req.session.username = req.user._id
     res.json({
         success: true,
         username: req.user._id
