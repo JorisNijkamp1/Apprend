@@ -23,12 +23,6 @@ const LoginPageUI = (props) => {
         }
     };
 
-    const dataValidation = () => {
-        return (
-            <FormLabel column={false}>{errorMessage}</FormLabel>
-        )
-    }
-
     return (
         <>
             <NavigatieBar/>
