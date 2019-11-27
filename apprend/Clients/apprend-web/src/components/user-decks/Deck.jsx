@@ -20,6 +20,21 @@ const UserDecks = (props) => {
         props.getDeck(deckId)
     }, []);
 
+    //Check if user is logged in
+    useEffect(() => {
+        props.isLoggedIn()
+    }, []);
+
+    const editFlashcardsButton = () => {
+        if (props.username === props.deck.creatorId) {
+            return (
+                <Link to={`/decks/${props.deck._id}/flashcards`}>
+                    <Button variant="warning">Deck bewerken</Button>
+                </Link>
+            )
+        }
+    };
+
     let loader, deck;
     if (props.isLoading) {
         loader = (
@@ -53,9 +68,7 @@ const UserDecks = (props) => {
                     <Card.Text>
                         {props.deck.description}
                     </Card.Text>
-                    <Link to={`/decks/${props.deck._id}/flashcards`}>
-                        <Button variant="warning">Deck bewerken</Button>
-                    </Link>
+                    {editFlashcardsButton()}
                     <Button variant="success" className={'float-right'}>Deck spelen</Button>
                 </Card.Body>
             </Card>
@@ -89,6 +102,7 @@ function mapStateToProps(state) {
     return {
         deck: state.decks.deck,
         isLoading: state.decks.isLoading,
+        username: state.login.username,
     }
 }
 
