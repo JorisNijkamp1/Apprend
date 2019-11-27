@@ -15,7 +15,11 @@ const app = express();
 
 //Middleware
 app.use(cors({
-    origin: 'http://localhost:3000',
+    // origin: '*',
+    origin: function(origin, callback){
+        return callback(null, true)
+    },
+    optionsSuccessStatus: 200,
     credentials: true
 }));
 app.use(bodyParser.json());
@@ -38,8 +42,8 @@ const httpServer = http.createServer(app);
 // Start the server.
 const port = 3001;
 httpServer.listen(port, () => {
-    // mongoose.connect(`mongodb://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}:${srvConfig.PORT}/${srvConfig.DB}`, {  // <- Localhost
-    mongoose.connect(`mongodb+srv://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}/${srvConfig.DB}?retryWrites=true&w=majority`, {   // <- Deployment server
+    mongoose.connect(`mongodb://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}:${srvConfig.PORT}/${srvConfig.DB}`, {  // <- Localhost
+    // mongoose.connect(`mongodb+srv://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}/${srvConfig.DB}?retryWrites=true&w=majority`, {   // <- Deployment server
         useNewUrlParser: true,
         useUnifiedTopology: true
     }, () => {

@@ -99,9 +99,9 @@ users.post('/', async (req, res) => {
         });
     }
 
-    const userWithSameUsername = await User.findById(req.body.username).select('_id');
+    const userWithSameUsername = await User.countDocuments({'_id': req.body.username});
 
-    if (userWithSameUsername !== null) {
+    if (userWithSameUsername !== 0) {
         res.status(409);
         res.json({
             'success': false,
@@ -111,9 +111,9 @@ users.post('/', async (req, res) => {
         return;
     }
 
-    const userWithSameEmail = await User.findOne({'email': req.body.email}).select('email');
+    const userWithSameEmail = await User.countDocuments({'email': req.body.email});
 
-    if (userWithSameEmail !== null) {
+    if (userWithSameEmail !== 0) {
         res.status(409);
         res.json({
             'success': false,
@@ -133,7 +133,7 @@ users.post('/', async (req, res) => {
         });
 
         newUser.save().then(() => {
-            res.status(200);
+            res.status(201);
             res.json({
                 'success': true,
                 'user': newUser
@@ -167,7 +167,7 @@ users.post('/', async (req, res) => {
     user.password = hashedPassword;
 
     user.save().then(() => {
-        res.status(200);
+        res.status(201);
         res.json({
             'success': true,
             'user': user
@@ -212,3 +212,37 @@ users.post('/email', async (req, res) => {
 });
 
 module.exports = users;
+
+/*
+----------------------------------------------
+| Delete a user by its ID.
+----------------------------------------------
+ */
+users.delete('/:id', async (req, res) => {
+    const userCount = await User.countDocuments({'_id': req.params.id});
+
+    if (userCount === 0) {
+        res.status(404);
+        res.json({
+            'success': false,
+            'error': 'The user could not be found...'
+        });
+
+        return;
+    }
+
+    User.deleteOne({'_id': req.params.id}).then(() => {
+        req.session.destroy();
+        res.status(200);
+        res.json({
+            'success': true
+        });
+    }).catch(error => {
+        console.log(error.message);
+        res.status(500);
+        res.json({
+            'success': false,
+            'error': 'Something went wrong while saving the new user...'
+        });
+    });
+});
