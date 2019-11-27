@@ -26,6 +26,16 @@ export const getDeckFlashcardsAction = (deckId) => {
                         definition: flashcard.answer
                     })
                 });
+
+                if (flashcards.length === 0) {
+                    flashcards.push({
+                        id: 0,
+                        term: '',
+                        definition: ''
+                    })
+                }
+                console.log(flashcards);
+
                 dispatch(changeDeckFlashcards(flashcards));
                 dispatch(setDeckDataAction({
                     deckId: data.deckId,

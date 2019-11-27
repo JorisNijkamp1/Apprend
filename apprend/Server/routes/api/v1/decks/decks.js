@@ -3,9 +3,11 @@ const decks = express.Router();
 const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
-require('../../../../database/models/user');
-const Users = mongoose.model('User');
-const User = require('../../../../database/models/user')
+require('../../../../database/models/deck');
+const Decks = mongoose.model('Deck');
+const UserSchema = require('../../../../database/models/user')
+require('../../../../database/models/user')
+const User = mongoose.model('User')
 
 decks.get('/', (req, res) => {
     res.json({
@@ -17,7 +19,7 @@ decks.get('/', (req, res) => {
 | GET ALL DECKS FOR HOMEPAGE FROM USERS
 */
 decks.get('/home', async (req, res) => {
-    let allDecksUsers = await User.find({});
+    let allDecksUsers = await User.find({}).sort({signupDate: 'desc'});
 
     const homeDecks = [];
 
@@ -78,7 +80,6 @@ decks.post('/', async (req, res) => {
                 return
             }
         }
-
         res.status(201).json(response)
 
     } catch (e) {
@@ -155,19 +156,51 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    const userId = req.params.deckId;
-    const userDeck = User.findOne({_id: userId});
+    const { flashcards } = req.body;
+    const { deckId } = req.params;
 
-    console.log(userDeck)
+    const username = req.session.username ? req.session.username : req.cookies.username;
+    if (!username) return res.status(401).json('Not a user');
 
-    // console.log(userDeck.decks[0]);
+    console.log(username);
+    console.log(flashcards);
+    console.log(deckId)
 
-    const flashcards = req.body.flashcards;
-    // console.log(flashcards);
+    let user = await User.findOne({_id: username});
 
-    await res.json({
-        success: true,
-    })
+    let newFlashcards = [];
+    flashcards.forEach(function (flashcard, key) {
+        newFlashcards.push({
+            _id: flashcard.id,
+            type: 'text-only',
+            question: flashcard.term,
+            answer: flashcard.definition
+        })
+    });
+
+    let currentDeck;
+    user.decks.forEach(function (deck, key) {
+        if (deck._id == deckId) {
+            currentDeck = key;
+        }
+    });
+
+    if (currentDeck) {
+        user.decks[currentDeck].flashcards = newFlashcards;
+
+        return user.save(async function (err) {
+            if (err) return console.error(err);
+            return await res.json({
+                success: true,
+                deck: user.decks[currentDeck]
+            })
+        })
+    }else {
+        return await res.json({
+            success: false,
+            error: "Deck doesn't exist"
+        })
+    }
 });
 
 /*====================================

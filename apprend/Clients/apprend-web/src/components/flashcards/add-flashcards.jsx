@@ -35,13 +35,15 @@ const Flashcards = (props) => {
             <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
         );
 
-        allFlashcards = props.deckFlashcards.map((flashcard) =>
-            <EditableFlashcard key={flashcard.id}
-                               flashcardId={flashcard.id}
-                               term={flashcard.term}
-                               definition={flashcard.definition}
-            />
-        );
+        allFlashcards = props.deckFlashcards.map((flashcard) => {
+            return (
+                <EditableFlashcard key={flashcard.id}
+                                   flashcardId={flashcard.id}
+                                   term={flashcard.term}
+                                   definition={flashcard.definition}
+                />
+            )
+        });
     }
 
     const addFlashcardToDeck = () => {
