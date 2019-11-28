@@ -133,7 +133,7 @@ const mapDispatchToProps = dispatch => {
         doGetDeck: (deckId) => dispatch(getDeck(deckId)),
         doSetGame: (deckId, flashcards) => dispatch(setGame(deckId, flashcards)),
         doUpdateGame: (deckId, gameId, oldCard, newCard, status) => dispatch(updateGame(deckId, gameId, oldCard, newCard, status)),
-        doGetGameData: (gameId) => dispatch(getGameData(gameId)),
+        doGetGameData: (deckId, gameId) => dispatch(getGameData(deckId, gameId)),
         doResetStateAction: () => dispatch(resetStateAction())
     }
 }
