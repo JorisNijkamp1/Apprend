@@ -8,6 +8,7 @@ export const SET_PLAYING_CARDS = 'SET_PLAYING_CARDS';
 export const SET_CORRECT_CARDS = 'SET_CORRECT_CARDS';
 export const SET_WRONG_CARDS = 'SET_WRONG_CARDS';
 export const SET_ACTIVE_CARD = 'SET_ACTIVE_CARD';
+export const FLASHCARDS_SET_ISSAVING = 'FLASHCARDS_SET_ISSAVING';
 
 // decks
 export const DECKS_ADD_DECK = 'DECKS_ADD_DECK';
@@ -20,6 +21,7 @@ export const DECKS_SET_DECK_DATA = 'DECKS_SET_DECK_DATA';
 
 // login
 export const SET_LOGINACTION = 'SET_LOGINACTION';
+export const SET_ANONYMOUS_USER = "SET_ANONYMOUS_USER";
 
 // playing
 export const RESET_STATE = 'RESET_STATE';

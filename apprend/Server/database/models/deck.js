@@ -29,12 +29,6 @@ const deckSchema = new mongoose.Schema({
         type: [{type: Game}],
     },
 });
-deckSchema.methods.editFlashcards = async function(flashcards){
-    this.flashcards = flashcards;
-    this.markModified('flashcards');
-    await this.save();
-    return this
-};
 
 //Create model
 mongoose.model("Deck", deckSchema);

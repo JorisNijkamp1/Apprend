@@ -20,6 +20,11 @@ export const getUserDecksAction = (username) => {
                 dispatch(setUserDecksAction(data.decks));
                 dispatch(setIsLoading(false))
             }, 1000);
+        }else {
+            setTimeout(function () {
+                dispatch(setUserDecksAction('no-decks'));
+                dispatch(setIsLoading(false))
+            }, 1000);
         }
     }
 };
@@ -41,6 +46,11 @@ export const getDeckAction = (deckId) => {
         if (data.success) {
             setTimeout(function () {
                 dispatch(setDeckAction(data.deck));
+                dispatch(setIsLoading(false))
+            }, 500);
+        }else {
+            setTimeout(function () {
+                dispatch(setDeckAction('deck-not-found'));
                 dispatch(setIsLoading(false))
             }, 500);
         }

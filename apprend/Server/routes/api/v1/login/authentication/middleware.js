@@ -1,9 +1,10 @@
 function authenticationMiddleware() {
     return function (req, res, next) {
-        if (req.isAuthenticated()) {
+        const username = req.session.username ? req.session.username : req.cookies.username;
+        if (req.isAuthenticated() || username) {
             return next()
         }
-        res.redirect('/')
+        res.redirect('/api/v1/login/error')
     }
 }
 

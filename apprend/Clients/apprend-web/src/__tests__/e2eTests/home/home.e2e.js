@@ -8,7 +8,7 @@ describe(`Home`, () => {
     beforeAll(async () => {
         browser = await puppeteer.launch({
             headless: false,
-            slowMo: 100,
+            slowMo: 50,
             args: [`--window-size=800,800`, `--window-position=0,0`]
         })
         page = await browser.newPage()

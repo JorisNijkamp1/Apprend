@@ -157,3 +157,7 @@ progress[value]::-webkit-progress-value {
   display: flex;
   justify-content: flex-end;
 }
+
+.navbar-light .navbar-nav .nav-link {
+    color: #FFF;
+}

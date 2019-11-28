@@ -5,7 +5,6 @@ Een taak binnen het project moet voldoen aan de onderstaande regels voordat het 
 - Alle acceptatiecriteria zijn afgewerkt.
 - Er zijn unittests geschreven voor de gerealiseerde functionaliteit, als dat kan.
 - Er zijn e2e-tests geschreven voor de gerealiseerde functionaliteit, als dat kan.
-- Tachtig procent van de code is getest.
 - De tests voor de gerealiseerde functionaliteit slagen.
 - De code en de tests zijn nagekeken door minimaal één teamlid.
 - De documentatie is bijgewerkt en up-to-date.
