@@ -29,7 +29,7 @@ const Deck = (props) => {
     const handleDeleteDeck = event => {
         const deckId = event.currentTarget.getAttribute('name')
         props.deleteDeckFromUser(deckId)
-    }
+    } 
 
     const confirmationBox = (bool, deck) => {
         if (bool) return (
@@ -48,7 +48,7 @@ const Deck = (props) => {
         </Card.Footer>
         )
         else return (
-        <>
+        <> 
         </>
         )
     }
@@ -97,14 +97,13 @@ const Deck = (props) => {
                                          className={'trash-icon'}
                                          size={'1x'}
                                          title={`Delete ${deck.name}`}
-
+                                         
                         />
                     </span>
                 </Col>
             )
         }
     };
-
     let loader, userDecks, error;
     if (props.isLoading) {
         loader = (
@@ -144,22 +143,29 @@ const Deck = (props) => {
             </Card>
             </Col>
         )
-    } else {
-        if(props.userDecks.toString() === 'no-decks') {
-            error = (
-                <Row className="mx-auto align-items-center flex-column py-5">
-                    <h2>User not found... 🙄</h2>
-                </Row>
-            )
+    } else if (props.userDecks.toString() === 'no-decks') {
+
+    } else if (props.decks === 0){
+
+    }
+
+    const showErrors = () => {
+        let errors = []
+        if (props.userDecks.toString() === 'no-decks'){
+            errors.push(            <Row className="mx-auto align-items-center flex-column py-5">
+            <h2>User not found... 🙄</h2>
+        </Row>)
+        }
+        else if (props.decks && !props.isLoading){
+            if (props.decks.length === 0){
+                errors.push(<Row className="mx-auto align-items-center flex-column py-5">
+                <h2>User has no decks... ☹️</h2>
+            </Row>)
+            }
+
         }
 
-        if(props.userDecks.decks && props.userDecks.decks.length === 0) {
-            error = (
-                <Row className="mx-auto align-items-center flex-column py-5">
-                    <h2>User has no decks... ☹️</h2>
-                </Row>
-            )
-        }
+        return (errors.map(error => error))
     }
 
     return (
@@ -170,12 +176,14 @@ const Deck = (props) => {
                     <Col lg={{span: 8, offset: 2}}>
                         <div className="mx-auto text-green pt-5">
                             <h1 className="display-5 text-center">
-                                Decks of {props.userDecks.user}
+                                {props.userDecks.user ? `Decks of ${props.userDecks.user}`: ''}
                             </h1>
                         </div>
                     </Col>
                 </Row>
                 {loader}
+                {showErrors()}
+
                 {error}
                 <Row>
                     {/* <CardColumns> */}
@@ -186,11 +194,13 @@ const Deck = (props) => {
             <Footer/>
         </>
     )
-};
+}
+
 
 function mapStateToProps(state) {
     return {
         userDecks: state.decks.userDecks,
+        decks: state.decks.userDecks.decks,
         isLoading: state.decks.isLoading,
         username: state.login.username,
     }
