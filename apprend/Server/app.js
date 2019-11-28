@@ -35,7 +35,6 @@ app.use(session({
 //Routes
 app.use('/api', apiRoute);
 
-
 // Create HTTP server by ourselves
 const httpServer = http.createServer(app);
 

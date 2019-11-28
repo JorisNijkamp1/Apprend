@@ -72,7 +72,7 @@ const EditableFlashcard = (props) => {
                                           isValid={(flashcardData.term !== null && flashcardData.term !== '')}
                             />
                             <Form.Text className="text-muted">
-                                Vul hier de term in waarvan je de definitie wilt leren.
+                                Enter the term you want to learn the definition.
                             </Form.Text>
                             <hr/>
                             <Form.Label>Definition</Form.Label>

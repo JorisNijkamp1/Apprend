@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import {Switch, Route} from 'react-router-dom'
@@ -7,13 +7,19 @@ import {RegisterPage} from './components/register/RegisterPage';
 import {CreateDeckForm} from './components/CreateDeckForm/CreateDeckForm'
 import Flashcards from "./components/flashcards/add-flashcards";
 import {PlayingDeck} from "./components/playing/PlayingDeck";
-import MyDeck from "./components/my-deck/MyDeck";
 import {LoginPage} from "./components/LoginPage";
 import UserDecks from "./components/user-decks/UserDecks";
 import Deck from "./components/user-decks/Deck";
+import {isLoggedIn} from "./redux-store/actions/login/async-actions";
+import * as ReactRedux from "react-redux";
 
+function App(props) {
 
-function App() {
+    //Check if user is logged in
+    useEffect(() => {
+        props.isLoggedIn()
+    }, []);
+
     return (
         <div>
             <Switch>
@@ -49,4 +55,16 @@ function App() {
     )
 }
 
-export default App;
+function mapStateToProps(state) {
+    return {
+        //
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        isLoggedIn: () => dispatch(isLoggedIn()),
+    }
+}
+
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(App);

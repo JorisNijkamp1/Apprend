@@ -18,12 +18,13 @@ users.get('/', (req, res) => {
 | GET ALL DECKS FROM A USER
 */
 users.get('/:username/decks', async (req, res) => {
-    await Users.findOne({ _id: req.params.username }, function (err, user) {
+    await User.findOne({ _id: req.params.username }, function (err, user) {
         if (user) {
             return res.json({
                 success: true,
                 decks: {
                     user: !(user.email && user.password) ? 'anonymous user' : user._id,
+                    userId: user._id,
                     decks: user.decks,
                 }
             })

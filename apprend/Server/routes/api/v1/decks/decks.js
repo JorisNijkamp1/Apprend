@@ -3,9 +3,11 @@ const decks = express.Router();
 const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
-require('../../../../database/models/user');
-const Users = mongoose.model('User');
-const User = require('../../../../database/models/user')
+require('../../../../database/models/deck');
+const Decks = mongoose.model('Deck');
+const UserSchema = require('../../../../database/models/user')
+require('../../../../database/models/user')
+const User = mongoose.model('User')
 
 decks.get('/', (req, res) => {
     res.json({
@@ -17,7 +19,7 @@ decks.get('/', (req, res) => {
 | GET ALL DECKS FOR HOMEPAGE FROM USERS
 */
 decks.get('/home', async (req, res) => {
-    let allDecksUsers = await User.find({});
+    let allDecksUsers = await User.find({}).sort({signupDate: 'desc'});
 
     const homeDecks = [];
 
@@ -78,7 +80,6 @@ decks.post('/', async (req, res) => {
                 return
             }
         }
-
         res.status(201).json(response)
 
     } catch (e) {
@@ -141,6 +142,7 @@ decks.get('/:deckId/flashcards', async (req, res) => {
             success: true,
             deckId: currentDeck._id,
             name: currentDeck.name,
+            creatorId:  currentDeck.creatorId,
             flashcards: currentDeck.flashcards,
 
         })
@@ -155,38 +157,52 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    
-    const { deckId, cards } = req.body
-    
-    const username = req.session.username ? req.session.username : req.cookies.username
-    if (!username) return res.status(401).json('Not a user')
-                                               
-    const user = await User.findById(username)
-    const result = await user.setCardsToDeck(deckId, cards)
-    /*
-        
-        schema.method(deckId, cards)
-            this.decks = this.decks.map(deck => {
-                if (deck._id === deckId) deck.flashcards = cards
-                return deck
+    const { flashcards } = req.body;
+    const { deckId } = req.params;
+
+    const username = req.session.username ? req.session.username : req.cookies.username;
+    if (!username) return res.status(401).json('Not a user');
+
+    let user = await User.findOne({_id: username});
+
+    if (!user) {
+        console.log('User bestaat niet')
+    }
+
+    let newFlashcards = [];
+    flashcards.forEach(function (flashcard, key) {
+        newFlashcards.push({
+            _id: flashcard.id,
+            type: 'text-only',
+            question: flashcard.term,
+            answer: flashcard.definition
+        })
+    });
+
+    let currentDeck, deckFound;
+    user.decks.forEach(function (deck, key) {
+        if (deck._id == deckId) {
+            currentDeck = key;
+            deckFound = true;
+        }
+    });
+
+    if (deckFound) {
+        user.decks[currentDeck].flashcards = newFlashcards;
+
+        return user.save(async function (err) {
+            if (err) return console.error(err);
+            return await res.json({
+                success: true,
+                deck: user.decks[currentDeck]
             })
-            
-            this.markModified('decks')
-            await this.save()
-            return this
-    
-    */
-    
-    // passende response maken
-   
-    const users = await User.find({});
-    const flashcards = req.body.flashcards;
-
-    console.log(flashcards);
-
-    await res.json({
-        success: true,
-    })
+        })
+    }else {
+        return await res.json({
+            success: false,
+            error: "Deck doesn't exist"
+        })
+    }
 });
 
 module.exports = decks;

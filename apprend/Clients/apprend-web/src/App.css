@@ -137,3 +137,7 @@ h2{
 .btn-blue {
   background-color: #758BFE;
 }
+
+.navbar-light .navbar-nav .nav-link {
+    color: #FFF;
+}

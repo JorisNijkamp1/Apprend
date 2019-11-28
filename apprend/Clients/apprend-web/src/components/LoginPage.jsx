@@ -4,7 +4,7 @@ import {NavigatieBar} from "./shared/navbar/NavigatieBar";
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {Footer} from "./shared/footer/Footer";
-import {userLogin} from "../redux-store/actions/login/async-actions";
+import {isLoggedIn, userLogin} from "../redux-store/actions/login/async-actions";
 import {useHistory} from 'react-router'
 
 const LoginPageUI = (props) => {
@@ -17,6 +17,7 @@ const LoginPageUI = (props) => {
         e.preventDefault();
         const result = await props.userLogin(username, password);
         if (result === 'success') {
+            props.isLoggedIn();
             history.push('/');
         } else {
             setErrorMessage(result)
@@ -68,6 +69,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        isLoggedIn: (username) => dispatch(isLoggedIn(username)),
         userLogin: (username, password) => dispatch(userLogin(username, password)),
     }
 }
