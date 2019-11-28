@@ -17,7 +17,7 @@ const NavbarUI = (props) => {
                 </>
             )
         }
-    }
+    };
 
     const loggedIn = () => {
         if (props.username === null) {
@@ -37,7 +37,6 @@ const NavbarUI = (props) => {
                     <NavDropdown title={props.anonymousUser ? 'Welcome Guest' : 'Welcome ' + props.username}
                                  id="basic-nav-dropdown" className="text-white pl-30">
                         <Nav.Link as={Link} className="pl-30" to={'/' + props.username + '/decks'}>My Decks</Nav.Link>
-                        <Nav.Link as={Link} className="pl-30" to={'/register'}>Register</Nav.Link>
                         {logout()}
                     </NavDropdown>
                 </>

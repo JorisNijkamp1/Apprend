@@ -15,7 +15,6 @@ import * as ReactRedux from "react-redux";
 import {DeckEdit} from "./components/user-decks/edit-deck/DeckEdit";
 function App(props) {
 
-
     //Check if user is logged in
     useEffect(() => {
         props.isLoggedIn()

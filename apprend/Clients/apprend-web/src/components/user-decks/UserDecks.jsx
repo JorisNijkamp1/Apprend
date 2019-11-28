@@ -59,7 +59,7 @@ const Deck = (props) => {
         if(props.userDecks.decks.length === 0) {
             error = (
                 <Row className="mx-auto align-items-center flex-column py-5">
-                    <h2>User has no... ☹️</h2>
+                    <h2>User has no decks... ☹️</h2>
                 </Row>
             )
         }
