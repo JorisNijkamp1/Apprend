@@ -16,7 +16,7 @@ const initialState = {
 export default function registerReducer(state = initialState, action) {
     switch (action.type) {
         case SET_REGISTER_SUCCESS:
-            return {...state, 'newUserRegistered': action.payload};
+            return {...state, 'newUserRegistered': action.payload, 'error': null};
         case SET_USERNAME_EXISTS:
             return {...state, 'usernameExists': action.payload};
         case SET_EMAIL_EXISTS:

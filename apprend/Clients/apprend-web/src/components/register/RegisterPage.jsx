@@ -32,6 +32,10 @@ export const RegisterPageComponent = props => {
                 <Row>
                     <Col xs={{'span': 6, 'offset': 3}}>
                         <PageTitle title={'Register a new user'}/>
+                        {(props.newUserRegistered) ?
+                            <p className={'bg-success text-white text-center rounded p-2'}>
+                                You registered a new account! Log in <a href="/login">here</a>.
+                            </p> : ''}
                         {(props.error !== null) ?
                             <p className={'bg-danger text-white text-center rounded p-2'}>{props.error}</p> : ''}
                         <Form>
@@ -45,7 +49,7 @@ export const RegisterPageComponent = props => {
                                              isValid={usernameValid(username)}
                                              isInvalid={props.usernameExists}
                                              required/>
-                                {(props.usernameExists) ? <FormText className="text-muted">
+                                {(props.usernameExists) ? <FormText className="text-muted" id={'usernameExistsWarning'}>
                                     '{username}' is already in use!
                                 </FormText> : ''}
                             </FormGroup>
@@ -59,7 +63,7 @@ export const RegisterPageComponent = props => {
                                              isValid={emailValid(email)}
                                              isInvalid={props.emailExists}
                                              required/>
-                                {(props.emailExists) ? <FormText className="text-muted">
+                                {(props.emailExists) ? <FormText className="text-muted" id={'emailExistsWarning'}>
                                     '{email}' is already in use!
                                 </FormText> : ''}
                             </FormGroup>

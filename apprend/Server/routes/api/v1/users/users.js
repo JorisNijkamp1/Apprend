@@ -7,6 +7,7 @@ var bcrypt = require('bcryptjs');
 require('../../../../database/models/deck');
 require('../../../../database/models/user');
 const User = mongoose.model('User');
+const Deck = mongoose.model('Deck');
 const Users = require('../../../../database/models/user');
 const decks = express.Router();
 
@@ -150,9 +151,10 @@ users.post('/', async (req, res) => {
         return;
     }
 
-    const user = await User.findById(req.session.username ? req.session.username : req.cookies.username);
+    const anonymousData = req.session.username ? req.session.username : req.cookies.username;
+    const oldUser = await User.findById(anonymousData);
 
-    if (user === null) {
+    if (oldUser === null) {
         res.status(404);
         res.json({
             'success': false,
@@ -162,23 +164,40 @@ users.post('/', async (req, res) => {
         return;
     }
 
-    user._id = req.body.username;
-    user.email = req.body.email;
-    user.password = hashedPassword;
+    let newDecks = [];
 
-    user.save().then(() => {
-        res.status(201);
-        res.json({
-            'success': true,
-            'user': user
-        });
-    }).catch(error => {
-        console.log(error.message);
-        res.status(500);
-        res.json({
-            'success': false,
-            'error': 'Something went wrong while saving the new user...'
-        });
+    for (let i = 0; i < oldUser.decks.length; i++) {
+        if (anonymousData === oldUser.decks[i].creatorId) {
+            newDecks.push(
+                new Deck({
+                    'name': oldUser.decks[i].name,
+                    'description': oldUser.decks[i].description,
+                    'creatorId': req.body.username,
+                    'creationDate': oldUser.decks[i].creationDate,
+                    'lastPlayedDate': oldUser.decks[i].lastPlayedDate,
+                    'status': oldUser.decks[i].status,
+                    'flashcards': oldUser.decks[i].flashcards,
+                })
+            );
+        }
+    }
+
+    const newUser = new User({
+        '_id': req.body.username,
+        'email': req.body.email,
+        'password': hashedPassword,
+        'decks': newDecks,
+        'signupDate': oldUser.signupDate
+    });
+
+    await newUser.save();
+    await User.deleteOne({'_id': oldUser._id});
+
+    if (req.cookies.username) res.clearCookie('username');
+    res.status(201);
+    res.json({
+        'success': true,
+        'user': newUser
     });
 });
 
