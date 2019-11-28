@@ -13,6 +13,8 @@ import {
     usernameValid,
     registerFormMaySubmit
 } from '../../redux-store/form-validation/validationRules';
+import {isLoggedIn, userLogin} from '../../redux-store/actions/login/async-actions';
+import {Redirect} from 'react-router-dom';
 
 export const RegisterPageComponent = props => {
     const [username, setUsername] = useState();
@@ -25,17 +27,24 @@ export const RegisterPageComponent = props => {
         props.doRegisterNewUser(username, email, password);
     };
 
+    if (props.newUserRegistered) {
+        if (props.username === null) {
+            props.doLogin(username, password);
+        }
+    }
+
     return (
         <>
+            {(props.username !== null) ? <Redirect to={'/'}/> : ''}
             <NavigatieBar/>
             <Container>
                 <Row>
                     <Col xs={{'span': 6, 'offset': 3}}>
                         <PageTitle title={'Register a new user'}/>
-                        {(props.newUserRegistered) ?
-                            <p className={'bg-success text-white text-center rounded p-2'}>
-                                You registered a new account! Log in <a href="/login">here</a>.
-                            </p> : ''}
+                        {/*{(props.newUserRegistered) ?*/}
+                            {/*<p className={'bg-success text-white text-center rounded p-2'}>*/}
+                                {/*You registered a new account! Log in <a href="/login">here</a>.*/}
+                            {/*</p> : ''}*/}
                         {(props.error !== null) ?
                             <p className={'bg-danger text-white text-center rounded p-2'}>{props.error}</p> : ''}
                         <Form>
@@ -112,7 +121,8 @@ const mapStateToProps = state => {
         'usernameExists': state.register.usernameExists,
         'emailExists': state.register.emailExists,
         'isLoading': state.register.isLoading,
-        'error': state.register.error
+        'error': state.register.error,
+        'username': state.login.username
     }
 };
 
@@ -120,7 +130,8 @@ const mapDispatchToProps = dispatch => {
     return {
         'doRegisterNewUser': (username, email, password) => dispatch(registerNewUser(username, email, password)),
         'doCheckUsernameExists': username => dispatch(checkUsernameExists(username)),
-        'doCheckEmailExists': email => dispatch(checkEmailExists(email))
+        'doCheckEmailExists': email => dispatch(checkEmailExists(email)),
+        'doLogin': (username, password) => dispatch(userLogin(username, password))
     }
 };
 
