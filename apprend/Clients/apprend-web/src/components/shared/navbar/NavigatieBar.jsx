@@ -29,7 +29,7 @@ const NavbarUI = (props) => {
                 </>
             )
         }
-    }
+    };
 
     const loggedIn = () => {
         if (props.username === null) {

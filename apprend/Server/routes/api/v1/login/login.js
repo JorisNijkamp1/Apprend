@@ -25,14 +25,13 @@ login.use(flash());
 passport.use(new LocalStrategy(
     function (username, password, done) {
         User.findOne({_id: username}, function (err, user) {
-            const hashedPassword = bcrypt.hashSync(password, config.PASSWORD_SALT);
             if (err) {
                 return done(err);
             }
             if (!user) {
                 return done(null, false, {message: 'username-incorrect'});
             }
-            if (bcrypt.compareSync(hashedPassword, user.password)) {
+            if (!bcrypt.compareSync(password, user.password)) {
                 return done(null, false, {message: 'password-incorrect'});
             }
             return done(null, user);
