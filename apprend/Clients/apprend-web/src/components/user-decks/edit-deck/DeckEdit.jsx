@@ -42,6 +42,7 @@ const DeckEditUI = (props) => {
                                         onClick={() =>
                                             props.setDeckEditedAction(props.deckEdit.creatorId, props.deckEdit._id, deckData.deckName, deckData.deckDescription)
                                         }
+                                        name={"save-deck"}
                                 >Save deck</Button>
                             </Link>
                         </Card.Title>
@@ -59,6 +60,7 @@ const DeckEditUI = (props) => {
                                         <Form.Group controlId="formBasicEmail">
                                             <Form.Label>Edit your deck</Form.Label>
                                             <Form.Control type="text"
+                                                          name="name"
                                                           placeholder="Haustiere"
                                                           value={deckData.deckName}
                                                           onChange={(e) => {
