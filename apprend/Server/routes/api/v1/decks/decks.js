@@ -279,6 +279,7 @@ decks.put('/:deckId', async (req, res) => {
         name: name,
         description: description,
         deck: currentDeck
+    })
 })
 
-module.exports = decks;
+module.exports = decks
