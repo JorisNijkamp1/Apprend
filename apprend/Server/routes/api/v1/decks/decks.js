@@ -9,6 +9,7 @@ const UserSchema = require('../../../../database/models/user')
 require('../../../../database/models/user')
 const User = mongoose.model('User')
 
+
 decks.get('/', (req, res) => {
     res.json({
         success: true
@@ -87,6 +88,18 @@ decks.post('/', async (req, res) => {
         res.status(500).json('Something went horribly wrong...Try again?')
     }
 });
+
+decks.delete('/:deckId',  async (req, res) => {
+    try {
+        const user = await User.findById(req.session.username ? req.session.username : req.cookies.username)
+        if (!user) return res.status(404).json('Not a user')
+        const result = await user.deleteDeck(req.params.deckId)
+        res.status(200).json(result.decks)
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('Something went horribly wrong')
+    }
+})
 
 /*====================================
 | GET A SPECIFIC DECK

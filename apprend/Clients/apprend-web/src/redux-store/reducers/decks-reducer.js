@@ -3,6 +3,7 @@ import {
     DECKS_SET_DECK_DATA,
     DECKS_SET_ISLOADING,
     DECKS_SET_USER_DECKS,
+    DECKS_SET_USERDECKS_DECKS,
     DECK_EDIT_DATA
 } from '../actions/action-types'
 import produce from 'immer'
@@ -35,6 +36,9 @@ export default function decksReducer(state = initialState, action) {
                 draft['isLoading'] = action.payload;
                 break;
 
+            case DECKS_SET_USERDECKS_DECKS:
+                draft['userDecks']['decks'] = action.payload
+                break
             case DECK_EDIT_DATA:
                 draft['deckEdit'] = action.payload;
                 break;

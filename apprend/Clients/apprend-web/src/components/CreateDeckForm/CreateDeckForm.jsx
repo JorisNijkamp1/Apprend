@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Container, Form, Row, Col,
          } from 'react-bootstrap'
@@ -13,6 +13,10 @@ import { NavigatieBar } from '../shared/navbar/NavigatieBar';
 import { Footer } from '../shared/footer/Footer';
 
 const CreateDeckFormComponent = (props) => {
+
+    useEffect(() => {
+        props.changeDeckName('')
+    }, [])
 
     const history = useHistory()
 
