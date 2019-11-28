@@ -1,9 +1,10 @@
-import {SET_LOGINACTION} from '../actions/action-types';
+import {SET_ANONYMOUS_USER, SET_LOGINACTION} from '../actions/action-types';
 import produce from "immer";
 
 const initialState = {
     username: null,
     message: null,
+    anonymousUser: true,
 };
 
 export default function loginReducer(state = initialState, action) {
@@ -11,6 +12,10 @@ export default function loginReducer(state = initialState, action) {
         switch (action.type) {
             case SET_LOGINACTION:
                 draft['username'] = action.payload;
+                break;
+
+            case SET_ANONYMOUS_USER:
+                draft['anonymousUser'] = action.payload;
                 break;
 
             default:

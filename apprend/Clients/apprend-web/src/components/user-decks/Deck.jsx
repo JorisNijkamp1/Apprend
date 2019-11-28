@@ -11,13 +11,35 @@ import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
 import Button from "react-bootstrap/Button";
 import Loader from "react-loaders";
+import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
+    const isCreator = (props.username === props.deck.creatorId);
+
+    //Check if user is logged in
+    useEffect(() => {
+        props.isLoggedIn()
+    }, []);
 
     useEffect(() => {
         props.getDeck(deckId)
     }, []);
+
+    const editFlashcardsButton = () => {
+        if (isCreator) {
+            return (
+                <>
+                    <Link to={`/decks/${props.deck._id}/flashcards`}>
+                        <Button variant="warning">Edit flashcards</Button>
+                    </Link>
+                    <Link to={`/decks/${props.deck._id}/edit`}>
+                        <Button className={"ml-4"} variant={"info"}>Deck bewerken</Button>
+                    </Link>
+                </>
+            )
+        }
+    };
 
     let loader, deck;
     if (props.isLoading) {
@@ -52,13 +74,8 @@ const UserDecks = (props) => {
                     <Card.Text>
                         {props.deck.description}
                     </Card.Text>
-                    <Link to={`/decks/${props.deck._id}/flashcards`}>
-                        <Button variant="warning">Flashcards bewerken</Button>
-                    </Link>
-                    <Link to={`/decks/${props.deck._id}/edit`}>
-                        <Button className={"ml-4"} variant={"info"}>Deck bewerken</Button>
-                    </Link>
-                    <Button variant="success" className={'float-right'}>Deck spelen</Button>
+                    {editFlashcardsButton()}
+                    <Button variant="success" className={'float-right'}>Play deck</Button>
                 </Card.Body>
             </Card>
         )
@@ -89,6 +106,7 @@ const UserDecks = (props) => {
 
 function mapStateToProps(state) {
     return {
+        username: state.login.username,
         deck: state.decks.deck,
         isLoading: state.decks.isLoading,
     }
@@ -96,6 +114,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        isLoggedIn: () => dispatch(isLoggedIn()),
         getDeck: (deckId) => dispatch(getDeckAction(deckId)),
     }
 }

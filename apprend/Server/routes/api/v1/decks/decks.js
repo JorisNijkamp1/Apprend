@@ -142,6 +142,7 @@ decks.get('/:deckId/flashcards', async (req, res) => {
             success: true,
             deckId: currentDeck._id,
             name: currentDeck.name,
+            creatorId:  currentDeck.creatorId,
             flashcards: currentDeck.flashcards,
 
         })
@@ -156,17 +157,17 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    const {flashcards} = req.body;
-    const {deckId} = req.params;
+    const { flashcards } = req.body;
+    const { deckId } = req.params;
 
     const username = req.session.username ? req.session.username : req.cookies.username;
     if (!username) return res.status(401).json('Not a user');
 
-    console.log(username);
-    console.log(flashcards);
-    console.log(deckId)
-
     let user = await User.findOne({_id: username});
+
+    if (!user) {
+        console.log('User bestaat niet')
+    }
 
     let newFlashcards = [];
     flashcards.forEach(function (flashcard, key) {
@@ -178,14 +179,15 @@ decks.post('/:deckId/flashcards', async (req, res) => {
         })
     });
 
-    let currentDeck;
+    let currentDeck, deckFound;
     user.decks.forEach(function (deck, key) {
         if (deck._id == deckId) {
             currentDeck = key;
+            deckFound = true;
         }
     });
 
-    if (currentDeck) {
+    if (deckFound) {
         user.decks[currentDeck].flashcards = newFlashcards;
 
         return user.save(async function (err) {

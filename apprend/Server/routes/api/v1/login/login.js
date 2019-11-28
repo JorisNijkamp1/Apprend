@@ -7,6 +7,7 @@ const User = mongoose.model('User')
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
+const authenticationMiddleware = require('./authentication/middleware');
 
 // Body parser
 var bodyParser = require('body-parser');
@@ -65,8 +66,18 @@ login.get('/success', (req, res) => {
 login.get('/error', (req, res) => {
     res.json({
         success: false,
-        username: ''
+        error: "You aren't logged in",
+        session: req.session // <-- for testing
     });
+});
+
+login.post('/check', authenticationMiddleware(), (req, res) => {
+    res.json({
+        loggedIn: true,
+        anonymousUser: (!req.session.passport),
+        username: req.session.username ? req.session.username : req.cookies.username,
+        session: req.session // <-- for testing
+    })
 });
 
 module.exports = login;
