@@ -112,7 +112,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        isLoggedIn: (username) => dispatch(isLoggedIn(username)),
+        isLoggedIn: () => dispatch(isLoggedIn()),
         getUserDecks: (username) => dispatch(getUserDecksAction(username)),
     }
 }

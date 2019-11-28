@@ -155,7 +155,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        isLoggedIn: (username) => dispatch(isLoggedIn(username)),
+        isLoggedIn: () => dispatch(isLoggedIn()),
         getDeckFlashcards: (deckId) => dispatch(getDeckFlashcardsAction(deckId)),
         changeDeckFlashcards: (flashcards) => dispatch(changeDeckFlashcards(flashcards)),
         saveDeckFlashcardsAction: (deckId, flashcards) => dispatch(editDeckFlashcardsAction(deckId, flashcards)),

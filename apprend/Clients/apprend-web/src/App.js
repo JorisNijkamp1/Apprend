@@ -63,7 +63,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        isLoggedIn: (username) => dispatch(isLoggedIn(username)),
+        isLoggedIn: () => dispatch(isLoggedIn()),
     }
 }
 
