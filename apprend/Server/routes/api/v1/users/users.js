@@ -30,7 +30,8 @@ users.get('/:username/decks', async (req, res) => {
                 success: true,
                 decks: {
                     user: !(user.email && user.password) ? 'anonymous user' : user._id,
-                    decks: user.decks
+                    userId: user._id,
+                    decks: user.decks,
                 }
             })
         } else {

@@ -8,7 +8,7 @@ describe(`Home`, () => {
     beforeAll(async () => {
         browser = await puppeteer.launch({
             headless: false,
-            slowMo: 50,
+            slowMo: 500,
             args: [`--window-size=800,800`, `--window-position=0,0`]
         })
         page = await browser.newPage()
@@ -25,21 +25,23 @@ describe(`Home`, () => {
         expect(theTitle).toBe(`React App`)
     })
 
-    test(`Go to create deck`, async () => {
-        await page.goto(`http://localhost:3000/decks/create`)
+    test(`Go to login`, async () => {
+        await page.goto(`http://localhost:3000/login`)
     })
 
-    test(`Fill deck name`, async () => {
-        await page.type(`input#create-deck-form-deckname`, `Nederlands woordjes`, {delay: 15});
+    test(`Fill username`, async () => {
+        await page.type(`input#loginUsernameInput`, `Joris`, {delay: 15});
     })
-    test(`Fill deck description`, async () => {
-        await page.type(`textarea#create-deck-form-description`, `Gaaf deck`, {delay: 15})
+    test(`Fill in password`, async () => {
+        await page.type(`input#loginPasswordInput`, `han`, {delay: 15});
     })
 
-    test(`Go to create flashcards`, async () => {
-        const loginButton = await page.$(`form[name="create-deck"] button`)
+    test(`Login and redirect`, async () => {
+        const loginButton = await page.$(`form[name="login"] button`)
         expect(loginButton).toBeDefined()
         await loginButton.click()
     })
+
+
 })
 
