@@ -7,7 +7,7 @@ const Decks = mongoose.model('Deck');
 const dbConfig = require('./config');
 
 //First code line is for Localhost
-// mongoose.connect(`mongodb+srv://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+// mongoose.connect(`mongodb://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
 mongoose.connect(`mongodb+srv://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbConfig.HOST}/${dbConfig.DB}?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -29,6 +29,7 @@ async function seedUsers() {
             "email": "jorisnijkamp@gmail.com",
             "password": "han",
             "decks": [{
+                "_id": "5ddfadab612b09570c6f3a33",
                 "name": "Frans woordjes",
                 "description": "Mooie lijst met 50 woordjes frans erg gaaf!",
                 "creatorId": "Joris",

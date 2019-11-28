@@ -197,12 +197,39 @@ decks.post('/:deckId/flashcards', async (req, res) => {
                 deck: user.decks[currentDeck]
             })
         })
-    }else {
+    } else {
         return await res.json({
             success: false,
             error: "Deck doesn't exist"
         })
     }
+});
+
+/*====================================
+| EDIT DECK
+*/
+decks.put('/:deckId', async (req, res) => {
+    const {deckId} = req.params;
+    const {name, description, creatorId} = req.body;
+
+    let user = await User.findById(creatorId);
+
+    await user.editDeckname(deckId, name, description);
+
+    let currentDeck;
+
+    user.decks.forEach(deck => {
+        if (deck._id.toString() === deckId) {
+            currentDeck = deck
+        }
+    })
+
+    res.json({
+        success: true,
+        name: name,
+        description: description,
+        deck: currentDeck
+    })
 });
 
 module.exports = decks;

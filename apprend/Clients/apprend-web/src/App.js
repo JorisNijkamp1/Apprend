@@ -12,8 +12,9 @@ import UserDecks from "./components/user-decks/UserDecks";
 import Deck from "./components/user-decks/Deck";
 import {isLoggedIn} from "./redux-store/actions/login/async-actions";
 import * as ReactRedux from "react-redux";
-
+import {DeckEdit} from "./components/user-decks/edit-deck/DeckEdit";
 function App(props) {
+
 
     //Check if user is logged in
     useEffect(() => {
@@ -40,6 +41,9 @@ function App(props) {
                 </Route>
                 <Route exact path={"/decks/:deckId/flashcards"}>
                     <Flashcards/>
+                </Route>
+                <Route exact path={"/decks/:deckId/edit"}>
+                    <DeckEdit/>
                 </Route>
                 <Route path={"/decks/:deckId"}>
                     <Deck/>

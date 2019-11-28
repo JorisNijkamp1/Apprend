@@ -71,7 +71,7 @@ const Flashcards = (props) => {
                             <Button className={'float-right'}
                                     onClick={() => saveFlashcardsAction()}
                                     style={{marginTop: '-8px'}}
-                            >Save deck</Button>
+                            >Save flashcards</Button>
                         </Card.Title>
                     </Card.Header>
                 )
