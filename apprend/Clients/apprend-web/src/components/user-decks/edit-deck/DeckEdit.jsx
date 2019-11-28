@@ -37,7 +37,7 @@ const DeckEditUI = (props) => {
                     <Card.Header style={{backgroundColor: "#EEEEEE"}}>
                         <Card.Title>
                             Edit deck
-                            <Link to={`/${props.deckEdit.creatorId}/decks`}>
+                            <Link to={`/decks/${props.deckEdit._id}`}>
                                 <Button className={'float-right'}
                                         onClick={() =>
                                             props.setDeckEditedAction(props.deckEdit.creatorId, props.deckEdit._id, deckData.deckName, deckData.deckDescription)
