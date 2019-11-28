@@ -36,11 +36,7 @@ async function seedUsers() {
                 // "creatorId": ,
                 // "lastPlayedDate": ,
                 "status": "isEdited",
-                "flashcards": [{
-                    "_id": "Apprende",
-                    "type": "Text only",
-                    "question": "Hello"
-                }]
+                "flashcards": []
             }]
         },
         {
