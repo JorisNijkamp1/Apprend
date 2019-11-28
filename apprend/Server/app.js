@@ -16,7 +16,6 @@ const app = express();
 //Middleware
 app.use(cors({
     // origin: 'http://localhost:3000',
-    // origin: '*',
     origin: function(origin, callback){
         return callback(null, true)
     },

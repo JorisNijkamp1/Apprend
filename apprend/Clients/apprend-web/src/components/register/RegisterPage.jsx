@@ -1,24 +1,24 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel, FormText, Row} from 'react-bootstrap';
-import {registerNewUser} from '../../redux-store/actions/register/actions';
+import {checkEmailExists, registerNewUser} from '../../redux-store/actions/register/async-actions';
 import {PageTitle} from '../shared/PageTitle';
 import {NavigatieBar} from '../shared/navbar/NavigatieBar';
 import {Footer} from '../shared/footer/Footer';
 import {checkUsernameExists} from '../../redux-store/actions/register/async-actions';
+import {
+    emailValid,
+    passwordValid,
+    repeatPasswordValid,
+    usernameValid,
+    registerFormMaySubmit
+} from '../../redux-store/form-validation/validationRules';
 
 export const RegisterPageComponent = props => {
     const [username, setUsername] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [repeatPassword, setRepeatPassword] = useState();
-
-    const formMaySubmit = () => {
-        return usernameValid(username) &&
-            emailValid(email) &&
-            passwordValid(password) &&
-            repeatPasswordValid(password, repeatPassword);
-    };
 
     const handleSubmit = event => {
         event.preventDefault();
@@ -32,10 +32,16 @@ export const RegisterPageComponent = props => {
                 <Row>
                     <Col xs={{'span': 6, 'offset': 3}}>
                         <PageTitle title={'Register a new user'}/>
+                        {(props.newUserRegistered) ?
+                            <p className={'bg-success text-white text-center rounded p-2'}>
+                                You registered a new account! Log in <a href="/login">here</a>.
+                            </p> : ''}
+                        {(props.error !== null) ?
+                            <p className={'bg-danger text-white text-center rounded p-2'}>{props.error}</p> : ''}
                         <Form>
                             <FormGroup>
                                 <FormLabel column={false}>Username</FormLabel>
-                                <FormControl placeholder={'johndoe'}
+                                <FormControl placeholder={'e.g. johndoe'}
                                              type={'text'}
                                              id={'registerUsernameInput'}
                                              onChange={(event) => setUsername(event.target.value)}
@@ -43,18 +49,23 @@ export const RegisterPageComponent = props => {
                                              isValid={usernameValid(username)}
                                              isInvalid={props.usernameExists}
                                              required/>
-                                {(props.usernameExists) ? <FormText className="text-muted">
-                                    '{username}' is not available...
+                                {(props.usernameExists) ? <FormText className="text-muted" id={'usernameExistsWarning'}>
+                                    '{username}' is already in use!
                                 </FormText> : ''}
                             </FormGroup>
                             <FormGroup>
                                 <FormLabel column={false}>E-mail</FormLabel>
-                                <FormControl placeholder={'johndoe@foo.com'}
+                                <FormControl placeholder={'e.g. johndoe@foo.com'}
                                              type={'email'}
                                              id={'registerEmailInput'}
                                              onChange={(event) => setEmail(event.target.value)}
+                                             onBlur={() => props.doCheckEmailExists(email)}
                                              isValid={emailValid(email)}
+                                             isInvalid={props.emailExists}
                                              required/>
+                                {(props.emailExists) ? <FormText className="text-muted" id={'emailExistsWarning'}>
+                                    '{email}' is already in use!
+                                </FormText> : ''}
                             </FormGroup>
                             <FormGroup>
                                 <FormLabel column={false}>Password</FormLabel>
@@ -74,7 +85,7 @@ export const RegisterPageComponent = props => {
                                              isValid={repeatPasswordValid(password, repeatPassword)}
                                              required/>
                             </FormGroup>
-                            {(formMaySubmit()) ?
+                            {(registerFormMaySubmit(username, email, password, repeatPassword)) ?
                                 <Button className={'mx-auto'}
                                         variant={'primary'}
                                         type={'submit'}
@@ -95,26 +106,11 @@ export const RegisterPageComponent = props => {
     )
 };
 
-export const usernameValid = username => {
-    const REGEX_USERNAME = /[^A-Za-z0-9]+/g;
-    return username && !username.match(REGEX_USERNAME);
-};
-
-export const emailValid = email => {
-    return email && email.includes('@') && email.includes('.');
-};
-
-export const passwordValid = password => {
-    return !!password;
-};
-
-export const repeatPasswordValid = (password, repeatPassword) => {
-    return repeatPassword && password && password === repeatPassword;
-};
-
 const mapStateToProps = state => {
     return {
+        'newUserRegistered': state.register.newUserRegistered,
         'usernameExists': state.register.usernameExists,
+        'emailExists': state.register.emailExists,
         'isLoading': state.register.isLoading,
         'error': state.register.error
     }
@@ -123,7 +119,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         'doRegisterNewUser': (username, email, password) => dispatch(registerNewUser(username, email, password)),
-        'doCheckUsernameExists': username => dispatch(checkUsernameExists(username))
+        'doCheckUsernameExists': username => dispatch(checkUsernameExists(username)),
+        'doCheckEmailExists': email => dispatch(checkEmailExists(email))
     }
 };
 
