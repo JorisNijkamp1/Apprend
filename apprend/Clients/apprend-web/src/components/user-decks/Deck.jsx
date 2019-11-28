@@ -55,9 +55,20 @@ const UserDecks = (props) => {
                     <Link to={`/decks/${props.deck._id}/flashcards`}>
                         <Button variant="warning">Deck bewerken</Button>
                     </Link>
+                    {totalFlashcards > 0 ?
                     <Link to={`/decks/${props.deck._id}/play`}>
-                        <Button variant="success" className={'float-right'}>Deck spelen</Button>
+                        <Button variant="success" id="play" className={'float-right'}>Deck spelen</Button>
                     </Link>
+                    :
+                    <div>
+                    <Link to={`/decks/${props.deck._id}/play`}>
+                        <Button variant="success" id="play" disabled className={'float-right'}>Deck spelen</Button>
+                    </Link>
+                    <small className="col buttonInfo text-muted">
+                        A deck has to contain at least 1 flashcard in order to play the deck.
+                    </small>
+                    </div>
+                    }
                 </Card.Body>
             </Card>
         )

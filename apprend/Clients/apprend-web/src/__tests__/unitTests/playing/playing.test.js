@@ -20,21 +20,21 @@ const changeScore = (status) => {
     }
 }
 
-describe(`Updating score`, () => {
-    let array;
+xdescribe(`Shuffle cards`, () => {
+    let cards;
 
     beforeEach(async () => {
-        array = [1, 2, 3, 4, 5];
+        cards = [1, 2, 3, 4, 5];
     });
     
     test('Shuffle cards array', async () => {
-        const result = await shuffleCards(array);
+        const result = await shuffleCards(cards);
         
         console.log(result)
     });
 });
 
-describe(`Updating score`, () => {
+xdescribe(`Updating score`, () => {
     let correct;
     let wrong;
 

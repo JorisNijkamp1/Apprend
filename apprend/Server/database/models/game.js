@@ -3,12 +3,6 @@ const Flashcard = require('./flashcard');
 
 //Create schema
 const gameSchema = new mongoose.Schema({
-    userId: {
-        type: String,
-    },
-    deckId: {
-        type: String,
-    },
     flashcards: {
         type: [{type: Flashcard}],
     },

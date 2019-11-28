@@ -34,7 +34,7 @@ const HomepageUI = (props) => {
                                 <Form.Label column={true}
                                             className={""}>
                                     <strong>
-                                        <Link to={`/${deck.deckUserId}/decks`}>
+                                        <Link id="creator" to={`/${deck.deckUserId}/decks`}>
                                             {deck.deckCreator}
                                         </Link>
                                     </strong>

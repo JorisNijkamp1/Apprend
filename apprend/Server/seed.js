@@ -3,11 +3,10 @@ require('./database/models/user');
 require('./database/models/deck');
 const db = mongoose.connection;
 const Users = mongoose.model('User');
-const Decks = mongoose.model('Deck');
 const dbConfig = require('./config');
 
 //First code line is for Localhost
-// mongoose.connect(`mongodb+srv://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+// mongoose.connect(`mongodb://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
 mongoose.connect(`mongodb+srv://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbConfig.HOST}/${dbConfig.DB}?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -35,11 +34,20 @@ async function seedUsers() {
                 // "creatorId": ,
                 // "lastPlayedDate": ,
                 "status": "isEdited",
-                "flashcards": [{
-                    "_id": "Apprende",
-                    "type": "Text only",
-                    "question": "Hello"
-                }]
+                "flashcards": [
+                    {
+                        "_id": "Apprende",
+                        "type": "Text only",
+                        "question": "Hello",
+                        "answer": "Hoi"
+                    },
+                    {
+                        "_id": "Apprende1",
+                        "type": "Text only",
+                        "question": "Hello1",
+                        "answer": "Hoi1"
+                    },
+                ]
             }]
         },
         {

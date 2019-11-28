@@ -45,7 +45,7 @@ const ScoreComponent = (props) => {
             </Card>
         </Row>
         <Row className={"justify-content-center"}>
-            <NavLink to="/" className="btn btn-blue">
+            <NavLink to="/" id="back" className="btn btn-blue">
                 Go to the homepage
             </NavLink>
         </Row>

@@ -56,7 +56,7 @@ const Deck = (props) => {
                     <Row>
                         <Col xs={{span: 6, offset: 3}}>
                             <Link to={`/decks/${deck._id}`}>
-                                <Button variant="outline-primary" className={'w-100'}>View deck</Button>
+                                <Button variant="outline-primary" id="deck" className={'w-100'}>View deck</Button>
                             </Link>
                         </Col>
                     </Row>

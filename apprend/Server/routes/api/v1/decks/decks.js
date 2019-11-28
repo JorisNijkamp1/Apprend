@@ -165,4 +165,57 @@ decks.post('/:deckId/flashcards', async (req, res) => {
     })
 });
 
+// Insert game
+decks.post('/:deckId/setGame', async (req, res) => {
+    User.find({}, function (err, users) {
+        users.forEach((user, userKey) => {
+            users[userKey].decks.forEach((deck, deckKey) => {
+                if (deck._id == req.params.deckId) {
+                    deck.games = {flashcards: req.body.cards, activeCard: req.body.cards[0]}
+                    res.json({
+                        success: true,
+                        gameId: deck.games._id
+                    })
+                }
+            });
+            user.save();
+        });
+    }).exec();
+});
+
+// Update game
+decks.put('/:deckId/updateGame', async (req, res) => {
+    User.find({}, function (err, users) {
+        users.forEach((user, userKey) => {
+            users[userKey].decks.forEach((deck, deckKey) => {
+                if (deck._id == req.params.deckId) {
+                    if (deck.games[0]._id == req.body.gameId) {
+                        if (req.body.status === "correct") {
+                            deck.games[0] = {flashcards: deck.games[0].flashcards, activeCard: req.body.newCard, correctCards: deck.games[0].correctCards.concat(req.body.oldCard), wrongCards: deck.games[0].wrongCards}
+                        } else if (req.body.status === "wrong") {
+                            deck.games[0] = {flashcards: deck.games[0].flashcards, activeCard: req.body.newCard, correctCards: deck.games[0].correctCards, wrongCards: deck.games[0].wrongCards.concat(req.body.oldCard)}
+                        }
+                    }
+                }
+            });
+            user.save();
+        });
+    }).exec();
+});
+
+// Get data from a specific game
+decks.get('/:deckId/games/:gameId', async (req, res) => {
+    const users = await User.find({});
+    users.forEach((user, userKey) => {
+        users[userKey].decks.forEach((deck, deckKey) => {
+            if (deck.games._id === req.body.gameId) {
+                res.json({
+                    success: true,
+                    game: deck.games
+                })
+            }
+        });
+    });
+});
+
 module.exports = decks;

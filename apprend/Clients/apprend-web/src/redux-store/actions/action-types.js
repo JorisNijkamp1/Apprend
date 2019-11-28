@@ -21,4 +21,7 @@ export const DECKS_SET_DECK_DATA = 'DECKS_SET_DECK_DATA';
 // login
 export const SET_LOGINACTION = 'SET_LOGINACTION';
 
-export const RESET_STATE ='RESET_STATE';
+// playing
+export const RESET_STATE = 'RESET_STATE';
+export const SET_ISLOADING = 'SET_ISLOADING';
+export const SET_GAME_ID = 'SET_GAME_ID';

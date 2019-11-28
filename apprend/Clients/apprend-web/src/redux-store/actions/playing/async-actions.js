@@ -1,8 +1,9 @@
 import {API_URL} from '../../urls';
-import {setCardsAction} from "./actions";
+import {setCardsAction, setLoadingAction, setGameIdAction} from "./actions";
 
 export const getDeck = (deckId) => {
     return async dispatch => {
+        await dispatch(setLoadingAction(true));
         const url = `${API_URL}/decks/${deckId}`;
         const options = {
             method: 'GET',
@@ -16,12 +17,89 @@ export const getDeck = (deckId) => {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    dispatch(setCardsAction(data.deck.flashcards));
+                    setTimeout(function () {
+                        dispatch(setCardsAction(data.deck.flashcards));
+                        dispatch(setLoadingAction(false));
+                    }, 1000);
                     return data.deck;
                 }
             }).catch((err => {
             console.log("Er gaat iets goed fout!");
             console.log(err);
         }))
+    }
+};
+
+export const setGame = (deckId, cards) => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/${deckId}/setGame`;
+        let data = {
+            cards: cards
+        };
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            credentials: 'include',
+            mode: 'cors'
+        };
+        return fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                dispatch(setGameIdAction(data.gameId));
+            }
+        }).catch((err => {
+        console.log("Er gaat iets goed fout!");
+        console.log(err);
+    }))
+    }
+};
+
+export const updateGame = (deckId, gameId, oldCard, newCard, status) => {
+    return async () => {
+        const url = `${API_URL}/decks/${deckId}/updateGame`;
+        let data = {
+            gameId: gameId,
+            oldCard: oldCard,
+            newCard: newCard,
+            status: status
+        };
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            credentials: 'include',
+            mode: 'cors'
+        };
+        fetch(url, options)
+    }
+};
+
+export const getGameData = (deckId, gameId) => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/${deckId}/games/${gameId}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        return fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                return data.game[0]
+            }
+        }).catch((err => {
+        console.log("Er gaat iets goed fout!");
+        console.log(err);
+    }))
     }
 };

@@ -30,10 +30,10 @@ const PlayingCard = (props) => {
         </Card>
         <Row className={"row justify-content-between"}>
             <Col lg={{span: 4}}>
-                <Button className={"btn btn-block btn-green"} onClick={(e) => handleClick(e, "correct")}>Correct</Button>
+                <Button id="correct" className={"btn btn-block btn-green"} onClick={(e) => handleClick(e, "correct")}>Correct</Button>
             </Col>
             <Col lg={{span: 4}}>
-                <Button className={"btn btn-block btn-red"} onClick={(e) => handleClick(e, "wrong")}>Wrong</Button>
+                <Button id="wrong" className={"btn btn-block btn-red"} onClick={(e) => handleClick(e, "wrong")}>Wrong</Button>
             </Col>
         </Row>
     </Container>

@@ -105,6 +105,7 @@ h2{
   height: 100%;
   transform-style: preserve-3d;
   transition: 0.5s;
+  border: 0px;
 }
 
 .flipCard .card .side {
@@ -115,7 +116,7 @@ h2{
   align-items: center;
   font-size: 3em;
   background-color: white;
-  border: 5px solid #7AD765;
+  border: 5px solid #EEEEEE;
   position: absolute;
   box-sizing: border-box;
   z-index: 2;
@@ -131,15 +132,28 @@ h2{
 }
 
 .btn-red {
-  background-color: red;
+  background-color: #dc3545;
 }
 
 .btn-blue {
   background-color: #758BFE;
+  color: white;
+  margin: 20px 0px;
 }
 
 progress[value] {
   appearance: none;
   border: none;
   width: 50%; height: 20px;
+}
+
+progress[value]::-webkit-progress-value {
+  background-image:
+  -webkit-linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, .1) 33%, rgba(0, 0, 0, .1) 66%, transparent 66%),
+  -webkit-linear-gradient(left, #7AD765, #758BFE);
+}
+
+.buttonInfo {
+  display: flex;
+  justify-content: flex-end;
 }
