@@ -28,8 +28,9 @@ export const RegisterPageComponent = props => {
         props.isLoggedIn()
     }, []);
 
+    //If user is already logged in
     useEffect(() => {
-        if (props.username) {
+        if (!props.anonymousUser) {
             history.push('/');
         }
     });
@@ -39,11 +40,11 @@ export const RegisterPageComponent = props => {
         props.doRegisterNewUser(username, email, password);
     };
 
-    if (props.newUserRegistered) {
-        if (props.username === null) {
-            props.doLogin(username, password);
-        }
-    }
+    // if (props.newUserRegistered) {
+    //     if (props.anonymousUser) {
+    //         props.doLogin(username, password);
+    //     }
+    // }
 
     return (
         <>
@@ -52,10 +53,10 @@ export const RegisterPageComponent = props => {
                 <Row>
                     <Col xs={{'span': 6, 'offset': 3}} className={'py-5'}>
                         <PageTitle title={'Register a new user'}/>
-                        {/*{(props.newUserRegistered) ?*/}
-                            {/*<p className={'bg-success text-white text-center rounded p-2'}>*/}
-                                {/*You registered a new account! Log in <a href="/login">here</a>.*/}
-                            {/*</p> : ''}*/}
+                        {(props.newUserRegistered) ?
+                            <p className={'bg-success text-white text-center rounded p-2'}>
+                                You registered a new account! Log in <a href="/login">here</a>.
+                            </p> : ''}
                         {(props.error !== null) ?
                             <p className={'bg-danger text-white text-center rounded p-2'}>{props.error}</p> : ''}
                         <Form>
@@ -129,12 +130,12 @@ export const RegisterPageComponent = props => {
 const mapStateToProps = state => {
     return {
         username: state.login.username,
+        anonymousUser: state.login.anonymousUser,
         'newUserRegistered': state.register.newUserRegistered,
         'usernameExists': state.register.usernameExists,
         'emailExists': state.register.emailExists,
         'isLoading': state.register.isLoading,
         'error': state.register.error,
-        'username': state.login.username
     }
 };
 

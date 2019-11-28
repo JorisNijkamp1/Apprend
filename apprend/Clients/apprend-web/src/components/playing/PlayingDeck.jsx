@@ -36,7 +36,7 @@ const PlayingComponent = (props) => {
             array[i] = temp;
         }
         return array;
-    }
+    };
 
     const changeScore = (id, status) => {
         props.doGetGameData(deckId, props.gameId)

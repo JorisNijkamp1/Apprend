@@ -50,6 +50,10 @@
     color: #7AD765 !important;
 }
 
+.text-red {
+  color: red
+}
+
 .pl-30 {
     padding-left: 30px !important;
 }
