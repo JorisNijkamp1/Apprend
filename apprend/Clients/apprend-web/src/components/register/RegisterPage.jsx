@@ -134,7 +134,6 @@ const mapStateToProps = state => {
         'emailExists': state.register.emailExists,
         'isLoading': state.register.isLoading,
         'error': state.register.error,
-        'username': state.login.username
     }
 };
 

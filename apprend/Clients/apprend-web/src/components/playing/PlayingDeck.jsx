@@ -32,7 +32,7 @@ const PlayingComponent = (props) => {
             array[i] = temp;
         }
         return array;
-    }
+    };
 
     const changeScore = (id, status) => {
         let i = props.correctCards.length + props.wrongCards.length + 1
