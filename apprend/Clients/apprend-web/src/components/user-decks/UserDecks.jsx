@@ -18,11 +18,15 @@ import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 
 const Deck = (props) => {
     const {username} = useParams();
-    const isCreator = (props.username === props.userDecks.user);
+    const isCreator = (props.username === props.userDecks.userId);
 
     useEffect(() => {
         props.getUserDecks(username)
     }, []);
+
+    console.log(isCreator);
+    console.log(props.username)
+    console.log(props.userDecks.user)
 
     const deleteDeckIcon = () => {
         if (isCreator) {
