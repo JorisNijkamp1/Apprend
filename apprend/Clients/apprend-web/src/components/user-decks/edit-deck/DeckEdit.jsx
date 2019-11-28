@@ -9,6 +9,7 @@ import {getDeckEditAction} from "../../../redux-store/actions/decks/async-action
 import {useParams} from "react-router-dom";
 import {setDeckEditAction} from "../../../redux-store/actions/decks/actions";
 import {setDeckEditedAction} from "../../../redux-store/actions/decks/async-actions";
+import {Link} from "react-router-dom";
 
 const DeckEditUI = (props) => {
     const [deckName, setDeckname] = useState('');
@@ -36,11 +37,13 @@ const DeckEditUI = (props) => {
                     <Card.Header style={{backgroundColor: "#EEEEEE"}}>
                         <Card.Title>
                             Edit deck
-                            <Button className={'float-right'}
-                                    onClick={() =>
-                                        props.setDeckEditedAction(props.deckEdit.creatorId, props.deckEdit._id, deckData.deckName, deckData.deckDescription)
-                                    }
-                            >Save deck</Button>
+                            <Link to={`/${props.deckEdit.creatorId}/decks`}>
+                                <Button className={'float-right'}
+                                        onClick={() =>
+                                            props.setDeckEditedAction(props.deckEdit.creatorId, props.deckEdit._id, deckData.deckName, deckData.deckDescription)
+                                        }
+                                >Save deck</Button>
+                            </Link>
                         </Card.Title>
                     </Card.Header>
                     <Card.Body>
