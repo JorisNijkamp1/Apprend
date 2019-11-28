@@ -2,12 +2,10 @@
 const mongoose = require('mongoose')
 const U = require('../../../../../../Server/database/models/user')
 const User = mongoose.model('User', U)
-
 import {setDeckEditAction} from '../../../redux-store/actions/decks/actions';
 import {DECK_EDIT_DATA} from '../../../redux-store/actions/action-types';
 
 describe('Edit a deck', () => {
-
     test('Action type SET_LOGINACTION is correct', () => {
         const expected = DECK_EDIT_DATA;
         const result = setDeckEditAction();
@@ -24,7 +22,7 @@ describe('Edit a deck', () => {
                 "userName": "Joris"
             }
         };
-        const response = await fetch('http://localhost:3001/api/v1/decks/5ddfadab612b09570c6f3a33', {
+        const response = await fetch(`http://localhost:3001/api/v1/decks/5ddfadab612b09570c6f3a33`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

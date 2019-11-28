@@ -29,6 +29,7 @@ async function seedUsers() {
             "email": "jorisnijkamp@gmail.com",
             "password": "han",
             "decks": [{
+                "_id": "5ddfadab612b09570c6f3a33",
                 "name": "Frans woordjes",
                 "description": "Mooie lijst met 50 woordjes frans erg gaaf!",
                 "creatorId": "Joris",
