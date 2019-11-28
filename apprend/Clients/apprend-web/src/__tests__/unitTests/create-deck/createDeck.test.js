@@ -12,7 +12,6 @@ describe('creating a deck for a new anonymous user', () => {
 
     test('creating a deck as new anonymous user', async () => {
         const expectedResult = {
-            _id: String,
             deckName: 'TestName',
             description: 'TestDescription',
             status: 'original'

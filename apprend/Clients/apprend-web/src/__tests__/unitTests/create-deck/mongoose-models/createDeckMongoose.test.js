@@ -4,38 +4,39 @@
 
 'use strict';
 const mongoose = require('mongoose')
-// const User = require('../../../../../../../Server/database/models/user')
 const U = require('../../../../../../../Server/database/models/user')
 const User = mongoose.model('User', U)
-const srvConfig = require('../../../../../../../Server/config');
 
 describe('creating a deck', () => {
 
     let testDeck
+    const username = 'testAccount'
 
     beforeAll(async () => {
         await mongoose.connect(
-            `mongodb+srv://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}/${srvConfig.DB}?retryWrites=true&w=majority`, 
+            `mongodb://localhost:27017/apprendTest`, 
             { useNewUrlParser: true , useUnifiedTopology: true }
         );
     });
 
     beforeEach(async () => {
         await User.create({
-            _id: 'test',
+            _id: username,
             email: '',
             password: '',
-            // decks: []
         })
 
-        testDeck = {
-            deckName: 'First deck',
-            description: 'First testdeck description',
+        testDeck = {            
+            name: 'First Deck',
+            description: 'First Deck Description',
+            creatorId: username,
+            status: 'original',
+            flashcards: [],
         }
     })
 
     afterEach( async () => {
-        // await User.findByIdAndDelete('test')
+        await User.findByIdAndDelete(username)
     })
     
     afterAll(async () => {
@@ -44,59 +45,46 @@ describe('creating a deck', () => {
 
     test('creating a deck as new user without any decks', async () => {
         const expectedResult = {
-            deckName: 'First deck',
-            description: 'First testdeck description',
-            status: 'original',
+            deckName: 'First Deck',
+            description: 'First Deck Description',
+            creatorId: username,
             amountOfDecks: 1,
         }
 
-        let testUser = await User.findById('test')
+        let testUser = await User.findById(username)
         const result = await testUser.addDeck(testDeck)
-        console.log(testUser, result)
 
-        // user = await User.findById('test')
+        testUser = await User.findById(username)
 
-        // expect(result.deckName).toEqual(expectedResult.deckName)
-        // expect(result.description).toEqual(expectedResult.description)
-        // expect(user.decks.length).toEqual(expectedResult.amountOfDecks)
+        expect(testUser.decks[0].name).toEqual(expectedResult.deckName)
+        expect(testUser.decks[0].description).toEqual(expectedResult.description)
+        expect(testUser.decks.length).toEqual(expectedResult.amountOfDecks)
 
     })
 
-    xtest('creating a deck as anonymous user with previous decks', async () => {
+    test('creating a deck as an user with previous decks', async () => {
         const expectedResult = {
-            deckName: 'Second testdeck',
-            description: 'Second testdeck description',
-            status: 'original',
+            deckName: 'Second Deck',
+            description: 'Second Deck Description',
+            amountOfDecks: 2
         }
 
-        // const t = await User.findById('Aaron')
-        // console.log(t)
+        let testUser = await User.findById(username)
+        let result = await testUser.addDeck(testDeck)
 
-        // console.log(User)
+        testDeck = {
+            name: 'Second Deck',
+            description: 'Second Deck Description',
+            creatorId: username,
+            flashcards: [],
+        }
 
-        // const user = await User.findById('test')
+        result = await testUser.addDeck(testDeck)
         
-        // testDeck.deckName = 'Second testdeck'
-        // testDeck.description = 'Second testdeck description'
+        testUser = await User.findById(username)
 
-        // const data = await response.json()
-        // console.log(data)
-
-        // const user = await User.findById(data.creatorId)
-        // console.log('ik kom hier')
-        // const result = await user.addDeck(testDeck)
-
-        // // expect(result._id).not.toBe(madeDeck._id)
-        // expect(result._id).toHaveLength(24)
-        // expect(result.deckName).toEqual(expectedResult.deckName)
-        // expect(result.description).toEqual(expectedResult.description)
-
-        
-    })
-
-
-
-    xtest('creating a deck as a logged in user with previous decks', async () => {
-
+        expect(testUser.decks[1].name).toEqual(expectedResult.deckName)
+        expect(testUser.decks[1].description).toEqual(expectedResult.description)
+        expect(testUser.decks.length).toEqual(expectedResult.amountOfDecks)
     })
 })
