@@ -49,7 +49,7 @@ const EditableFlashcard = (props) => {
 
     return (
         <>
-            <Col xs={12} md={6} lg={4}>
+            <Col xs={12} md={6} lg={4} id={'flashcard-' + flashcardData.id}>
                 <Card border={(flashcardData.term && flashcardData.definition) ? 'success' : 'danger'}
                       className={'mb-4 hover-shadow-editable-flashcard'}
                       text={'dark'}>
@@ -60,9 +60,10 @@ const EditableFlashcard = (props) => {
                     </span>
                     </Card.Header>
                     <Card.Body>
-                        <Form.Group controlId="formBasicEmail">
+                        <Form.Group controlId="form-flashcard">
                             <Form.Label>Term</Form.Label>
                             <Form.Control type="text"
+                                          id={'flashcard-' + flashcardData.id + '-term'}
                                           placeholder="Pets"
                                           onChange={(e) => {
                                               setFlashcardTerm(e.target.value);
@@ -77,6 +78,7 @@ const EditableFlashcard = (props) => {
                             <hr/>
                             <Form.Label>Definition</Form.Label>
                             <Form.Control type="text"
+                                          id={'flashcard-' + flashcardData.id + '-definition'}
                                           placeholder="Haustiere"
                                           onChange={(e) => {
                                               setFlashcardDefinition(e.target.value);

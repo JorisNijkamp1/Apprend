@@ -29,7 +29,7 @@ const UserDecks = (props) => {
     const editFlashcardsButton = () => {
         if (isCreator) {
             return (
-                <Link to={`/decks/${props.deck._id}/flashcards`}>
+                <Link to={`/decks/${props.deck._id}/flashcards`} id={'edit-flashcard-button'}>
                     <Button variant="warning">Edit flashcards</Button>
                 </Link>
             )
