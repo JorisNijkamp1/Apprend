@@ -31,7 +31,7 @@ const UserDecks = (props) => {
             return (
                 <>
                     <Link to={`/decks/${props.deck._id}/flashcards`}>
-                        <Button variant="warning">Edit flashcards</Button>
+                        <Button variant="warning" id={'edit-flashcard-button'}>Edit flashcards</Button>
                     </Link>
                     <Link to={`/decks/${props.deck._id}/edit`}>
                         <Button id={"edit-deck"} className={"ml-4"} variant={"info"}>Edit deck</Button>

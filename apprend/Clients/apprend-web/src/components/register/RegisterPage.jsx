@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel, FormText, Row} from 'react-bootstrap';
 import {checkEmailExists, registerNewUser} from '../../redux-store/actions/register/async-actions';
@@ -13,12 +13,27 @@ import {
     usernameValid,
     registerFormMaySubmit
 } from '../../redux-store/form-validation/validationRules';
+import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
+import {useHistory} from 'react-router'
+
 
 export const RegisterPageComponent = props => {
     const [username, setUsername] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [repeatPassword, setRepeatPassword] = useState();
+    const history = useHistory();
+
+    //Check if user is logged in
+    useEffect(() => {
+        props.isLoggedIn()
+    }, []);
+
+    useEffect(() => {
+        if (props.username) {
+            history.push('/');
+        }
+    });
 
     const handleSubmit = event => {
         event.preventDefault();
@@ -30,7 +45,7 @@ export const RegisterPageComponent = props => {
             <NavigatieBar/>
             <Container>
                 <Row>
-                    <Col xs={{'span': 6, 'offset': 3}}>
+                    <Col xs={{'span': 6, 'offset': 3}} className={'py-5'}>
                         <PageTitle title={'Register a new user'}/>
                         {(props.newUserRegistered) ?
                             <p className={'bg-success text-white text-center rounded p-2'}>
@@ -108,6 +123,7 @@ export const RegisterPageComponent = props => {
 
 const mapStateToProps = state => {
     return {
+        username: state.login.username,
         'newUserRegistered': state.register.newUserRegistered,
         'usernameExists': state.register.usernameExists,
         'emailExists': state.register.emailExists,
@@ -120,7 +136,8 @@ const mapDispatchToProps = dispatch => {
     return {
         'doRegisterNewUser': (username, email, password) => dispatch(registerNewUser(username, email, password)),
         'doCheckUsernameExists': username => dispatch(checkUsernameExists(username)),
-        'doCheckEmailExists': email => dispatch(checkEmailExists(email))
+        'doCheckEmailExists': email => dispatch(checkEmailExists(email)),
+        isLoggedIn: () => dispatch(isLoggedIn()),
     }
 };
 
