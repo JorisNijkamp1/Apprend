@@ -12,7 +12,7 @@ const shuffleCards = (array) => {
     return array;
 }
 
-xdescribe(`Shuffle cards`, () => {
+describe(`Shuffle cards`, () => {
     let cards;
 
     beforeEach(async () => {
@@ -28,7 +28,7 @@ xdescribe(`Shuffle cards`, () => {
 
 describe(`Setting game`, () => {
     test('Setting game successfully', async () => {
-        const deckId = '5dde830753042f31e01a8dfb'
+        const deckId = '5ddfadab612b09570c6f3a33'
         const data = {
             "cards": {
                 "_id" : "Apprende",
