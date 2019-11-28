@@ -12,8 +12,14 @@ import Card from 'react-bootstrap/Card';
 import {Footer} from '../shared/footer/Footer'
 import {getHomepageDecks} from '../../redux-store/actions/home/async-actions';
 import {Link} from 'react-router-dom';
+import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 
 const HomepageUI = (props) => {
+
+    //Check if user is logged in
+    useEffect(() => {
+        props.isLoggedIn()
+    }, []);
 
     useEffect(() => {
         props.getHomepageDecks();
@@ -83,12 +89,14 @@ const HomepageUI = (props) => {
 
 function mapStateToProps(state) {
     return {
+        username: state.login.username,
         deckName: state.client.decksHome,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        isLoggedIn: () => dispatch(isLoggedIn()),
         getHomepageDecks: (deckName) => dispatch(getHomepageDecks(deckName)),
     }
 }
