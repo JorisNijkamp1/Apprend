@@ -28,6 +28,16 @@ userSchema.methods.addDeck = async function(deck){
     return this.decks[this.decks.length-1]
 }
 
+userSchema.methods.deleteDeck = async function(deckId){
+    this.decks = this.decks.filter(deck => {
+        console.log(deck._id, deckId)
+        return deck._id.toString() !== deckId
+    })
+    this.markModified('decks')
+    await this.save()
+    return this
+}
+
 //Create model
 mongoose.model("User", userSchema);
 

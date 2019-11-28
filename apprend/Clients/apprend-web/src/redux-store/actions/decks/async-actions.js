@@ -1,5 +1,5 @@
 import {API_URL} from '../../urls'
-import {setDeckAction, setIsLoading, setUserDecksAction} from "./actions";
+import {setDeckAction, setIsLoading, setUserDecksAction, setUserDecksDecksAction} from "./actions";
 
 export const getUserDecksAction = (username) => {
     return async dispatch => {
@@ -46,3 +46,20 @@ export const getDeckAction = (deckId) => {
         }
     }
 };
+
+export const deleteDeckFromUser = (deckId) => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/${deckId}`
+        const response = await fetch(url, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        if (response.status === 200){
+            const data = await response.json()
+            dispatch(setUserDecksDecksAction(data))
+        }
+    }
+}

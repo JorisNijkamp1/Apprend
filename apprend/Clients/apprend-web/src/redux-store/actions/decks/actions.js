@@ -1,7 +1,7 @@
 import {
     CREATEDECK_SET_ISLOADING,
     DECKS_ADD_DECK, DECKS_SET_DECK, DECKS_SET_DECK_DATA, DECKS_SET_ISLOADING,
-    DECKS_SET_USER_DECKS
+    DECKS_SET_USER_DECKS, DECKS_SET_USERDECKS_DECKS
 } from "../action-types";
 
 export function decksAddDeckAction(deck){
@@ -36,5 +36,12 @@ export function setIsLoading(bool){
     return {
         type: DECKS_SET_ISLOADING,
         payload: bool
+    }
+}
+
+export function setUserDecksDecksAction(decks){
+    return {
+        type: DECKS_SET_USERDECKS_DECKS,
+        payload: decks
     }
 }
