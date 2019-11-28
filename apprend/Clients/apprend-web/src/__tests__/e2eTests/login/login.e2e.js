@@ -8,7 +8,7 @@ describe(`Home`, () => {
     beforeAll(async () => {
         browser = await puppeteer.launch({
             headless: false,
-            slowMo: 1000,
+            slowMo: 500,
             args: [`--window-size=800,800`, `--window-position=0,0`]
         })
         page = await browser.newPage()
@@ -32,14 +32,16 @@ describe(`Home`, () => {
     test(`Fill username`, async () => {
         await page.type(`input#loginUsernameInput`, `Joris`, {delay: 15});
     })
-    test(`Fill deck description`, async () => {
+    test(`Fill in password`, async () => {
         await page.type(`input#loginPasswordInput`, `han`, {delay: 15});
     })
 
-    test(`Go to create flashcards`, async () => {
+    test(`Login and redirect`, async () => {
         const loginButton = await page.$(`form[name="login"] button`)
         expect(loginButton).toBeDefined()
         await loginButton.click()
     })
+
+
 })
 
