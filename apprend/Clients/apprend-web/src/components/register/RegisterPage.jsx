@@ -14,6 +14,7 @@ import {
     registerFormMaySubmit
 } from '../../redux-store/form-validation/validationRules';
 import {isLoggedIn, userLogin} from '../../redux-store/actions/login/async-actions';
+import {useHistory} from 'react-router-dom';
 
 export const RegisterPageComponent = props => {
     const [username, setUsername] = useState();
