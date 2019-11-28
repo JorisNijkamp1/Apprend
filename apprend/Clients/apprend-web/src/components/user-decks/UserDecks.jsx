@@ -39,7 +39,7 @@ const Deck = (props) => {
         }
     };
 
-    let loader, userDecks;
+    let loader, userDecks, error;
     if (props.isLoading) {
         loader = (
             <Row className="mx-auto align-items-center flex-column py-5">
@@ -48,33 +48,52 @@ const Deck = (props) => {
             </Row>
         )
     } else {
-        userDecks = props.userDecks.decks.map((deck, key) =>
-            <Card key={deck.name + key} style={{minWidth: '300px'}} id={'card-' + key}>
-                <Card.Body>
-                    <Card.Title>
+        if(props.userDecks.toString() === 'no-decks') {
+            error = (
+                <Row className="mx-auto align-items-center flex-column py-5">
+                    <h2>User not found... 🙄</h2>
+                </Row>
+            )
+        }
+
+        if(props.userDecks.decks.length === 0) {
+            error = (
+                <Row className="mx-auto align-items-center flex-column py-5">
+                    <h2>User has no... ☹️</h2>
+                </Row>
+            )
+        }
+
+        if (props.userDecks.decks) {
+            userDecks = props.userDecks.decks.map((deck, key) =>
+                <Card key={deck.name + key} style={{minWidth: '300px'}} id={'card-' + key}>
+                    <Card.Body>
+                        <Card.Title>
+                            <Row>
+                                <Col xs={isCreator ? 10 : 12}>
+                                    {deck.name}
+                                </Col>
+                                {deleteDeckIcon()}
+                            </Row>
+                        </Card.Title>
+                        <Card.Subtitle className="mb-2 text-muted">
+                            With {deck.flashcards.length} {(deck.flashcards.length > 1) ? 'flashcards' : 'flashcard'}
+                        </Card.Subtitle>
+                        <Card.Text>
+                            {deck.description}
+                        </Card.Text>
                         <Row>
-                            <Col xs={isCreator ? 10 : 12}>
-                                {deck.name}
+                            <Col xs={{span: 6, offset: 3}}>
+                                <Link to={`/decks/${deck._id}`}>
+                                    <Button variant="outline-primary" className={'w-100'} id={'card-' + key + '-link'}>View
+                                        deck</Button>
+                                </Link>
                             </Col>
-                            {deleteDeckIcon()}
                         </Row>
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                        With {deck.flashcards.length} {(deck.flashcards.length > 1) ? 'flashcards' : 'flashcard'}
-                    </Card.Subtitle>
-                    <Card.Text>
-                        {deck.description}
-                    </Card.Text>
-                    <Row>
-                        <Col xs={{span: 6, offset: 3}}>
-                            <Link to={`/decks/${deck._id}`}>
-                                <Button variant="outline-primary" className={'w-100'} id={'card-' + key + '-link'}>View deck</Button>
-                            </Link>
-                        </Col>
-                    </Row>
-                </Card.Body>
-            </Card>
-        )
+                    </Card.Body>
+                </Card>
+            )
+        }
     }
 
     return (
@@ -91,6 +110,7 @@ const Deck = (props) => {
                     </Col>
                 </Row>
                 {loader}
+                {error}
                 <Row>
                     <CardColumns>
                         {userDecks}
