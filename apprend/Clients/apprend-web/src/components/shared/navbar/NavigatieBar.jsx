@@ -4,9 +4,22 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav"
 import Container from "react-bootstrap/Container";
 import {Link} from "react-router-dom";
+import NavDropdown from "react-bootstrap/NavDropdown";
 
 const NavbarUI = (props) => {
-    const logedIn = () => {
+
+    const logout = () => {
+        if (!props.anonymousUser) {
+            return (
+                <>
+                    <NavDropdown.Divider/>
+                    <NavDropdown.Item onClick={()=> console.log('TODO: Logout Fetch')}>Logout</NavDropdown.Item>
+                </>
+            )
+        }
+    }
+
+    const loggedIn = () => {
         if (props.username === null) {
             return (
                 <>
@@ -21,9 +34,12 @@ const NavbarUI = (props) => {
         } else {
             return (
                 <>
-                    <Nav.Link as={Link} className="text-white pl-30" to={"#"}>
-                        Logged in as: <strong>{props.username}</strong>
-                    </Nav.Link>
+                    <NavDropdown title={props.anonymousUser ? 'Welcome Guest' : 'Welcome ' + props.username}
+                                 id="basic-nav-dropdown" className="text-white pl-30">
+                        <Nav.Link as={Link} className="pl-30" to={'/' + props.username + '/decks'}>My Decks</Nav.Link>
+                        <Nav.Link as={Link} className="pl-30" to={'/register'}>Register</Nav.Link>
+                        {logout()}
+                    </NavDropdown>
                 </>
             )
         }
@@ -38,7 +54,7 @@ const NavbarUI = (props) => {
                     <Nav>
                         <Nav.Link as={Link} className="text-white pl-30" to="/decks/create">Create
                             Deck</Nav.Link>
-                        {logedIn()}
+                        {loggedIn()}
                     </Nav>
                 </Navbar.Collapse>
             </Container>
@@ -48,7 +64,8 @@ const NavbarUI = (props) => {
 
 function mapStateToProps(state) {
     return {
-        username: state.login.username
+        username: state.login.username,
+        anonymousUser: state.login.anonymousUser
     }
 }
 

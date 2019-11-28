@@ -15,21 +15,22 @@ import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
-
-    useEffect(() => {
-        props.getDeck(deckId)
-    }, []);
+    const isCreator = (props.username === props.deck.creatorId);
 
     //Check if user is logged in
     useEffect(() => {
         props.isLoggedIn()
     }, []);
 
+    useEffect(() => {
+        props.getDeck(deckId)
+    }, []);
+
     const editFlashcardsButton = () => {
-        if (props.username === props.deck.creatorId) {
+        if (isCreator) {
             return (
                 <Link to={`/decks/${props.deck._id}/flashcards`}>
-                    <Button variant="warning">Deck bewerken</Button>
+                    <Button variant="warning">Edit flashcards</Button>
                 </Link>
             )
         }
@@ -69,7 +70,7 @@ const UserDecks = (props) => {
                         {props.deck.description}
                     </Card.Text>
                     {editFlashcardsButton()}
-                    <Button variant="success" className={'float-right'}>Deck spelen</Button>
+                    <Button variant="success" className={'float-right'}>Play deck</Button>
                 </Card.Body>
             </Card>
         )
@@ -100,9 +101,9 @@ const UserDecks = (props) => {
 
 function mapStateToProps(state) {
     return {
+        username: state.login.username,
         deck: state.decks.deck,
         isLoading: state.decks.isLoading,
-        username: state.login.username,
     }
 }
 

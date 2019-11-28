@@ -74,8 +74,8 @@ login.get('/error', (req, res) => {
 login.post('/check', authenticationMiddleware(), (req, res) => {
     res.json({
         loggedIn: true,
-        anonymousUser: !!(req.session.passport),
-        username: req.session.username,
+        anonymousUser: (!req.session.passport),
+        username: req.session.username ? req.session.username : req.cookies.username,
         session: req.session // <-- for testing
     })
 });

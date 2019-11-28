@@ -142,6 +142,7 @@ decks.get('/:deckId/flashcards', async (req, res) => {
             success: true,
             deckId: currentDeck._id,
             name: currentDeck.name,
+            creatorId:  currentDeck.creatorId,
             flashcards: currentDeck.flashcards,
 
         })

@@ -1,6 +1,7 @@
 import {API_URL} from "../../urls";
 import {changeDeckFlashcards, setIsLoading} from "../flashcards/actions";
 import {setDeckDataAction} from "../decks/actions";
+import {setIsSaving} from "./actions";
 
 export const getDeckFlashcardsAction = (deckId) => {
     return async dispatch => {
@@ -34,31 +35,30 @@ export const getDeckFlashcardsAction = (deckId) => {
                         definition: ''
                     })
                 }
-                console.log(flashcards);
 
                 dispatch(changeDeckFlashcards(flashcards));
                 dispatch(setDeckDataAction({
                     deckId: data.deckId,
-                    deckName: data.name
+                    deckName: data.name,
+                    creatorId: data.creatorId
                 }));
                 dispatch(setIsLoading(false))
             }, 750);
-        }else if (!data.flashcards) {
-            setTimeout(function () {
-                console.log("Deck doesn't exits");
-                dispatch(setDeckDataAction({
-                    error: true,
-                    deckId: null,
-                    deckName: null
-                }));
-                dispatch(setIsLoading(false))
-            }, 750);
+        } else if (!data.flashcards) {
+            console.log("Deck doesn't exits");
+            dispatch(setDeckDataAction({
+                error: true,
+                deckId: null,
+                deckName: null
+            }));
+            dispatch(setIsLoading(false))
         }
     }
 };
 
 export const editDeckFlashcardsAction = (deckId, flashcards) => {
     return async dispatch => {
+        await dispatch(setIsSaving(true))
         const url = `${API_URL}/decks/${deckId}/flashcards`;
         let data = {
             flashcards: flashcards,
@@ -75,13 +75,18 @@ export const editDeckFlashcardsAction = (deckId, flashcards) => {
         const response = await fetch(url, options);
         const result = await response.json();
         if (result.success) {
-            setTimeout(function () {
-                console.log(result)
-            }, 750);
-        }else if (!result.flashcards) {
-            setTimeout(function () {
-                console.log(result)
-            }, 750);
+            const result = () => {
+                return new Promise(function (resolve) {
+                    setTimeout(async function () {
+                        await dispatch(setIsSaving(false))
+                        resolve('success');
+                    }, 1000);
+                });
+            };
+            return result()
+
+        } else {
+            console.log(result)
         }
     }
 };

@@ -1,5 +1,6 @@
 import {API_URL} from "../../urls";
 import {setLoginAction} from './actions.js'
+import {setAnonymousUserAction} from "./actions";
 
 export const userLogin = (username, password) => {
     return async dispatch => {
@@ -51,9 +52,11 @@ export const isLoggedIn = () => {
         return fetch(url, options)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 if (data.loggedIn) {
                     console.log('You are logged in');
+                    if (!data.anonymousUser) {
+                        dispatch(setAnonymousUserAction(false))
+                    }
                     dispatch(setLoginAction(data.username));
                     return true
                 } else {

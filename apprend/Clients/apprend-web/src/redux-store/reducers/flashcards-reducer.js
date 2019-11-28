@@ -1,4 +1,4 @@
-import {FLASHCARDS_DECKFLASHCARDS, FLASHCARDS_SET_ISLOADING} from '../actions/action-types'
+import {FLASHCARDS_DECKFLASHCARDS, FLASHCARDS_SET_ISLOADING, FLASHCARDS_SET_ISSAVING} from '../actions/action-types'
 
 const initialState = {
     deckFlashcards: [{
@@ -6,7 +6,8 @@ const initialState = {
         term: '',
         definition: ''
     }],
-    isLoading: true
+    isLoading: true,
+    isSaving: false,
 };
 
 export default function createFlashcardReducer(state = initialState, action) {
@@ -16,6 +17,9 @@ export default function createFlashcardReducer(state = initialState, action) {
 
         case FLASHCARDS_SET_ISLOADING:
             return {...state, isLoading: action.payload};
+
+        case FLASHCARDS_SET_ISSAVING:
+            return {...state, isSaving: action.payload};
 
         default:
             return state
