@@ -42,6 +42,7 @@ const EditableFlashcard = (props) => {
         flashcardDeleteIcon = (
             <FontAwesomeIcon icon={faTrash}
                              className={'trash-icon'}
+                             id={'flashcard-' + flashcardData.id + '-delete-icon'}
                              onClick={() => deleteFlashcard(props.flashcardId)}
             />
         )
@@ -60,7 +61,7 @@ const EditableFlashcard = (props) => {
                     </span>
                     </Card.Header>
                     <Card.Body>
-                        <Form.Group controlId="form-flashcard">
+                        <Form.Group>
                             <Form.Label>Term</Form.Label>
                             <Form.Control type="text"
                                           id={'flashcard-' + flashcardData.id + '-term'}
