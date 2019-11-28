@@ -3,11 +3,13 @@ const mongoose = require('mongoose')
 const login = express.Router();
 require('../../../../database/models/deck');
 require('../../../../database/models/user');
+var bcrypt = require('bcryptjs');
 const User = mongoose.model('User')
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
 const authenticationMiddleware = require('./authentication/middleware');
+const config = require('../../../../config');
 
 // Body parser
 var bodyParser = require('body-parser');
@@ -23,14 +25,14 @@ login.use(flash());
 passport.use(new LocalStrategy(
     function (username, password, done) {
         User.findOne({_id: username}, function (err, user) {
-
+            const hashedPassword = bcrypt.hashSync(password, config.PASSWORD_SALT);
             if (err) {
                 return done(err);
             }
             if (!user) {
                 return done(null, false, {message: 'username-incorrect'});
             }
-            if (password !== user.password) {
+            if (bcrypt.compareSync(hashedPassword, user.password)) {
                 return done(null, false, {message: 'password-incorrect'});
             }
             return done(null, user);
