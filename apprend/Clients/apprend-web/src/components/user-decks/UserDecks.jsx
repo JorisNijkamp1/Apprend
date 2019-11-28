@@ -24,10 +24,6 @@ const Deck = (props) => {
         props.getUserDecks(username)
     }, []);
 
-    console.log(isCreator);
-    console.log(props.username)
-    console.log(props.userDecks.user)
-
     const deleteDeckIcon = () => {
         if (isCreator) {
             return (
