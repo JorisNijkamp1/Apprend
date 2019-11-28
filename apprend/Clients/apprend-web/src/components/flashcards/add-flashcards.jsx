@@ -60,7 +60,7 @@ const Flashcards = (props) => {
                     </Row>
                 )
             }
-        }
+        };
 
         const deckHeader = () => {
             if (deckExist && !props.isLoading && isCreator) {
@@ -69,6 +69,7 @@ const Flashcards = (props) => {
                         <Card.Title>
                             <span>{props.deckData.deckName}</span>
                             <Button className={'float-right'}
+                                    id={'save-flashcards-button'}
                                     onClick={() => saveFlashcardsAction()}
                                     style={{marginTop: '-8px'}}
                             >Save flashcards</Button>
