@@ -13,6 +13,7 @@ const EditableFlashcard = (props) => {
 
     const [flashcardDefinition, setFlashcardDefinition] = useState('');
     const [flashcardDefinitionEdited, setFlashcardDefinitionEdited] = useState(false);
+
     const flashcardName = (flashcardTerm === '' && !props.term) ? 'Empty flashcard' : ((props.term && !flashcardTermEdited) ? props.term : flashcardTerm);
 
     const flashcardData = {

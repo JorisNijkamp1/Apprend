@@ -1,7 +1,8 @@
 import {
     CREATEDECK_SET_ISLOADING,
     DECKS_ADD_DECK, DECKS_SET_DECK, DECKS_SET_DECK_DATA, DECKS_SET_ISLOADING,
-    DECKS_SET_USER_DECKS, DECKS_SET_USERDECKS_DECKS
+    DECKS_SET_USER_DECKS, DECKS_SET_USERDECKS_DECKS,
+    DECKS_SET_USER_DECKS, DECK_EDIT_DATA
 } from "../action-types";
 
 export function decksAddDeckAction(deck){
@@ -43,5 +44,11 @@ export function setUserDecksDecksAction(decks){
     return {
         type: DECKS_SET_USERDECKS_DECKS,
         payload: decks
+    }
+}
+export function setDeckEditAction(deckEdit){
+    return {
+        type: DECK_EDIT_DATA,
+        payload: deckEdit
     }
 }

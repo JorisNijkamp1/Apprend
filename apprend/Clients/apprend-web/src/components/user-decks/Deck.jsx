@@ -29,14 +29,19 @@ const UserDecks = (props) => {
     const editFlashcardsButton = () => {
         if (isCreator) {
             return (
-                <Link to={`/decks/${props.deck._id}/flashcards`}>
-                    <Button variant="warning">Edit flashcards</Button>
-                </Link>
+                <>
+                    <Link to={`/decks/${props.deck._id}/flashcards`}>
+                        <Button variant="warning">Edit flashcards</Button>
+                    </Link>
+                    <Link to={`/decks/${props.deck._id}/edit`}>
+                        <Button id={"edit-deck"} className={"ml-4"} variant={"info"}>Edit deck</Button>
+                    </Link>
+                </>
             )
         }
     };
 
-    let loader, deck;
+    let loader, deck, error;
     if (props.isLoading) {
         loader = (
             <Row className="mx-auto align-items-center flex-column py-5">
@@ -45,35 +50,45 @@ const UserDecks = (props) => {
             </Row>
         )
     } else {
+        if (props.deck.toString() === 'deck-not-found') {
+            error = (
+                <Row className="mx-auto align-items-center flex-column py-5">
+                    <h2>Deck not found... ☹️</h2>
+                </Row>
+            )
+        }
+
         let totalFlashcards = 0;
         if (props.deck.flashcards) {
             totalFlashcards = props.deck.flashcards.length
         }
-        deck = (
-            <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
-                <Card.Body>
-                    <Card.Title>{props.deck.name}</Card.Title>
-                    <Card.Subtitle>
-                        <Row>
-                            <Col xs={12} md={4}>
-                                <b>Created on: </b>{props.deck.creationDate}
-                            </Col>
-                            <Col xs={12} md={4}>
-                                <b>Created by: </b>{props.deck.userName}
-                            </Col>
-                            <Col xs={12} md={4}>
-                                <b>Total flashcards: </b>{totalFlashcards}
-                            </Col>
-                        </Row>
-                    </Card.Subtitle>
-                    <Card.Text>
-                        {props.deck.description}
-                    </Card.Text>
-                    {editFlashcardsButton()}
-                    <Button variant="success" className={'float-right'}>Play deck</Button>
-                </Card.Body>
-            </Card>
-        )
+        if (props.deck.toString() !== 'deck-not-found'){
+            deck = (
+                <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
+                    <Card.Body>
+                        <Card.Title>{props.deck.name}</Card.Title>
+                        <Card.Subtitle>
+                            <Row>
+                                <Col xs={12} md={4}>
+                                    <b>Created on: </b>{props.deck.creationDate}
+                                </Col>
+                                <Col xs={12} md={4}>
+                                    <b>Created by: </b>{props.deck.userName}
+                                </Col>
+                                <Col xs={12} md={4}>
+                                    <b>Total flashcards: </b>{totalFlashcards}
+                                </Col>
+                            </Row>
+                        </Card.Subtitle>
+                        <Card.Text>
+                            {props.deck.description}
+                        </Card.Text>
+                        {editFlashcardsButton()}
+                        <Button variant="success" className={'float-right'}>Play deck</Button>
+                    </Card.Body>
+                </Card>
+            )
+        }
     }
 
     return (
@@ -90,6 +105,7 @@ const UserDecks = (props) => {
                     </Col>
                 </Row>
                 {loader}
+                {error}
                 <Row>
                     {deck}
                 </Row>

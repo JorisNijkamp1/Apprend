@@ -105,7 +105,7 @@ const Deck = (props) => {
         }
     };
 
-    let loader, userDecks;
+    let loader, userDecks, error;
     if (props.isLoading) {
         loader = (
             <Row className="mx-auto align-items-center flex-column py-5">
@@ -144,6 +144,22 @@ const Deck = (props) => {
             </Card>
             </Col>
         )
+    } else {
+        if(props.userDecks.toString() === 'no-decks') {
+            error = (
+                <Row className="mx-auto align-items-center flex-column py-5">
+                    <h2>User not found... 🙄</h2>
+                </Row>
+            )
+        }
+
+        if(props.userDecks.decks.length === 0) {
+            error = (
+                <Row className="mx-auto align-items-center flex-column py-5">
+                    <h2>User has no... ☹️</h2>
+                </Row>
+            )
+        }
     }
 
     return (
@@ -160,6 +176,7 @@ const Deck = (props) => {
                     </Col>
                 </Row>
                 {loader}
+                {error}
                 <Row>
                     {/* <CardColumns> */}
                         {userDecks}
