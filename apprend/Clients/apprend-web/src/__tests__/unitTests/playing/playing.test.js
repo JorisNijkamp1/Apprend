@@ -12,14 +12,6 @@ const shuffleCards = (array) => {
     return array;
 }
 
-const changeScore = (status) => {
-    if (status === "correct") {
-        return correct += 1;
-    } else if (status === "wrong") {
-        return wrong += 1;
-    }
-}
-
 xdescribe(`Shuffle cards`, () => {
     let cards;
 
@@ -34,32 +26,29 @@ xdescribe(`Shuffle cards`, () => {
     });
 });
 
-xdescribe(`Updating score`, () => {
-    let correct;
-    let wrong;
-
-    beforeEach(async () => {
-        correct = 0;
-        wrong = 0;
-    });
-
-    test('Updating correct score', async () => {
-        const result = await changeScore('correct');
-
-        expect(result).toEqual(1);
-    });
-
-    test('Updating wrong score', async () => {
-        const result = await changeScore('wrong');
+describe(`Setting game`, () => {
+    test('Setting game successfully', async () => {
+        const deckId = '5dde830753042f31e01a8dfb'
+        const data = {
+            "cards": {
+                "_id" : "Apprende",
+                "type" : "Text only",
+                "question" : "Hello",
+                "answer" : "Hoi"
+            }
+        };
     
-        expect(result).toEqual(1);
-    });
+        const response = await fetch('http://localhost:3001/api/v1/decks/' + deckId + '/setGame', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        })
+        const result = await response.json();
     
-    test('Updating both scores', async () => {
-        await changeScore('correct');
-        await changeScore('wrong');
-        await changeScore('correct');
-    
-        expect(correct).toEqual(2) && expect(wrong).toEqual(1);
+        expect(result.success).toBe(true)
     });
-});
+})

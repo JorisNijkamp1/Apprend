@@ -32,8 +32,8 @@ describe(`Playing`, () => {
   });
 
   test(`Choose a deck from the author`, async () => {
-    await page.waitFor(`[id="deck"]`);
-    const deckButton = await page.$(`button[id="deck"]`)
+    await page.waitFor(`[id="card-0-link"]`);
+    const deckButton = await page.$(`button[id="card-0-link"]`)
     expect(deckButton).toBeDefined()
     await deckButton.click()
   });
@@ -46,10 +46,16 @@ describe(`Playing`, () => {
   });
 
   test(`The card is correct`, async () => {
-    await page.waitFor(`button[id="correct"]`);
+    await page.waitFor(`[id="correct"]`);
     const correctButton = await page.$(`button[id="correct"]`)
     expect(correctButton).toBeDefined()
     await correctButton.click()
+  });
+
+  test(`Flip the card at click`, async () => {
+    const card = await page.$(`div[id="card"]`)
+    expect(card).toBeDefined()
+    await card.click()
   });
 
   test(`Flip the card at click`, async () => {
@@ -62,12 +68,6 @@ describe(`Playing`, () => {
     const wrongButton = await page.$(`button[id="wrong"]`)
     expect(wrongButton).toBeDefined()
     await wrongButton.click()
-  });
-
-  test(`Flip the card at click`, async () => {
-    const card = await page.$(`div[id="card"]`)
-    expect(card).toBeDefined()
-    await card.click()
   });
 
   test(`Click the stop button`, async () => {
