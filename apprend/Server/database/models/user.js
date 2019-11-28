@@ -20,11 +20,24 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.methods.addDeck = async function(deck){
+userSchema.methods.addDeck = async function (deck) {
     this.decks.push(deck)
     this.markModified('decks')
     await this.save()
-    return this.decks[this.decks.length-1]
+    return this.decks[this.decks.length - 1]
+}
+
+userSchema.methods.editDeckname = async function (deckId, name, description) {
+    this.decks = this.decks.map(deck => {
+        if (deck._id.toString() === deckId) {
+            deck.name = name
+            deck.description = description
+        }
+        return deck
+    })
+    this.markModified('decks')
+    await this.save();
+    return this
 }
 
 //Create model

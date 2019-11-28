@@ -37,7 +37,9 @@ const DeckEditUI = (props) => {
                         <Card.Title>
                             Edit deck
                             <Button className={'float-right'}
-                                    onClick={setDeckEditedAction(props.deckEdit._id, deckData.deckName, deckData.deckDescription)}
+                                    onClick={() =>
+                                        props.setDeckEditedAction(props.deckEdit.creatorId, props.deckEdit._id, deckData.deckName, deckData.deckDescription)
+                                    }
                             >Save deck</Button>
                         </Card.Title>
                     </Card.Header>
@@ -52,7 +54,7 @@ const DeckEditUI = (props) => {
                                     </Card.Header>
                                     <Card.Body>
                                         <Form.Group controlId="formBasicEmail">
-                                            <Form.Label>{props.deckEdit.name}</Form.Label>
+                                            <Form.Label>Edit your deck</Form.Label>
                                             <Form.Control type="text"
                                                           placeholder="Haustiere"
                                                           value={deckData.deckName}
@@ -101,6 +103,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getDecksEdit: (deckId) => dispatch(getDeckEditAction(deckId)),
+        setDeckEditedAction: (creatorId, _id, deckName, deckDescription) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription))
     }
 }
 

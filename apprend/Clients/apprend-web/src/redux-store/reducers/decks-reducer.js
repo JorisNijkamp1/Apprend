@@ -37,6 +37,7 @@ export default function decksReducer(state = initialState, action) {
 
             case DECK_EDIT_DATA:
                 draft['deckEdit'] = action.payload;
+                break;
 
             default:
                 return draft

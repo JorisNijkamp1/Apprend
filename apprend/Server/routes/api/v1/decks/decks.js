@@ -156,8 +156,8 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    const { flashcards } = req.body;
-    const { deckId } = req.params;
+    const {flashcards} = req.body;
+    const {deckId} = req.params;
 
     const username = req.session.username ? req.session.username : req.cookies.username;
     if (!username) return res.status(401).json('Not a user');
@@ -195,7 +195,7 @@ decks.post('/:deckId/flashcards', async (req, res) => {
                 deck: user.decks[currentDeck]
             })
         })
-    }else {
+    } else {
         return await res.json({
             success: false,
             error: "Deck doesn't exist"
@@ -207,9 +207,18 @@ decks.post('/:deckId/flashcards', async (req, res) => {
 | EDIT DECK
 */
 decks.put('/:deckId', async (req, res) => {
+    const {deckId} = req.params;
+    const {name, description, creatorId} = req.body;
 
-    await res.json({
+    let user = await User.findById(creatorId);
+
+    await user.editDeckname(deckId, name, description);
+
+    res.json({
         success: true,
+        name: name,
+        description: description,
+        deck: user.decks
     })
 });
 

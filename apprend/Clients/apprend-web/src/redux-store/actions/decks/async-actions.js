@@ -67,16 +67,17 @@ export const getDeckEditAction = (deckId) => {
     }
 }
 
-export const setDeckEditedAction = (deckId, deckName, deckDescription) => {
+export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription) => {
     return async dispatch => {
         const url = `${API_URL}/decks/${deckId}`;
-        let data = {
+        let body = {
             name: deckName,
-            description: deckDescription
+            description: deckDescription,
+            creatorId: creatorId
         };
         const options = {
             method: 'PUT',
-            body: JSON.stringify(data),
+            body: JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -84,10 +85,10 @@ export const setDeckEditedAction = (deckId, deckName, deckDescription) => {
             mode: 'cors'
         };
         const response = await fetch(url, options);
-        const result = await response.json();
-        if (result.success) {
-            console.log(data)
-            // dispatch(setDeckEditAction(data))
+        const data = await response.json();
+        if (data.success) {
+            console.log(data.deck)
+            dispatch(setDeckEditAction(data.deck));
         }
     }
 }
