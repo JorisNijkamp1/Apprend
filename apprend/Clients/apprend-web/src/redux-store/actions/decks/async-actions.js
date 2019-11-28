@@ -87,7 +87,6 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
         const response = await fetch(url, options);
         const data = await response.json();
         if (data.success) {
-            console.log(data.deck)
             dispatch(setDeckEditAction(data.deck));
         }
     }

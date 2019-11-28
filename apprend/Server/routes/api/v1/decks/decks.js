@@ -216,11 +216,19 @@ decks.put('/:deckId', async (req, res) => {
 
     await user.editDeckname(deckId, name, description);
 
+    let currentDeck;
+
+    user.decks.forEach(deck => {
+        if (deck._id.toString() === deckId) {
+            currentDeck = deck
+        }
+    })
+
     res.json({
         success: true,
         name: name,
         description: description,
-        deck: user.decks
+        deck: currentDeck
     })
 });
 
