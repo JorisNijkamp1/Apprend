@@ -1,7 +1,4 @@
-import {SET_PLAYING_CARDS} from '../action-types';
-import {SET_CORRECT_CARDS} from '../action-types';
-import {SET_WRONG_CARDS} from '../action-types';
-import {SET_ACTIVE_CARD} from '../action-types';
+import {SET_PLAYING_CARDS, SET_CORRECT_CARDS, SET_WRONG_CARDS, SET_ACTIVE_CARD, RESET_STATE, SET_ISLOADING, SET_GAME_ID} from '../action-types';
 
 export function setCardsAction(cards){
     return {
@@ -28,5 +25,25 @@ export function setActiveCardAction(card){
     return {
         type: SET_ACTIVE_CARD,
         payload: card
+    }
+}
+
+export function resetStateAction(){
+    return {
+        type: RESET_STATE
+    }
+}
+
+export function setLoadingAction(status){
+    return {
+        type: SET_ISLOADING,
+        payload: status
+    }
+}
+
+export function setGameIdAction(gameId){
+    return {
+        type: SET_GAME_ID,
+        payload: gameId
     }
 }

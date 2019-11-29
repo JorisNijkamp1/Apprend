@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Flashcard = require('./flashcard');
+const Game = require('./game');
 
 //Create schema
 const deckSchema = new mongoose.Schema({
@@ -23,6 +24,9 @@ const deckSchema = new mongoose.Schema({
     },
     flashcards: {
         type: [{type: Flashcard}],
+    },
+    games: {
+        type: [{type: Game}],
     },
 });
 
