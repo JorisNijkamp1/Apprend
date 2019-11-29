@@ -174,7 +174,6 @@ progress[value]::-webkit-progress-value {
 }
 
 .card-body {
-  padding: 0px;
   word-break: break-all;
 }
 
