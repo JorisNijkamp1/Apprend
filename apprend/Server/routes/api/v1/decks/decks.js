@@ -220,19 +220,21 @@ decks.post('/:deckId/flashcards', async (req, res) => {
 
 // Insert game
 decks.post('/:deckId/setGame', async (req, res) => {
+    let gameId;
     User.find({}, function (err, users) {
         users.forEach((user, userKey) => {
             users[userKey].decks.forEach((deck, deckKey) => {
                 if (deck._id == req.params.deckId) {
                     deck.games = {flashcards: req.body.cards, activeCard: req.body.cards[0]}
-                    res.json({
-                        success: true,
-                        gameId: deck.games[0]._id
-                    })
+                    gameId = deck.games[0]._id
                 }
             });
             user.save();
         });
+        res.json({
+            success: true,
+            gameId: gameId
+        })
     }).exec();
 });
 
@@ -258,17 +260,24 @@ decks.put('/:deckId/updateGame', async (req, res) => {
 
 // Get data from a specific game
 decks.get('/:deckId/games/:gameId', async (req, res) => {
-    const users = await User.find({});
-    users.forEach((user, userKey) => {
-        users[userKey].decks.forEach((deck, deckKey) => {
-            if (deck.games[0]._id.toString() === req.params.gameId) {
-                res.json({
-                    success: true,
-                    game: deck.games
-                })
-            }
+    let game;
+    User.find({}, function (err, users) {
+        users.forEach((user, userKey) => {
+            users[userKey].decks.forEach((deck, deckKey) => {
+                if (deck._id == req.params.deckId) {
+                    if (deck.games[0]._id.toString() === req.params.gameId) {
+                        game = deck.games
+                    }
+                }
+            });
         });
-    });
+        if (game[0]._id.toString() === req.params.gameId) {
+            res.json({
+                success: true,
+                game: game
+            })
+        }
+    }).exec();
 });
 
 /*====================================
