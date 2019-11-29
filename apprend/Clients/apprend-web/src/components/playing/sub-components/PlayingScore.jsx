@@ -13,7 +13,7 @@ const ScoreComponent = (props) => {
     <Container>
         <PageTitle title="Your score"/>
         <Row className={"justify-content-between"}>
-            <Card className={"flipCard"}>
+            <Card className={"flipCard scoreCard"}>
                 <Card.Header className={"bg-blue text-white text-center"}>
                     Cards answered:
                 </Card.Header>
@@ -23,7 +23,7 @@ const ScoreComponent = (props) => {
                     </Card.Body>
                 </div>
             </Card>
-            <Card className={"flipCard"}>
+            <Card className={"flipCard scoreCard"}>
                 <Card.Header className={"bg-blue text-white text-center"}>
                     Cards answered correct:
                 </Card.Header>
@@ -33,7 +33,7 @@ const ScoreComponent = (props) => {
                     </Card.Body>
                 </div>
             </Card>
-            <Card className={"flipCard"}>
+            <Card className={"flipCard scoreCard"}>
                 <Card.Header className={"bg-blue text-white text-center"}>
                     Cards answered wrong:
                 </Card.Header>

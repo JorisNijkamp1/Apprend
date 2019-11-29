@@ -9,7 +9,7 @@ describe(`Login & add or replace 3 flashcards to an exist Deck`, () => {
         browser = await puppeteer.launch({
             headless: false,
             slowMo: 75,
-            args: [`--window-size=1200,800`, `--window-position=1700,0`]
+            args: [`--window-size=1200,800`, `--window-position=0,0`]
         });
         page = await browser.newPage()
     });
@@ -86,7 +86,7 @@ describe(`Login & add or replace 3 flashcards to an exist Deck`, () => {
 
     // test(`Delete second flashcard if exist`, async () => {
     //     await page.waitFor(`#add-new-flashcard`);
-    //
+    
     //     if (await page.$('#flashcard-1') === null) {
     //         const deleteFlashcardIcon = await page.$(`#flashcard-1-delete-icon`);
     //         await deleteFlashcardIcon.click();
@@ -117,14 +117,14 @@ describe(`Login & add or replace 3 flashcards to an exist Deck`, () => {
         expect(defnitionInput).toBeDefined();
     });
 
-    // test(`Add a third flashcard if not exist`, async () => {
-    //     await page.waitFor(`#add-new-flashcard`);
-    //     if (await page.$('#flashcard-2') === null) {
-    //         const addNewFlashcardIcon = await page.$(`#add-new-flashcard`);
-    //         await addNewFlashcardIcon.click();
-    //         expect(addNewFlashcardIcon).toBeDefined();
-    //     }
-    // });
+    test(`Add a third flashcard if not exist`, async () => {
+        await page.waitFor(`#add-new-flashcard`);
+        if (await page.$('#flashcard-2') === null) {
+            const addNewFlashcardIcon = await page.$(`#add-new-flashcard`);
+            await addNewFlashcardIcon.click();
+            expect(addNewFlashcardIcon).toBeDefined();
+        }
+    });
 
     test(`Fill Term of third flashcard`, async () => {
         const termInput = await page.waitFor(`input#flashcard-2-term`);

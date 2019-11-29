@@ -94,8 +94,15 @@ h2{
 }
 
 .flipCard {
-  width: 18rem;
-  height: 12rem;
+  width: 50%;
+  height: 12em;
+  position: relative;
+  margin: 50px auto;
+}
+
+.scoreCard {
+  width: 30%;
+  height: 12em;
   position: relative;
   margin: 50px auto;
 }
@@ -118,7 +125,7 @@ h2{
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3em;
+  font-size: 2em;
   background-color: white;
   border: 5px solid #EEEEEE;
   position: absolute;
@@ -164,4 +171,20 @@ progress[value]::-webkit-progress-value {
 
 .navbar-light .navbar-nav .nav-link {
     color: #FFF;
+}
+
+.card-body {
+  padding: 0px;
+  word-break: break-all;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 800px) {
+  .flipCard {
+    width: 100%;
+    margin: 50px 0px;
+  }
 }

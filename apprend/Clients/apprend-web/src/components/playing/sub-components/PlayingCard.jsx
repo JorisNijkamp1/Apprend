@@ -1,7 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import {Container, Row, Col, Button, Card} from "react-bootstrap";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCreativeCommonsSa} from "@fortawesome/free-brands-svg-icons";
+
 
 const PlayingCard = (props) => {
+    const [cardText, setCardText] = useState("Term");
     const handleClick = (event, status) => {
         event.preventDefault();
         props.changeScore(props.id, status);
@@ -10,6 +14,11 @@ const PlayingCard = (props) => {
     const turnCard = () => {
         let element = document.getElementById("card");
         element.classList.toggle("flipped");
+        if (cardText === "Term") {
+            setCardText("Definition")
+        } else if (cardText === "Definition") {
+            setCardText("Term")
+        }
     }
 
     return (
@@ -17,9 +26,12 @@ const PlayingCard = (props) => {
     <Container>
         <Card className={"flipCard"}>
             <Card.Header className={"bg-blue text-white text-center"}>
-                Card
+                {cardText}
+                <span className={"pointer float-right"} onClick={() => turnCard()}>
+                    <FontAwesomeIcon icon={faCreativeCommonsSa} className={'fab fa-creative-commons-sa'} title={`Turn card`}/>
+                </span>
             </Card.Header>
-            <div className="card" id="card" onClick={(e) => turnCard(e)}>
+            <div className="pointer card" id="card" onClick={() => turnCard()}>
                 <Card.Body className={"side"}>
                     {props.front || "No question"}
                 </Card.Body>
