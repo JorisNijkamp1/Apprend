@@ -22,7 +22,8 @@
 
 
 ## Context
-Hier komt de Context
+Het project is het ontwikkelen van een nieuwe leerapplicatie waarbij gebruikers door middel van flashcards hun geheugen kunnen trainen. Deze applicatie kan dus gebruikt worden door mensen die hun geheugen willen trainen. Bijvoorbeeld leerlingen van de HAN. Maar ook oude mensen zouden hun geheugen kunnen trainen met behulp van deze applicatie.
+
 
 ## Functional Overview
 Hier komt de Functional Overview

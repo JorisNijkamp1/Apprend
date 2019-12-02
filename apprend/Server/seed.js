@@ -3,7 +3,6 @@ require('./database/models/user');
 require('./database/models/deck');
 const db = mongoose.connection;
 const Users = mongoose.model('User');
-const Decks = mongoose.model('Deck');
 const dbConfig = require('./config');
 
 //First code line is for Localhost
@@ -50,11 +49,23 @@ async function seedUsers() {
                 // "creatorId": ,
                 // "lastPlayedDate": ,
                 "status": "isEdited",
-                "flashcards": [{
-                    "_id": "Apprende",
-                    "type": "Text only",
-                    "question": "Hello"
-                }]
+                "flashcards": [
+                    {
+                        "_id": "Apprende",
+                        "type": "Text only",
+                        "question": "Hello"
+                    },
+                    {
+                        "_id": "Apprende1",
+                        "type": "Text only",
+                        "question": "Hello1"
+                    },
+                    {
+                        "_id": "Apprende2",
+                        "type": "Text only",
+                        "question": "Hello2"
+                    },
+                ]
             }]
         },
     ])
