@@ -40,11 +40,11 @@ export const RegisterPageComponent = props => {
         props.doRegisterNewUser(username, email, password);
     };
 
-    // if (props.newUserRegistered) {
-    //     if (props.anonymousUser) {
-    //         props.doLogin(username, password);
-    //     }
-    // }
+    if (props.newUserRegistered) {
+        if (props.anonymousUser) {
+            props.doLogin(username, password);
+        }
+    }
 
     return (
         <>
