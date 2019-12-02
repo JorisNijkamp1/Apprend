@@ -12,46 +12,43 @@ const shuffleCards = (array) => {
     return array;
 }
 
-const changeScore = (status) => {
-    if (status === "correct") {
-        return correct += 1;
-    } else if (status === "wrong") {
-        return wrong += 1;
-    }
-}
+describe(`Shuffle cards`, () => {
+    let cards;
 
-let array;
-let correct;
-let wrong;
-
-beforeEach(async () => {
-    array = [1, 2, 3, 4, 5];
-    correct = 0;
-    wrong = 0;
-});
-
-test('Shuffle cards array', async () => {
-    const result = await shuffleCards(array);
+    beforeEach(async () => {
+        cards = [1, 2, 3, 4, 5];
+    });
     
-    console.log(result)
+    test('Shuffle cards array', async () => {
+        const result = await shuffleCards(cards);
+        
+        console.log(result)
+    });
 });
 
-test('Updating correct score', async () => {
-    const result = await changeScore('correct');
-
-    expect(result).toEqual(1);
-});
-
-test('Updating wrong score', async () => {
-    const result = await changeScore('wrong');
-
-    expect(result).toEqual(1);
-});
-
-test('Updating both scores', async () => {
-    await changeScore('correct');
-    await changeScore('wrong');
-    await changeScore('correct');
-
-    expect(correct).toEqual(2) && expect(wrong).toEqual(1);
-});
+describe(`Setting game`, () => {
+    test('Setting game successfully', async () => {
+        const deckId = '5ddfadab612b09570c6f3a33'
+        const data = {
+            "cards": {
+                "_id" : "Apprende",
+                "type" : "Text only",
+                "question" : "Hello",
+                "answer" : "Hoi"
+            }
+        };
+    
+        const response = await fetch('http://localhost:3001/api/v1/decks/' + deckId + '/setGame', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        })
+        const result = await response.json();
+    
+        expect(result.success).toBe(true)
+    });
+})

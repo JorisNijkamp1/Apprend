@@ -53,5 +53,5 @@ test('Result end point foutieve inlog', async () => {
     const result = await response.json();
 
     expect(result.success).toBe(expectedResult.success)
-    expect(result.username).toBe(expectedResult.username)
+    expect(result.username).toBe(expectedResult.session)
 })
