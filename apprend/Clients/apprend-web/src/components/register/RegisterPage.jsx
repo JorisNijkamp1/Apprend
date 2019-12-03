@@ -51,7 +51,7 @@ export const RegisterPageComponent = props => {
             <NavigatieBar/>
             <Container>
                 <Row>
-                    <Col xs={{'span': 6, 'offset': 3}} className={'py-5'}>
+                    <Col xs={{'span': 12}} md={{'span': 6, 'offset': 3}} >
                         <PageTitle title={'Register a new user'}/>
                         {(props.newUserRegistered) ?
                             <p className={'bg-success text-white text-center rounded p-2'}>
@@ -117,6 +117,7 @@ export const RegisterPageComponent = props => {
                                         type={'submit'}
                                         id={'registerSubmitButton'}
                                         disabled
+                                        className="w-100"
                                         onClick={(event) => handleSubmit(event)}>Register</Button>}
                         </Form>
                     </Col>
