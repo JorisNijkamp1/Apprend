@@ -47,7 +47,7 @@ test('Action payload ERROR_OCCURRED is correct', () => {
 
 test('User registers and logs in', async () => {
     const expectedResult = {
-        "success": true,
+        "loggedIn": true,
         "username": "Niels"
     }
     const data = {
@@ -66,7 +66,7 @@ test('User registers and logs in', async () => {
         mode: 'cors'
     });
 
-    const response = await fetch('http://localhost:3001/api/v1/login', {
+    const response = await fetch('http://localhost:3001/api/v1/login/check', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -77,6 +77,6 @@ test('User registers and logs in', async () => {
     })
     const result = await response.json();
 
-    expect(result.success).toBe(expectedResult.success)
+    expect(result.loggedIn).toBe(expectedResult.loggedIn)
     expect(result.username).toBe(expectedResult.username)
 })

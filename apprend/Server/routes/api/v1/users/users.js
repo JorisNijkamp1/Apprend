@@ -128,6 +128,7 @@ users.post('/', async (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, config.PASSWORD_SALT);
 
     if (!req.session.username && !req.cookies.username) {
+        req.session.username = req.body.username
         const newUser = new User({
             '_id': req.body.username,
             'email': req.body.email,
