@@ -22,7 +22,16 @@
 
 
 ## Context
-Het project is het ontwikkelen van een nieuwe leerapplicatie waarbij gebruikers door middel van flashcards hun geheugen kunnen trainen. Deze applicatie kan dus gebruikt worden door mensen die hun geheugen willen trainen. Bijvoorbeeld leerlingen van de HAN. Maar ook oude mensen zouden hun geheugen kunnen trainen met behulp van deze applicatie.
+Apprend is een nieuwe webapplicatie, gebouwd met het React framework, waarbij gebruikers door middel van flashcards hun geheugen kunnen trainen. Het is bedoeld voor bijvoorbeeld leerlingen van de HAN, maar ook oudere mensen zouden hun geheugen kunnen trainen met behulp van deze applicatie.
+
+De applicatie is ontwikkeld om te concurreren met soortgelijke applicaties zoals Quizlet, Anki en Duolingo. 
+
+Gebruikers kunnen decks aanmaken waar verschillende flashcards aan toegevoegd kunnen worden. De gebruiker kan deze decks vervolgens spelen. Het geheugen van de gebruiker wordt getraind doordat het systeem slim flashcards selecteert aan de hand van het [Leitner Systeem](https://en.wikipedia.org/wiki/Leitner_system) en [Spaced Repitition](https://en.wikipedia.org/wiki/Spaced_repetition).
+
+Gebruikers kunnen ook registreren (en inloggen) om daarmee hun aangemaakte decks te behouden. Deze decks zullen anders verloren gaan wanneer de cookies van de browser worden verwijderd. Het voordeel van registreren is dat de gebruiker zijn decks op verschillende apparaten kan gebruiken.
+
+![Apprend context diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20System%20Context.svg)
+
 
 
 ## Functional Overview
