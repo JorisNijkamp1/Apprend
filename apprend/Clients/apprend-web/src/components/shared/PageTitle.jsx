@@ -4,11 +4,11 @@ import { Row, Col } from "react-bootstrap"
 export const PageTitle = props => {
     return (
         <>
-            <Row>
-                <Col>
-                    <h2 className="text-center">
+            <Row className="my-2 my-lg-5" >
+                <Col xs={12}>
+                    <h1 className="text-center">
                         {props.title}
-                    </h2>
+                    </h1>
                 </Col>
             </Row>
         </>

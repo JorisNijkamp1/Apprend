@@ -13,11 +13,35 @@ const NavbarUI = (props) => {
             return (
                 <>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item onClick={()=> console.log('TODO: Logout Fetch')}>Logout</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => console.log('TODO: Logout Fetch')}>Logout</NavDropdown.Item>
                 </>
             )
         }
-    }
+    };
+
+    const register = () => {
+        if (props.anonymousUser) {
+            return (
+                <>
+                    <Nav.Link as={Link} className="pl-30" to="/register">
+                        Register
+                    </Nav.Link>
+                </>
+            )
+        }
+    };
+
+    const login = () => {
+        if (props.anonymousUser) {
+            return (
+                <>
+                    <Nav.Link as={Link} className="pl-30" to="/login">
+                        Login
+                    </Nav.Link>
+                </>
+            )
+        }
+    };
 
     const loggedIn = () => {
         if (props.username === null) {
@@ -37,7 +61,8 @@ const NavbarUI = (props) => {
                     <NavDropdown title={props.anonymousUser ? 'Welcome Guest' : 'Welcome ' + props.username}
                                  id="basic-nav-dropdown" className="text-white pl-30">
                         <Nav.Link as={Link} className="pl-30" to={'/' + props.username + '/decks'}>My Decks</Nav.Link>
-                        <Nav.Link as={Link} className="pl-30" to={'/register'}>Register</Nav.Link>
+                        {login()}
+                        {register()}
                         {logout()}
                     </NavDropdown>
                 </>

@@ -9,6 +9,7 @@ const UserSchema = require('../../../../database/models/user')
 require('../../../../database/models/user')
 const User = mongoose.model('User')
 
+
 decks.get('/', (req, res) => {
     res.json({
         success: true
@@ -87,6 +88,18 @@ decks.post('/', async (req, res) => {
         res.status(500).json('Something went horribly wrong...Try again?')
     }
 });
+
+decks.delete('/:deckId',  async (req, res) => {
+    try {
+        const user = await User.findById(req.session.username ? req.session.username : req.cookies.username)
+        if (!user) return res.status(404).json('Not a user')
+        const result = await user.deleteDeck(req.params.deckId)
+        res.status(200).json(result.decks)
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('Something went horribly wrong')
+    }
+})
 
 /*====================================
 | GET A SPECIFIC DECK
@@ -205,17 +218,76 @@ decks.post('/:deckId/flashcards', async (req, res) => {
     }
 });
 
+// Insert game
+decks.post('/:deckId/setGame', async (req, res) => {
+    let gameId;
+    User.find({}, function (err, users) {
+        users.forEach((user, userKey) => {
+            users[userKey].decks.forEach((deck, deckKey) => {
+                if (deck._id == req.params.deckId) {
+                    deck.games = {flashcards: req.body.cards, activeCard: req.body.cards[0]}
+                    gameId = deck.games[0]._id
+                }
+            });
+            user.save();
+        });
+        res.json({
+            success: true,
+            gameId: gameId
+        })
+    }).exec();
+});
+
+// Update game
+decks.put('/:deckId/updateGame', async (req, res) => {
+    User.find({}, function (err, users) {
+        users.forEach((user, userKey) => {
+            users[userKey].decks.forEach((deck, deckKey) => {
+                if (deck._id == req.params.deckId) {
+                    if (deck.games[0]._id == req.body.gameId) {
+                        if (req.body.status === "correct") {
+                            deck.games[0] = {_id: deck.games[0]._id, flashcards: deck.games[0].flashcards, activeCard: req.body.newCard, correctCards: deck.games[0].correctCards.concat(req.body.oldCard), wrongCards: deck.games[0].wrongCards}
+                        } else if (req.body.status === "wrong") {
+                            deck.games[0] = {_id: deck.games[0]._id, flashcards: deck.games[0].flashcards, activeCard: req.body.newCard, correctCards: deck.games[0].correctCards, wrongCards: deck.games[0].wrongCards.concat(req.body.oldCard)}
+                        }
+                    }
+                }
+            });
+            user.save();
+        });
+    }).exec();
+});
+
+// Get data from a specific game
+decks.get('/:deckId/games/:gameId', async (req, res) => {
+    let game;
+    User.find({}, function (err, users) {
+        users.forEach((user, userKey) => {
+            users[userKey].decks.forEach((deck, deckKey) => {
+                if (deck._id == req.params.deckId) {
+                    if (deck.games[0]._id.toString() === req.params.gameId) {
+                        game = deck.games
+                    }
+                }
+            });
+        });
+        if (game[0]._id.toString() === req.params.gameId) {
+            res.json({
+                success: true,
+                game: game
+            })
+        }
+    }).exec();
+});
+
 /*====================================
 | EDIT DECK
 */
 decks.put('/:deckId', async (req, res) => {
     const {deckId} = req.params;
     const {name, description, creatorId} = req.body;
-
     let user = await User.findById(creatorId);
-
     await user.editDeckname(deckId, name, description);
-
     let currentDeck;
 
     user.decks.forEach(deck => {
@@ -230,6 +302,6 @@ decks.put('/:deckId', async (req, res) => {
         description: description,
         deck: currentDeck
     })
-});
+})
 
-module.exports = decks;
+module.exports = decks

@@ -12,6 +12,7 @@ export const AddFlashcardIcon = (props) => {
                                  size={"4x"}
                                  color={'#7ad765'}
                                  className={'hover-shadow-text'}
+                                 id={'add-new-flashcard'}
                                  onClick={() => props.onClick()}
                 />
             </div>
