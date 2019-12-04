@@ -195,6 +195,7 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 ![Apprend server diagram endpoint](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)
 
 **Decks endpoints**:
+
 GET /api/v1/decks/home
 Haal de decks voor de homepage op
 
@@ -217,6 +218,7 @@ PUT /api/v1/decks/:deckId
 Edit een deck
 
 **Users endpoints**:
+
 GET /api/v1/users/:username/decks
 Haalt alle deck van een specifieke user op
 
@@ -236,6 +238,7 @@ DELETE /api/v1/users/:id
 Verwijder een gebruiken op basis van id
 
 **Login endpoints**:
+
 POST /api/v1/login/check
 Kijk of de gegevens kloppen
 
