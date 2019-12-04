@@ -194,6 +194,57 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 
 ![Apprend server diagram endpoint](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)
 
+**Decks endpoints**:
+GET /api/v1/decks/home
+Haal de decks voor de homepage op
+
+POST /api/v1/decks
+Maakt een nieuw deck aan
+
+DELETE /api/v1/decks/:deckId
+Verwijderd een specifiek deck
+
+GET /api/v1/decks/:deckId
+Haalt een specifiek deck op
+
+GET /api/v1/decks/:deckId/flashcards
+Haalt alle flashcard van een deck op
+
+POST /api/v1/decks/:deckId/flashcards
+Edit flashcards van een specifiek deck
+
+PUT /api/v1/decks/:deckId
+Edit een deck
+
+**Users endpoints**:
+GET /api/v1/users/:username/decks
+Haalt alle deck van een specifieke user op
+
+GET /api/v1/users/:id
+Haalt een gebruik op basis  van id op
+
+GET /api/v1/users/:id/_id
+Haalt een gebruik op bij ID bij het _id
+
+POST /api/v1/users/
+Maak een nieuwe gebruiker aan
+
+GET /api/v1/users/email
+Haal een gebruiker op op basis van email
+
+DELETE /api/v1/users/:id
+Verwijder een gebruiken op basis van id
+
+**Login endpoints**:
+POST /api/v1/login/check
+Kijk of de gegevens kloppen
+
+GET /api/v1/login/success
+Redirect als het success is
+
+GET /api/v1/login/error
+Redirect als er een error is
+
 ## Infrastructure Architecture
 Hier komt de Infrastructure Architecture
 
