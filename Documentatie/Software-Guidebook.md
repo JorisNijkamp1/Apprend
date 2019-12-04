@@ -259,7 +259,7 @@ Redirect als er een error is
 
 Het [Leitner systeem](https://en.wikipedia.org/wiki/Leitner_system) is een simpele implementatie van [Spaced Repitition](https://en.wikipedia.org/wiki/Spaced_repetition), bedacht door de Duitse commentator en wetenschapspopularis Sebastian Leitner.
 
-Er zijn een aantal variabelen aanwezig die handig zijn om te onthouden bij het lezen van deze paragraaf.
+Dit systeem is binnen Apprend vertaald tot een algoritme dat flashcards voor de gebruiker selecteert. Het Leitner systeem moet het brein stimuleren om  Er zijn een aantal variabelen aanwezig die handig zijn om te onthouden bij het lezen van deze paragraaf.
 
 - X
     > Maximaal aantal kaarten dat bij elke sessie uit doos 0 wordt gehaald.
@@ -274,7 +274,7 @@ Er zijn een aantal variabelen aanwezig die handig zijn om te onthouden bij het l
 Bij het Leitner systeem worden flashcards verdeeld over een aantal dozen. Bij onze implementatie gebruiken we er 4.
 
 - Doos 0
-    > Deze doos bevat alle flashcards die nog niet eerder aan bod zijn gekomen. Zolang deze doos niet leeg is wordt er een **X** aantal kaarten uit dit deck gehaald en aan de selectie voor de huidige sessie toegevoegd. Zo krijgt de gebruiker elke sessie wat nieuwe kaarten te zien.
+    > Deze doos bevat alle flashcards die nog niet eerder aan bod zijn gekomen. Zolang deze doos niet leeg is wordt er een **X** aantal kaarten uit dit deck gehaald en aan de selectie voor de huidige sessie toegevoegd. Zo krijgt de gebruiker elke sessie wat nieuwe kaarten te zien. Deze doos zal uiteindelijk leeg zijn en niet meer gebruikt worden.
 
 - Doos 1
     > Flashcards in deze doos zullen elke sessie aan bod komen. Deze flashcards zijn in de vorige sessie fout beantwoord.
@@ -286,6 +286,16 @@ Bij het Leitner systeem worden flashcards verdeeld over een aantal dozen. Bij on
     > Flashcards in deze doos zullen na een bepaald aantal dagen terugkomen, maar dit moet langer zijn dan doos 2. Dit zijn flashcards uit doos 2 die **W3** sessies terug goed zijn beantwoord.
 
 ![Leitner systeem](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Leitner%20systeem.svg)
+
+Bij het spelen van een deck wordt er een selectie gemaakt aan kaarten dat bij de huidige sessie aan bod komt. De selectie is gebaseerd op het Leitner systeem en de formule ziet er als volgt uit:
+
+*Selectie = (Maximaal **X** aantal kaarten uit doos 0 (als deze nog niet leeg is)) + (Alle flashcards uit doos 1) + (Alle kaarten uit doos 2 waarvan het huide sessienummer - **W2** gelijk is aan de 'sessionPlayed') + (Alle kaarten uit doos 3 waarvan het huide sessienummer - **W3** gelijk is aan de 'sessionPlayed')*
+
+Elke flashcard houdt individueel zijn 'sessionPlayed' bij. Dit is het nummer van de sessie waarin deze kaart aan bod is gekomen. Elke flashcard houdt ook een 'box' nummer bij om aan te geven in welke box deze zit.
+
+Stel je voor dat er 36 kaarten in doos 0 zitten, **X** = 10, **W2** = 3 en **W3** = 5. Dit betekent dat doos 2 elke 3 sessies aan bod komt, en doos 3 elke 5 sessies. De onderstaande tabel toont elke sessie en de gemaakte selectie door het algoritme. Het preciese aantal goede of foute kaarten doet er nu even niet toe.
+
+Een flashcard uit doos 0 of 1 kan in sessie 4 goed worden beantwoordt. Het sessionPlayed-nummer van de kaart wordt dan 4 en het box-nummer wordt 2, aangezien deze naar doos 2 verplaatst wordt. Deze kaart, nu uit doos 2, zal vervolgens weer terugkomen in sessie 7 terugkomen, omdat **_currentSession (7) - W2 (3) = sessionPlayed van de flashcard en dus de sessie waarin de kaart goed is beantwoord (4)._**
 
 ## Deployment
 Hier komt Deployment (POST GAME)
