@@ -193,6 +193,7 @@ users.post('/', async (req, res) => {
     });
 
     await newUser.save();
+    req.session.username = req.body.username
     await User.deleteOne({'_id': oldUser._id});
 
     if (req.cookies.username) res.clearCookie('username');

@@ -111,6 +111,7 @@ export const RegisterPageComponent = props => {
                                         variant={'primary'}
                                         type={'submit'}
                                         id={'registerSubmitButton'}
+                                        className="w-100"
                                         onClick={(event) => handleSubmit(event)}>Register</Button> :
                                 <Button className={'mx-auto'}
                                         variant={'primary'}
