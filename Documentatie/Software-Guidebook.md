@@ -293,9 +293,7 @@ Bij het spelen van een deck wordt er een selectie gemaakt aan kaarten dat bij de
 
 Elke flashcard houdt individueel zijn 'sessionPlayed' bij. Dit is het nummer van de sessie waarin deze kaart aan bod is gekomen. Elke flashcard houdt ook een 'box' nummer bij om aan te geven in welke box deze zit.
 
-Stel je voor dat er 36 kaarten in doos 0 zitten, **X** = 10, **W2** = 3 en **W3** = 5. Dit betekent dat doos 2 elke 3 sessies aan bod komt, en doos 3 elke 5 sessies. De onderstaande tabel toont elke sessie en de gemaakte selectie door het algoritme. Het preciese aantal goede of foute kaarten doet er nu even niet toe.
-
-Een flashcard uit doos 0 of 1 kan in sessie 4 goed worden beantwoordt. Het sessionPlayed-nummer van de kaart wordt dan 4 en het box-nummer wordt 2, aangezien deze naar doos 2 verplaatst wordt. Deze kaart, nu uit doos 2, zal vervolgens weer terugkomen in sessie 7 terugkomen, omdat **_currentSession (7) - W2 (3) = sessionPlayed van de flashcard en dus de sessie waarin de kaart goed is beantwoord (4)._**
+Stel je voor **X** = 10, **W2** = 3 en **W3** = 5. Dit betekent dat doos 2 elke 3 sessies aan bod komt, en doos 3 elke 5 sessies. Een flashcard uit doos 0 of 1 kan in sessie 4 goed worden beantwoordt. Het sessionPlayed-nummer van de kaart wordt dan 4 en het box-nummer wordt 2, aangezien deze naar doos 2 verplaatst wordt. Deze kaart, nu uit doos 2, zal vervolgens weer terugkomen in sessie 7 terugkomen, omdat **_currentSession (7) - W2 (3) = sessionPlayed van de flashcard en dus de sessie waarin de kaart goed is beantwoord (4)._**
 
 ## Deployment
 Hier komt Deployment (POST GAME)
