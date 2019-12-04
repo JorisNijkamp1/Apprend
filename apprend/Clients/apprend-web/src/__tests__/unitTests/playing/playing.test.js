@@ -32,7 +32,7 @@ beforeEach(async () => {
 
 test('Shuffle cards array', async () => {
     const result = await shuffleCards(array);
-    
+
     console.log(result)
 });
 
