@@ -190,6 +190,10 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 
 ![Apprend container diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20React%20Native%20App%20Component.svg)
 
+### Server
+
+![Apprend server diagram endpoint](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)
+
 ## Infrastructure Architecture
 Hier komt de Infrastructure Architecture
 
