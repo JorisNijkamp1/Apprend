@@ -10,9 +10,27 @@ require('../../../../database/models/user')
 const User = mongoose.model('User')
 
 
-decks.get('/', (req, res) => {
-    res.json({
-        success: true
+/*====================================
+| GET ALL DECKS
+*/
+decks.get('/', async (req, res) => {
+    let allDecksUsers = await User.find({});
+
+    const decks = [];
+    allDecksUsers.forEach((index, key) => {
+        allDecksUsers[key].decks.forEach((decksIndex, decksKey) => {
+            decks.push({
+                name: allDecksUsers[key].decks[decksKey].name,
+                deckCreator: !(allDecksUsers[key].email && allDecksUsers[key]) ? 'anonymous user' : allDecksUsers[key].decks[decksKey].creatorId,
+                totalFlashcards: allDecksUsers[key].decks[decksKey].flashcards.length
+            });
+        });
+    });
+
+    console.log(decks)
+
+    await res.json({
+        decks: decks,
     })
 });
 
@@ -89,7 +107,7 @@ decks.post('/', async (req, res) => {
     }
 });
 
-decks.delete('/:deckId',  async (req, res) => {
+decks.delete('/:deckId', async (req, res) => {
     try {
         const user = await User.findById(req.session.username ? req.session.username : req.cookies.username)
         if (!user) return res.status(404).json('Not a user')
@@ -155,7 +173,7 @@ decks.get('/:deckId/flashcards', async (req, res) => {
             success: true,
             deckId: currentDeck._id,
             name: currentDeck.name,
-            creatorId:  currentDeck.creatorId,
+            creatorId: currentDeck.creatorId,
             flashcards: currentDeck.flashcards,
 
         })
@@ -170,8 +188,8 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    const { flashcards } = req.body;
-    const { deckId } = req.params;
+    const {flashcards} = req.body;
+    const {deckId} = req.params;
 
     const username = req.session.username ? req.session.username : req.cookies.username;
     if (!username) return res.status(401).json('Not a user');
@@ -246,9 +264,21 @@ decks.put('/:deckId/updateGame', async (req, res) => {
                 if (deck._id == req.params.deckId) {
                     if (deck.games[0]._id == req.body.gameId) {
                         if (req.body.status === "correct") {
-                            deck.games[0] = {_id: deck.games[0]._id, flashcards: deck.games[0].flashcards, activeCard: req.body.newCard, correctCards: deck.games[0].correctCards.concat(req.body.oldCard), wrongCards: deck.games[0].wrongCards}
+                            deck.games[0] = {
+                                _id: deck.games[0]._id,
+                                flashcards: deck.games[0].flashcards,
+                                activeCard: req.body.newCard,
+                                correctCards: deck.games[0].correctCards.concat(req.body.oldCard),
+                                wrongCards: deck.games[0].wrongCards
+                            }
                         } else if (req.body.status === "wrong") {
-                            deck.games[0] = {_id: deck.games[0]._id, flashcards: deck.games[0].flashcards, activeCard: req.body.newCard, correctCards: deck.games[0].correctCards, wrongCards: deck.games[0].wrongCards.concat(req.body.oldCard)}
+                            deck.games[0] = {
+                                _id: deck.games[0]._id,
+                                flashcards: deck.games[0].flashcards,
+                                activeCard: req.body.newCard,
+                                correctCards: deck.games[0].correctCards,
+                                wrongCards: deck.games[0].wrongCards.concat(req.body.oldCard)
+                            }
                         }
                     }
                 }

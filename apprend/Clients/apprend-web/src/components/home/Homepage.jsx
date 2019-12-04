@@ -5,7 +5,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
@@ -13,6 +12,9 @@ import {Footer} from '../shared/footer/Footer'
 import {getHomepageDecks} from '../../redux-store/actions/home/async-actions';
 import {Link} from 'react-router-dom';
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
+import {SearchDecksInput} from "../search-input/SearchDecksInput";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons";
 
 const HomepageUI = (props) => {
 
@@ -64,18 +66,23 @@ const HomepageUI = (props) => {
                         </div>
                     </Col>
                 </Row>
-                <Row>
-                    <Col lg={{span: 6, offset: 3}} xs={{span: 12}} md={{span: 10, offset: 1}}>
-                        <InputGroup className="mb-3 pt-2">
-                            <FormControl
-                                placeholder="Search for a Deck"
-                                aria-label="Search bar"
-                                aria-describedby="Search"
-                            />
-                            <InputGroup.Append>
-                                <Button className={'bg-blue text-white hover-shadow'}>Submit</Button>
-                            </InputGroup.Append>
+                <Row className={'pt-3'}>
+                    <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>
+                        <InputGroup className="mb-3">
+                            <SearchDecksInput/>
                         </InputGroup>
+                    </Col>
+                    <Col xs={{span: 2}} md={{span: 2}} lg={{span: 2}}>
+                        <InputGroup.Append>
+                            <Button className={'bg-blue text-white hover-shadow'}>
+                                <FontAwesomeIcon icon={faSearch}
+                                                 className={'trash-icon'}
+                                                 size={'1x'}
+                                                 title={`Search`}
+                                />
+                                <span className={'ml-1'}>Search</span>
+                            </Button>
+                        </InputGroup.Append>
                     </Col>
                 </Row>
                 <Row className={'mt-5 mb-5'}>
@@ -85,7 +92,7 @@ const HomepageUI = (props) => {
             <Footer/>
         </>
     )
-}
+};
 
 function mapStateToProps(state) {
     return {
