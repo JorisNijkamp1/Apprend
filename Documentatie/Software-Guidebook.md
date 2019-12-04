@@ -249,7 +249,43 @@ GET /api/v1/login/error
 Redirect als er een error is
 
 ## Infrastructure Architecture
-Hier komt de Infrastructure Architecture
+
+### Algemeen
+
+
+
+
+### Leitner systeem
+
+Het [Leitner systeem](https://en.wikipedia.org/wiki/Leitner_system) is een simpele implementatie van [Spaced Repitition](https://en.wikipedia.org/wiki/Spaced_repetition), bedacht door de Duitse commentator en wetenschapspopularis Sebastian Leitner.
+
+Er zijn een aantal variabelen aanwezig die handig zijn om te onthouden bij het lezen van deze paragraaf.
+
+- X
+    > Maximaal aantal kaarten dat bij elke sessie uit doos 0 wordt gehaald.
+
+- W2
+    > Kaarten uit doos 2 komen elke zoveel sessies terug.
+
+- W3
+    > Kaarten uit doos 3 komen elke zoveel sessies terug. Deze variabele moet altijd hoger zijn dan W2.
+    
+
+Bij het Leitner systeem worden flashcards verdeeld over een aantal dozen. Bij onze implementatie gebruiken we er 4.
+
+- Doos 0
+    > Deze doos bevat alle flashcards die nog niet eerder aan bod zijn gekomen. Zolang deze doos niet leeg is wordt er een **X** aantal kaarten uit dit deck gehaald en aan de selectie voor de huidige sessie toegevoegd. Zo krijgt de gebruiker elke sessie wat nieuwe kaarten te zien.
+
+- Doos 1
+    > Flashcards in deze doos zullen elke sessie aan bod komen. Deze flashcards zijn in de vorige sessie fout beantwoord.
+    
+- Doos 2
+    > Flashcards in deze doos zullen na **W2** dagen terugkomen. Dit zijn flashcards uit doos 1 die **W2** sessies terug goed zijn beantwoord.
+    
+- Doos 3
+    > Flashcards in deze doos zullen na een bepaald aantal dagen terugkomen, maar dit moet langer zijn dan doos 2. Dit zijn flashcards uit doos 2 die **W3** sessies terug goed zijn beantwoord.
+
+![Leitner systeem](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Leitner%20systeem.svg)
 
 ## Deployment
 Hier komt Deployment (POST GAME)
