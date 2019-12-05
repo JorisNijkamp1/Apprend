@@ -38,19 +38,21 @@ const EditableFlashcard = (props) => {
         });
         props.changeDeckFlashcards(deckFlashcards)
         setDeleteNotification(false);
-        store.addNotification({
-            title: "Attention!",
-            message: "You deleted a card!",
-            type: "info",
-            insert: "top",
-            container: "top-center",
-            animationIn: ["animated", "fadeIn"],
-            animationOut: ["animated", "fadeOut"],
-            dismiss: {
-              duration: 5000,
-              onScreen: true
-            }
-          });
+        return <Row>
+            {store.addNotification({
+                title: "You successfully deleted a card",
+                message: " ",
+                type: "info",
+                insert: "top",
+                container: "top-center",
+                animationIn: ["animated", "bounceIn"],
+                animationOut: ["animated", "bounceOut"],
+                dismiss: {
+                    duration: 3000
+                },
+                width: 250
+            })}
+        </Row>
     };
 
     const confirmationBox = (bool) => {

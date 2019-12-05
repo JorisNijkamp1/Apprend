@@ -9,7 +9,6 @@ import {allReducers} from './redux-store/reducers'
 import {BrowserRouter} from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
 import ReactNotification from 'react-notifications-component'
-import 'react-notifications-component/dist/theme.css'
 
 const logger = (store) => (next) => (action) => {
     console.log(store)
