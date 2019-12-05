@@ -28,7 +28,7 @@ const Deck = (props) => {
     const {username} = useParams();
     const isCreator = (props.username === props.userDecks.userId);
 
-    const [decks, setDecks] = useState(['a'])
+    const [decks, setDecks] = useState([])
     const [deckCheckEdit, setDeckCheckEdit] = useState(['b'])
 
     const [deckName, setDeckname] = useState('');
@@ -52,6 +52,30 @@ const Deck = (props) => {
     //     props.getDecksEdit(deckId)
     // }, []);
 
+    const confirmationBoxHOC = (message, deck, funct, stateFunct) => {
+        return (
+        <Card.Footer>
+        <Row>
+            <Col className="text-left" xs={8}>
+                {message}
+            </Col>
+            <Col xs={2} className="text-center text-green">
+                <FontAwesomeIcon icon={faCheck} name={deck._id}
+                                 onClick={(event) => {
+                                     funct(event)
+                                 }}
+                />
+            </Col>
+            <Col xs={2} className="text-center text-red">
+                <FontAwesomeIcon icon={faTimes} name={deck._id} onClick={(event) => {
+                    stateFunct(event)
+                }}/>
+            </Col>
+        </Row>
+    </Card.Footer>
+    )
+    }
+
     const handleDeleteDeck = event => {
         const deckId = event.currentTarget.getAttribute('name')
         props.deleteDeckFromUser(deckId)
@@ -65,61 +89,7 @@ const Deck = (props) => {
         // props.setDeckEditedAction(props.decks.creatorId, props.decks._id, deckData.deckName, deckData.deckDescription)
     }
 
-    const confirmationBoxDelete = (bool, deck) => {
-        if (bool) return (
-            <Card.Footer>
-                <Row>
-                    <Col className="text-left" xs={8}>
-                        Confirm delete?
-                    </Col>
-                    <Col xs={2} className="text-center text-green">
-                        <FontAwesomeIcon icon={faCheck} name={deck._id} onClick={(e) => {
-                            handleDeleteDeck(e)
-                        }}/>
-                    </Col>
-                    <Col xs={2} className="text-center text-red">
-                        <FontAwesomeIcon icon={faTimes} name={deck._id} onClick={(event) => {
-                            addDeleteDeckToState(event)
-                        }}/>
-                    </Col>
-                </Row>
-            </Card.Footer>
-        )
-        else return (
-            <>
-            </>
-        )
-    }
-
-    const confirmationBoxEdit = (bool, deck, deckId) => {
-        if (bool && deckCheckEdit.includes(deckId)) return (
-            <Card.Footer>
-                <Row>
-                    <Col className="text-left" xs={8}>
-                        Confirm edit?
-                    </Col>
-                    <Col xs={2} className="text-center text-green">
-                        <FontAwesomeIcon icon={faCheck} name={deck._id}
-                                         onClick={() => {
-                                             handleEditDeck()
-                                         }}
-                        />
-                    </Col>
-                    <Col xs={2} className="text-center text-red">
-                        <FontAwesomeIcon icon={faTimes} name={deck._id} onClick={(event) => {
-                            addEditDeckToState(event)
-                        }}/>
-                    </Col>
-                </Row>
-            </Card.Footer>
-        )
-        else return (
-            <>
-            </>
-        )
-    }
-
-    const addDeleteDeckToState = event => {
+    const toggleDeleteDeckToState = event => {
         const deckId = event.currentTarget.getAttribute('name')
         let updatedDecks
         if (!decks.includes(deckId)) {
@@ -148,64 +118,62 @@ const Deck = (props) => {
         setDeckCheckEdit(editedDeck)
     }
 
-    const userOptionsDelete = (deck) => {
+    const allIcons = [
+        {
+            icon: faTrash,
+            title: 'Delete',
+            funct: toggleDeleteDeckToState,
+        },
+        {
+            icon: faEdit,
+            title: 'Edit',
+            funct: addEditDeckToState
+        },
+    ]
+
+    const showAllIcons = (icons, deck) => {
+        return icons.map(icon => {
+            return iconHOC(icon.icon, icon.title, deck, icon.funct )
+        })
+    }
+
+    const userOptions = (deck) => {
         if (isCreator)
             return (
                 <>
                     <Card.Footer>
                         <Row>
-                            <Col className="text-center" xs={12}>
-                                <b>Options</b>
-                            </Col>
-                            {deleteDeckIcon(deck)}
-                            {editDeckIcon(deck)}
+                            {/* <Col className="text-center" xs={12}>
+                                <b>Owner Options</b>
+                            </Col> */}
+
+                            {showAllIcons(allIcons, deck)}
                         </Row>
                     </Card.Footer>
-                    {confirmationBoxDelete(decks.includes(deck._id), deck)}
-                    {confirmationBoxEdit(deckCheckEdit.includes(deck._id), deck, deck._id)}
+                    {decks.includes(deck._id) ? confirmationBoxHOC('Confirm delete?', deck, handleDeleteDeck, toggleDeleteDeckToState) : ''}
+                    {deckCheckEdit.includes(deck._id) ? confirmationBoxHOC('Confirm edit?', deck, handleEditDeck, addEditDeckToState) : ''}
+
                 </>
             )
         else return <> </>
     }
 
-    const deleteDeckIcon = (deck) => {
-        if (isCreator) {
-            return (
-                <Col xs={2}>
-                    <span className={"float-right"} name={deck._id}
-                          onClick={(event) => {
-                              addDeleteDeckToState(event)
-                          }}>
-                        <FontAwesomeIcon icon={faTrash}
-                                         className={'trash-icon'}
-                                         size={'1x'}
-                                         title={`Delete ${deck.name}`}
-
-                        />
-                    </span>
-                </Col>
-            )
-        }
-    };
-
-    const editDeckIcon = (deck) => {
-        if (isCreator) {
-            return (
-                <Col xs={2}>
-                    <span className={"float-right"} name={deck._id}
-                          onClick={(event) => {
-                              addEditDeckToState(event)
-                          }}>
-                        <FontAwesomeIcon icon={faEdit}
-                                         className={'trash-icon'}
-                                         size={'1x'}
-                                         title={`Edit ${deck.name}`}
-                        />
-                    </span>
-                </Col>
-            )
-        }
-    };
+    const iconHOC = (icon, title, deck, funct) => {
+        return (
+            <Col xs={2}>
+            <span className={"float-right"} name={deck._id}
+                  onClick={(event) => {
+                      funct(event)
+                  }}>
+                <FontAwesomeIcon icon={icon}
+                                 className={'trash-icon'}
+                                 size={'1x'}
+                                 title={`${title} ${deck.name}`}
+                />
+            </span>
+        </Col>
+        )
+    }
 
     const editDeckName = (deck, deckId) => {
         const waarde = () => {
@@ -310,7 +278,7 @@ const Deck = (props) => {
                             </Col>
                         </Row>
                     </Card.Body>
-                    {userOptionsDelete(deck)}
+                    {userOptions(deck)}
                 </Card>
             </Col>
         )
