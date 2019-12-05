@@ -25,14 +25,12 @@ function escapeRegexCharacters(str) {
 
 /* --------------- */
 /*    Component    */
-
 /* --------------- */
 function getSuggestionValue(suggestion) {
     return suggestion.name;
 }
 
 function renderSuggestion(suggestion) {
-    console.log(suggestion)
     return (
         <>
             <span style={{fontWeight: 600}}>{suggestion.name}</span>
@@ -57,7 +55,7 @@ export const SearchDecksInput = () => {
         // Request
         lastRequestId = setTimeout(async () => {
 
-            const url = `${API_URL}/decks`;
+            const url = `${API_URL}/decks?deck=${value}`;
             let decks;
 
             const response = await fetch(url, {
@@ -109,6 +107,7 @@ export const SearchDecksInput = () => {
                 getSuggestionValue={getSuggestionValue}
                 renderSuggestion={renderSuggestion}
                 inputProps={inputProps}
+                highlightFirstSuggestion={true}
             />
         </>
     );

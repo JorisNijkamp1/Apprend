@@ -5,32 +5,40 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 require('../../../../database/models/deck');
 const Decks = mongoose.model('Deck');
-const UserSchema = require('../../../../database/models/user')
-require('../../../../database/models/user')
-const User = mongoose.model('User')
-
+const UserSchema = require('../../../../database/models/user');
+require('../../../../database/models/user');
+const User = mongoose.model('User');
 
 /*====================================
-| GET ALL DECKS
+| SEARCH FOR SOME DECKS
 */
 decks.get('/', async (req, res) => {
-    let allDecksUsers = await User.find({});
+    const searchQuery = req.query.deck;
+    let foundDecks = await User.find({
+        decks: {
+            $elemMatch:
+                {
+                    name: {'$regex': searchQuery, '$options': 'i'}
+                }
+        }
+    });
 
-    const decks = [];
-    allDecksUsers.forEach((index, key) => {
-        allDecksUsers[key].decks.forEach((decksIndex, decksKey) => {
+    let decks = [];
+    foundDecks.forEach((index, key) => {
+        foundDecks[key].decks.forEach((decksIndex, decksKey) => {
             decks.push({
-                name: allDecksUsers[key].decks[decksKey].name,
-                deckCreator: !(allDecksUsers[key].email && allDecksUsers[key]) ? 'anonymous user' : allDecksUsers[key].decks[decksKey].creatorId,
-                totalFlashcards: allDecksUsers[key].decks[decksKey].flashcards.length
+                name: foundDecks[key].decks[decksKey].name,
+                deckCreator: !(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
+                totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length
             });
         });
     });
 
-    console.log(decks)
+    //Sort decks on totalFlashcards
+    decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
 
     await res.json({
-        decks: decks,
+        decks: (decks.length > 4) ? decks.slice(0, 4) : decks,
     })
 });
 
