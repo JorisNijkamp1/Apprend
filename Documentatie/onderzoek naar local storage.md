@@ -58,6 +58,10 @@ Daarnaast zullen we ons moeten verdiepen op het gebruik van service workers om e
 \
 Ik denk dat het verstandig is om dit aan de product owner te vragen en wat zijn voorkeur heeft in dit geval. Meer functionaliteit of offline mogelijkheden aan het einde van deze sprint.
 
+#### Mijn gemaakte test
+
+- https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/test/localforage/apprend/Clients/apprend-web/src/components/test-components/TestLocalStorage.jsx
+
 #### Bezochte paginas om informatie in te winnen
 
 - https://developers.google.com/web/tools/chrome-devtools/storage/indexeddb
