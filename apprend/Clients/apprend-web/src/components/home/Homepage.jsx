@@ -56,10 +56,21 @@ const HomepageUI = (props) => {
     return (
         <>
             <NavigatieBar/>
+            <div className={"half-circle"}>
+                <svg className="wave" preserveAspectRatio="none" viewBox="0 0 1440 95"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <g stroke="none" stroke-width="1">
+                        <g transform="translate(0.000000, -475.000000)">
+                            <path
+                                d="M1440,475.58902 L1440,570 L0,570 L0,476.754103 C202.386092,535.456501 450.250742,570 718,570 C987.51583,570 1236.8838,534.99917 1440,475.58902 Z"></path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
             <Container>
-                <Row>
+                <Row className={"mt-4"}>
                     <Col lg={{span: 8, offset: 2}}>
-                        <div className="mx-auto text-green pt-5">
+                        <div className="mx-auto text-white pt-5">
                             <h1 className="display-5 text-center">Welcome back to <strong>Apprend</strong>!</h1>
                         </div>
                     </Col>
@@ -73,12 +84,12 @@ const HomepageUI = (props) => {
                                 aria-describedby="Search"
                             />
                             <InputGroup.Append>
-                                <Button className={'bg-blue text-white hover-shadow'}>Submit</Button>
+                                <Button className={'bg-green text-white hover-shadow'}>Submit</Button>
                             </InputGroup.Append>
                         </InputGroup>
                     </Col>
                 </Row>
-                <Row className={'mt-5 mb-5'}>
+                <Row className={'mt-10 mb-5'}>
                     {decksHomepage()}
                 </Row>
             </Container>
