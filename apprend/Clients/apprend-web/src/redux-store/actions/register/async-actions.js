@@ -1,5 +1,6 @@
 import {API_URL} from '../../urls';
 import {setRegisterSuccess, setUsernameExists, setEmailExists, errorOccurred} from '../register/actions';
+import {setLoginAction, setAnonymousUserAction} from '../login/actions';
 
 export const registerNewUser = function (username, email, password) {
     return async dispatch => {
@@ -24,6 +25,8 @@ export const registerNewUser = function (username, email, password) {
         }).then(results => {
             if (results.success) {
                 dispatch(setRegisterSuccess(true));
+                dispatch(setAnonymousUserAction(false));
+                dispatch(setLoginAction(results.user._id));
             } else {
                 if (results.error !== undefined) {
                     dispatch(errorOccurred(results.error));

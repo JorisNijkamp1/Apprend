@@ -10,6 +10,7 @@ import {
     SET_REGISTER_SUCCESS,
     SET_USERNAME_EXISTS
 } from '../../../redux-store/actions/register/action-types';
+import {setLoginAction, setAnonymousUserAction} from '../../../redux-store/actions/login/actions';
 
 test('Action type SET_REGISTER_SUCCESS is correct', () => {
     expect(setRegisterSuccess().type).toBe(SET_REGISTER_SUCCESS);
