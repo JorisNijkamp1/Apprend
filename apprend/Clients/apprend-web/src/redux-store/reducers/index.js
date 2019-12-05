@@ -6,6 +6,7 @@ import decksReducer from './decks-reducer'
 import registerReducer from './register-reducer';
 import loginReducer from "./login-reducer";
 import playingReducer from './playing';
+import searchReducer from "./search-reducer";
 
 export const allReducers = combineReducers({
     client: clientReducer,
@@ -15,4 +16,5 @@ export const allReducers = combineReducers({
     register: registerReducer,
     playing: playingReducer,
     login: loginReducer,
-})
+    search: searchReducer,
+});

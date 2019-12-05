@@ -12,7 +12,7 @@ import {Footer} from '../shared/footer/Footer'
 import {getHomepageDecks} from '../../redux-store/actions/home/async-actions';
 import {Link} from 'react-router-dom';
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
-import {SearchDecksInput} from "../search-input/SearchDecksInput";
+import SearchDecksInput from "../search-input/SearchDecksInput";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 

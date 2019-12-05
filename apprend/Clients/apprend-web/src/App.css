@@ -257,6 +257,14 @@ progress[value]::-webkit-progress-value {
     width: 100%;
 }
 
+.search-suggestions-link {
+    color: unset;
+}
+
+.search-suggestions-link:hover {
+    text-decoration: unset;
+}
+
 @media only screen and (max-width: 800px) {
   .flipCard {
     width: 100%;

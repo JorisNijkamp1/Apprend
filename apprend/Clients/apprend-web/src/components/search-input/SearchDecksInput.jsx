@@ -1,6 +1,9 @@
 import React, {useState} from "react";
+import {connect} from 'react-redux';
 import Autosuggest from 'react-autosuggest';
 import {API_URL} from "../../redux-store/urls";
+import {Link} from "react-router-dom";
+import {setSearchValue} from "../../redux-store/actions/search/actions";
 
 const getMatchingLanguages = (value, decks) => {
     const escapedValue = escapeRegexCharacters(value.trim());
@@ -10,7 +13,6 @@ const getMatchingLanguages = (value, decks) => {
     }
 
     const regex = new RegExp('^' + escapedValue, 'i');
-
     return decks.filter(deck => regex.test(deck.name));
 };
 
@@ -19,31 +21,31 @@ const getMatchingLanguages = (value, decks) => {
 /* ----------- */
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
-function escapeRegexCharacters(str) {
+const escapeRegexCharacters = (str) => {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+};
 
 /* --------------- */
 /*    Component    */
 /* --------------- */
-function getSuggestionValue(suggestion) {
+const getSuggestionValue = (suggestion) => {
     return suggestion.name;
-}
+};
 
 function renderSuggestion(suggestion) {
+    console.log(suggestion)
     return (
-        <>
+        <Link to={`/decks/${suggestion.deckId}`} className={'search-suggestions-link'}>
             <span style={{fontWeight: 600}}>{suggestion.name}</span>
             <br/>
             <i>{suggestion.totalFlashcards} flashcards</i>
-        </>
+        </Link>
     );
 }
 
-export const SearchDecksInput = () => {
+const SearchDecksInput = (props) => {
     const [value, setValue] = useState('');
     const [suggestions, setSuggestions] = useState([]);
-
     let lastRequestId = null;
 
     const loadSuggestions = (value) => {
@@ -79,6 +81,7 @@ export const SearchDecksInput = () => {
     };
 
     const onChange = (event, {newValue}) => {
+        props.setSearchValue(newValue);
         setValue(newValue);
     };
 
@@ -108,7 +111,22 @@ export const SearchDecksInput = () => {
                 renderSuggestion={renderSuggestion}
                 inputProps={inputProps}
                 highlightFirstSuggestion={true}
+                onSuggestionSelected={console.log(value)}
             />
         </>
     );
 };
+
+const mapStateToProps = state => {
+    return {
+        searchValue: state.search.searchValue,
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setSearchValue: (searchValue) => dispatch(setSearchValue(searchValue)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchDecksInput);

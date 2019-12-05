@@ -29,7 +29,8 @@ decks.get('/', async (req, res) => {
             decks.push({
                 name: foundDecks[key].decks[decksKey].name,
                 deckCreator: !(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
-                totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length
+                totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
+                deckId: foundDecks[key].decks[decksKey]._id
             });
         });
     });

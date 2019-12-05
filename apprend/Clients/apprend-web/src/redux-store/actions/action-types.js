@@ -29,3 +29,6 @@ export const SET_ANONYMOUS_USER = "SET_ANONYMOUS_USER";
 export const RESET_STATE = 'RESET_STATE';
 export const SET_ISLOADING = 'SET_ISLOADING';
 export const SET_GAME_ID = 'SET_GAME_ID';
+
+// search
+export const SEARCH_SET_SEARCH_VALUE = 'SEARCH_SET_SEARCH_VALUE';
