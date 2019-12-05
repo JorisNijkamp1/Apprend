@@ -71,7 +71,7 @@ decks.post('/', async (req, res) => {
             const deck = {
                 name: req.body.deckName,
                 description: req.body.description,
-                creatorId: req.session.username,
+                creatorId: req.session.username ? req.session.username : req.cookies.username,
                 status: 'original',
                 flashcards: [],
             }
@@ -298,6 +298,7 @@ decks.get('/:deckId/games/:gameId', async (req, res) => {
 decks.put('/:deckId', async (req, res) => {
     const {deckId} = req.params;
     const {name, description, creatorId} = req.body;
+    console.log(creatorId)
     let user = await User.findById(creatorId);
     await user.editDeckname(deckId, name, description);
 

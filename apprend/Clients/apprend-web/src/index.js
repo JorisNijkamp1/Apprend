@@ -19,8 +19,8 @@ const logger = (store) => (next) => (action) => {
 
 const composeEnhancers = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()) || Redux.compose
 
-// const middleware = [thunk, logger]
-const middleware = [thunk]
+const middleware = [thunk, logger]
+// const middleware = [thunk]
 const store = Redux.createStore(
     allReducers,
     Redux.compose(
