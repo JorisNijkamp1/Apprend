@@ -1,5 +1,5 @@
 import {API_URL} from '../../urls';
-import {setCardsAction, setLoadingAction, setGameIdAction} from "./actions";
+import {setCardsAction, setLoadingAction, setGameIdAction} from './actions';
 
 export const getDeck = (deckId) => {
     return async dispatch => {
@@ -13,6 +13,7 @@ export const getDeck = (deckId) => {
             credentials: 'include',
             mode: 'cors'
         };
+
         return fetch(url, options)
             .then(response => response.json())
             .then(data => {
@@ -24,18 +25,20 @@ export const getDeck = (deckId) => {
                     return data.deck;
                 }
             }).catch((err => {
-            console.log("Er gaat iets goed fout!");
-            console.log(err);
-        }))
+                console.log('Er gaat iets goed fout!');
+                console.log(err);
+            }))
     }
 };
 
 export const setGame = (deckId, cards) => {
     return async dispatch => {
         const url = `${API_URL}/decks/${deckId}/setGame`;
+
         let data = {
             cards: cards
         };
+
         const options = {
             method: 'POST',
             headers: {
@@ -45,28 +48,31 @@ export const setGame = (deckId, cards) => {
             credentials: 'include',
             mode: 'cors'
         };
+
         return fetch(url, options)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                dispatch(setGameIdAction(data.gameId));
-            }
-        }).catch((err => {
-        console.log("Er gaat iets goed fout!");
-        console.log(err);
-    }))
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    dispatch(setGameIdAction(data.gameId));
+                }
+            }).catch((err => {
+                console.log('Er gaat iets goed fout!');
+                console.log(err);
+            }))
     }
 };
 
 export const updateGame = (deckId, gameId, oldCard, newCard, status) => {
     return async () => {
         const url = `${API_URL}/decks/${deckId}/updateGame`;
+
         let data = {
             gameId: gameId,
             oldCard: oldCard,
             newCard: newCard,
             status: status
         };
+
         const options = {
             method: 'PUT',
             headers: {
@@ -76,6 +82,7 @@ export const updateGame = (deckId, gameId, oldCard, newCard, status) => {
             credentials: 'include',
             mode: 'cors'
         };
+
         fetch(url, options)
     }
 };
@@ -91,15 +98,16 @@ export const getGameData = (deckId, gameId) => {
             credentials: 'include',
             mode: 'cors'
         };
+
         return fetch(url, options)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                return data.game[0]
-            }
-        }).catch((err => {
-        console.log("Er gaat iets goed fout!");
-        console.log(err);
-    }))
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    return data.game[0]
+                }
+            }).catch((err => {
+                console.log('Er gaat iets goed fout!');
+                console.log(err);
+            }))
     }
 };

@@ -218,6 +218,58 @@ decks.post('/:deckId/flashcards', async (req, res) => {
     }
 });
 
+decks.put('/:deckId/flashcards/:flashcardId', async (req, res) => {
+    const deckId = req.params.deckId;
+    const flashcardId = req.params.flashcardId;
+    const username = req.session.username ? req.session.username : req.cookies.username;
+
+    if (req.body.box === undefined || req.body.sessionPlayed === undefined) {
+        req.status(400);
+        await req.json({
+            'success': false,
+            'error': 'The required POST data was not set...'
+        });
+
+        return;
+    }
+
+    if (!username) {
+        res.status(401);
+        await res.json({
+            'success': false,
+            'error': 'You are not a registered user...'
+        });
+
+        return;
+    }
+
+    let user = await User.findOne({'_id': username});
+
+    if (user === null) {
+        res.status(401);
+        await res.json({
+            'success': false,
+            'error': 'You are not a registered user...'
+        });
+
+        return;
+    }
+
+    if (user.decks[deckId] === undefined || user.decks[deckId] === null) {
+        res.status(404);
+        await res.json({
+            'success': false,
+            'error': 'This deck does not exist...'
+        });
+
+        return;
+    }
+    
+    // TODO: Check if flashcard exists in deck
+
+    user.updateFlashcard(deckId, flashcardId);
+});
+
 // Insert game
 decks.post('/:deckId/setGame', async (req, res) => {
     let gameId;
