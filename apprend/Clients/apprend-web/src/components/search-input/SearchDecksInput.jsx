@@ -25,8 +25,8 @@ function escapeRegexCharacters(str) {
 
 /* --------------- */
 /*    Component    */
-/* --------------- */
 
+/* --------------- */
 function getSuggestionValue(suggestion) {
     return suggestion.name;
 }
@@ -45,7 +45,6 @@ function renderSuggestion(suggestion) {
 export const SearchDecksInput = () => {
     const [value, setValue] = useState('');
     const [suggestions, setSuggestions] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
 
     let lastRequestId = null;
 
@@ -54,8 +53,6 @@ export const SearchDecksInput = () => {
         if (lastRequestId !== null) {
             clearTimeout(lastRequestId);
         }
-
-        setIsLoading(true);
 
         // Request
         lastRequestId = setTimeout(async () => {
@@ -79,7 +76,6 @@ export const SearchDecksInput = () => {
                 decks = []
             }
 
-            setIsLoading(false);
             setSuggestions(getMatchingLanguages(value, decks));
         });
     };
@@ -96,8 +92,6 @@ export const SearchDecksInput = () => {
         setSuggestions([]);
     };
 
-    const status = (isLoading ? 'Loading...' : 'Type to load suggestions');
-
     const inputProps = {
         placeholder: "Search a deck",
         value,
@@ -108,9 +102,6 @@ export const SearchDecksInput = () => {
 
     return (
         <>
-            {/*<div className="status">*/}
-            {/*    <strong>Status:</strong> {status}*/}
-            {/*</div>*/}
             <Autosuggest
                 suggestions={suggestions}
                 onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -121,5 +112,4 @@ export const SearchDecksInput = () => {
             />
         </>
     );
-}
-
+};
