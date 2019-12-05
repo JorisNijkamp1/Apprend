@@ -22,24 +22,24 @@ describe(`Flashcard`, () => {
         await page.goto(`http://localhost:3000/`);
         await page.waitFor(`title`);
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`)
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     });
 
     test(`Go to login`, async () => {
         await page.goto(`http://localhost:3000/login`)
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`)
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     })
 
     test(`Fill username`, async () => {
         await page.type(`input#loginUsernameInput`, `Joris`, {delay: 15});
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`)
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     })
     test(`Fill in password`, async () => {
         await page.type(`input#loginPasswordInput`, `han`, {delay: 15});
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`)
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     })
 
     test(`Login and redirect`, async () => {
@@ -52,7 +52,7 @@ describe(`Flashcard`, () => {
         await page.goto(`http://localhost:3000/Joris/decks`);
         await page.waitFor(`title`);
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`)
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     });
 
     test(`Load deck frans woordjes`, async () => {
@@ -60,7 +60,7 @@ describe(`Flashcard`, () => {
         const deckButton = await page.$(`#card-0-link`);
         const theTitle = await page.title()
         await deckButton.click();
-        expect(theTitle).toBe(`React App`)
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     });
 
     test(`Load edit deck frans woordjes`, async () => {
@@ -68,19 +68,19 @@ describe(`Flashcard`, () => {
         const goToEditDeck = await page.$(`#edit-deck`);
         await goToEditDeck.click();
         const theTitle = await page.title()
-        expect(theTitle).toBe(`React App`)
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     });
 
     test('Edit deck name', async () => {
         await page.type(`input[name="name"]`, `test`, {delay: 15});
         const theTitle = await page.title()
-        expect(theTitle).toBe(`React App`)
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     })
 
     test('Edit deck description', async () => {
         await page.type(`textarea[name="description"]`, `test`, {delay: 15});
         const theTitle = await page.title()
-        expect(theTitle).toBe(`React App`)
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     })
 
     test('Save deck', async () => {
@@ -88,7 +88,7 @@ describe(`Flashcard`, () => {
         const saveEditedDeck = await page.$(`button[name="save-deck"]`);
         await saveEditedDeck.click();
         const theTitle = await page.title()
-        expect(theTitle).toBe(`React App`);
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
     })
 })
 

@@ -35,7 +35,20 @@ async function seedUsers() {
                 // "creatorId": ,
                 // "lastPlayedDate": ,
                 "status": "isEdited",
-                "flashcards": []
+                "flashcards": [
+                    {
+                        "_id": "0",
+                        "type": "Text only",
+                        "question": "Hond",
+                        "answer": "Dog"
+                    },
+                    {
+                        "_id": "1",
+                        "type": "Text only",
+                        "question": "Kat",
+                        "answer": "Cat"
+                    }
+                ]
             }]
         },
         {
