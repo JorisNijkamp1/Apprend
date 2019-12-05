@@ -128,7 +128,6 @@ users.post('/', async (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, config.PASSWORD_SALT);
 
     if (!req.session.username && !req.cookies.username) {
-        req.session.username = req.body.username
         const newUser = new User({
             '_id': req.body.username,
             'email': req.body.email,
@@ -193,7 +192,6 @@ users.post('/', async (req, res) => {
     });
 
     await newUser.save();
-    req.session.username = req.body.username
     await User.deleteOne({'_id': oldUser._id});
 
     if (req.cookies.username) res.clearCookie('username');

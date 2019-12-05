@@ -44,39 +44,3 @@ test('Action payload ERROR_OCCURRED is correct', () => {
     const expectedError = 'Dit is een test error!';
     expect(errorOccurred(expectedError).payload).toBe(expectedError);
 });
-
-test('User registers and logs in', async () => {
-    const expectedResult = {
-        "loggedIn": true,
-        "username": "Niels"
-    }
-    const data = {
-        "username": "Niels",
-        'email': 'niels@gmail.com',
-        "password": "hoi"
-    };
-
-    await fetch(`http://localhost:3001/api/v1/users`, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        mode: 'cors'
-    });
-
-    const response = await fetch('http://localhost:3001/api/v1/login/check', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        mode: 'cors'
-    })
-    const result = await response.json();
-
-    expect(result.loggedIn).toBe(expectedResult.loggedIn)
-    expect(result.username).toBe(expectedResult.username)
-})

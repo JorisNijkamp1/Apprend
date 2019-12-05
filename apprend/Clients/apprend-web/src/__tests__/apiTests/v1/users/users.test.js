@@ -1,6 +1,6 @@
 import {API_URL} from '../../../../redux-store/urls';
 
-describe('Registration tests', function () {
+describe('Users API tests', function () {
     beforeAll(async function () {
         const url = `${API_URL}/users`;
         const user = {
