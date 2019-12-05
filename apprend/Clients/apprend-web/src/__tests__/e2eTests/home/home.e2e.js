@@ -22,7 +22,7 @@ describe(`Home`, () => {
         await page.goto(`http://localhost:3000/`);
         await page.waitFor(`title`);
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`)
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     })
 
     test(`Go to create deck`, async () => {

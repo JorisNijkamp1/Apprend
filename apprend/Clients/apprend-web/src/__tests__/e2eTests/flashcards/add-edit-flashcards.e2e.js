@@ -2,13 +2,13 @@ const puppeteer = require('puppeteer');
 
 jest.setTimeout(30000);
 
-describe(`Login & add or replace 3 flashcards to an exist Deck`, () => {
+describe(`Login & add or replace 3 flashcards to an existing Deck`, () => {
     let browser, page;
 
     beforeAll(async () => {
         browser = await puppeteer.launch({
             headless: false,
-            slowMo: 75,
+            slowMo: 200,
             args: [`--window-size=1200,800`, `--window-position=0,0`]
         });
         page = await browser.newPage()
@@ -22,25 +22,25 @@ describe(`Login & add or replace 3 flashcards to an exist Deck`, () => {
         await page.goto(`http://localhost:3000/`);
         await page.waitFor(`title`);
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`);
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
     });
 
     test(`Go to login`, async () => {
         await page.goto(`http://localhost:3000/login`);
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`);
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
     });
 
     test(`Fill username`, async () => {
         await page.type(`input#loginUsernameInput`, `Joris`, {delay: 5});
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`);
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
     });
 
     test(`Fill in password`, async () => {
         await page.type(`input#loginPasswordInput`, `han`, {delay: 5});
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`);
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
     });
 
     test(`Login and redirect`, async () => {
@@ -84,16 +84,6 @@ describe(`Login & add or replace 3 flashcards to an exist Deck`, () => {
         expect(defnitionInput).toBeDefined();
     });
 
-    // test(`Delete second flashcard if exist`, async () => {
-    //     await page.waitFor(`#add-new-flashcard`);
-
-    //     if (await page.$('#flashcard-1') === null) {
-    //         const deleteFlashcardIcon = await page.$(`#flashcard-1-delete-icon`);
-    //         await deleteFlashcardIcon.click();
-    //         expect(deleteFlashcardIcon).toBeDefined();
-    //     }
-    // });
-
     test(`Add a second flashcard if not exist`, async () => {
         await page.waitFor(`#add-new-flashcard`);
         if (await page.$('#flashcard-1') === null) {
@@ -117,6 +107,25 @@ describe(`Login & add or replace 3 flashcards to an exist Deck`, () => {
         expect(defnitionInput).toBeDefined();
     });
 
+    test(`Don't delete second flashcard`, async () => {
+        await page.waitFor(`#add-new-flashcard`);
+        const deleteFlashcardIcon = await page.$(`#flashcard-1-delete-icon`);
+        await deleteFlashcardIcon.click();
+        const youSureIcon = await page.$(`#red`);
+        await youSureIcon.click();
+        expect(deleteFlashcardIcon).toBeDefined();
+        expect(youSureIcon).toBeDefined();
+    });
+
+    test(`Add a third flashcard if not exist`, async () => {
+        await page.waitFor(`#add-new-flashcard`);
+        if (await page.$('#flashcard-2') === null) {
+            const addNewFlashcardIcon = await page.$(`#add-new-flashcard`);
+            await addNewFlashcardIcon.click();
+            expect(addNewFlashcardIcon).toBeDefined();
+        }
+    });
+
     test(`Add a third flashcard if not exist`, async () => {
         await page.waitFor(`#add-new-flashcard`);
         if (await page.$('#flashcard-2') === null) {
@@ -138,6 +147,16 @@ describe(`Login & add or replace 3 flashcards to an exist Deck`, () => {
         await page.evaluate( () => document.getElementById("flashcard-2-definition").value = "");
         await page.type(`input#flashcard-2-definition`, `Eten`, {delay: 5});
         expect(defnitionInput).toBeDefined();
+    });
+
+    test(`Delete third flashcard`, async () => {
+        await page.waitFor(`#add-new-flashcard`);
+        const deleteFlashcardIcon = await page.$(`#flashcard-2-delete-icon`);
+        await deleteFlashcardIcon.click();
+        const youSureIcon = await page.$(`#green`);
+        await youSureIcon.click();
+        expect(deleteFlashcardIcon).toBeDefined();
+        expect(youSureIcon).toBeDefined();
     });
 
     test(`Save flashcards`, async () => {

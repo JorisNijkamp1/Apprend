@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 import {allReducers} from './redux-store/reducers'
 import {BrowserRouter} from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
+import ReactNotification from 'react-notifications-component'
 
 const logger = (store) => (next) => (action) => {
     console.log(store)
@@ -31,6 +32,7 @@ const store = Redux.createStore(
 const mainComponent =
     <Provider store={store}>
         <BrowserRouter>
+            <ReactNotification />
             <App/>
         </BrowserRouter>
     </Provider>

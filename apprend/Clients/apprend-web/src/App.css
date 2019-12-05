@@ -181,6 +181,10 @@ progress[value]::-webkit-progress-value {
   cursor: pointer;
 }
 
+.notification-container-mobile-top, .notification-container-top-center {
+  top: 80px !important;
+}
+
 @media only screen and (max-width: 800px) {
   .flipCard {
     width: 100%;
