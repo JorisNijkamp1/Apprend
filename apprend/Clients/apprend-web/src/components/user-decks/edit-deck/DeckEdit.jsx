@@ -39,9 +39,13 @@ const DeckEditUI = (props) => {
                             Edit deck
                             <Link to={`/decks/${props.deckEdit._id}`}>
                                 <Button className={'float-right'}
-                                        onClick={() =>
+                                        onClick={() => {
+                                            console.log(props.deckEdit.creatorId);
+                                            console.log(props.deckEdit._id)
+                                            console.log(deckData.deckName)
+                                            console.log(deckData.deckDescription)
                                             props.setDeckEditedAction(props.deckEdit.creatorId, props.deckEdit._id, deckData.deckName, deckData.deckDescription)
-                                        }
+                                        }}
                                         name={"save-deck"}
                                 >Save deck</Button>
                             </Link>
