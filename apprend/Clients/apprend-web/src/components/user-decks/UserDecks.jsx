@@ -7,13 +7,11 @@ import Col from "react-bootstrap/Col";
 import {Link, useParams} from "react-router-dom";
 import {Footer} from "../shared/footer/Footer"
 import {
-    getDeckAction,
     getDeckEditAction,
     getUserDecksAction,
     setDeckEditedAction
 } from "../../redux-store/actions/decks/async-actions";
 import Card from "react-bootstrap/Card";
-import CardColumns from "react-bootstrap/CardColumns";
 import Loader from 'react-loaders'
 import 'loaders.css/src/animations/square-spin.scss'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -22,7 +20,6 @@ import Button from "react-bootstrap/Button";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {deleteDeckFromUser} from '../../redux-store/actions/decks/async-actions'
 import {Form} from "react-bootstrap";
-import loginReducer from "../../redux-store/reducers/login-reducer";
 
 const Deck = (props) => {
     const {username} = useParams();
@@ -31,18 +28,16 @@ const Deck = (props) => {
     const [decks, setDecks] = useState([])
     const [deckCheckEdit, setDeckCheckEdit] = useState(['b'])
 
-    const [deckName, setDeckname] = useState('');
+    const [deckName, setDeckname] = useState([{}]);
     const [deckNameEdited, setDecknameEdited] = useState(false);
 
-    const [deckDescription, setDeckDescription] = useState('');
+    const [deckDescription, setDeckDescription] = useState([{}]);
     const [deckDescriptionEdited, setDeckDescriptionEdited] = useState(false);
 
-    const deckData = {
-        deckName: (!deckNameEdited && props.decks.creatorId) ? props.decks.creatorId : deckName,
-        deckDescription: (!deckDescriptionEdited && props.decks.description) ? props.decks.description : deckDescription
-    }
+    let {deckId} = useParams()
 
     useEffect(() => {
+        props.getDecksEdit(deckId)
         props.getUserDecks(username)
     }, []);
 
@@ -81,12 +76,19 @@ const Deck = (props) => {
         props.deleteDeckFromUser(deckId)
     };
 
-    const handleEditDeck = () => {
-        console.log(props.deckEdit.creatorId);
-        console.log(props.deckEdit._id)
-        console.log(deckData.deckName)
-        console.log(deckData.deckDescription)
-        // props.setDeckEditedAction(props.decks.creatorId, props.decks._id, deckData.deckName, deckData.deckDescription)
+    const handleEditDeck = event => {
+        const allDecks = props.decks;
+        const deckId = event.currentTarget.getAttribute('name');
+        allDecks.map((deck, key) => {
+            if (deckId === deck._id) {
+                let deckData = {
+                    deckName: (!deckNameEdited && deck.creatorId) ? deck.creatorId : deckName,
+                    deckDescription: (!deckDescriptionEdited && deck.description) ? deck.description : deckDescription
+                }
+                props.setDeckEditedAction(deck.creatorId, deck._id, deckData.deckName, deckData.deckDescription)
+            }
+            return null
+        })
     }
 
     const toggleDeleteDeckToState = event => {
@@ -183,7 +185,6 @@ const Deck = (props) => {
                 return deckName
             }
         }
-
         if (deckCheckEdit.includes(deckId)) {
             return (
                 <Form.Group controlId="formBasicEmail" className={"text-center"}>
@@ -252,6 +253,7 @@ const Deck = (props) => {
     }
 
     let loader, userDecks, error;
+
     if (props.isLoading) {
         loader = (
             <Row className="mx-auto align-items-center flex-column py-5">
@@ -282,10 +284,6 @@ const Deck = (props) => {
                 </Card>
             </Col>
         )
-    } else if (props.userDecks.toString() === 'no-decks') {
-
-    } else if (props.decks === 0) {
-
     }
 
     const showErrors = () => {
@@ -338,8 +336,7 @@ function mapStateToProps(state) {
         userDecks: state.decks.userDecks,
         decks: state.decks.userDecks.decks,
         isLoading: state.decks.isLoading,
-        username: state.login.username,
-        deckEdit: state.decks.deckEdit
+        username: state.login.username
     }
 }
 
@@ -348,7 +345,8 @@ function mapDispatchToProps(dispatch) {
         isLoggedIn: () => dispatch(isLoggedIn()),
         getUserDecks: (username) => dispatch(getUserDecksAction(username)),
         deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
-        setDeckEditedAction: (creatorId, _id, deckName, deckDescription) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription))
+        setDeckEditedAction: (creatorId, _id, deckName, deckDescription) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription)),
+        getDecksEdit: (deckId) => dispatch(getDeckEditAction(deckId)),
     }
 }
 
