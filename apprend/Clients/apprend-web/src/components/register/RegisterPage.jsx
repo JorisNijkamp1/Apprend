@@ -40,11 +40,11 @@ export const RegisterPageComponent = props => {
         props.doRegisterNewUser(username, email, password);
     };
 
-    // if (props.newUserRegistered) {
-    //     if (props.anonymousUser) {
-    //         props.doLogin(username, password);
-    //     }
-    // }
+    if (props.newUserRegistered) {
+        if (props.anonymousUser) {
+            props.doLogin(username, password);
+        }
+    }
 
     return (
         <>
@@ -111,6 +111,7 @@ export const RegisterPageComponent = props => {
                                         variant={'primary'}
                                         type={'submit'}
                                         id={'registerSubmitButton'}
+                                        className="w-100"
                                         onClick={(event) => handleSubmit(event)}>Register</Button> :
                                 <Button className={'mx-auto'}
                                         variant={'primary'}
