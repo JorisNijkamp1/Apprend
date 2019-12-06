@@ -160,7 +160,6 @@ decks.get('/:deckId', async (req, res) => {
     }
 });
 
-
 /*====================================
 | GET ALL FLASHCARDS FROM A DECK
 */
@@ -197,8 +196,8 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    const { flashcards } = req.body;
-    const { deckId } = req.params;
+    const {flashcards} = req.body;
+    const {deckId} = req.params;
     let username;
 
     if (req.body.test === true) {
@@ -345,6 +344,32 @@ decks.put('/:deckId', async (req, res) => {
         name: name,
         description: description,
         deck: currentDeck
+    })
+})
+
+decks.post('/:deckId', async (req, res) => {
+    const deckId = req.params.deckId;
+    let user = await User.find({
+        "decks._id": deckId
+    });
+
+    console.log(user.decks)
+
+    // let deckData = [];
+    //
+    // user.decks.map(deck => {
+    //     deckData.push({
+    //         deckName: deck.name,
+    //         deckDescription: deck.description,
+    //         deckCreatId: deck.creatorId,
+    //         deckStatus: 'copied',
+    //         deckFlashcards: []
+    //     })
+    // })
+    //
+    // console.log(deckData)
+    res.json({
+        succes: true,
     })
 })
 

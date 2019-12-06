@@ -61,7 +61,7 @@ const HomepageUI = (props) => {
             <div className={"half-circle"}>
                 <svg className="wave" preserveAspectRatio="none" viewBox="0 0 1440 95"
                      xmlns="http://www.w3.org/2000/svg">
-                    <g stroke="none" stroke-width="1">
+                    <g stroke="none" strokeWidth="1">
                         <g transform="translate(0.000000, -475.000000)">
                             <path
                                 d="M1440,475.58902 L1440,570 L0,570 L0,476.754103 C202.386092,535.456501 450.250742,570 718,570 C987.51583,570 1236.8838,534.99917 1440,475.58902 Z"></path>
