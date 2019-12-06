@@ -39,7 +39,7 @@ decks.get('/', async (req, res) => {
     decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
 
     await res.json({
-        decks: (decks.length > 4) ? decks.slice(0, 4) : decks,
+        decks: decks,
     })
 });
 

@@ -20,7 +20,8 @@ const getMatchingLanguages = (value, decks) => {
     }
 
     const regex = new RegExp('^' + escapedValue, 'i');
-    return decks.filter(deck => regex.test(deck.name));
+    decks = decks.filter(deck => regex.test(deck.name))
+    return (decks.length > 4) ? decks.slice(0, 4) : decks;
 };
 
 /* ----------- */
