@@ -310,3 +310,7 @@ progress[value]::-webkit-progress-value {
 .mt-7{
     margin-top: 7rem !important;
 }
+
+.infinite-scroll-component  {
+    overflow: hidden !important;
+}
