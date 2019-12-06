@@ -22,36 +22,42 @@
 }
 
 .trash-icon:hover {
-  color: #dc3545;
-  transition: all .2s ease-in-out;
+    color: #dc3545;
+    transition: all .2s ease-in-out;
 }
 
-.hover-shadow-editable-flashcard{
-  transition: all .3s ease-in-out;
+.hover-shadow-editable-flashcard {
+    transition: all .3s ease-in-out;
 }
 
-.hover-shadow-editable-flashcard:hover{
-  box-shadow: 0px 0px 30px 10px rgba(0,0,0,.2)
+.hover-shadow-editable-flashcard:hover {
+    box-shadow: 0px 0px 30px 10px rgba(0, 0, 0, .2)
 }
 
 .bg-blue {
-    background-color: #758BFE;
+    background-color: #007bff;
 }
 
 .bg-green {
-    background-color: #7AD765;
+    background-color: #1bba63;
+    border: none !important;
+}
+
+.bg-nav {
+    background: linear-gradient(17deg, #381868, #913bb7);
 }
 
 .text-blue {
-    color: #758BFE !important;
+    /*color: #007bff !important;*/
+    color: #202020;
 }
 
 .text-green {
-    color: #7AD765 !important;
+    color: #1bba63 !important;
 }
 
 .text-red {
-  color: red
+    color: red
 }
 
 .pl-30 {
@@ -59,26 +65,26 @@
 }
 
 .border-blue {
-    border: 1px solid #758BFE;
+    border: 1px solid #00b5fb;
 }
 
 .bg-gray {
     background-color: #EEEEEE;
 }
 
-.hover-shadow{
+.hover-shadow {
     transition: all .3s ease-in-out;
 }
 
-.hover-shadow:hover{
-    box-shadow: 0 0 30px 10px rgba(0,0,0,.2)
+.hover-shadow:hover {
+    box-shadow: 0 0 30px 10px rgba(0, 0, 0, .2)
 }
 
 .hover-shadow-text {
     transition: all .3s ease-in-out;
 }
 
-h2{
+h2 {
     font-size: 22px;
 }
 
@@ -87,86 +93,86 @@ h2{
 }
 
 .border {
-  text-align: center;
-  padding: 20px;
-  margin: 10px 300px;
-  border: 10px solid black;
+    text-align: center;
+    padding: 20px;
+    margin: 10px 300px;
+    border: 10px solid black;
 }
 
 .flipCard {
-  width: 50%;
-  height: 12em;
-  position: relative;
-  margin: 50px auto;
+    width: 50%;
+    height: 12em;
+    position: relative;
+    margin: 50px auto;
 }
 
 .scoreCard {
-  width: 30%;
-  height: 12em;
-  position: relative;
-  margin: 50px auto;
+    width: 30%;
+    height: 12em;
+    position: relative;
+    margin: 50px auto;
 }
 
 .flipCard .card.flipped {
-  transform: rotatey(-180deg);
+    transform: rotatey(-180deg);
 }
 
 .flipCard .card {
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: 0.5s;
-  border: 0px;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: 0.5s;
+    border: 0px;
 }
 
 .flipCard .card .side {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2em;
-  background-color: white;
-  border: 5px solid #EEEEEE;
-  position: absolute;
-  box-sizing: border-box;
-  z-index: 2;
-  overflow: auto;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    background-color: white;
+    border: 5px solid #EEEEEE;
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 2;
+    overflow: auto;
 }
 
 .flipCard .card .back {
-  transform: rotatey(-180deg);
+    transform: rotatey(-180deg);
 }
 
-.btn-green{
-  background-color: #7AD765;
+.btn-green {
+    background-color: #1bba63;
 }
 
 .btn-red {
-  background-color: #dc3545;
+    background-color: #dc3545;
 }
 
 .btn-blue {
-  background-color: #758BFE;
-  color: white;
-  margin: 20px 0px;
+    background-color: #00b5fb;
+    color: white;
+    margin: 20px 0px;
 }
 
 progress[value] {
-  appearance: none;
-  border: none;
-  width: 50%; height: 20px;
+    appearance: none;
+    border: none;
+    width: 50%;
+    height: 20px;
 }
 
 progress[value]::-webkit-progress-value {
-  background-image:
-  -webkit-linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, .1) 33%, rgba(0, 0, 0, .1) 66%, transparent 66%),
-  -webkit-linear-gradient(left, #7AD765, #758BFE);
+    background-image: -webkit-linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, .1) 33%, rgba(0, 0, 0, .1) 66%, transparent 66%),
+    -webkit-linear-gradient(left, #7AD765, #758BFE);
 }
 
 .buttonInfo {
-  display: flex;
-  justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .navbar-light .navbar-nav .nav-link {
@@ -174,11 +180,11 @@ progress[value]::-webkit-progress-value {
 }
 
 .card-body {
-  word-break: break-all;
+    word-break: break-all;
 }
 
 .pointer {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .react-autosuggest__container {
@@ -266,9 +272,34 @@ progress[value]::-webkit-progress-value {
     text-decoration: unset;
 }
 
+.notification-container-mobile-top, .notification-container-top-center {
+    top: 80px !important;
+}
+
 @media only screen and (max-width: 800px) {
+    .flipCard {
+        width: 100%;
+        margin: 50px 0px;
+    }
   .flipCard {
     width: 100%;
     margin: 50px 0;
   }
+}
+
+.half-circle {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    top: -22px;
+    height: 400px;
+    background: #00b5fb;
+}
+.wave{
+    POSITION: ABSOLUTE;
+    BOTTOM: 0;
+    fill: #ffff;
+}
+.mt-10{
+    margin-top: 10rem !important;
 }

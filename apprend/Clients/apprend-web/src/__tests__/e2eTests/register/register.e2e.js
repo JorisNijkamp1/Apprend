@@ -62,7 +62,7 @@ describe('Register page', function () {
         await page.waitFor(`title`);
 
         const theTitle = await page.title();
-        expect(theTitle).toBe(`React App`);
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
     });
 
     test('Can not register due to existing username and E-mail', async () => {

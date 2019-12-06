@@ -14,6 +14,9 @@ import {PlayingScore} from "./components/playing/sub-components/PlayingScore";
 import {isLoggedIn} from "./redux-store/actions/login/async-actions";
 import * as ReactRedux from "react-redux";
 import {DeckEdit} from "./components/user-decks/edit-deck/DeckEdit";
+import 'react-notifications-component/dist/theme.css'
+import 'animate.css/animate.css'
+
 function App(props) {
 
     //Check if user is logged in
