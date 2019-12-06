@@ -4,9 +4,6 @@ import {NavigatieBar} from '../shared/navbar/NavigatieBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import {Footer} from '../shared/footer/Footer'
 import {getHomepageDecks} from '../../redux-store/actions/home/async-actions';
@@ -14,7 +11,7 @@ import {Link} from 'react-router-dom';
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import SearchDecksInput from "../search-input/SearchDecksInput";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch} from "@fortawesome/free-solid-svg-icons";
+import {faUser} from "@fortawesome/free-solid-svg-icons";
 
 const HomepageUI = (props) => {
 
@@ -31,25 +28,27 @@ const HomepageUI = (props) => {
         if (props.deckName) {
             return props.deckName.map((deck, index) => (
                 <Col lg={{span: 4}} md={{span: 6}} key={deck.deckName + index}>
-                    <Card className={'hover-shadow mb-4'}>
-                        <Card.Header className={'bg-blue text-white text-center'}><h2>{deck.deckName}</h2></Card.Header>
-                        <Card.Body>
-                            <Form.Group controlId="formBasicEmail">
-                                <Form.Label column={true}
-                                            className={'text-center'}>
+                    <Link to={`/decks/${deck.deckId}`} className={'deck-card-link'}>
+                        <Card className={'hover-shadow mb-4'}>
+                            <Card.Header className={'bg-blue text-white text-center'}><h2>{deck.deckName}</h2>
+                            </Card.Header>
+                            <Card.Body>
+                                <p className={'text-center'} style={{color: '#000'}}>
                                     {deck.deckDescription}
-                                </Form.Label>
-                                <Form.Label column={true}
-                                            className={''}>
-                                    <strong>
-                                        <Link id="creator" to={`/${deck.deckUserId}/decks`}>
-                                            {deck.deckCreator}
-                                        </Link>
-                                    </strong>
-                                </Form.Label>
-                            </Form.Group>
-                        </Card.Body>
-                    </Card>
+                                </p>
+                                <strong>
+                                    <Link id="creator" to={`/${deck.deckUserId}/decks`}>
+                                        <FontAwesomeIcon icon={faUser}
+                                                         size={'1x'}
+                                                         title={`Search`}
+                                                         color={'#000'}
+                                        />
+                                        <span style={{marginLeft: 5, color: '#000'}}>{deck.deckCreator}</span>
+                                    </Link>
+                                </strong>
+                            </Card.Body>
+                        </Card>
+                    </Link>
                 </Col>
             ));
         }
@@ -77,26 +76,16 @@ const HomepageUI = (props) => {
                         </div>
                     </Col>
                 </Row>
-                <Row className={'pt-3'}>
-                    <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>
-                        <InputGroup className="mb-3">
-                            <SearchDecksInput/>
-                        </InputGroup>
-                    </Col>
-                    <Col xs={{span: 2}} md={{span: 2}} lg={{span: 2}}>
-                        <InputGroup.Append>
-                            <Button className={'bg-blue text-white hover-shadow'}>
-                                <FontAwesomeIcon icon={faSearch}
-                                                 className={'trash-icon'}
-                                                 size={'1x'}
-                                                 title={`Search`}
-                                />
-                                <span className={'ml-1'}>Search</span>
-                            </Button>
-                        </InputGroup.Append>
-                    </Col>
+
+                <div className={'pt-3 pb-5'}>
+                    <SearchDecksInput linkTo={`/search?q=${props.searchValue}`}/>
+                </div>
+
+                <Row className={'mt-7'}>
+                    <h1 className={'text-center w-100'}>Latest decks</h1>
                 </Row>
-                <Row className={'mt-10 mb-5'}>
+
+                <Row className={'mt-5'}>
                     {decksHomepage()}
                 </Row>
             </Container>
@@ -109,6 +98,7 @@ function mapStateToProps(state) {
     return {
         username: state.login.username,
         deckName: state.client.decksHome,
+        searchValue: state.search.searchValue,
     }
 }
 

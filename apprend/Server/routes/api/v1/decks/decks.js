@@ -55,6 +55,7 @@ decks.get('/home', async (req, res) => {
         allDecksUsers[key].decks.forEach((decksIndex, decksKey) => {
             if (homeDecks.length <= 2) {
                 homeDecks.push({
+                    deckId: allDecksUsers[key].decks[decksKey]._id,
                     deckName: allDecksUsers[key].decks[decksKey].name,
                     deckDescription: allDecksUsers[key].decks[decksKey].description,
                     deckCreator: !(allDecksUsers[key].email && allDecksUsers[key]) ? 'anonymous user' : allDecksUsers[key].decks[decksKey].creatorId,

@@ -276,6 +276,10 @@ progress[value]::-webkit-progress-value {
     top: 80px !important;
 }
 
+.deck-card-link:hover {
+    text-decoration: unset;
+}
+
 @media only screen and (max-width: 800px) {
     .flipCard {
         width: 100%;
@@ -305,6 +309,9 @@ progress[value]::-webkit-progress-value {
 
 .mt-10 {
     margin-top: 10rem !important;
+}
+.mt-7{
+    margin-top: 7rem !important;
 }
 
 .sticky-button {
