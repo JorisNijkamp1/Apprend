@@ -33,7 +33,6 @@ const getSuggestionValue = (suggestion) => {
 };
 
 function renderSuggestion(suggestion) {
-    console.log(suggestion)
     return (
         <Link to={`/decks/${suggestion.deckId}`} className={'search-suggestions-link'}>
             <span style={{fontWeight: 600}}>{suggestion.name}</span>
@@ -111,7 +110,6 @@ const SearchDecksInput = (props) => {
                 renderSuggestion={renderSuggestion}
                 inputProps={inputProps}
                 highlightFirstSuggestion={true}
-                onSuggestionSelected={console.log(value)}
             />
         </>
     );
