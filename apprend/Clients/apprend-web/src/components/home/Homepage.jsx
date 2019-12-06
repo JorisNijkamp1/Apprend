@@ -80,25 +80,9 @@ const HomepageUI = (props) => {
                         </div>
                     </Col>
                 </Row>
-                <Row className={'pt-3 pb-5'}>
-                    <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>
-                        <InputGroup className="mb-3">
-                            <SearchDecksInput/>
-                        </InputGroup>
-                    </Col>
-                    <Col xs={{span: 2}} md={{span: 2}} lg={{span: 2}}>
-                        <InputGroup.Append>
-                            <Button className={'bg-blue text-white hover-shadow'}>
-                                <FontAwesomeIcon icon={faSearch}
-                                                 className={'trash-icon'}
-                                                 size={'1x'}
-                                                 title={`Search`}
-                                />
-                                <span className={'ml-1'}>Search</span>
-                            </Button>
-                        </InputGroup.Append>
-                    </Col>
-                </Row>
+                <div className={'pt-3 pb-5'}>
+                    <SearchDecksInput/>
+                </div>
 
                 <Row className={'mt-7'}>
                     <h1 className={'text-center w-100'}>Latest decks</h1>

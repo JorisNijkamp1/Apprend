@@ -4,6 +4,12 @@ import Autosuggest from 'react-autosuggest';
 import {API_URL} from "../../redux-store/urls";
 import {Link} from "react-router-dom";
 import {setSearchValue} from "../../redux-store/actions/search/actions";
+import Col from "react-bootstrap/Col";
+import InputGroup from "react-bootstrap/InputGroup";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons";
+import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
 
 const getMatchingLanguages = (value, decks) => {
     const escapedValue = escapeRegexCharacters(value.trim());
@@ -102,15 +108,37 @@ const SearchDecksInput = (props) => {
 
     return (
         <>
-            <Autosuggest
-                suggestions={suggestions}
-                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
-                inputProps={inputProps}
-                highlightFirstSuggestion={true}
-            />
+            <Row>
+                <Col md={{span: 10, offset: 1}}>
+                    <Row>
+                        <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>
+                            <InputGroup className="mb-3">
+                                <Autosuggest
+                                    suggestions={suggestions}
+                                    onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                                    onSuggestionsClearRequested={onSuggestionsClearRequested}
+                                    getSuggestionValue={getSuggestionValue}
+                                    renderSuggestion={renderSuggestion}
+                                    inputProps={inputProps}
+                                    highlightFirstSuggestion={true}
+                                />
+                            </InputGroup>
+                        </Col>
+                        <Col xs={{span: 2}} md={{span: 2}} lg={{span: 2}}>
+                            <InputGroup.Append>
+                                <Button className={'bg-blue text-white hover-shadow'}>
+                                    <FontAwesomeIcon icon={faSearch}
+                                                     className={'trash-icon'}
+                                                     size={'1x'}
+                                                     title={`Search`}
+                                    />
+                                    <span className={'ml-1'}>Search</span>
+                                </Button>
+                            </InputGroup.Append>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
         </>
     );
 };
