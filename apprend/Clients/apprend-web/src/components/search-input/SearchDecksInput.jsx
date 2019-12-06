@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import {API_URL} from "../../redux-store/urls";
 import {Link} from "react-router-dom";
@@ -126,14 +127,16 @@ const SearchDecksInput = (props) => {
                         </Col>
                         <Col xs={{span: 2}} md={{span: 2}} lg={{span: 2}}>
                             <InputGroup.Append>
-                                <Button className={'bg-blue text-white hover-shadow'}>
-                                    <FontAwesomeIcon icon={faSearch}
-                                                     className={'trash-icon'}
-                                                     size={'1x'}
-                                                     title={`Search`}
-                                    />
-                                    <span className={'ml-1'}>Search</span>
-                                </Button>
+                                <Link to={props.linkTo}>
+                                    <Button className={'bg-blue text-white hover-shadow'}>
+                                        <FontAwesomeIcon icon={faSearch}
+                                                         className={'trash-icon'}
+                                                         size={'1x'}
+                                                         title={`Search`}
+                                        />
+                                        <span className={'ml-1'}>Search</span>
+                                    </Button>
+                                </Link>
                             </InputGroup.Append>
                         </Col>
                     </Row>
@@ -141,6 +144,10 @@ const SearchDecksInput = (props) => {
             </Row>
         </>
     );
+};
+
+SearchDecksInput.propTypes = {
+    linkTo: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => {

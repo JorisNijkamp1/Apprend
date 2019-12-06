@@ -4,8 +4,6 @@ import {NavigatieBar} from '../shared/navbar/NavigatieBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import {Footer} from '../shared/footer/Footer'
 import {getHomepageDecks} from '../../redux-store/actions/home/async-actions';
@@ -13,7 +11,6 @@ import {Link} from 'react-router-dom';
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import SearchDecksInput from "../search-input/SearchDecksInput";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 
 const HomepageUI = (props) => {
@@ -29,7 +26,6 @@ const HomepageUI = (props) => {
 
     const decksHomepage = () => {
         if (props.deckName) {
-            console.log(props.deckName)
             return props.deckName.map((deck, index) => (
                 <Col lg={{span: 4}} md={{span: 6}} key={deck.deckName + index}>
                     <Link to={`/decks/${deck.deckId}`} className={'deck-card-link'}>
@@ -80,8 +76,9 @@ const HomepageUI = (props) => {
                         </div>
                     </Col>
                 </Row>
+
                 <div className={'pt-3 pb-5'}>
-                    <SearchDecksInput/>
+                    <SearchDecksInput linkTo={`/search?q=${props.searchValue}`}/>
                 </div>
 
                 <Row className={'mt-7'}>
@@ -101,6 +98,7 @@ function mapStateToProps(state) {
     return {
         username: state.login.username,
         deckName: state.client.decksHome,
+        searchValue: state.search.searchValue,
     }
 }
 
