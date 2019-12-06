@@ -29,7 +29,6 @@ async function seedUsers() {
             "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
             "decks": [
                 {
-                    "_id": "5ddfadab612b09570c6f3a33",
                     "name": "French to Dutch words",
                     "description": "Prepositions in French",
                     "creatorId": "Joris",
@@ -39,7 +38,6 @@ async function seedUsers() {
                     "flashcards": []
                 },
                 {
-                    "_id": "5ddfadab612b09570c6f3a33",
                     "name": "Filipino to Dutch words",
                     "description": "Learn Filipino words",
                     "creatorId": "Joris",
@@ -49,7 +47,6 @@ async function seedUsers() {
                     "flashcards": []
                 },
                 {
-                    "_id": "5ddfadab612b09570c6f3a33",
                     "name": "Finnish to Dutch prefixes",
                     "description": "Learning prefixes ",
                     "creatorId": "Joris",
