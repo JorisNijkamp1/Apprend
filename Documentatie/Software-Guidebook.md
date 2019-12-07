@@ -44,15 +44,19 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 	De volgende invoervelden zijn aanwezig:
 		- De gebruiker kan een naam opgeven.
 		- De gebruiker kan een beschrijving opgeven.
-
 - **Decks bewerken**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/edit-deck.svg)
-	> De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een naam aanpassen.
+
+	> Wanneer een gebruiker een overzicht van decks bekijkt waarvan hij de eigenaar/maker is, dan ziet de gebruiker een icon met een papier en pen. De gebruiker kan op deze icon drukken om dat specifieke deck te kunnen aanpassen. De gebruiker kan de wijzigingen opslaan door op het bevestigknopje te drukken of annuleren door nogmaals op hetzelfde icoontje of het annuleerknopje te drukken. De bevestiging- en annuleerknoppen worden zichtbaar nadat de gebruiker kiest om een deck aan te willen passen.\
+	\
+	Wanneer de gebruiker een deck aan het aanpassen is, dan zullen deze wijzigingen opgeslagen worden in de state van het component. Als de gebruiker zijn wijziging opslaat, dan wordt de wijziging-state opgestuurd naar de server. Als de gebruiker besluit om de wijzigingen te annuleren, dan wordt de wijziging-state gereset.\
+	\
+	De volgende invoervelden zijn aanwezig:\
+		- De gebruiker kan een naam aanpassen.\
 		- De gebruiker kan een beschrijving aanpassen.
 
 - **Decks verwijderen**
-	> De gebruiker krijgt een bevestigingsmelding.
+	> Wanneer een gebruiker een overzicht van decks bekijkt waarvan hij de eigenaar/maker is, dan ziet de gebruiker een vuilnisbak-icon. De gebruiker kan op deze icon drukken om dat specifieke deck te verwijderen. Wanneer de gebruiker op deze knop drukt wordt in de state van het component opgeslagen dat deze deck verwijderd dient te worden. De gebruiker dient vervolgens op de bevestigingsknop te drukken om het deck te verwijderen of kan het annuleren door nogmaals op de vuilnisbak-icon te klikken, op de annuleerknop of simpelweg niets te doen.
 
 - **Flashcards uit een deck verwijderen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
