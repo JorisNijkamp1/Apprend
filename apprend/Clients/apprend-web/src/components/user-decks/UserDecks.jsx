@@ -25,14 +25,7 @@ const Deck = (props) => {
     const {username} = useParams();
     const isCreator = (props.username === props.userDecks.userId);
 
-    const [decks, setDecks] = useState([])
-    const [deckCheckEdit, setDeckCheckEdit] = useState(['b'])
-
-    const [deckName, setDeckname] = useState([{}]);
-    const [deckNameEdited, setDecknameEdited] = useState(false);
-
-    const [deckDescription, setDeckDescription] = useState([{}]);
-    const [deckDescriptionEdited, setDeckDescriptionEdited] = useState(false);
+    const [decks, setDecks] = useState()
 
     let {deckId} = useParams()
 
@@ -41,34 +34,29 @@ const Deck = (props) => {
         props.getUserDecks(username)
     }, []);
 
-    // let {deckId} = useParams();
-    //
-    // useEffect(() => {
-    //     props.getDecksEdit(deckId)
-    // }, []);
-
-    const confirmationBoxHOC = (message, deck, funct, stateFunct) => {
+    const confirmationBoxHOC = (message, deck, funct, stateFunct, property, index) => {
         return (
-        <Card.Footer>
-        <Row>
-            <Col className="text-left" xs={8}>
-                {message}
-            </Col>
-            <Col xs={2} className="text-center text-green">
-                <FontAwesomeIcon icon={faCheck} name={deck._id}
-                                 onClick={(event) => {
-                                     funct(event)
-                                 }}
-                />
-            </Col>
-            <Col xs={2} className="text-center text-red">
-                <FontAwesomeIcon icon={faTimes} name={deck._id} onClick={(event) => {
-                    stateFunct(event)
-                }}/>
-            </Col>
-        </Row>
-    </Card.Footer>
-    )
+            <Card.Footer>
+            <Row>
+                <Col className="text-left" xs={8}>
+                    {message}
+                </Col>
+                <Col xs={2} className="text-center text-green">
+                    <FontAwesomeIcon icon={faCheck} name={deck._id}
+                                    id={`confirm-icon-button-${index}`}
+                                    onClick={(event) => {
+                                        funct(event)
+                                    }}
+                    />
+                </Col>
+                <Col xs={2} className="text-center text-red">
+                    <FontAwesomeIcon icon={faTimes} name={deck._id} id={`cancel-icon-button-${index}`} onClick={(event) => {
+                        stateFunct(event, property)
+                    }}/>
+                </Col>
+            </Row>
+        </Card.Footer>
+        )
     }
 
     const handleDeleteDeck = event => {
@@ -77,127 +65,169 @@ const Deck = (props) => {
     };
 
     const handleEditDeck = event => {
-        const allDecks = props.decks;
-        const deckId = event.currentTarget.getAttribute('name');
-        allDecks.map((deck, key) => {
-            if (deckId === deck._id) {
-                let deckData = {
-                    deckName: (!deckNameEdited && deck.creatorId) ? deck.creatorId : deckName,
-                    deckDescription: (!deckDescriptionEdited && deck.description) ? deck.description : deckDescription
-                }
-                props.setDeckEditedAction(deck.creatorId, deck._id, deckData.deckName, deckData.deckDescription)
+        try {
+            const deckId = event.currentTarget.getAttribute('name');
+            const storeDeck = props.decks[props.decks.findIndex(d => d._id === deckId)]
+
+            if (decks && decks[deckId]){
+                let deckData = {...decks[deckId]}
+                deckData.description = decks[deckId].description ? decks[deckId].description : storeDeck.description
+                deckData.name = decks[deckId].name ? decks[deckId].name : storeDeck.name
+                props.setDeckEditedAction(storeDeck.creatorId, deckId, deckData.name, deckData.description)
+                toggleLocalStateProperty(event, 'editState')            
             }
-            return null
-        })
-    }
-
-    const toggleDeleteDeckToState = event => {
-        const deckId = event.currentTarget.getAttribute('name')
-        let updatedDecks
-        if (!decks.includes(deckId)) {
-            updatedDecks = [...decks]
-            updatedDecks.push(deckId)
-        } else {
-            updatedDecks = decks.filter(deck => {
-                return deck !== deckId
-            })
+        } catch (e) {
+            console.log('SOMETHING WENT WRONG WITH EDITING A DECK', e)
         }
-        setDecks(updatedDecks)
     }
 
-    const addEditDeckToState = event => {
+    const editProperty = (event, property) => {
         const deckId = event.currentTarget.getAttribute('name')
-        let editedDeck;
+        const newPropertyValue = event.currentTarget.value
+        let updatedDecks = {}
 
-        if (!deckCheckEdit.includes(deckId)) {
-            editedDeck = [...deckCheckEdit]
-            editedDeck.push(deckId)
+        let newDeck = {}
+        newDeck['id'] = deckId
+        newDeck[property] = newPropertyValue
+
+        if (decks){
+            if (decks[deckId]){
+                updatedDecks = {...decks}
+                updatedDecks[deckId][property] = newPropertyValue
+            } else {
+                updatedDecks = {...decks}
+                updatedDecks[deckId] = newDeck
+            }
         } else {
-            editedDeck = deckCheckEdit.filter(deck => {
-                return deck !== deckId
-            })
+            updatedDecks[deckId] = newDeck
         }
-        setDeckCheckEdit(editedDeck)
+        setDecks({...updatedDecks})
     }
+
+    const toggleLocalStateProperty = (event, property, reset = false) => {
+        const deckId = event.currentTarget.getAttribute('name')
+        let updatedDecks = {}
+
+        let newDeck = {}
+        newDeck['id'] = deckId
+        newDeck[property] = true
+
+        if (decks){
+            if (decks[deckId]){
+                updatedDecks = {...decks}
+                updatedDecks[deckId][property] = !updatedDecks[deckId][property]
+                delete updatedDecks[deckId]['name']
+                delete updatedDecks[deckId]['description']
+            } else {
+                updatedDecks = {...decks}
+                updatedDecks[deckId] = newDeck
+            }
+        } else {
+            updatedDecks[deckId] = newDeck
+        }
+
+        setDecks({...updatedDecks})
+    }
+
+    /* Lijst met alle opties die de eigenaar ziet
+    
+        icon: FontAwesome icon die je importeert
+        title: >String< decknaam als je op de icon hovert
+        funct: functie die je aanroept als je op de icon drukt
+        statePropertyName: de propertyname die je aanpast wanneer je op de icon klikt 
+
+    */
 
     const allIcons = [
         {
             icon: faTrash,
             title: 'Delete',
-            funct: toggleDeleteDeckToState,
+            funct: toggleLocalStateProperty,
+            statePropertyName: 'deleteState',
         },
         {
             icon: faEdit,
             title: 'Edit',
-            funct: addEditDeckToState
+            funct: toggleLocalStateProperty,
+            statePropertyName: 'editState',
+
         },
     ]
 
-    const showAllIcons = (icons, deck) => {
+    const showAllIcons = (icons, deck, index) => {
         return icons.map(icon => {
-            return iconHOC(icon.icon, icon.title, deck, icon.funct )
+            return iconHOC(icon.icon, icon.title, deck, icon.funct, icon.statePropertyName, index )
         })
     }
 
-    const userOptions = (deck) => {
-        if (isCreator)
+    const userOptions = (deck, index) => {
+
+        // Laat alle confirmationBoxes onder elkaar zien
+        const allConfirmationBoxes = (decks) => {
+            let boxes = []
+
+            if (decks){
+                if (decks[deck._id]){
+                    if (decks[deck._id].deleteState){
+                        boxes.push(confirmationBoxHOC('Confirm delete?', deck, handleDeleteDeck, toggleLocalStateProperty, 'deleteState', index))
+                    }
+                    if (decks[deck._id].editState){
+                        boxes.push(confirmationBoxHOC('Confirm edit?', deck, handleEditDeck, toggleLocalStateProperty, 'editState', index))
+                    }
+                }
+            }
+
+            return boxes
+        }
+
+        // if (isCreator)
             return (
                 <>
                     <Card.Footer>
                         <Row>
-                            {/* <Col className="text-center" xs={12}>
-                                <b>Owner Options</b>
-                            </Col> */}
-
-                            {showAllIcons(allIcons, deck)}
+                            {showAllIcons(allIcons, deck, index)}
                         </Row>
                     </Card.Footer>
-                    {decks.includes(deck._id) ? confirmationBoxHOC('Confirm delete?', deck, handleDeleteDeck, toggleDeleteDeckToState) : ''}
-                    {deckCheckEdit.includes(deck._id) ? confirmationBoxHOC('Confirm edit?', deck, handleEditDeck, addEditDeckToState) : ''}
-
+                    {allConfirmationBoxes(decks)}
                 </>
             )
-        else return <> </>
+        // else return <> </>
     }
 
-    const iconHOC = (icon, title, deck, funct) => {
+    const iconHOC = (icon, title, deck, funct, property, index) => {
         return (
             <Col xs={2}>
             <span className={"float-right"} name={deck._id}
                   onClick={(event) => {
-                      funct(event)
+                      funct(event, property)
                   }}>
                 <FontAwesomeIcon icon={icon}
                                  className={'trash-icon'}
-                                 size={'1x'}
+                                 size={`1x`}
                                  title={`${title} ${deck.name}`}
+                                 id={`${title.toLowerCase()}-icon-button-${index}`}
                 />
             </span>
         </Col>
         )
     }
 
-    const editDeckName = (deck, deckId) => {
-        const waarde = () => {
-            if (!deckNameEdited) {
-                return deck
-            } else {
-                return deckName
-            }
-        }
-        if (deckCheckEdit.includes(deckId)) {
+    const editDeckName = (deck, deckId, index) => {
+
+        if (decks && decks[deckId] && decks[deckId].editState) {
             return (
                 <Form.Group controlId="formBasicEmail" className={"text-center"}>
                     <Form.Label column={true}>
-                        <strong>Edit your deckname</strong>
+                        <strong>Edit {deck}</strong>
                     </Form.Label>
                     <Form.Control type="text"
-                                  name="name"
+                                  name={deckId}
                                   placeholder="Haustiere"
-                                  value={waarde()}
+                                  defaultValue={deck}
+                                  id={`input-name-${index}`}
                                   onChange={(e) => {
-                                      setDeckname(e.target.value)
-                                      setDecknameEdited(true)
+
+                                    editProperty(e, 'name')
                                   }}
                     />
                 </Form.Group>
@@ -207,7 +237,7 @@ const Deck = (props) => {
                 <Card.Title className={"text-center"}>
                     <Row>
                         <Col xs={12}>
-                            {deck}
+                        <span id={`deck-name-${index}`}>{deck}</span>
                         </Col>
                     </Row>
                 </Card.Title>
@@ -215,26 +245,24 @@ const Deck = (props) => {
         }
     }
 
-    const editDeckDescription = (deck, deckId) => {
-        const waarde = () => {
-            if (!deckDescriptionEdited) {
-                return deck
-            } else {
-                return deckDescription
-            }
-        }
-        if (deckCheckEdit.includes(deckId)) {
+    const editDeckDescription = (deck, deckId, index) => {
+
+        if (decks && decks[deckId] && decks[deckId].editState) {
             return (
                 <Form.Group controlId="formBasicEmail" className={"text-center"}>
-                    <Form.Label column={true}><strong>Edit your deck description</strong></Form.Label>
-                    <Form.Control type="text"
+                    <Form.Label column={true}><strong>Edit deck description</strong></Form.Label>
+                    <Form.Control 
+                                  type="text"
                                   as="textarea"
-                                  name="name"
+                                  name={deckId}
                                   placeholder="Haustiere"
-                                  value={waarde()}
+                                  defaultValue={deck}  
+                                  id={`input-description-${index}`}
+                                  className={'form-control'}
                                   onChange={(e) => {
-                                      setDeckDescription(e.target.value)
-                                      setDeckDescriptionEdited(true)
+
+                                    editProperty(e, 'description')
+
                                   }}
                     />
                 </Form.Group>
@@ -244,7 +272,7 @@ const Deck = (props) => {
                 <Card.Title className={"text-center font-weight-normal"}>
                     <Row>
                         <Col xs={12}>
-                            {deck}
+                            <span id={`deck-description-${index}`}>{deck}</span>
                         </Col>
                     </Row>
                 </Card.Title>
@@ -253,6 +281,19 @@ const Deck = (props) => {
     }
 
     let loader, userDecks, error;
+
+    const showViewButton = (bool, deckId, index) => {
+        if (!bool) return (
+        <Row>
+        <Col xs={{span: 6, offset: 3}}>
+            <Link to={`/decks/${deckId}`}>
+                <Button variant="outline-primary" className={'w-100'} id={'card-' + index + '-link'}>View
+                    deck</Button>
+            </Link>
+        </Col>
+    </Row>
+        )
+    }
 
     if (props.isLoading) {
         loader = (
@@ -266,21 +307,15 @@ const Deck = (props) => {
             <Col xs={12} sm={6} lg={4} className="my-2">
                 <Card key={deck.name + key} id={'card-' + key}>
                     <Card.Body>
-                        {editDeckName(deck.name, deck._id)}
+                        {editDeckName(deck.name, deck._id, key)}
                         <Card.Subtitle className="mb-2 text-muted text-center">
                             ({deck.flashcards.length} {(deck.flashcards.length > 1 || deck.flashcards.length === 0) ? 'flashcards' : 'flashcard'})
                         </Card.Subtitle>
-                        {editDeckDescription(deck.description, deck._id)}
-                        <Row>
-                            <Col xs={{span: 6, offset: 3}}>
-                                <Link to={`/decks/${deck._id}`}>
-                                    <Button variant="outline-primary" className={'w-100'} id={'card-' + key + '-link'}>View
-                                        deck</Button>
-                                </Link>
-                            </Col>
-                        </Row>
+                        {editDeckDescription(deck.description, deck._id, key)}
+                        {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, deck._id, key)}
+
                     </Card.Body>
-                    {userOptions(deck)}
+                    {isCreator ? userOptions(deck, key) : ''}
                 </Card>
             </Col>
         )
@@ -320,9 +355,7 @@ const Deck = (props) => {
                 {showErrors()}
                 {error}
                 <Row>
-                    {/* <CardColumns> */}
                     {userDecks}
-                    {/* </CardColumns> */}
                 </Row>
             </Container>
             <Footer/>

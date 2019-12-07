@@ -30,6 +30,11 @@ const deckSchema = new mongoose.Schema({
     },
 });
 
+deckSchema.methods.editDeck = async function(name, description){
+    this.name = name
+    this.description = description
+}
+
 //Create model
 mongoose.model("Deck", deckSchema);
 

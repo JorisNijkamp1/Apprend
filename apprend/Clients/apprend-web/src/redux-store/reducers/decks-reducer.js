@@ -43,6 +43,11 @@ export default function decksReducer(state = initialState, action) {
                 draft['deckEdit'] = action.payload;
                 break;
 
+            // Kijken of ik een specifieke deck kan updaten
+            case 'DECKS_SET_SPECIFIC_DECK':
+                const index = draft['userDecks']['decks'].findIndex(d => d._id === action.payload._id)
+                draft['userDecks']['decks'][index] = action.payload
+
             default:
                 return draft
         }

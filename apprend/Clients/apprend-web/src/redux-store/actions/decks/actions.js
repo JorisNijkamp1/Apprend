@@ -52,3 +52,10 @@ export function setDeckEditAction(deckEdit){
         payload: deckEdit
     }
 }
+
+export function setSpecificDeckDataAction(deck){
+    return {
+        type: 'DECKS_SET_SPECIFIC_DECK',
+        payload: deck
+    }
+}

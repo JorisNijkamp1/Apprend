@@ -296,26 +296,34 @@ decks.get('/:deckId/games/:gameId', async (req, res) => {
 | EDIT DECK
 */
 decks.put('/:deckId', async (req, res) => {
-    const {deckId} = req.params;
-    const {name, description, creatorId} = req.body;
-    console.log(creatorId)
-    let user = await User.findById(creatorId);
-    await user.editDeckname(deckId, name, description);
+    try {
+        const {deckId} = req.params;
+        const {name, description, creatorId} = req.body;
 
-    let currentDeck;
+        let user = await User.findById(creatorId)
 
-    user.decks.forEach(deck => {
-        if (deck._id.toString() === deckId) {
-            currentDeck = deck
+        if (!user) return res.status(500).json('No such user is known on this server')
+
+        let deckToEdit = await user.decks.id(deckId)
+
+        if (!deckToEdit) return res.status(404).json('Deck not found')
+
+        if (req.session.username){
+            if (req.session.username !== deckToEdit.creatorId) return res.status(401).json('This deck doesnt belong to you')
+        } else {
+            return res.status(401).json('This deck doesnt belong to you')
         }
-    })
 
-    res.json({
-        success: true,
-        name: name,
-        description: description,
-        deck: currentDeck
-    })
+        await deckToEdit.editDeck(name, description)
+        await user.save()
+    
+        return res.status(201).json(deckToEdit)
+    
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('Sorry something went horribly wrong on our end...')
+    }
+
 })
 
 module.exports = decks
