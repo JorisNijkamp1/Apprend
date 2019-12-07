@@ -36,6 +36,8 @@ describe(`Edit a deck e2e`, () => {
 
         const loginButton = await page.$(`form[name="login"] button`)
         expect(loginButton).toBeDefined()
+        const theTitle = await page.title();
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     })
 
     test(`Fill username`, async () => {

@@ -186,70 +186,119 @@ Zoals te zien op bovenstaande figuur omvat de Apprend applicatie een React clien
 
 De server praat vervolgens met de database om gegevens op te halen of op te slaan. De server reageert op de verzoeken vanuit de client en kan eventueel gegevens meegeven.
 
-### Client
+### React WebApp
 
 ![Apprend container diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20React%20Native%20App%20Component.svg)
 
-### Server
+### NodeJS server
 
-![Apprend server diagram endpoint](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)
+![Apprend NodeJS server component diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)
 
 **Decks endpoints**:
 
 GET /api/v1/decks/home
-Haal de decks voor de homepage op
+Haal de decks voor de homepage op.
 
 POST /api/v1/decks
-Maakt een nieuw deck aan
+Maakt een nieuw deck aan.
 
 DELETE /api/v1/decks/:deckId
-Verwijderd een specifiek deck
+Verwijderd een specifiek deck.
 
 GET /api/v1/decks/:deckId
-Haalt een specifiek deck op
+Haalt een specifiek deck op.
 
 GET /api/v1/decks/:deckId/flashcards
-Haalt alle flashcard van een deck op
+Haalt alle flashcard van een deck op.
 
 POST /api/v1/decks/:deckId/flashcards
-Edit flashcards van een specifiek deck
+Edit flashcards van een specifiek deck.
 
 PUT /api/v1/decks/:deckId
-Edit een deck
+Edit een deck.
 
 **Users endpoints**:
 
 GET /api/v1/users/:username/decks
-Haalt alle deck van een specifieke user op
+Haalt alle deck van een specifieke user op.
 
 GET /api/v1/users/:id
-Haalt een gebruik op basis  van id op
+Haalt een gebruik op basis  van id op.
 
 GET /api/v1/users/:id/_id
-Haalt een gebruik op bij ID bij het _id
+Haalt een gebruik op bij ID bij het _id.
 
 POST /api/v1/users/
-Maak een nieuwe gebruiker aan
+Maak een nieuwe gebruiker aan.
 
 GET /api/v1/users/email
-Haal een gebruiker op op basis van email
+Haal een gebruiker op op basis van email.
 
 DELETE /api/v1/users/:id
-Verwijder een gebruiken op basis van id
+Verwijder een gebruiken op basis van id.
 
 **Login endpoints**:
 
 POST /api/v1/login/check
-Kijk of de gegevens kloppen
+Kijk of de gegevens kloppen.
 
 GET /api/v1/login/success
-Redirect als het success is
+Redirect als het success is.
 
 GET /api/v1/login/error
-Redirect als er een error is
+Redirect als er een error is.
+
+### MongoDB Database
+
+![Apprend MongoDB Database component diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20Model%20-%20MongoDB%20Database%20Component.svg)
+
 
 ## Infrastructure Architecture
-Hier komt de Infrastructure Architecture
+
+### Algemeen
+
+
+
+
+### Leitner systeem
+
+Het [Leitner systeem](https://en.wikipedia.org/wiki/Leitner_system) is een simpele implementatie van [Spaced Repitition](https://en.wikipedia.org/wiki/Spaced_repetition), bedacht door de Duitse commentator en wetenschapspopularis Sebastian Leitner.
+
+Dit systeem is binnen Apprend vertaald tot een algoritme dat flashcards voor de gebruiker selecteert. Het Leitner systeem moet het brein stimuleren om onderwerpen beter te onthouden. Er zijn een aantal variabelen aanwezig die handig zijn om te onthouden bij het lezen van deze paragraaf.
+
+- X
+    > Maximaal aantal kaarten dat bij elke sessie uit doos 0 wordt gehaald.
+
+- W2
+    > Kaarten uit doos 2 komen elke zoveel sessies terug.
+
+- W3
+    > Kaarten uit doos 3 komen elke zoveel sessies terug. Deze variabele moet altijd hoger zijn dan W2.
+    
+
+Bij het Leitner systeem worden flashcards verdeeld over een aantal dozen. Bij onze implementatie gebruiken we er 4.
+
+- Doos 0
+    > Deze doos bevat alle flashcards die nog niet eerder aan bod zijn gekomen. Zolang deze doos niet leeg is wordt er een **X** aantal kaarten uit dit deck gehaald en aan de selectie voor de huidige sessie toegevoegd. Zo krijgt de gebruiker elke sessie wat nieuwe kaarten te zien. Deze doos zal uiteindelijk leeg zijn en niet meer gebruikt worden.
+
+- Doos 1
+    > Flashcards in deze doos zullen elke sessie aan bod komen. Deze flashcards zijn in de vorige sessie fout beantwoord.
+    
+- Doos 2
+    > Flashcards in deze doos zullen na **W2** dagen terugkomen. Dit zijn flashcards uit doos 1 die **W2** sessies terug goed zijn beantwoord.
+    
+- Doos 3
+    > Flashcards in deze doos zullen na een bepaald aantal dagen terugkomen, maar dit moet langer zijn dan doos 2. Dit zijn flashcards uit doos 2 die **W3** sessies terug goed zijn beantwoord.
+
+![Leitner systeem](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Leitner%20systeem.svg)
+
+Bij het spelen van een deck wordt er een selectie gemaakt aan kaarten dat bij de huidige sessie aan bod komt. De selectie is gebaseerd op het Leitner systeem en de formule ziet er als volgt uit:
+
+*Selectie = (Maximaal **X** aantal kaarten uit doos 0 (als deze nog niet leeg is)) + (Alle flashcards uit doos 1) + (Alle kaarten uit doos 2 waarvan het huide sessienummer - **W2** gelijk is aan de 'sessionPlayed' van de kaart) + (Alle kaarten uit doos 3 waarvan het huide sessienummer - **W3** gelijk is aan de 'sessionPlayed' van de kaart)*
+
+Elke flashcard houdt individueel zijn 'sessionPlayed' bij. Dit is het nummer van de sessie waarin deze kaart aan bod is gekomen. Elke flashcard houdt ook een 'box' nummer bij om aan te geven in welke box deze zit.
+
+Stel je voor **X** = 10, **W2** = 3 en **W3** = 5. Dit betekent dat doos 2 elke 3 sessies aan bod komt, en doos 3 elke 5 sessies. Een flashcard uit doos 0 of 1 kan in sessie 4 goed worden beantwoordt. Het sessionPlayed-nummer van de kaart wordt dan 4 en het box-nummer wordt 2, aangezien deze naar doos 2 verplaatst wordt. Deze kaart, nu uit doos 2, zal vervolgens weer terugkomen in sessie 7 terugkomen, omdat **_currentSession (7) - W2 (3) = sessionPlayed van de flashcard en dus de sessie waarin de kaart goed is beantwoord (4)._**
 
 ## Deployment
 Hier komt Deployment (POST GAME)
