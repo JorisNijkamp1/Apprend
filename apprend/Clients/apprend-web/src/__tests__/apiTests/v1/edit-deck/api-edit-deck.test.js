@@ -99,6 +99,10 @@ describe('Editing a deck', () => {
     })
 
     test('Edit a deck that does not belong to you', async () => {
+
+        const findJorisDecks = await fetch(`${API_URL}/users/Joris/decks`)
+        const jorisDecks = await findJorisDecks.json()
+
         const editExpectedResult = {
             name: 'New name for a deck',
             description: 'Awesome new description',
@@ -112,7 +116,7 @@ describe('Editing a deck', () => {
             creatorId: 'Joris'
         }
 
-        const JorisDeck = "5ddfadab612b09570c6f3a33"
+        const JorisDeck = jorisDecks.decks.decks[0]._id
         const editResponse = await fetch(`${API_URL}/decks/${JorisDeck}`, {
             method: 'PUT',
             credentials: 'include',

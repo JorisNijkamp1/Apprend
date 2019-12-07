@@ -180,18 +180,16 @@ const Deck = (props) => {
             return boxes
         }
 
-        // if (isCreator)
-            return (
-                <>
-                    <Card.Footer>
-                        <Row>
-                            {showAllIcons(allIcons, deck, index)}
-                        </Row>
-                    </Card.Footer>
-                    {allConfirmationBoxes(decks)}
-                </>
-            )
-        // else return <> </>
+        return (
+            <>
+                <Card.Footer>
+                    <Row>
+                        {showAllIcons(allIcons, deck, index)}
+                    </Row>
+                </Card.Footer>
+                {allConfirmationBoxes(decks)}
+            </>
+        )
     }
 
     const iconHOC = (icon, title, deck, funct, property, index) => {
@@ -212,75 +210,13 @@ const Deck = (props) => {
         )
     }
 
-    const editDeckName = (deck, deckId, index) => {
-
-        if (decks && decks[deckId] && decks[deckId].editState) {
-            return (
-                <Form.Group controlId="formBasicEmail" className={"text-center"}>
-                    <Form.Label column={true}>
-                        <strong>Edit {deck}</strong>
-                    </Form.Label>
-                    <Form.Control type="text"
-                                  name={deckId}
-                                  placeholder="Haustiere"
-                                  defaultValue={deck}
-                                  id={`input-name-${index}`}
-                                  onChange={(e) => {
-
-                                    editProperty(e, 'name')
-                                  }}
-                    />
-                </Form.Group>
-            )
-        } else {
-            return (
-                <Card.Title className={"text-center"}>
-                    <Row>
-                        <Col xs={12}>
-                        <span id={`deck-name-${index}`}>{deck}</span>
-                        </Col>
-                    </Row>
-                </Card.Title>
-            )
-        }
+    const FlashcardAmount = (deck) => {
+        return (
+            <Card.Subtitle className="mb-2 text-muted text-center">
+            ({deck.flashcards.length} {(deck.flashcards.length > 1 || deck.flashcards.length === 0) ? 'flashcards' : 'flashcard'})
+        </Card.Subtitle>
+        )
     }
-
-    const editDeckDescription = (deck, deckId, index) => {
-
-        if (decks && decks[deckId] && decks[deckId].editState) {
-            return (
-                <Form.Group controlId="formBasicEmail" className={"text-center"}>
-                    <Form.Label column={true}><strong>Edit deck description</strong></Form.Label>
-                    <Form.Control 
-                                  type="text"
-                                  as="textarea"
-                                  name={deckId}
-                                  placeholder="Haustiere"
-                                  defaultValue={deck}  
-                                  id={`input-description-${index}`}
-                                  className={'form-control'}
-                                  onChange={(e) => {
-
-                                    editProperty(e, 'description')
-
-                                  }}
-                    />
-                </Form.Group>
-            )
-        } else {
-            return (
-                <Card.Title className={"text-center font-weight-normal"}>
-                    <Row>
-                        <Col xs={12}>
-                            <span id={`deck-description-${index}`}>{deck}</span>
-                        </Col>
-                    </Row>
-                </Card.Title>
-            )
-        }
-    }
-
-    let loader, userDecks, error;
 
     const showViewButton = (bool, deckId, index) => {
         if (!bool) return (
@@ -295,29 +231,78 @@ const Deck = (props) => {
         )
     }
 
-    if (props.isLoading) {
-        loader = (
+    const ShowCard = (deck, deckId, index) => {
+
+        if (decks && decks[deckId] && decks[deckId].editState) {
+            return (
+                <>
+                    <Form.Group controlId="formBasicEmail" className={"text-center"}>
+                        <Form.Label column={true}>
+                            <strong>Edit {deck.name}</strong>
+                        </Form.Label>
+                    <Form.Control type="text"
+                                  name={deckId}
+                                  placeholder="Haustiere"
+                                  defaultValue={deck.name}
+                                  id={`input-name-${index}`}
+                                  onChange={(e) => {
+
+                                    editProperty(e, 'name')
+                                  }}
+                    />
+                </Form.Group>
+                {FlashcardAmount(deck)}
+
+                <Form.Group controlId="formBasicEmail" className={"text-center"}>
+                    <Form.Label column={true}><strong>Edit deck description</strong></Form.Label>
+                    <Form.Control 
+                                  type="text"
+                                  as="textarea"
+                                  name={deckId}
+                                  placeholder="Haustiere"
+                                  defaultValue={deck.description}  
+                                  id={`input-description-${index}`}
+                                  className={'form-control'}
+                                  onChange={(e) => {
+
+                                    editProperty(e, 'description')
+
+                                  }}
+                    />
+                </Form.Group>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <Card.Title className={"text-center"}>
+                        <Row>
+                            <Col xs={12}>
+                                <span id={`deck-name-${index}`}>{deck.name}</span>
+                            </Col>
+                        </Row>
+                    </Card.Title>
+                    {FlashcardAmount(deck)}
+
+                    <Card.Title className={"text-center font-weight-normal"}>
+                        <Row>
+                            <Col xs={12}>
+                                <span id={`deck-description-${index}`}>{deck.description}</span>
+                            </Col>
+                        </Row>
+                    </Card.Title>
+                    {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, deck._id, index)}
+                </>
+            )
+        }
+    }
+
+    const LoaderComponent = () => {
+        return (
             <Row className="mx-auto align-items-center flex-column py-5">
                 <Loader type="square-spin" active={true} color={'#758BFE'}/>
                 <h2>Loading decks...</h2>
             </Row>
-        )
-    } else if (props.userDecks.decks) {
-        userDecks = props.userDecks.decks.map((deck, key) =>
-            <Col xs={12} sm={6} lg={4} className="my-2">
-                <Card key={deck.name + key} id={'card-' + key}>
-                    <Card.Body>
-                        {editDeckName(deck.name, deck._id, key)}
-                        <Card.Subtitle className="mb-2 text-muted text-center">
-                            ({deck.flashcards.length} {(deck.flashcards.length > 1 || deck.flashcards.length === 0) ? 'flashcards' : 'flashcard'})
-                        </Card.Subtitle>
-                        {editDeckDescription(deck.description, deck._id, key)}
-                        {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, deck._id, key)}
-
-                    </Card.Body>
-                    {isCreator ? userOptions(deck, key) : ''}
-                </Card>
-            </Col>
         )
     }
 
@@ -338,6 +323,22 @@ const Deck = (props) => {
         return (errors.map(error => error))
     }
 
+    const ShowDecks = (loading, decks) => {
+        if (loading) return <LoaderComponent />
+
+        const allDecks = decks.map((deck, index) => (
+            <Col xs={12} sm={6} lg={4} className="my-2">
+                <Card key={deck.name + index} id={'card-' + index}>
+                    <Card.Body>
+                        {ShowCard(deck, deck._id, index)}
+                    </Card.Body>
+                    {isCreator ? userOptions(deck, index) : ''}
+                </Card>
+            </Col>)
+        )
+        return allDecks
+    }
+
     return (
         <>
             <NavigatieBar/>
@@ -351,11 +352,9 @@ const Deck = (props) => {
                         </div>
                     </Col>
                 </Row>
-                {loader}
                 {showErrors()}
-                {error}
                 <Row>
-                    {userDecks}
+                    {ShowDecks(props.isLoading, props.decks)}
                 </Row>
             </Container>
             <Footer/>
