@@ -14,7 +14,8 @@ const User = mongoose.model('User');
 */
 decks.get('/', async (req, res) => {
     const searchQuery = req.query.deck;
-    let foundDecks;
+    let page = req.query.page;
+    let foundDecks, totalDecks;
 
     if (searchQuery) {
         foundDecks = await User.find({
@@ -25,8 +26,32 @@ decks.get('/', async (req, res) => {
                     }
             }
         });
-    } else {
-        foundDecks = await User.find({});
+    } else if (page) {
+        if (page === "0") {
+            console.log('Eerste decks')
+            page = 0;
+        }else {
+            page = page * 5;
+        }
+
+        if (page === 0) {
+            totalDecks = await User.aggregate([
+                {'$unwind':'$decks'},
+                { $count: "decks" },
+            ]);
+        }
+
+        foundDecks = await User.aggregate([
+            {'$unwind': '$decks'},
+            {'$skip': page},
+            {'$limit': (page + 5)},
+            {
+                "$group": {
+                    "_id": "$_id",
+                    "decks": {"$push": "$decks"}
+                }
+            }
+        ]);
     }
 
     let decks = [];
@@ -34,7 +59,8 @@ decks.get('/', async (req, res) => {
         foundDecks[key].decks.forEach((decksIndex, decksKey) => {
             decks.push({
                 name: foundDecks[key].decks[decksKey].name,
-                deckCreator: !(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
+                description: foundDecks[key].decks[decksKey].description,
+                deckCreator: !!(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
                 totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
                 deckId: foundDecks[key].decks[decksKey]._id
             });
@@ -45,6 +71,7 @@ decks.get('/', async (req, res) => {
     decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
 
     await res.json({
+        totalDecks: (totalDecks) ? totalDecks[0].decks : null,
         decks: decks,
     })
 });

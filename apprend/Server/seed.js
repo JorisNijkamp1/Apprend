@@ -29,7 +29,7 @@ async function seedUsers() {
             "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
             "decks": [
                 {
-                    "name": "French to Dutch words",
+                    "name": "1",
                     "description": "Prepositions in French",
                     "creatorId": "Joris",
                     // "creatorId": ,
@@ -38,7 +38,7 @@ async function seedUsers() {
                     "flashcards": []
                 },
                 {
-                    "name": "Filipino to Dutch words",
+                    "name": "2",
                     "description": "Learn Filipino words",
                     "creatorId": "Joris",
                     // "creatorId": ,
@@ -47,7 +47,7 @@ async function seedUsers() {
                     "flashcards": []
                 },
                 {
-                    "name": "Finnish to Dutch prefixes",
+                    "name": "3",
                     "description": "Learning prefixes ",
                     "creatorId": "Joris",
                     // "creatorId": ,
@@ -76,7 +76,7 @@ async function seedUsers() {
             "password": "$2a$10$JrWeSo2Y44VI2J8LnKLSwOtPkIyVEP5Y66HJ9cUIR3CX68vjFtPrC",
             "decks": [
                 {
-                    "name": "English to dutch verbs",
+                    "name": "4",
                     "description": "My english verbs",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -102,7 +102,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "Lorem ipsum dolar",
+                    "name": "5",
                     "description": "Lorem ipsum dolar sint description deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -128,7 +128,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "Sint dolar English",
+                    "name": "6",
                     "description": "Dolar English deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -148,7 +148,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "English to Spanish verbs",
+                    "name": "7",
                     "description": "Special deck for learning Spanish",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -162,7 +162,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "Dolphin types",
+                    "name": "8",
                     "description": "Type of Dolphins",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -218,7 +218,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "Talking with animals",
+                    "name": "9",
                     "description": "Weekend fun",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -238,7 +238,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "South Park seasons",
+                    "name": "10",
                     "description": "My lovely SouthPark Seasons",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -264,7 +264,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "French to Dutch",
+                    "name": "11",
                     "description": "Learning Dutch and French",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -290,7 +290,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "Tweets by Trump",
+                    "name": "12",
                     "description": "For Trump fans",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -310,7 +310,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "French to Spanish verbs",
+                    "name": "13",
                     "description": "Special deck for learning French",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -324,7 +324,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "Spanish to French",
+                    "name": "14",
                     "description": "Lorem ilar sint description deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -380,7 +380,27 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "English Words",
+                    "name": "15",
+                    "description": "Dolar English deck",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "16",
                     "description": "Dolar English deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -399,6 +419,7 @@ async function seedUsers() {
                         },
                     ]
                 }
+
             ]
         },
     ])
