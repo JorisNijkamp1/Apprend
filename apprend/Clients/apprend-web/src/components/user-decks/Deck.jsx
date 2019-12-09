@@ -60,7 +60,6 @@ const UserDecks = (props) => {
             return <>
             </>
         }
-
     }
 
     let loader, deck, error;

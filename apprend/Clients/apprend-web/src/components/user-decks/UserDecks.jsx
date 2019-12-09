@@ -15,7 +15,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
-import { deleteDeckFromUser } from '../../redux-store/actions/decks/async-actions'
+import { deleteDeckFromUser } from '../../redux-store/actions/decks/async-actions';
+import SearchTagsInput from "../search-input/SearchTagsInput";
 
 const Deck = (props) => {
     const {username} = useParams();
@@ -181,6 +182,9 @@ const Deck = (props) => {
                         </div>
                     </Col>
                 </Row>
+                <div className={'pt-3 pb-5'}>
+                    <SearchTagsInput linkTo={`/search?q=${props.searchValue}`}/>
+                </div>
                 {loader}
                 {showErrors()}
                 {error}
@@ -202,6 +206,7 @@ function mapStateToProps(state) {
         decks: state.decks.userDecks.decks,
         isLoading: state.decks.isLoading,
         username: state.login.username,
+        searchValue: state.search.searchValue,
     }
 }
 

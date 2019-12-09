@@ -7,9 +7,6 @@ import {Link} from "react-router-dom";
 import {setSearchValue} from "../../redux-store/actions/search/actions";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch} from "@fortawesome/free-solid-svg-icons";
-import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 
 const getMatchingLanguages = (value, decks) => {
@@ -20,8 +17,15 @@ const getMatchingLanguages = (value, decks) => {
     }
 
     const regex = new RegExp('^' + escapedValue, 'i');
-    decks = decks.filter(deck => regex.test(deck.name))
-    return (decks.length > 4) ? decks.slice(0, 4) : decks;
+    const match = [];
+    for (let i = 0; i < decks.length; i++) {
+        for (let j = 0; j < decks[i].tags.length; j++) {
+            if (regex.test(decks[i].tags[j])) {
+                match.push(decks[i])
+            }
+        }
+    }
+    return (match.length > 4) ? match.slice(0, 4) : match;
 };
 
 /* ----------- */
@@ -37,17 +41,24 @@ const escapeRegexCharacters = (str) => {
 /*    Component    */
 /* --------------- */
 const getSuggestionValue = (suggestion) => {
+    console.log('jo')
     return suggestion.name;
 };
 
 function renderSuggestion(suggestion) {
-    return (
-        <Link to={`/decks/${suggestion.deckId}`} className={'search-suggestions-link'}>
-            <span style={{fontWeight: 600}}>{suggestion.name}</span>
-            <br/>
-            <i>{suggestion.totalFlashcards} flashcards</i>
-        </Link>
-    );
+    console.log('hoi')
+    console.log(suggestion)
+    console.log(suggestion.deckId !== undefined)
+    if (suggestion.deckId) {
+        return (
+            <Link to={`/decks/${suggestion.deckId}`} className={'search-suggestions-link'}>
+                <span style={{fontWeight: 600}}>{suggestion.name}</span>
+            </Link>
+        );
+    } else {
+        console.log('hoi')
+        return "There are no decks with this tag!"
+    }
 }
 
 const SearchDecksInput = (props) => {
@@ -63,8 +74,7 @@ const SearchDecksInput = (props) => {
 
         // Request
         lastRequestId = setTimeout(async () => {
-
-            const url = `${API_URL}/decks?deck=${value}`;
+            const url = `${API_URL}/decks/tags?tag=${value}`;
             let decks;
 
             const response = await fetch(url, {
@@ -101,7 +111,7 @@ const SearchDecksInput = (props) => {
     };
 
     const inputProps = {
-        placeholder: "Search a deck",
+        placeholder: "Filter on tags",
         value,
         onChange: onChange,
         className: 'form-control',
@@ -113,7 +123,7 @@ const SearchDecksInput = (props) => {
             <Row>
                 <Col md={{span: 10, offset: 1}}>
                     <Row>
-                        <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>
+                        <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 3}}>
                             <InputGroup className="mb-3">
                                 <Autosuggest
                                     suggestions={suggestions}
@@ -126,20 +136,7 @@ const SearchDecksInput = (props) => {
                                 />
                             </InputGroup>
                         </Col>
-                        <Col xs={{span: 2}} md={{span: 2}} lg={{span: 2}}>
-                            <InputGroup.Append>
-                                <Link to={props.linkTo}>
-                                    <Button className={'bg-blue text-white hover-shadow'}>
-                                        <FontAwesomeIcon icon={faSearch}
-                                                         className={'trash-icon'}
-                                                         size={'1x'}
-                                                         title={`Search`}
-                                        />
-                                        <span className={'ml-1'}>Search</span>
-                                    </Button>
-                                </Link>
-                            </InputGroup.Append>
-                        </Col>
+
                     </Row>
                 </Col>
             </Row>

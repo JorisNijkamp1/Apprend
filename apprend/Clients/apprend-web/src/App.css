@@ -280,6 +280,10 @@ progress[value]::-webkit-progress-value {
     text-decoration: unset;
 }
 
+.tagButton {
+  margin-left: 50px;
+}
+
 @media only screen and (max-width: 800px) {
     .flipCard {
         width: 100%;
@@ -317,4 +321,7 @@ progress[value]::-webkit-progress-value {
 .sticky-button {
     position: absolute;
     bottom: 1.5rem;
+}
+.infinite-scroll-component  {
+    overflow: hidden !important;
 }
