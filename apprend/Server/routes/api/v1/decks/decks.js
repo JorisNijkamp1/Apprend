@@ -10,6 +10,45 @@ require('../../../../database/models/user');
 const User = mongoose.model('User');
 
 /*====================================
+| SEARCH FOR SOME TAGS
+*/
+decks.get('/tags', async (req, res) => {
+    const searchQuery = req.query.deck;
+    let foundDecks;
+
+    if (searchQuery) {
+        foundDecks = await User.find({
+            decks: {
+                $elemMatch: {
+                    tags: {'$regex': searchQuery, '$options': 'i'}
+                }
+            }
+        });
+    } else {
+        foundDecks = await User.find({});
+    }
+
+    let decks = [];
+    foundDecks.forEach((index, key) => {
+        foundDecks[key].decks.forEach((decksIndex, decksKey) => {
+            if (req.session.username === foundDecks[key].decks[decksKey].creatorId) {
+                decks.push({
+                    name: foundDecks[key].decks[decksKey].name,
+                    deckCreator: !(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
+                    totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
+                    deckId: foundDecks[key].decks[decksKey]._id,
+                    tags: foundDecks[key].decks[decksKey].tags
+                });
+            }
+        });
+    });
+
+    await res.json({
+        decks: decks,
+    })
+});
+
+/*====================================
 | SEARCH FOR SOME DECKS
 */
 decks.get('/', async (req, res) => {

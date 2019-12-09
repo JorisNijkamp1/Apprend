@@ -2,7 +2,7 @@ import React from 'react';
 import { Row } from 'react-bootstrap';
 import { store } from 'react-notifications-component';
 
-export const AddNotification = title => {
+export const Notification = title => {
     return <Row>
         {store.addNotification({
             title: title,

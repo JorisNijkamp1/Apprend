@@ -8,7 +8,7 @@ import { CreateButton } from './sub-components/CreateButton';
 import { useHistory } from 'react-router'
 import { NavigatieBar } from '../shared/navbar/NavigatieBar';
 import { Footer } from '../shared/footer/Footer';
-import { AddNotification } from './sub-components/AddNotification';
+import { Notification } from '../shared/notification/Notification';
 
 const CreateDeckFormComponent = (props) => {
 
@@ -74,7 +74,7 @@ const CreateDeckFormComponent = (props) => {
         let match = false;
         if (props.tags.length !== 0) {
             if (checkAdded(tagValue)){
-                AddNotification("You already have that tag");
+                Notification("You already have that tag");
             } else {
                 match = true;
             }
@@ -83,14 +83,14 @@ const CreateDeckFormComponent = (props) => {
                     addListItem(tagValue);
                     match = false;
                 } else {
-                    AddNotification("You can't add an empty tag");
+                    Notification("You can't add an empty tag");
                 }
             }
         } else {
             if (tagValue.trim() !== "") {
                 addListItem(tagValue);
             } else {
-                AddNotification("You can't add an empty tag");
+                Notification("You can't add an empty tag");
             }
         }
     }

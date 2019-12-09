@@ -11,7 +11,7 @@ import {setDeckEditAction, deleteTag} from "../../../redux-store/actions/decks/a
 import {setDeckEditedAction} from "../../../redux-store/actions/decks/async-actions";
 import {Link} from "react-router-dom";
 import { addTag, clearTags } from '../../../redux-store/actions/create-deck/actions';
-import { AddNotification } from './sub-components/AddNotification';
+import { Notification } from '../../shared/notification/Notification';
 
 const DeckEditUI = (props) => {
     const [deckName, setDeckname] = useState('');
@@ -67,7 +67,7 @@ const DeckEditUI = (props) => {
         let match = false;
         if ((props.tags.length !== 0 && deckData.oldDeckTags.length !== 0) || (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0)) {
             if (checkAdded(tagValue)){
-                AddNotification("You already have that tag");
+                Notification("You already have that tag");
             } else {
                 match = true;
             }
@@ -77,7 +77,7 @@ const DeckEditUI = (props) => {
                     addListItem(tagValue);
                     match = false;
                 } else {
-                    AddNotification("You can't add an empty tag");
+                    Notification("You can't add an empty tag");
                 }
             }
         } else {
@@ -85,7 +85,7 @@ const DeckEditUI = (props) => {
                 props.addTag(tagValue);
                 addListItem(tagValue);
             } else {
-                AddNotification("You can't add an empty tag");
+                Notification("You can't add an empty tag");
             }
         }
     }
