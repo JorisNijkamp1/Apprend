@@ -15,7 +15,7 @@ const NavbarUI = (props) => {
             return (
                 <>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item onClick={() => {
+                    <NavDropdown.Item id={"logout-btn"} onClick={() => {
                         props.logout()
                         Notification("You successfully logged out!", "success")
                     }}>Logout</NavDropdown.Item>
