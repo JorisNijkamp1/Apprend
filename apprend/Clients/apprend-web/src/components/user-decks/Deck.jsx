@@ -13,6 +13,7 @@ import Button from "react-bootstrap/Button";
 import Loader from "react-loaders";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {importDeckAction} from "../../redux-store/actions/decks/async-actions";
+import {Notification} from "../shared/notification/Notification";
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
@@ -51,6 +52,7 @@ const UserDecks = (props) => {
                             className={"sticky-button"}
                             onClick={() => {
                                 props.importDeck(props.deck._id)
+                                Notification("You successfully imported this deck", "success")
                             }}>
                         Import deck
                     </Button>

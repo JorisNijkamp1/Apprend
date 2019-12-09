@@ -67,7 +67,7 @@ const DeckEditUI = (props) => {
         let match = false;
         if ((props.tags.length !== 0 && deckData.oldDeckTags.length !== 0) || (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0)) {
             if (checkAdded(tagValue)){
-                Notification("You already have that tag");
+                Notification("You already have that tag", "danger");
             } else {
                 match = true;
             }
@@ -77,7 +77,7 @@ const DeckEditUI = (props) => {
                     addListItem(tagValue);
                     match = false;
                 } else {
-                    Notification("You can't add an empty tag");
+                    Notification("You can't add an empty tag", "danger");
                 }
             }
         } else {
@@ -85,7 +85,7 @@ const DeckEditUI = (props) => {
                 props.addTag(tagValue);
                 addListItem(tagValue);
             } else {
-                Notification("You can't add an empty tag");
+                Notification("You can't add an empty tag", "danger");
             }
         }
     }

@@ -6,6 +6,7 @@ import Container from "react-bootstrap/Container";
 import {Link} from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import {logoutAction} from "../../../redux-store/actions/login/async-actions";
+import {Notification} from "../notification/Notification";
 
 const NavbarUI = (props) => {
 
@@ -14,7 +15,10 @@ const NavbarUI = (props) => {
             return (
                 <>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item onClick={() => props.logout()}>Logout</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => {
+                        props.logout()
+                        Notification("You successfully logged out!", "success")
+                    }}>Logout</NavDropdown.Item>
                 </>
             )
         }

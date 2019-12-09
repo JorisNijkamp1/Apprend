@@ -87,6 +87,7 @@ login.get('/logout', function (req, res) {
     res.status(200).json({
         username: null
     })
+
 });
 
 module.exports = login;

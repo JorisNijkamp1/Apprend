@@ -83,9 +83,7 @@ export const logoutAction = () => {
         };
         const response = await fetch(url, options)
         const data = await response.json();
-
-        console.log(123)
-        dispatch(setLoginAction(null));
-
+        dispatch(setLoginAction(data.username))
+        dispatch(setAnonymousUserAction(true))
     }
 };
