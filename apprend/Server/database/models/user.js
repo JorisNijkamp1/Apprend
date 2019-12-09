@@ -27,11 +27,12 @@ userSchema.methods.addDeck = async function (deck) {
     return this.decks[this.decks.length - 1]
 }
 
-userSchema.methods.editDeckname = async function (deckId, name, description) {
+userSchema.methods.editDeckname = async function (deckId, name, description, tags) {
     this.decks = this.decks.map(deck => {
         if (deck._id.toString() === deckId) {
             deck.name = name
             deck.description = description
+            deck.tags = tags
         }
         return deck
     })

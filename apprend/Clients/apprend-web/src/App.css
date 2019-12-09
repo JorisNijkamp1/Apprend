@@ -138,7 +138,7 @@ h2{
   transform: rotatey(-180deg);
 }
 
-.btn-green{
+.btn-green {
   background-color: #7AD765;
 }
 
@@ -183,6 +183,10 @@ progress[value]::-webkit-progress-value {
 
 .notification-container-mobile-top, .notification-container-top-center {
   top: 80px !important;
+}
+
+.tagButton {
+  margin-left: 50px;
 }
 
 @media only screen and (max-width: 800px) {

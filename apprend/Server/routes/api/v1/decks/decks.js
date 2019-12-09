@@ -53,6 +53,7 @@ decks.post('/', async (req, res) => {
                 description: req.body.description,
                 creatorId: req.session.id,
                 status: 'original',
+                tags: req.body.tags,
                 flashcards: [],
             }
             const user = {
@@ -73,6 +74,7 @@ decks.post('/', async (req, res) => {
                 description: req.body.description,
                 creatorId: req.session.username,
                 status: 'original',
+                tags: req.body.tags,
                 flashcards: [],
             }
             if (player) response = await player.addDeck(deck)
@@ -290,9 +292,9 @@ decks.get('/:deckId/games/:gameId', async (req, res) => {
 */
 decks.put('/:deckId', async (req, res) => {
     const {deckId} = req.params;
-    const {name, description, creatorId} = req.body;
+    const {name, description, creatorId, tags} = req.body;
     let user = await User.findById(creatorId);
-    await user.editDeckname(deckId, name, description);
+    await user.editDeckname(deckId, name, description, tags);
     let currentDeck;
 
     user.decks.forEach(deck => {
@@ -305,7 +307,8 @@ decks.put('/:deckId', async (req, res) => {
         success: true,
         name: name,
         description: description,
-        deck: currentDeck
+        deck: currentDeck,
+        tags: tags
     })
 })
 
