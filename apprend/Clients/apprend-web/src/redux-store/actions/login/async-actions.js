@@ -1,6 +1,7 @@
 import {API_URL} from "../../urls";
 import {setLoginAction} from './actions.js'
 import {setAnonymousUserAction} from "./actions";
+import {setDeckEditAction} from "../decks/actions";
 
 export const userLogin = (username, password) => {
     return async dispatch => {
@@ -66,5 +67,25 @@ export const isLoggedIn = () => {
             }).catch(err => {
                 console.log(err);
             })
+    }
+};
+
+export const logoutAction = () => {
+    return async dispatch => {
+        const url = `${API_URL}/login/logout`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        const response = await fetch(url, options)
+        const data = await response.json();
+
+        console.log(123)
+        dispatch(setLoginAction(null));
+
     }
 };

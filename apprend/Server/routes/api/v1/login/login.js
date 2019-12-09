@@ -81,4 +81,12 @@ login.post('/check', authenticationMiddleware(), (req, res) => {
     })
 });
 
+login.get('/logout', function (req, res) {
+    req.logout();
+    req.session.destroy();
+    res.status(200).json({
+        username: null
+    })
+});
+
 module.exports = login;
