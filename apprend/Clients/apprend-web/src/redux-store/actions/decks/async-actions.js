@@ -37,6 +37,7 @@ export const getUserDecksAction = (username, skipLoader = false) => {
 
 export const getDeckAction = (deckId) => {
     return async dispatch => {
+        console.log(deckId)
         await dispatch(setIsLoading(true));
         const url = `${API_URL}/decks/${deckId}`;
         const options = {
@@ -49,9 +50,20 @@ export const getDeckAction = (deckId) => {
         };
         const response = await fetch(url, options);
         const data = await response.json();
-        if (data.success) {
+        // if (data.success) {
+        //     setTimeout(function () {
+        //         dispatch(setDeckAction(data.deck));
+        //         dispatch(setIsLoading(false))
+        //     }, 500);
+        // }else {
+        //     setTimeout(function () {
+        //         dispatch(setDeckAction('deck-not-found'));
+        //         dispatch(setIsLoading(false))
+        //     }, 500);
+        // }
+        if (response.status === 200) {
             setTimeout(function () {
-                dispatch(setDeckAction(data.deck));
+                dispatch(setDeckAction(data));
                 dispatch(setIsLoading(false))
             }, 500);
         }else {

@@ -45,6 +45,7 @@ decks.get('/home', async (req, res) => {
 
 decks.post('/', async (req, res) => {
     try {
+        if (!req.body.deckName || req.body.deckName.trim().length === 0) return res.status(400).json('Failed to provide a deck name')
         let response;
         if (!req.session.username && !req.cookies.username) {
             req.session.username = req.session.id
@@ -54,6 +55,7 @@ decks.post('/', async (req, res) => {
                 creatorId: req.session.id,
                 status: 'original',
                 flashcards: [],
+                private: req.body.private,
             }
             const user = {
                 _id: req.session.id,
@@ -71,6 +73,7 @@ decks.post('/', async (req, res) => {
             const deck = {
                 name: req.body.deckName,
                 description: req.body.description,
+                private: req.body.private,
                 creatorId: req.session.username ? req.session.username : req.cookies.username,
                 status: 'original',
                 flashcards: [],
@@ -105,32 +108,38 @@ decks.delete('/:deckId', async (req, res) => {
 | GET A SPECIFIC DECK
 */
 decks.get('/:deckId', async (req, res) => {
-    const users = await User.find({});
+    try {
     const deckId = req.params.deckId;
 
-    let currentDeck, anonymousUser;
-    users.forEach((user, userKey) => {
-        users[userKey].decks.forEach((deck, deckKey) => {
-            if (deck._id == deckId) {
-                currentDeck = deck;
-                anonymousUser = !(user.email && user.password) ? 'anonymous user' : user._id
-            }
-        });
-    });
-
-    if (currentDeck) {
-        await res.json({
-            success: true,
-            deck: {
-                ...currentDeck._doc,
-                userName: anonymousUser,
-            }
-        })
-    } else {
-        await res.json({
-            success: false,
-        })
+    if (!deckId){
+        return res.status(404).json('Cant work without a deck id')
     }
+    const userAndDeck = await User.findOne({
+        'decks': {
+            $elemMatch: {
+                '_id': deckId
+            }
+        }
+    }, {
+        'decks': {
+            $elemMatch: {
+                '_id': deckId
+            }
+        }
+    })
+    if (!userAndDeck) return res.status(404).json('Does not exist')
+    if (!userAndDeck.decks) return res.status(404).json('Does not exist')
+
+    if (userAndDeck.decks[0].private){
+        if (req.session.username !== userAndDeck._id) res.status(401).json('User has made this deck private')
+    } 
+
+    res.status(200).json(userAndDeck.decks[0])
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('oopsie')
+    }
+
 });
 
 

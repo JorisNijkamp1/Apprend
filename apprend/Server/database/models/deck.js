@@ -28,6 +28,9 @@ const deckSchema = new mongoose.Schema({
     games: {
         type: [{type: Game}],
     },
+    private: {
+        type: Boolean,
+    }
 });
 
 deckSchema.methods.editDeck = async function(name, description){

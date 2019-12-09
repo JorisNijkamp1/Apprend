@@ -31,7 +31,7 @@ const UserDecks = (props) => {
             return (
                 <>
                     <Link to={`/decks/${props.deck._id}/flashcards`}>
-                        <Button variant="warning" id={'edit-flashcard-button'}>Edit flashcards</Button>
+                        <Button variant="warning" id={'edit-flashcard-button'}>Manage flashcards</Button>
                     </Link>
                     <Link to={`/decks/${props.deck._id}/edit`}>
                         <Button id={"edit-deck"} className={"ml-4"} variant={"info"}>Edit deck</Button>
@@ -49,7 +49,7 @@ const UserDecks = (props) => {
                 <h2>Loading decks...</h2>
             </Row>
         )
-    } else {
+    } else if (props.deck) {
         if (props.deck.toString() === 'deck-not-found') {
             error = (
                 <Row className="mx-auto align-items-center flex-column py-5">
@@ -63,6 +63,7 @@ const UserDecks = (props) => {
             totalFlashcards = props.deck.flashcards.length
         }
         if (props.deck.toString() !== 'deck-not-found'){
+            const datum = new Date(props.deck.creationDate).toLocaleDateString()
             deck = (
                 <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
                     <Card.Body>
@@ -70,7 +71,7 @@ const UserDecks = (props) => {
                         <Card.Subtitle>
                             <Row>
                                 <Col xs={12} md={4}>
-                                    <b>Created on: </b>{props.deck.creationDate}
+                                    <b>Created on: </b>{datum ? datum : '' }
                                 </Col>
                                 <Col xs={12} md={4}>
                                     <b>Created by: </b>{props.deck.userName}

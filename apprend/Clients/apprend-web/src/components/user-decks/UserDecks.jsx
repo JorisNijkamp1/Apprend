@@ -15,7 +15,7 @@ import Card from "react-bootstrap/Card";
 import Loader from 'react-loaders'
 import 'loaders.css/src/animations/square-spin.scss'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash, faCheck, faTimes, faEdit} from "@fortawesome/free-solid-svg-icons";
+import {faTrash, faCheck, faTimes, faEdit, faLockOpen, faLock} from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {deleteDeckFromUser} from '../../redux-store/actions/decks/async-actions'
@@ -30,7 +30,7 @@ const Deck = (props) => {
     let {deckId} = useParams()
 
     useEffect(() => {
-        props.getDecksEdit(deckId)
+        // props.getDecksEdit(deckId)
         props.getUserDecks(username)
     }, []);
 
@@ -129,6 +129,10 @@ const Deck = (props) => {
         setDecks({...updatedDecks})
     }
 
+    const toggleDeckStatus = () => {
+
+    }
+
     /* Lijst met alle opties die de eigenaar ziet
     
         icon: FontAwesome icon die je importeert
@@ -144,19 +148,36 @@ const Deck = (props) => {
             title: 'Delete',
             funct: toggleLocalStateProperty,
             statePropertyName: 'deleteState',
+            classColor: '',
         },
         {
             icon: faEdit,
             title: 'Edit',
             funct: toggleLocalStateProperty,
             statePropertyName: 'editState',
-
+            classColor: ''
         },
+        {
+            icon: faLockOpen,
+            title: 'Set this deck to private',
+            ownTitle: true,
+            funct: toggleDeckStatus,
+            classColor: 'text-green',
+            public: true
+        },
+        {
+            icon: faLock,
+            title: 'Set this deck to public',
+            ownTitle: true,
+            funct: toggleDeckStatus,
+            classColor: 'text-red',
+        }
     ]
 
     const showAllIcons = (icons, deck, index) => {
         return icons.map(icon => {
-            return iconHOC(icon.icon, icon.title, deck, icon.funct, icon.statePropertyName, index )
+            if (deck.private && icon.)
+            return iconHOC(icon, deck, index )
         })
     }
 
@@ -192,18 +213,18 @@ const Deck = (props) => {
         )
     }
 
-    const iconHOC = (icon, title, deck, funct, property, index) => {
+    const iconHOC = (icon, deck, index) => {
         return (
             <Col xs={2}>
             <span className={"float-right"} name={deck._id}
                   onClick={(event) => {
-                      funct(event, property)
+                      icon.funct(event, icon.statePropertyName)
                   }}>
-                <FontAwesomeIcon icon={icon}
-                                 className={'trash-icon'}
+                <FontAwesomeIcon icon={icon.icon}
+                                 className={`trash-icon ${icon.classColor}`}
                                  size={`1x`}
-                                 title={`${title} ${deck.name}`}
-                                 id={`${title.toLowerCase()}-icon-button-${index}`}
+                                 title={icon.ownTitle ? icon.title : `${icon.title} ${deck.name}`}
+                                 id={`${icon.title.toLowerCase()}-icon-button-${index}`}
                 />
             </span>
         </Col>
