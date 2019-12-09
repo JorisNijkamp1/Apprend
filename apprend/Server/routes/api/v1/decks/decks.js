@@ -350,28 +350,25 @@ decks.put('/:deckId', async (req, res) => {
 
 decks.post('/:deckId', async (req, res) => {
     const deckId = req.params.deckId;
-    let user = await User.find({
+    const username = req.session.username ? req.session.username : req.cookies.username;
+    let targetUser = await User.findOne({
         "decks._id": deckId
     });
-
-    console.log(user.decks)
-
-    // let deckData = [];
-    //
-    // user.decks.map(deck => {
-    //     deckData.push({
-    //         deckName: deck.name,
-    //         deckDescription: deck.description,
-    //         deckCreatId: deck.creatorId,
-    //         deckStatus: 'copied',
-    //         deckFlashcards: []
-    //     })
-    // })
-    //
-    // console.log(deckData)
-    res.json({
-        succes: true,
-    })
+    const importToUser = await User.findById(username)
+    let currentDeck = targetUser.decks.filter(d => d._id.toString() === deckId);
+    if (username) {
+        if (importToUser._id === targetUser._id) {
+            res.status(401).json('Cant import own deck')
+        } else {
+            currentDeck[0].creatorId = importToUser._id
+            await importToUser.importDeck(currentDeck[0], importToUser._id);
+            res.status(200).json({
+                data: currentDeck[0]
+            })
+        }
+    } else {
+        res.status(401).json('Niet ingelogd')
+    }
 })
 
 module.exports = decks

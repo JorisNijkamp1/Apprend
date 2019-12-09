@@ -121,7 +121,6 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
 export const importDeckAction = deckId => {
     return async dispatch => {
         const url = `${API_URL}/decks/${deckId}`;
-        console.log(deckId)
         const options = {
             credentials: 'include',
             method: 'POST',
@@ -132,8 +131,8 @@ export const importDeckAction = deckId => {
         }
         const response = await fetch(url, options);
         const data = await response.json();
-        if (data.success) {
-            console.log("Gaat mooi");
+        if (response.status === 200) {
+
         }
     }
 }

@@ -43,10 +43,10 @@ const UserDecks = (props) => {
     };
 
     const importDeckButton = () => {
-        if (!isCreator) {
+        if (!isCreator && props.username) {
             return (
-                // <Link to={`/${props.username}/decks`}>
-                    <Button id={"edit-deck"}
+                <Link to={`/${props.username}/decks`}>
+                    <Button id={"import-deck"}
                             variant={"info"}
                             className={"sticky-button"}
                             onClick={() => {
@@ -54,7 +54,7 @@ const UserDecks = (props) => {
                             }}>
                         Import deck
                     </Button>
-                // </Link>
+                </Link>
             )
         } else {
             return <>
