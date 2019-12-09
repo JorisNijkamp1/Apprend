@@ -10,9 +10,8 @@ import {useParams} from "react-router-dom";
 import {setDeckEditAction, deleteTag} from "../../../redux-store/actions/decks/actions";
 import {setDeckEditedAction} from "../../../redux-store/actions/decks/async-actions";
 import {Link} from "react-router-dom";
-import { PageTitle } from '../../shared/PageTitle';
 import { addTag, clearTags } from '../../../redux-store/actions/create-deck/actions';
-import { store } from 'react-notifications-component';
+import { AddNotification } from './sub-components/AddNotification';
 
 const DeckEditUI = (props) => {
     const [deckName, setDeckname] = useState('');
@@ -28,13 +27,19 @@ const DeckEditUI = (props) => {
         .then((response) => {
             if (response.tags !== 0) {
                 response.tags.forEach(tag => {
-                    makeList(tag);
+                    addListItem(tag);
                 })
             }
         })
     }, []);
 
-    const makeList = (name) => {
+    const checkAdded = tagValue => {
+        return props.tags.some(tag => {
+            return tag === tagValue
+        });
+    }
+
+    const addListItem = name => {
         let tagList = document.getElementById('tagList');
         let entry = document.createElement('li');
         let button = document.createElement('button');
@@ -53,46 +58,41 @@ const DeckEditUI = (props) => {
     const deckData = {
         deckName: (!deckNameEdited && props.deckEdit.name) ? props.deckEdit.name : deckName,
         deckDescription: (!deckDescriptionEdited && props.deckEdit.description) ? props.deckEdit.description : deckDescription,
-        oldDeckTags: props.deckEdit.tags,
-        newDeckTags: props.tags
+        oldDeckTags: props.deckEdit.tags
     }
 
     const getTagValue = () => {
-        console.log(props.tags)
         let tagValue = document.getElementById("tags").value;
         document.getElementById("tags").value = "";
-        props.tags.forEach(tag => {
-            console.log(tag)
-            console.log(tagValue)
-            if (tag === tagValue) {
-                console.log('hoi')
+        let match = false;
+        if ((props.tags.length !== 0 && deckData.oldDeckTags.length !== 0) || (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0)) {
+            if (checkAdded(tagValue)){
+                AddNotification("You already have that tag");
+            } else {
+                match = true;
             }
-        })
-        if (tagValue.trim() !== "") {
-            props.addTag(tagValue);
-            makeList(tagValue);
+            if (match === true) {
+                if (tagValue.trim() !== "") {
+                    props.addTag(tagValue);
+                    addListItem(tagValue);
+                    match = false;
+                } else {
+                    AddNotification("You can't add an empty tag");
+                }
+            }
         } else {
-            return <Row>
-            {store.addNotification({
-                title: "You can't add an empty tag",
-                message: " ",
-                type: "info",
-                insert: "top",
-                container: "top-center",
-                animationIn: ["animated", "bounceIn"],
-                animationOut: ["animated", "bounceOut"],
-                dismiss: {
-                    duration: 3000
-                },
-                width: 250
-            })}
-        </Row>
+            if (tagValue.trim() !== "") {
+                props.addTag(tagValue);
+                addListItem(tagValue);
+            } else {
+                AddNotification("You can't add an empty tag");
+            }
         }
     }
 
     const saveDeck = () => {
-        props.setDeckEditedAction(props.deckEdit.creatorId, props.deckEdit._id, deckData.deckName, deckData.deckDescription, deckData.oldDeckTags, deckData.newDeckTags)
-        props.clearTags()
+        props.setDeckEditedAction(props.deckEdit.creatorId, props.deckEdit._id, deckData.deckName, deckData.deckDescription, deckData.oldDeckTags, props.tags)
+        props.clearTags();
     }
 
     return (

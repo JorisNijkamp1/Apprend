@@ -8,7 +8,7 @@ import { CreateButton } from './sub-components/CreateButton';
 import { useHistory } from 'react-router'
 import { NavigatieBar } from '../shared/navbar/NavigatieBar';
 import { Footer } from '../shared/footer/Footer';
-import { store } from 'react-notifications-component';
+import { AddNotification } from './sub-components/AddNotification';
 
 const CreateDeckFormComponent = (props) => {
 
@@ -45,103 +45,52 @@ const CreateDeckFormComponent = (props) => {
         }
     }
 
+    const checkAdded = tagValue => {
+        return props.tags.some(tag => {
+            return tag === tagValue
+        });
+    }
+
+    const addListItem = name => {
+        props.addTag(name);
+        let tagList = document.getElementById('tagList');
+        let entry = document.createElement('li');
+        let button = document.createElement('button');
+        button.innerHTML = "Delete tag";
+        button.className = "tagButton btn btn-blue hover-shadow";
+        button.addEventListener ("click", (e) => {
+            e.preventDefault();
+            props.deleteTag(name);
+            tagList.removeChild(entry);
+        });
+        entry.appendChild(document.createTextNode(name));
+        entry.appendChild(button);
+        tagList.appendChild(entry);
+    }
+
     const getTagValue = () => {
         let tagValue = document.getElementById("tags").value;
         document.getElementById("tags").value = "";
         let match = false;
-        console.log(props.tags)
         if (props.tags.length !== 0) {
-            console.log('nee')
-            props.tags.forEach(tag => {
-                console.log('1')
-                if (tag === tagValue) {
-                    return <Row>
-                        {store.addNotification({
-                            title: "You already have that tag",
-                            message: " ",
-                            type: "info",
-                            insert: "top",
-                            container: "top-center",
-                            animationIn: ["animated", "bounceIn"],
-                            animationOut: ["animated", "bounceOut"],
-                            dismiss: {
-                                duration: 3000
-                            },
-                            width: 250
-                        })}
-                    </Row>
-                }
-                console.log('2')
-                return match = true;
-            })
+            if (checkAdded(tagValue)){
+                AddNotification("You already have that tag");
+            } else {
+                match = true;
+            }
             if (match === true) {
                 if (tagValue.trim() !== "") {
-                    props.addTag(tagValue);
-                    let tagList = document.getElementById('tagList');
-                    let entry = document.createElement('li');
-                    let button = document.createElement('button');
-                    button.innerHTML = "Delete tag";
-                    button.className = "tagButton btn btn-blue hover-shadow";
-                    button.addEventListener ("click", (e) => {
-                        e.preventDefault();
-                        props.deleteTag(tagValue);
-                        tagList.removeChild(entry);
-                    });
-                    entry.appendChild(document.createTextNode(tagValue));
-                    entry.appendChild(button);
-                    tagList.appendChild(entry);
+                    addListItem(tagValue);
                     match = false;
                 } else {
-                    return <Row>
-                        {store.addNotification({
-                            title: "You can't add an empty tag",
-                            message: " ",
-                            type: "info",
-                            insert: "top",
-                            container: "top-center",
-                            animationIn: ["animated", "bounceIn"],
-                            animationOut: ["animated", "bounceOut"],
-                            dismiss: {
-                                duration: 3000
-                            },
-                            width: 250
-                        })}
-                    </Row>
+                    AddNotification("You can't add an empty tag");
                 }
             }
         } else {
-            console.log('ja')
             if (tagValue.trim() !== "") {
-                props.addTag(tagValue);
-                let tagList = document.getElementById('tagList');
-                let entry = document.createElement('li');
-                let button = document.createElement('button');
-                button.innerHTML = "Delete tag";
-                button.className = "tagButton btn btn-blue hover-shadow";
-                button.addEventListener ("click", (e) => {
-                    e.preventDefault();
-                    props.deleteTag(tagValue);
-                    tagList.removeChild(entry);
-                });
-                entry.appendChild(document.createTextNode(tagValue));
-                entry.appendChild(button);
-                tagList.appendChild(entry);
+                addListItem(tagValue);
             } else {
-                return <Row>
-                    {store.addNotification({
-                        title: "You can't add an empty tag",
-                        message: " ",
-                        type: "info",
-                        insert: "top",
-                        container: "top-center",
-                        animationIn: ["animated", "bounceIn"],
-                        animationOut: ["animated", "bounceOut"],
-                        dismiss: {
-                            duration: 3000
-                        },
-                        width: 250
-                    })}
-                </Row>
+                AddNotification("You can't add an empty tag");
             }
         }
     }
