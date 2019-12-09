@@ -9,7 +9,7 @@ import Row from "react-bootstrap/Row";
 
 class InfiniteScrollResults extends React.Component {
     state = {
-        items: Array.from({length: 20}),
+        items: Array.from({length: 5}),
         hasMore: true
     };
 
@@ -22,7 +22,7 @@ class InfiniteScrollResults extends React.Component {
         // 20 more records in .5 secs
         setTimeout(() => {
             this.setState({
-                items: this.state.items.concat(Array.from({length: 20}))
+                items: this.state.items.concat(Array.from({length: 5}))
             });
         }, 1000);
     };

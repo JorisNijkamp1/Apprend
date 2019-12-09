@@ -14,14 +14,20 @@ const User = mongoose.model('User');
 */
 decks.get('/', async (req, res) => {
     const searchQuery = req.query.deck;
-    let foundDecks = await User.find({
-        decks: {
-            $elemMatch:
-                {
-                    name: {'$regex': searchQuery, '$options': 'i'}
-                }
-        }
-    });
+    let foundDecks;
+
+    if (searchQuery) {
+        foundDecks = await User.find({
+            decks: {
+                $elemMatch:
+                    {
+                        name: {'$regex': searchQuery, '$options': 'i'}
+                    }
+            }
+        });
+    } else {
+        foundDecks = await User.find({});
+    }
 
     let decks = [];
     foundDecks.forEach((index, key) => {
@@ -198,8 +204,8 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    const { flashcards } = req.body;
-    const { deckId } = req.params;
+    const {flashcards} = req.body;
+    const {deckId} = req.params;
     let username;
 
     if (req.body.test === true) {
