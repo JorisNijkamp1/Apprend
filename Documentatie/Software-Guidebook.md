@@ -72,6 +72,15 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-inloggen-webapp.svg)  
   > De volgende invoervelden zijn aanwezig:  
  - De gebruiker moet een gebruikersnaam opgeven. - De gebruiker moet een wachtwoord opgeven.  
+
+- **Uitloggen**
+	> De gebruiker kan op uitloggen klikken om uit te loggen.
+	> De gebruiker krijg een melding te zien dat hij of zij uitgelogd is.
+	
+- **Deck importeren**
+	> Een anonieme of ingelogde gebruiker kan een deck importeren.
+	> De gebruiker krijgt een melding dat het deck geïmporteerd is.
+	
 ## Quality Attributes  
 De onderstaande lijst bevat een overzicht van niet-functionele kwaliteitsattributen van het systeem.  
   
@@ -181,6 +190,9 @@ Edit flashcards van een specifiek deck.
   
 PUT /api/v1/decks/:deckId  
 Edit een deck.  
+
+POST /api/v1/decks/:deckId  
+Zet een geimporteerd deck bij de juiste gebruiker met de juiste creatorId
   
 **Users endpoints**:  
   
@@ -215,7 +227,7 @@ Redirect als er een error is.
 
 **Login endpoints**:  
 GET /api/v1/login/logout
-Redirect naar home en logout een gebruiker uit
+Redirect naar home en log
   
 ### MongoDB Database  
   
