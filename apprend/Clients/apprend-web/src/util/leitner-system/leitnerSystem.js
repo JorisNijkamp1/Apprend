@@ -32,7 +32,7 @@ const shuffleCards = (array) => {
 |--------------------------------------------------
  */
 const selectBox0Cards = (cardsInDeck) => {
-    const box0Cards = cardsInDeck.filter(card => card.box === 1);
+    const box0Cards = cardsInDeck.filter(card => card.box === 0);
     return shuffleCards(box0Cards).splice(0, X);
 };
 
@@ -80,6 +80,10 @@ const leitner = (cardsInDeck, currentSessionNumber) => {
     const selectedBox1Cards = selectBox1Cards(cardsInDeck);
     const selectedBox2Cards = selectBox2Cards(cardsInDeck, currentSessionNumber);
     const selectedBox3Cards = selectBox3Cards(cardsInDeck, currentSessionNumber);
+    console.log(selectedBox0Cards);
+    console.log(selectedBox1Cards);
+    console.log(selectedBox2Cards);
+    console.log(selectedBox3Cards);
     const selection = [...selectedBox0Cards, ...selectedBox1Cards, ...selectedBox2Cards, ...selectedBox3Cards];
 
     return shuffleCards(selection);

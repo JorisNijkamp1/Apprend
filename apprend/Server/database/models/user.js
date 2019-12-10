@@ -40,7 +40,35 @@ userSchema.methods.editDeckname = async function (deckId, name, description) {
     return this
 }
 
-userSchema.methods.deleteDeck = async function(deckId){
+userSchema.methods.editFlashcardBoxSessionPlayed = async function (deckId, flashcardId, answeredCorrect) {
+    this.decks = this.decks.map(deck => {
+        if (deck._id.toString() === deckId) {
+            deck.editFlashcardBoxSessionPlayed(flashcardId, answeredCorrect, deck.session);
+        }
+
+        return deck;
+    });
+
+    this.markModified('decks');
+    await this.save();
+    return this.decks.find(deck => deck._id.toString() === deckId);
+};
+
+userSchema.methods.editDeckSession = async function (deckId, session) {
+    this.decks = this.decks.map(deck => {
+        if (deck._id.toString() === deckId) {
+            deck.session = session;
+        }
+
+        return deck;
+    });
+
+    this.markModified('decks');
+    await this.save();
+    return this.decks.find(deck => deck._id.toString() === deckId);
+};
+
+userSchema.methods.deleteDeck = async function (deckId) {
     this.decks = this.decks.filter(deck => {
         console.log(deck._id, deckId)
         return deck._id.toString() !== deckId
@@ -51,7 +79,7 @@ userSchema.methods.deleteDeck = async function(deckId){
 }
 
 //Create model
-mongoose.model("User", userSchema);
+mongoose.model('User', userSchema);
 
 module.exports = userSchema;
 // module.exports = mongoose.model('User', userSchema)

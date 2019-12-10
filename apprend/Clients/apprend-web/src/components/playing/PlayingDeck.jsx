@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as ReactRedux from 'react-redux';
 import {useHistory} from 'react-router';
 import {NavLink, useParams} from 'react-router-dom';
@@ -6,12 +6,18 @@ import {NavigatieBar} from '../shared/navbar/NavigatieBar';
 import {Footer} from '../shared/footer/Footer';
 import {Container, Row, Col} from 'react-bootstrap';
 import PlayingCard from './sub-components/PlayingCard';
-import {getDeck, setGame, updateGame, getGameData} from '../../redux-store/actions/playing/async-actions';
+import {
+    getDeck,
+    setGame,
+    updateGame,
+    getGameData,
+    updateDeckSession, moveFlashcardToBox
+} from '../../redux-store/actions/playing/async-actions';
 import {
     setCorrectCardsAction,
     setWrongCardsAction,
     setActiveCardAction,
-    resetStateAction
+    resetStateAction, setCardsAction
 } from '../../redux-store/actions/playing/actions';
 import Loader from 'react-loaders';
 import 'loaders.css/src/animations/square-spin.scss';
@@ -19,33 +25,55 @@ import leitner from '../../util/leitner-system/leitnerSystem';
 
 const PlayingComponent = (props) => {
     const history = useHistory();
+    const [wrongCardsToRepeat, setWrongCardsToRepeat] = useState([]);
     const {deckId} = useParams();
     let loader;
 
     useEffect(() => {
         props.doResetStateAction();
         props.doGetDeck(deckId).then(response => {
-            let allCards = leitner(response.flashcards);
+            let currentSession = response.session + 1;
+            let allCards = leitner(response.flashcards, currentSession);
+
+            if (allCards.length === 0) {
+                currentSession++;
+                allCards = leitner(response.flashcards, currentSession);
+            }
 
             props.doSetGame(deckId, allCards);
             props.doSetActiveCardAction(allCards[0]);
-        })
+            props.doUpdateDeckSession(deckId, currentSession);
+            props.doSetCards(allCards);
+        });
     }, []);
+
+    const cardWasAlreadyAnsweredWrong = (flashcardId) => {
+        const card = wrongCardsToRepeat.find(flashcard => flashcard._id.toString() === flashcardId);
+        return !!card;
+    };
 
     const changeScore = (id, status) => {
         props.doGetGameData(deckId, props.gameId).then(response => {
-            let i = response.correctCards.length + response.wrongCards.length + 1;
+            const i = response.correctCards.length + response.wrongCards.length + 1;
+            const previousCard = response.flashcards[i - 1];
+            const nextCard = response.flashcards[i];
 
-            if (status === 'correct') props.doSetCorrectCardsAction(id);
-            else if (status === 'wrong') props.doSetWrongCardsAction(id);
+            if (status === 'correct' && !cardWasAlreadyAnsweredWrong(id)) {
+                props.doSetCorrectCardsAction(id);
+                props.doMoveFlashcardToBox(deckId, id, true);
+            } else if (status === 'wrong' && !cardWasAlreadyAnsweredWrong(id)) {
+                props.doSetWrongCardsAction(id);
+                props.doMoveFlashcardToBox(deckId, id, false);
+                wrongCardsToRepeat.push(previousCard);
+            }
 
             if (i < response.flashcards.length) {
-                props.doSetActiveCardAction(response.flashcards[i]);
-                props.doUpdateGame(deckId, response._id, response.flashcards[i - 1], response.flashcards[i], status);
+                props.doSetActiveCardAction(nextCard);
+                props.doUpdateGame(deckId, response._id, previousCard, nextCard, status);
                 return;
             }
 
-            props.doUpdateGame(deckId, response._id, response.flashcards[i - 1], [], status);
+            props.doUpdateGame(deckId, response._id, previousCard, [], status);
             props.doSetActiveCardAction('');
             history.push('/score');
         })
@@ -121,7 +149,10 @@ const mapDispatchToProps = dispatch => {
         doSetGame: (deckId, flashcards) => dispatch(setGame(deckId, flashcards)),
         doUpdateGame: (deckId, gameId, oldCard, newCard, status) => dispatch(updateGame(deckId, gameId, oldCard, newCard, status)),
         doGetGameData: (deckId, gameId) => dispatch(getGameData(deckId, gameId)),
-        doResetStateAction: () => dispatch(resetStateAction())
+        doResetStateAction: () => dispatch(resetStateAction()),
+        doMoveFlashcardToBox: (deckId, flashcardId, answeredCorrect) => dispatch(moveFlashcardToBox(deckId, flashcardId, answeredCorrect)),
+        doUpdateDeckSession: (deckId, currentSession) => dispatch(updateDeckSession(deckId, currentSession)),
+        doSetCards: (cards) => dispatch(setCardsAction(cards))
     }
 };
 

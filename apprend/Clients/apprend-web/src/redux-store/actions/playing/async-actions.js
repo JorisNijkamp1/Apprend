@@ -111,3 +111,55 @@ export const getGameData = (deckId, gameId) => {
             }))
     }
 };
+
+export const updateDeckSession = (deckId, session) => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/${deckId}/session`;
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors',
+            body: JSON.stringify({
+                'session': session
+            })
+        };
+
+        return fetch(url, options).then(response => {
+            return response.json();
+        }).then(results => {
+            if (results.success) return results.deck;
+        }).catch((err => {
+            console.log('Something went wrong...');
+            console.log(err);
+        }))
+    }
+};
+
+export const moveFlashcardToBox = (deckId, flashcardId, answeredCorrect) => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/${deckId}/flashcards/${flashcardId}`;
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors',
+            body: JSON.stringify({
+                'answeredCorrect': answeredCorrect
+            })
+        };
+
+        return fetch(url, options).then(response => {
+            return response.json();
+        }).then(results => {
+            if (results.success) return results.deck;
+        }).catch((err => {
+            console.log('Something went wrong...');
+            console.log(err);
+        }))
+    }
+};

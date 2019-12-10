@@ -89,7 +89,7 @@ decks.post('/', async (req, res) => {
     }
 });
 
-decks.delete('/:deckId',  async (req, res) => {
+decks.delete('/:deckId', async (req, res) => {
     try {
         const user = await User.findById(req.session.username ? req.session.username : req.cookies.username)
         if (!user) return res.status(404).json('Not a user')
@@ -155,7 +155,7 @@ decks.get('/:deckId/flashcards', async (req, res) => {
             success: true,
             deckId: currentDeck._id,
             name: currentDeck.name,
-            creatorId:  currentDeck.creatorId,
+            creatorId: currentDeck.creatorId,
             flashcards: currentDeck.flashcards,
 
         })
@@ -170,8 +170,8 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    const { flashcards } = req.body;
-    const { deckId } = req.params;
+    const {flashcards} = req.body;
+    const {deckId} = req.params;
 
     const username = req.session.username ? req.session.username : req.cookies.username;
     if (!username) return res.status(401).json('Not a user');
@@ -213,7 +213,7 @@ decks.post('/:deckId/flashcards', async (req, res) => {
     } else {
         return await res.json({
             success: false,
-            error: "Deck doesn't exist"
+            error: 'Deck doesn\'t exist'
         })
     }
 });
@@ -223,9 +223,9 @@ decks.put('/:deckId/flashcards/:flashcardId', async (req, res) => {
     const flashcardId = req.params.flashcardId;
     const username = req.session.username ? req.session.username : req.cookies.username;
 
-    if (req.body.box === undefined || req.body.sessionPlayed === undefined) {
-        req.status(400);
-        await req.json({
+    if (req.body.answeredCorrect === undefined) {
+        res.status(400);
+        await res.json({
             'success': false,
             'error': 'The required POST data was not set...'
         });
@@ -255,7 +255,10 @@ decks.put('/:deckId/flashcards/:flashcardId', async (req, res) => {
         return;
     }
 
-    if (user.decks[deckId] === undefined || user.decks[deckId] === null) {
+    let deck = user.decks.find(deck => deck._id.toString() === deckId);
+
+    if (deck === undefined ||
+        deck === null) {
         res.status(404);
         await res.json({
             'success': false,
@@ -264,10 +267,82 @@ decks.put('/:deckId/flashcards/:flashcardId', async (req, res) => {
 
         return;
     }
-    
-    // TODO: Check if flashcard exists in deck
 
-    user.updateFlashcard(deckId, flashcardId);
+    let flashcard = deck.flashcards.find(flashcard => flashcard._id.toString() === flashcardId);
+
+    if (flashcard === undefined ||
+        flashcard === null) {
+        res.status(404);
+        await res.json({
+            'success': false,
+            'error': 'This flashcard does not exist...'
+        });
+
+        return;
+    }
+
+    const newDeck = await user.editFlashcardBoxSessionPlayed(deckId, flashcardId, req.body.answeredCorrect);
+
+    await res.json({
+        'success': true,
+        'deck': newDeck
+    });
+});
+
+decks.put('/:deckId/session', async (req, res) => {
+    const deckId = req.params.deckId;
+    const username = req.session.username ? req.session.username : req.cookies.username;
+
+    if (req.body.session === undefined) {
+        res.status(400);
+        await res.json({
+            'success': false,
+            'error': 'The required POST data was not set...'
+        });
+
+        return;
+    }
+
+    if (!username) {
+        res.status(401);
+        await res.json({
+            'success': false,
+            'error': 'You are not a registered user...'
+        });
+
+        return;
+    }
+
+    let user = await User.findOne({'_id': username});
+
+    if (user === null) {
+        res.status(401);
+        await res.json({
+            'success': false,
+            'error': 'You are not a registered user...'
+        });
+
+        return;
+    }
+
+    let deck = user.decks.find(deck => deck._id.toString() === deckId);
+
+    if (deck === undefined || deck === null) {
+        res.status(404);
+        await res.json({
+            'success': false,
+            'error': 'This deck does not exist...'
+        });
+
+        return;
+    }
+
+    const editedDecks = await user.editDeckSession(deckId, req.body.session);
+
+    await res.json({
+        'success': true,
+        'session': editedDecks.session
+    });
 });
 
 // Insert game
@@ -297,10 +372,22 @@ decks.put('/:deckId/updateGame', async (req, res) => {
             users[userKey].decks.forEach((deck, deckKey) => {
                 if (deck._id == req.params.deckId) {
                     if (deck.games[0]._id == req.body.gameId) {
-                        if (req.body.status === "correct") {
-                            deck.games[0] = {_id: deck.games[0]._id, flashcards: deck.games[0].flashcards, activeCard: req.body.newCard, correctCards: deck.games[0].correctCards.concat(req.body.oldCard), wrongCards: deck.games[0].wrongCards}
-                        } else if (req.body.status === "wrong") {
-                            deck.games[0] = {_id: deck.games[0]._id, flashcards: deck.games[0].flashcards, activeCard: req.body.newCard, correctCards: deck.games[0].correctCards, wrongCards: deck.games[0].wrongCards.concat(req.body.oldCard)}
+                        if (req.body.status === 'correct') {
+                            deck.games[0] = {
+                                _id: deck.games[0]._id,
+                                flashcards: deck.games[0].flashcards,
+                                activeCard: req.body.newCard,
+                                correctCards: deck.games[0].correctCards.concat(req.body.oldCard),
+                                wrongCards: deck.games[0].wrongCards
+                            }
+                        } else if (req.body.status === 'wrong') {
+                            deck.games[0] = {
+                                _id: deck.games[0]._id,
+                                flashcards: deck.games[0].flashcards,
+                                activeCard: req.body.newCard,
+                                correctCards: deck.games[0].correctCards,
+                                wrongCards: deck.games[0].wrongCards.concat(req.body.oldCard)
+                            }
                         }
                     }
                 }
