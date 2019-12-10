@@ -17,6 +17,7 @@ import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../redux-sto
 import Loader from "react-loaders";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {useHistory} from 'react-router'
+import NonEditableFlashcard from "./sub-components/noneditable-flashcard";
 
 const FlashcardsOverview = (props) => {
         const {deckId} = useParams();
@@ -28,7 +29,7 @@ const FlashcardsOverview = (props) => {
             props.getDeckFlashcards(deckId)
         }, []);
 
-        let loader, flashcard, allFlashcards;
+        let flashcard, allFlashcards;
         if (deckExist && isCreator && !props.isSaving) {
             flashcard = (
                 <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
@@ -43,6 +44,17 @@ const FlashcardsOverview = (props) => {
                     />
                 )
             });
+        } else if (!props.isSaving && !isCreator) {
+            flashcard = null
+
+            allFlashcards = props.deckFlashcards.map((flashcard) => {
+                return (
+                    <NonEditableFlashcard key={flashcard.id}
+                                          flashcardId={flashcard.id}
+                                          term={flashcard.term}
+                                          definition={flashcard.definition}/>
+                )
+            })
         }
 
         const isSaving = () => {
@@ -62,23 +74,13 @@ const FlashcardsOverview = (props) => {
                     <Card.Header style={{backgroundColor: "#EEEEEE"}}>
                         <Card.Title>
                             <span>{props.deckData.deckName}</span>
-                            <Button className={'float-right'}
+                            <Button className={'float-right mt-1'}
                                     id={'save-flashcards-button'}
                                     onClick={() => saveFlashcardsAction()}
                                     style={{marginTop: '-8px'}}
                             >Save flashcards</Button>
                         </Card.Title>
                     </Card.Header>
-                )
-            }
-        };
-
-        const deckError = () => {
-            if (!isCreator && deckExist) {
-                return (
-                    <Row className="mx-auto align-items-center flex-column py-5">
-                        <h2>You don't own this deck... 🙄</h2>
-                    </Row>
                 )
             }
         };
@@ -108,10 +110,9 @@ const FlashcardsOverview = (props) => {
         return (
             <>
                 <Col lg={12} md={12} className={"mb-5"}>
-                    <Card style={{backgroundColor: "#EEEEEE"}} className={'pt-3'} text={'dark'}>
+                    <Card style={{backgroundColor: "#EEEEEE"}} text={'dark'}>
                         {deckHeader()}
                         <Card.Body>
-                            {deckError()}
                             {isSaving()}
                             <Row>
                                 {allFlashcards}
@@ -131,6 +132,7 @@ const mapStateToProps = state => {
         deckFlashcards: state.flashcards.deckFlashcards,
         deckData: state.decks.deckData,
         isSaving: state.flashcards.isSaving,
+        isLoading: state.decks.isLoading
     }
 };
 
