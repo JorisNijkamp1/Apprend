@@ -207,23 +207,14 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 
 **Users endpoints**:
 
-GET /api/v1/users/:username/decks
-Haalt alle deck van een specifieke user op.
-
-GET /api/v1/users/:id
-Haalt een gebruik op basis  van id op.
-
-GET /api/v1/users/:id/_id
-Haalt een gebruik op bij ID bij het _id.
-
-POST /api/v1/users/
-Maak een nieuwe gebruiker aan.
-
-GET /api/v1/users/email
-Haal een gebruiker op op basis van email.
-
-DELETE /api/v1/users/:id
-Verwijder een gebruiken op basis van id.
+| Method | URL                           | Beschrijving                                |
+|--------|-------------------------------|---------------------------------------------|
+| GET    | /api/v1/users/:username/decks | Haalt alle deck van een specifieke user op. |
+| GET    | /api/v1/users/:id             | Haalt een gebruik op basis van id op.       |
+| GET    | /api/v1/users/:id/_id         | Haalt een gebruik op bij ID bij het _id.    |
+| GET    | /api/v1/users/email           | Haal een gebruiker op op basis van email.   |
+| POST   | /api/v1/users/                | Maak een nieuwe gebruiker aan.              |
+| DELETE | /api/v1/users/:id             | Verwijder een gebruiken op basis van id.    |
 
 **Login endpoints**:
 
