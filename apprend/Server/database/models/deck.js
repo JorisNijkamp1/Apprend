@@ -29,13 +29,17 @@ const deckSchema = new mongoose.Schema({
         type: [{type: Game}],
     },
     private: {
-        type: Boolean,
+        type: Boolean, default: false
     }
 });
 
 deckSchema.methods.editDeck = async function(name, description){
     this.name = name
     this.description = description
+}
+
+deckSchema.methods.toggleStatus = async function(){
+    this.private = !this.private
 }
 
 //Create model

@@ -270,3 +270,25 @@ users.delete('/:id', async (req, res) => {
         });
     });
 });
+
+users.patch('/:userId/decks/:deckId', async (req, res) => {
+    try {
+        const { deckId, userId } = req.params
+
+        if (req.session.username !== userId) return res.status(401).json('Not your deck')
+
+        const user = await User.findById(userId)
+        const deck = await user.decks.id(deckId)
+        if (!deck) return res.status(404).json('No such deck exists')
+
+        const result = deck.toggleStatus()
+        user.markModified('decks')
+        await user.save()
+
+        res.status(201).json(deck)
+
+    } catch (e) {
+        console.log(e)
+        res.status(500).status('Something went wrong')
+    }
+})

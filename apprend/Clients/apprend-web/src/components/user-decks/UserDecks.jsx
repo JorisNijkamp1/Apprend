@@ -18,7 +18,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faCheck, faTimes, faEdit, faLockOpen, faLock} from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
-import {deleteDeckFromUser} from '../../redux-store/actions/decks/async-actions'
+import {deleteDeckFromUser, toggleDeckStatus} from '../../redux-store/actions/decks/async-actions'
 import {Form} from "react-bootstrap";
 
 const Deck = (props) => {
@@ -129,8 +129,8 @@ const Deck = (props) => {
         setDecks({...updatedDecks})
     }
 
-    const toggleDeckStatus = () => {
-
+    const toggleDeckStatus = (event) => {
+        
     }
 
     /* Lijst met alle opties die de eigenaar ziet
@@ -157,26 +157,42 @@ const Deck = (props) => {
             statePropertyName: 'editState',
             classColor: ''
         },
-        {
-            icon: faLockOpen,
-            title: 'Set this deck to private',
-            ownTitle: true,
-            funct: toggleDeckStatus,
-            classColor: 'text-green',
-            public: true
-        },
-        {
-            icon: faLock,
-            title: 'Set this deck to public',
-            ownTitle: true,
-            funct: toggleDeckStatus,
-            classColor: 'text-red',
-        }
     ]
+
+    const handleToggleDeckStatus = (event) => {
+        const deckId = event.currentTarget.getAttribute('name')
+        const storeDeck = props.decks[props.decks.findIndex(d => d._id === deckId)]
+
+        props.toggleStatus(deckId, storeDeck.creatorId)
+
+    }
+
+    const StatusIcon = (hoc, deck) => {
+        let icon
+        if (deck.private) {
+            icon = {
+                icon: faLock,
+                title: 'Set this deck to public',
+                ownTitle: true,
+                funct: handleToggleDeckStatus,
+                classColor: 'text-red',
+            }
+        } else {
+            icon = {
+                icon: faLockOpen,
+                title: 'Set this deck to private',
+                ownTitle: true,
+                funct: handleToggleDeckStatus,
+                classColor: 'text-green',
+            }
+        }
+        return (
+            hoc(icon, deck, 0)
+        )
+    }
 
     const showAllIcons = (icons, deck, index) => {
         return icons.map(icon => {
-            if (deck.private && icon.)
             return iconHOC(icon, deck, index )
         })
     }
@@ -205,7 +221,13 @@ const Deck = (props) => {
             <>
                 <Card.Footer>
                     <Row>
+                        <Col className="text-center">
+                        <b><p className="small">Owner options:</p></b>
+                        </Col>
+                    </Row>
+                    <Row>
                         {showAllIcons(allIcons, deck, index)}
+                        {StatusIcon(iconHOC, deck)}
                     </Row>
                 </Card.Footer>
                 {allConfirmationBoxes(decks)}
@@ -224,7 +246,7 @@ const Deck = (props) => {
                                  className={`trash-icon ${icon.classColor}`}
                                  size={`1x`}
                                  title={icon.ownTitle ? icon.title : `${icon.title} ${deck.name}`}
-                                 id={`${icon.title.toLowerCase()}-icon-button-${index}`}
+                                 id={`${icon.title.toLowerCase().replace(/\s/g, "")}-icon-button-${index}`}
                 />
             </span>
         </Col>
@@ -347,7 +369,9 @@ const Deck = (props) => {
     const ShowDecks = (loading, decks) => {
         if (loading) return <LoaderComponent />
 
-        const allDecks = decks.map((deck, index) => (
+        if (!decks) return ''
+
+        return decks.map((deck, index) => (
             <Col xs={12} sm={6} lg={4} className="my-2">
                 <Card key={deck.name + index} id={'card-' + index}>
                     <Card.Body>
@@ -357,7 +381,6 @@ const Deck = (props) => {
                 </Card>
             </Col>)
         )
-        return allDecks
     }
 
     return (
@@ -400,6 +423,7 @@ function mapDispatchToProps(dispatch) {
         deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
         setDeckEditedAction: (creatorId, _id, deckName, deckDescription) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription)),
         getDecksEdit: (deckId) => dispatch(getDeckEditAction(deckId)),
+        toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),
     }
 }
 

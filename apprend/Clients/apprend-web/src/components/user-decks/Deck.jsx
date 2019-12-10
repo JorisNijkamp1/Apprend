@@ -20,10 +20,8 @@ const UserDecks = (props) => {
     //Check if user is logged in
     useEffect(() => {
         props.isLoggedIn()
-    }, []);
-
-    useEffect(() => {
         props.getDeck(deckId)
+
     }, []);
 
     const editFlashcardsButton = () => {
@@ -67,23 +65,19 @@ const UserDecks = (props) => {
             deck = (
                 <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
                     <Card.Body>
-                        <Card.Title>{props.deck.name}</Card.Title>
                         <Card.Subtitle>
                             <Row>
                                 <Col xs={12} md={4}>
                                     <b>Created on: </b>{datum ? datum : '' }
                                 </Col>
                                 <Col xs={12} md={4}>
-                                    <b>Created by: </b>{props.deck.userName}
+                                    <b>Created by: </b>{props.deck.creatorId ? props.deck.creatorId.length === 32 ? 'Anon' : props.deck.creatorId : ''}
                                 </Col>
                                 <Col xs={12} md={4}>
                                     <b>Total flashcards: </b>{totalFlashcards}
                                 </Col>
                             </Row>
                         </Card.Subtitle>
-                        <Card.Text>
-                            {props.deck.description}
-                        </Card.Text>
                         {editFlashcardsButton()}
                         {totalFlashcards > 0 ?
                         <Link to={`/decks/${props.deck._id}/play`}>
@@ -111,10 +105,11 @@ const UserDecks = (props) => {
             <Container>
                 <Row>
                     <Col lg={{span: 8, offset: 2}}>
-                        <div className="mx-auto text-green pt-5">
-                            <h1 className="display-5 text-center">
-                                Deck {props.deck.name}
+                        <div className="mx-auto text-center pt-5">
+                            <h1 className="display-5 text-green ">
+                                {props.deck.name}
                             </h1>
+                            <h4>{props.deck.description}</h4>
                         </div>
                     </Col>
                 </Row>

@@ -134,3 +134,22 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
         }
     }
 }
+
+export const toggleDeckStatus = (deckId, userId) => {
+    return async dispatch => {
+        const url = `${API_URL}/users/${userId}/decks/${deckId}`
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        })
+
+        if (response.status === 201){
+            const data = await response.json()
+            dispatch(setSpecificDeckDataAction(data))
+        }
+    }
+}

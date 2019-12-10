@@ -131,8 +131,14 @@ decks.get('/:deckId', async (req, res) => {
     if (!userAndDeck.decks) return res.status(404).json('Does not exist')
 
     if (userAndDeck.decks[0].private){
-        if (req.session.username !== userAndDeck._id) res.status(401).json('User has made this deck private')
+        if (req.session.username !== userAndDeck._id) return res.status(401).json('User has made this deck private')
     } 
+
+    const user = await User.findById(userAndDeck.decks[0].creatorId)
+    if (user.email.length === 0) userAndDeck.decks[0].LOL = true
+    // if (user.email.length === 0) console.log('REEEEEEEEEEEEEEEE')
+    // console.log(user)
+    console.log(userAndDeck)
 
     res.status(200).json(userAndDeck.decks[0])
     } catch (e) {
