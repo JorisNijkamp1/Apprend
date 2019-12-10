@@ -12,6 +12,7 @@ import 'loaders.css/src/animations/square-spin.scss'
 import Button from "react-bootstrap/Button";
 import Loader from "react-loaders";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
+import FlashcardsOverview from "../flashcards/overview-flashcards";
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
@@ -62,7 +63,7 @@ const UserDecks = (props) => {
         if (props.deck.flashcards) {
             totalFlashcards = props.deck.flashcards.length
         }
-        if (props.deck.toString() !== 'deck-not-found'){
+        if (props.deck.toString() !== 'deck-not-found') {
             deck = (
                 <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
                     <Card.Body>
@@ -85,19 +86,20 @@ const UserDecks = (props) => {
                         </Card.Text>
                         {editFlashcardsButton()}
                         {totalFlashcards > 0 ?
-                        <Link to={`/decks/${props.deck._id}/play`}>
-                            <Button variant="success" id="play" className={'float-right'}>Deck spelen</Button>
-                        </Link>
-                        :
-                        <div>
                             <Link to={`/decks/${props.deck._id}/play`}>
-                                <Button variant="success" id="play" disabled className={'float-right'}>Deck spelen</Button>
+                                <Button variant="success" id="play" className={'float-right'}>Deck spelen</Button>
                             </Link>
-                            <small className="col buttonInfo text-muted">
-                                A deck has to contain at least 1 flashcard in order to play the deck.
-                            </small>
-                        </div>
-                    }
+                            :
+                            <div>
+                                <Link to={`/decks/${props.deck._id}/play`}>
+                                    <Button variant="success" id="play" disabled className={'float-right'}>Deck
+                                        spelen</Button>
+                                </Link>
+                                <small className="col buttonInfo text-muted">
+                                    A deck has to contain at least 1 flashcard in order to play the deck.
+                                </small>
+                            </div>
+                        }
                     </Card.Body>
                 </Card>
             )
@@ -121,6 +123,9 @@ const UserDecks = (props) => {
                 {error}
                 <Row>
                     {deck}
+                </Row>
+                <Row>
+                    <FlashcardsOverview/>
                 </Row>
             </Container>
             <Footer/>
