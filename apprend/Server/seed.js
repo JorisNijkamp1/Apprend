@@ -29,7 +29,7 @@ async function seedUsers() {
             "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
             "decks": [
                 {
-                    "name": "1",
+                    "name": "French to Dutch words",
                     "description": "Prepositions in French",
                     "creatorId": "Joris",
                     // "creatorId": ,
@@ -38,7 +38,7 @@ async function seedUsers() {
                     "flashcards": []
                 },
                 {
-                    "name": "2",
+                    "name": "Filipino to Dutch words",
                     "description": "Learn Filipino words",
                     "creatorId": "Joris",
                     // "creatorId": ,
@@ -47,7 +47,7 @@ async function seedUsers() {
                     "flashcards": []
                 },
                 {
-                    "name": "3",
+                    "name": "Finnish to Dutch prefixes",
                     "description": "Learning prefixes ",
                     "creatorId": "Joris",
                     // "creatorId": ,
@@ -76,7 +76,7 @@ async function seedUsers() {
             "password": "$2a$10$JrWeSo2Y44VI2J8LnKLSwOtPkIyVEP5Y66HJ9cUIR3CX68vjFtPrC",
             "decks": [
                 {
-                    "name": "4",
+                    "name": "English to dutch verbs",
                     "description": "My english verbs",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -102,7 +102,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "5",
+                    "name": "Lorem ipsum dolar",
                     "description": "Lorem ipsum dolar sint description deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -128,7 +128,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "6",
+                    "name": "Sint dolar English",
                     "description": "Dolar English deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -148,7 +148,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "7",
+                    "name": "English to Spanish verbs",
                     "description": "Special deck for learning Spanish",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -162,7 +162,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "8",
+                    "name": "Dolphin types",
                     "description": "Type of Dolphins",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -218,7 +218,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "9",
+                    "name": "Talking with animals",
                     "description": "Weekend fun",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -238,7 +238,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "10",
+                    "name": "South Park seasons",
                     "description": "My lovely SouthPark Seasons",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -264,7 +264,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "11",
+                    "name": "French to Dutch",
                     "description": "Learning Dutch and French",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -290,7 +290,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "12",
+                    "name": "Tweets by Trump",
                     "description": "For Trump fans",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -310,7 +310,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "13",
+                    "name": "French to Spanish verbs",
                     "description": "Special deck for learning French",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -324,7 +324,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "14",
+                    "name": "Spanish to French",
                     "description": "Lorem ilar sint description deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -380,7 +380,7 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "15",
+                    "name": "English Words",
                     "description": "Dolar English deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
@@ -400,26 +400,12 @@ async function seedUsers() {
                     ]
                 },
                 {
-                    "name": "16",
+                    "name": "French to Chinese",
                     "description": "Dolar English deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
-                    "flashcards": [
-                        {
-                            "_id": "Apprende1",
-                            "type": "Text only",
-                            "question": "Walking",
-                            "answer": "Lopen"
-                        },
-                        {
-                            "_id": "Apprende2",
-                            "type": "Text only",
-                            "question": "Running",
-                            "answer": "Rennen"
-                        },
-                    ]
+                    "flashcards": []
                 }
-
             ]
         },
     ])

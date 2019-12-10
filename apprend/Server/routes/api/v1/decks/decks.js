@@ -16,31 +16,30 @@ decks.get('/', async (req, res) => {
     const searchQuery = req.query.deck;
     let page = req.query.page;
     let foundDecks, totalDecks;
+    page = (page === "0") ? 0 : page * 5;
 
     if (searchQuery) {
-        foundDecks = await User.find({
-            decks: {
-                $elemMatch:
-                    {
-                        name: {'$regex': searchQuery, '$options': 'i'}
+        foundDecks = await User.aggregate([
+            {
+                "$match": {
+                    "decks": {
+                        "$elemMatch": {
+                            'name': {'$regex': searchQuery, '$options': 'i'}
+                        }
                     }
+                }
+            },
+            {'$unwind': '$decks'},
+            {'$skip': 0},
+            {'$limit': 5},
+            {
+                "$group": {
+                    "_id": "$_id",
+                    "decks": {"$push": "$decks"}
+                }
             }
-        });
-    } else if (page) {
-        if (page === "0") {
-            console.log('Eerste decks')
-            page = 0;
-        }else {
-            page = page * 5;
-        }
-
-        if (page === 0) {
-            totalDecks = await User.aggregate([
-                {'$unwind':'$decks'},
-                { $count: "decks" },
-            ]);
-        }
-
+        ]);
+    } else if (page > 0) {
         foundDecks = await User.aggregate([
             {'$unwind': '$decks'},
             {'$skip': page},
@@ -55,23 +54,25 @@ decks.get('/', async (req, res) => {
     }
 
     let decks = [];
-    foundDecks.forEach((index, key) => {
-        foundDecks[key].decks.forEach((decksIndex, decksKey) => {
-            decks.push({
-                name: foundDecks[key].decks[decksKey].name,
-                description: foundDecks[key].decks[decksKey].description,
-                deckCreator: !!(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
-                totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
-                deckId: foundDecks[key].decks[decksKey]._id
+    if (foundDecks) {
+        foundDecks.forEach((index, key) => {
+            foundDecks[key].decks.forEach((decksIndex, decksKey) => {
+                decks.push({
+                    name: foundDecks[key].decks[decksKey].name,
+                    description: foundDecks[key].decks[decksKey].description,
+                    deckCreator: !!(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
+                    totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
+                    deckId: foundDecks[key].decks[decksKey]._id
+                });
             });
         });
-    });
+    }
 
     //Sort decks on totalFlashcards
-    decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
+    if (decks) decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
 
     await res.json({
-        totalDecks: (totalDecks) ? totalDecks[0].decks : null,
+        // totalDecks: (totalDecks) ? totalDecks[0].decks : null,
         decks: decks,
     })
 });
