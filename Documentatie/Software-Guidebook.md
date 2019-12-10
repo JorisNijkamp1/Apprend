@@ -218,14 +218,11 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 
 **Login endpoints**:
 
-POST /api/v1/login/check
-Kijk of de gegevens kloppen.
-
-GET /api/v1/login/success
-Redirect als het success is.
-
-GET /api/v1/login/error
-Redirect als er een error is.
+| Method | URL                  | Beschrijving                  |
+|--------|----------------------|-------------------------------|
+| GET    | /api/v1/login/succes | Redirect als het success is.  |
+| GET    | /api/v1/login/error  | Redirect als er een error is. |
+| POST   | /api/v1/login/check  | Kijk of de gegevens kloppen.  |
 
 ### MongoDB Database
 
