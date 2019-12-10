@@ -196,26 +196,14 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 
 **Decks endpoints**:
 
-GET /api/v1/decks/home
-Haal de decks voor de homepage op.
-
-POST /api/v1/decks
-Maakt een nieuw deck aan.
-
-DELETE /api/v1/decks/:deckId
-Verwijderd een specifiek deck.
-
-GET /api/v1/decks/:deckId
-Haalt een specifiek deck op.
-
-GET /api/v1/decks/:deckId/flashcards
-Haalt alle flashcard van een deck op.
-
-POST /api/v1/decks/:deckId/flashcards
-Edit flashcards van een specifiek deck.
-
-PUT /api/v1/decks/:deckId
-Edit een deck.
+| Method | URL                              | Beschrijving                            |
+|--------|----------------------------------|-----------------------------------------|
+| GET    | /api/v1/decks/home               | Haal de decks voor de homepage op.      |
+| GET    | /api/v1/decks/:deckId            | Haalt een specifiek deck op.            |
+| GET    | /api/v1/decks/:deckId/flashcards | Haalt alle flashcard van een deck op.   |
+| POST   | /api/v1/decks/:deckId/flashcards | Edit flashcards van een specifiek deck. |
+| POST   | /api/v1/decks                    | Maakt een nieuw deck aan.               |
+| DELETE | /api/v1/decks/:deckId            | Verwijderd een specifiek deck.          |
 
 **Users endpoints**:
 
