@@ -203,7 +203,7 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 | GET    | /api/v1/decks/:deckId/flashcards | Haalt alle flashcard van een deck op.   |
 | POST   | /api/v1/decks/:deckId/flashcards | Edit flashcards van een specifiek deck. |
 | POST   | /api/v1/decks                    | Maakt een nieuw deck aan.               |
-| DELETE | /api/v1/decks/:deckId            | Verwijderd een specifiek deck.          |
+| DELETE | /api/v1/decks/:deckId            | Verwijdert een specifiek deck.          |
 
 **Users endpoints**:
 
