@@ -37,6 +37,7 @@ decks.get('/tags', async (req, res) => {
                     deckCreator: !(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
                     totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
                     deckId: foundDecks[key].decks[decksKey]._id,
+                    description: foundDecks[key].decks[decksKey].description,
                     tags: foundDecks[key].decks[decksKey].tags
                 });
             }

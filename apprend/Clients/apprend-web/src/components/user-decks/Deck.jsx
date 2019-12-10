@@ -82,8 +82,6 @@ const UserDecks = (props) => {
                         </Card.Subtitle>
                         <Card.Text>
                             {props.deck.description}
-                            {console.log(props.deck.tags)}
-                            {console.log(typeof(props.deck.tags))}
                         </Card.Text>
                         {editFlashcardsButton()}
                         {totalFlashcards > 0 ?

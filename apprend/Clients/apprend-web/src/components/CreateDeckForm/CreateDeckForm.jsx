@@ -55,10 +55,10 @@ const CreateDeckFormComponent = (props) => {
         props.addTag(name);
         let tagList = document.getElementById('tagList');
         let entry = document.createElement('li');
-        let button = document.createElement('button');
-        button.innerHTML = "Delete tag";
-        button.className = "tagButton btn btn-blue hover-shadow";
-        button.addEventListener ("click", (e) => {
+        let button = document.createElement('i');
+        entry.className = "listItem"
+        button.innerHTML = "<i id='deleteTag' class='fa fa-times tagButton'/>";
+        button.addEventListener ("click", e => {
             e.preventDefault();
             props.deleteTag(name);
             tagList.removeChild(entry);
@@ -152,7 +152,7 @@ const CreateDeckFormComponent = (props) => {
                                     className="text-center"
                                 />
                                 <InputGroup.Append>
-                                    <Button className={'bg-blue text-white hover-shadow'} onClick={() => getTagValue()}>Add tag</Button>
+                                    <Button id="addTag" className={'bg-blue text-white hover-shadow'} onClick={() => getTagValue()}>Add tag</Button>
                                 </InputGroup.Append>
                             </InputGroup>
                         </Col>
