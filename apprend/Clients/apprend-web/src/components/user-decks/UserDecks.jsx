@@ -15,7 +15,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
-import { deleteDeckFromUser } from '../../redux-store/actions/decks/async-actions'
+import { deleteDeckFromUser } from '../../redux-store/actions/decks/async-actions';
+import SearchTagsInput from "../search-input/SearchTagsInput";
 
 const Deck = (props) => {
     const {username} = useParams();
@@ -29,7 +30,7 @@ const Deck = (props) => {
     const handleDeleteDeck = event => {
         const deckId = event.currentTarget.getAttribute('name')
         props.deleteDeckFromUser(deckId)
-    } 
+    }
 
     const confirmationBox = (bool, deck) => {
         if (bool) return (
@@ -48,7 +49,7 @@ const Deck = (props) => {
         </Card.Footer>
         )
         else return (
-        <> 
+        <>
         </>
         )
     }
@@ -97,7 +98,7 @@ const Deck = (props) => {
                                          className={'trash-icon'}
                                          size={'1x'}
                                          title={`Delete ${deck.name}`}
-                                         
+
                         />
                     </span>
                 </Col>
@@ -131,7 +132,7 @@ const Deck = (props) => {
                         {deck.description}
                     </Card.Text>
                     <Row>
-                        <Col xs={{span: 6, offset: 3}}>
+                        <Col xs={{span: 10  , offset: 1}}>
                             <Link to={`/decks/${deck._id}`}>
                                 <Button variant="outline-primary" className={'w-100'} id={'card-' + key + '-link'}>View deck</Button>
                             </Link>
@@ -181,9 +182,11 @@ const Deck = (props) => {
                         </div>
                     </Col>
                 </Row>
+                <div className={'pt-3 pb-5'}>
+                    <SearchTagsInput linkTo={`/search?q=${props.searchValue}`}/>
+                </div>
                 {loader}
                 {showErrors()}
-
                 {error}
                 <Row>
                     {/* <CardColumns> */}
@@ -203,6 +206,7 @@ function mapStateToProps(state) {
         decks: state.decks.userDecks.decks,
         isLoading: state.decks.isLoading,
         username: state.login.username,
+        searchValue: state.search.searchValue,
     }
 }
 

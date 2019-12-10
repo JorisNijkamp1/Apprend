@@ -12,6 +12,8 @@ import 'loaders.css/src/animations/square-spin.scss'
 import Button from "react-bootstrap/Button";
 import Loader from "react-loaders";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
+import {importDeckAction} from "../../redux-store/actions/decks/async-actions";
+import {Notification} from "../shared/notification/Notification";
 import FlashcardsOverview from "../flashcards/overview-flashcards";
 
 const UserDecks = (props) => {
@@ -35,12 +37,33 @@ const UserDecks = (props) => {
                         <Button variant="warning" id={'edit-flashcard-button'}>Edit flashcards</Button>
                     </Link>
                     <Link to={`/decks/${props.deck._id}/edit`}>
-                        <Button id={"edit-deck"} className={"ml-4"} variant={"info"}>Edit deck</Button>
+                        <Button id={"edit-deck"} className={"ml-4 mr-4"} variant={"info"}>Edit deck</Button>
                     </Link>
                 </>
             )
         }
     };
+
+    const importDeckButton = () => {
+        if (!isCreator && props.username) {
+            return (
+                <Link to={`/${props.username}/decks`}>
+                    <Button id={"import-deck"}
+                            variant={"info"}
+                            className={"sticky-button"}
+                            onClick={() => {
+                                props.importDeck(props.deck._id)
+                                Notification("You successfully imported this deck", "success")
+                            }}>
+                        Import deck
+                    </Button>
+                </Link>
+            )
+        } else {
+            return <>
+            </>
+        }
+    }
 
     let loader, deck, error;
     if (props.isLoading) {
@@ -67,8 +90,8 @@ const UserDecks = (props) => {
             deck = (
                 <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
                     <Card.Body>
-                        <Card.Title>{props.deck.name}</Card.Title>
-                        <Card.Subtitle>
+                        <Card.Title><strong>{props.deck.name}   </strong></Card.Title>
+                        <Card.Subtitle className={"mb-3"}>
                             <Row>
                                 <Col xs={12} md={4}>
                                     <b>Created on: </b>{props.deck.creationDate}
@@ -79,12 +102,13 @@ const UserDecks = (props) => {
                                 <Col xs={12} md={4}>
                                     <b>Total flashcards: </b>{totalFlashcards}
                                 </Col>
+                                <Col xs={12} md={4}>
+                                    <b>Description: </b>{props.deck.description}
+                                </Col>
                             </Row>
                         </Card.Subtitle>
-                        <Card.Text>
-                            {props.deck.description}
-                        </Card.Text>
                         {editFlashcardsButton()}
+                        {importDeckButton()}
                         {totalFlashcards > 0 ?
                             <Link to={`/decks/${props.deck._id}/play`}>
                                 <Button variant="success" id="play" className={'float-right'}>Deck spelen</Button>
@@ -145,6 +169,7 @@ function mapDispatchToProps(dispatch) {
     return {
         isLoggedIn: () => dispatch(isLoggedIn()),
         getDeck: (deckId) => dispatch(getDeckAction(deckId)),
+        importDeck: (deck) => dispatch(importDeckAction(deck))
     }
 }
 
