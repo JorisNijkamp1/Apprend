@@ -131,8 +131,8 @@ export const importDeckAction = deckId => {
         }
         const response = await fetch(url, options);
         const data = await response.json();
-        if (response.status === 200) {
-
+        if (response.status === 201) {
+            return data
         }
     }
 }

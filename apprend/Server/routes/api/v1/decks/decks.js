@@ -95,11 +95,12 @@ decks.post('/', async (req, res) => {
             }
             response = await User.create(user)
         } else {
+            console.log('Session username in decks.post', req.session.username, req.cookies.username)
             const player = await User.findById(req.session.username ? req.session.username : req.cookies.username)
             const deck = {
                 name: req.body.deckName,
                 description: req.body.description,
-                creatorId: req.session.username,
+                creatorId: req.session.username ? req.session.username : req.cookies.username,
                 status: 'original',
                 flashcards: [],
             }
@@ -349,26 +350,50 @@ decks.put('/:deckId', async (req, res) => {
 })
 
 decks.post('/:deckId', async (req, res) => {
-    const deckId = req.params.deckId;
-    const username = req.session.username ? req.session.username : req.cookies.username;
-    let targetUser = await User.findOne({
-        "decks._id": deckId
-    });
-    const importToUser = await User.findById(username)
-    let currentDeck = targetUser.decks.filter(d => d._id.toString() === deckId);
-    if (username) {
-        if (importToUser._id === targetUser._id) {
-            res.status(401).json('Cant import own deck')
+    try {
+        const deckId = req.params.deckId;
+        const username = req.session.username ? req.session.username : req.cookies.username;
+        let targetUser = await User.findOne({
+            "decks._id": deckId
+        });
+        const importToUser = await User.findById(username)
+        const currentDeck = targetUser.decks.id(deckId)
+
+        const newDeck = {...currentDeck._doc}
+
+        delete newDeck.games
+        delete newDeck._id
+
+        if (username) {
+            if (importToUser._id === targetUser._id) {
+                res.status(400).json('Cant import own deck')
+            } else {
+                newDeck.creatorId = importToUser._id
+                const result = await importToUser.importDeck(newDeck, importToUser._id);
+                res.status(201).json(result.decks[result.decks.length-1])
+            }
         } else {
-            currentDeck[0].creatorId = importToUser._id
-            await importToUser.importDeck(currentDeck[0], importToUser._id);
-            res.status(200).json({
-                data: currentDeck[0]
-            })
+            req.session.username = req.session.id
+            newDeck.creatorId = req.session.id
+
+            const user = {
+                _id: req.session.id,
+                email: '',
+                password: '',
+                decks: [newDeck]
+            }
+            const cookie = req.cookies.username
+            if (cookie === undefined) {
+                res.cookie('username', req.session.id, {maxAge: (10 * 365 * 24 * 60 * 60 * 1000)})
+            }
+            const madeUser = await User.create(user)
+            res.status(201).json(madeUser)
         }
-    } else {
-        res.status(401).json('Niet ingelogd')
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('Something went wrong on our end')
     }
+
 })
 
 module.exports = decks

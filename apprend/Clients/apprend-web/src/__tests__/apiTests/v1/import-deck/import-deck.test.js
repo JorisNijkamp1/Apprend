@@ -46,7 +46,7 @@ describe('import decks from another user', () => {
         const JorisDeck = jorisDecks.decks.decks[0]._id
 
         const expectedResult = {
-            status: 200,
+            status: 201,
             account: account
         }
 
@@ -60,6 +60,6 @@ describe('import decks from another user', () => {
         const result = await response.json();
 
         expect(response.status).toBe(expectedResult.status)
-        expect(result.data.creatorId).toBe(expectedResult.account)
+        expect(result.creatorId).toBe(expectedResult.account)
     })
 })
