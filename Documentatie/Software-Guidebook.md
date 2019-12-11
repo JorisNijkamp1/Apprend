@@ -83,6 +83,12 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 		- Het spel beëindigen;
 		- Een scoreboard inzien wanneer het spelen voorbij is;
 
+-**Importeren van een deck**
+	> Als gast of (anonieme) gebruiker wil ik decks kunnen importeren van een andere Apprend gebruiker, zodat ik iets kan oefenen zonder dat ik daarvoor een deck aan moet maken 
+	De gebruiker kan:
+		- Een deck importeren en hem daarna zelf aanpassen
+		- Een deck alleen importeren als dit deck public is.
+
 - **Registreren nieuw account**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-registreren-webapp.svg)
 	> Een gebruiker kan een account registreren om zijn of haar decks op alle apparaten te kunnen gebruiken. Wanneer een gebruiker anonieme gegevens heeft, zullen deze omgezet worden naar een nieuw gebruikersaccount. Het sessie-ID in de database wordt dan vervangen door een username. Wanneer een gebruiker geen anonieme gegevens heeft, zal er simpelweg een nieuw gebruikersaccount aangemaakt worden. De gebruiker wordt na het registreren automatisch ingelogd.\
