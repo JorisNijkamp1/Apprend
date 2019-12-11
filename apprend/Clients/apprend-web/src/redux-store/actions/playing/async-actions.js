@@ -16,12 +16,12 @@ export const getDeck = (deckId) => {
         return fetch(url, options)
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
+                if (data._id === deckId) {
                     setTimeout(function () {
-                        dispatch(setCardsAction(data.deck.flashcards));
+                        dispatch(setCardsAction(data.flashcards));
                         dispatch(setLoadingAction(false));
                     }, 1000);
-                    return data.deck;
+                    return data;
                 }
             }).catch((err => {
             console.log("Er gaat iets goed fout!");
