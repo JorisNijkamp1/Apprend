@@ -208,6 +208,7 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 | POST   | /api/v1/decks/:deckId/flashcards | Edit flashcards van een specifiek deck. |
 | POST   | /api/v1/decks                    | Maakt een nieuw deck aan.               |
 | DELETE | /api/v1/decks/:deckId            | Verwijdert een specifiek deck.          |
+| POST	 | /api/v1/decks/:deckId            | Importeer een deck van een ander        |
 
 **Users endpoints**:
 
