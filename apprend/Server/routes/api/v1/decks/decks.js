@@ -12,8 +12,9 @@ const User = mongoose.model('User');
 /*====================================
 | SEARCH FOR SOME TAGS
 */
-decks.get('/tags', async (req, res) => {
+decks.get('/:username/tags', async (req, res) => {
     const searchQuery = req.query.deck;
+    const username = req.params.username;
     let foundDecks;
 
     if (searchQuery) {
@@ -31,7 +32,7 @@ decks.get('/tags', async (req, res) => {
     let decks = [];
     foundDecks.forEach((index, key) => {
         foundDecks[key].decks.forEach((decksIndex, decksKey) => {
-            if (req.session.username === foundDecks[key].decks[decksKey].creatorId) {
+            if (username === foundDecks[key].decks[decksKey].creatorId) {
                 decks.push({
                     name: foundDecks[key].decks[decksKey].name,
                     deckCreator: !(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,

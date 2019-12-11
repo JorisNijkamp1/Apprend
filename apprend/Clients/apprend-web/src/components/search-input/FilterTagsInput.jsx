@@ -55,7 +55,7 @@ const FilterTagsInput = (props) => {
 
         // Request
         lastRequestId = setTimeout(async () => {
-            const url = `${API_URL}/decks/tags?tag=${value}`;
+            const url = `${API_URL}/decks/${props.username}/tags?tag=${value}`;
             let decks;
 
             const response = await fetch(url, {

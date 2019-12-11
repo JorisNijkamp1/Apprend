@@ -178,7 +178,7 @@ const Deck = (props) => {
                     </Col>
                 </Row>
                 <div className={'pt-3 pb-5'}>
-                    <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`}/>
+                    <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`} username={props.userDecks.user}/>
                 </div>
                 {loader}
                 {showErrors()}
