@@ -26,11 +26,11 @@ const Deck = (props) => {
     const isCreator = (props.username === props.userDecks.userId);
 
     const [decks, setDecks] = useState()
+    const params = useParams()
 
     let {deckId} = useParams()
 
     useEffect(() => {
-        // props.getDecksEdit(deckId)
         props.getUserDecks(username)
     }, []);
 

@@ -48,16 +48,32 @@ decks.get('/', async (req, res) => {
 */
 decks.get('/home', async (req, res) => {
     try {
-        let allDecks = await User.aggregate([
-            { $unwind : "$decks"},
-            { $match: { 'decks.private': false } },
-            { $group : {
-                _id: null,
-                decks: {
-                    $push: "$decks"
-            } }
+
+        let allDecks
+        if (req.session.username){
+            allDecks = await User.aggregate([
+                { $unwind : "$decks"},
+                { $match: { $and: [ { 'email': {$ne: ''} }, { 'decks.private': false }, { 'decks.creatorId': { $ne: req.session.username } }] } },
+                { $group : {
+                    _id: null,
+                    decks: {
+                        $push: "$decks"
+                } }
+            }
+            ])
+        } else {
+            allDecks = await User.aggregate([
+                { $unwind : "$decks"},
+                { $match: { $and: [ { 'email': {$ne: ''} }, { 'decks.private': false }] } },
+                { $group : {
+                    _id: null,
+                    decks: {
+                        $push: "$decks"
+                } }
+            }
+            ])
         }
-        ])
+
         if (!allDecks) return res.status(404).json('cant find any public deck')
         let decks = []
         if (allDecks[0].decks.length < 3){

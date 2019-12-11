@@ -45,10 +45,9 @@ const HomepageUI = (props) => {
                                         <FontAwesomeIcon icon={faUser}
                                                          size={'1x'}
                                                          title={`Search`}
-                                                        //  color={'#000'}
-                                                        className={props.username === deck.creatorId ? 'text-green' : 'text-red'}
+                                                         color={'#f00'}
                                         />
-                                    <span className={props.username === deck.creatorId ? 'text-green' : ''} style={{marginLeft: 5, color: '#000'}}>{deck.creatorId.length === 32 ? 'Anonymous' : deck.creatorId}</span>
+                                    <span style={{marginLeft: 5, color: '#000'}}>{deck.creatorId}</span>
                                     </Link>
                                 </strong>
                             </Card.Body>
@@ -66,7 +65,10 @@ const HomepageUI = (props) => {
             return (
                 <>
                 <Row className={'mt-7'}>
-                    <h1 className={'text-center w-100'}>Try out these badboys</h1>
+                    <Col className=" text-center">
+                        <h1>Random decks for you!</h1>
+                        <p>Here are some decks from users you could play</p>
+                    </Col>
                 </Row>
 
                 <Row className={'mt-5'}>
