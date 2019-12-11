@@ -22,6 +22,9 @@ const deckSchema = new mongoose.Schema({
     status: {
         type: String,
     },
+    tags: {
+        type: [],
+    },
     flashcards: {
         type: [{type: Flashcard}],
     },

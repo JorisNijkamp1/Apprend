@@ -10,6 +10,47 @@ require('../../../../database/models/user');
 const User = mongoose.model('User');
 
 /*====================================
+| SEARCH FOR SOME TAGS
+*/
+decks.get('/:username/tags', async (req, res) => {
+    const searchQuery = req.query.deck;
+    const username = req.params.username;
+    let foundDecks;
+
+    if (searchQuery) {
+        foundDecks = await User.find({
+            decks: {
+                $elemMatch: {
+                    tags: {'$regex': searchQuery, '$options': 'i'}
+                }
+            }
+        });
+    } else {
+        foundDecks = await User.find({});
+    }
+
+    let decks = [];
+    foundDecks.forEach((index, key) => {
+        foundDecks[key].decks.forEach((decksIndex, decksKey) => {
+            if (username === foundDecks[key].decks[decksKey].creatorId) {
+                decks.push({
+                    name: foundDecks[key].decks[decksKey].name,
+                    deckCreator: !(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
+                    totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
+                    deckId: foundDecks[key].decks[decksKey]._id,
+                    description: foundDecks[key].decks[decksKey].description,
+                    tags: foundDecks[key].decks[decksKey].tags
+                });
+            }
+        });
+    });
+
+    await res.json({
+        decks: decks,
+    })
+});
+
+/*====================================
 | SEARCH FOR SOME DECKS
 */
 decks.get('/', async (req, res) => {
@@ -103,6 +144,7 @@ decks.post('/', async (req, res) => {
                 description: req.body.description,
                 creatorId: req.session.id,
                 status: 'original',
+                tags: req.body.tags,
                 flashcards: [],
             }
             const user = {
@@ -124,6 +166,7 @@ decks.post('/', async (req, res) => {
                 description: req.body.description,
                 creatorId: req.session.username ? req.session.username : req.cookies.username,
                 status: 'original',
+                tags: req.body.tags,
                 flashcards: [],
             }
             if (player) response = await player.addDeck(deck)
@@ -352,9 +395,9 @@ decks.get('/:deckId/games/:gameId', async (req, res) => {
 */
 decks.put('/:deckId', async (req, res) => {
     const {deckId} = req.params;
-    const {name, description, creatorId} = req.body;
+    const {name, description, creatorId, tags} = req.body;
     let user = await User.findById(creatorId);
-    await user.editDeckname(deckId, name, description);
+    await user.editDeckname(deckId, name, description, tags);
     let currentDeck;
 
     user.decks.forEach(deck => {
@@ -367,7 +410,8 @@ decks.put('/:deckId', async (req, res) => {
         success: true,
         name: name,
         description: description,
-        deck: currentDeck
+        deck: currentDeck,
+        tags: tags
     })
 })
 

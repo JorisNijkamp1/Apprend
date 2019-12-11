@@ -280,6 +280,19 @@ progress[value]::-webkit-progress-value {
     text-decoration: unset;
 }
 
+.tagButton {
+    color: red;
+    margin-left: 5px;
+}
+
+.listItem {
+    font-size: 20px;
+    text-align: center;
+    list-style: none;
+    display: inline-block;
+    width: 30%;
+}
+
 @media only screen and (max-width: 800px) {
     .flipCard {
         width: 100%;
@@ -312,6 +325,10 @@ progress[value]::-webkit-progress-value {
 }
 .mt-7{
     margin-top: 7rem !important;
+}
+
+.infinite-scroll-component  {
+    overflow: hidden !important;
 }
 
 .sticky-button {

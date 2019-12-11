@@ -4,7 +4,9 @@ import {
     DECKS_SET_ISLOADING,
     DECKS_SET_USER_DECKS,
     DECKS_SET_USERDECKS_DECKS,
-    DECK_EDIT_DATA
+    DECK_EDIT_DATA,
+    DECK_DELETE_TAG,
+    DECK_FILTERED_DECKS
 } from '../actions/action-types'
 import produce from 'immer'
 
@@ -13,7 +15,8 @@ const initialState = {
     deckData: [],
     userDecks: {decks: []},
     isLoading: false,
-    deckEdit: []
+    deckEdit: [],
+    filteredDecks: []
 };
 
 export default function decksReducer(state = initialState, action) {
@@ -38,11 +41,18 @@ export default function decksReducer(state = initialState, action) {
 
             case DECKS_SET_USERDECKS_DECKS:
                 draft['userDecks']['decks'] = action.payload
-                break
+                break;
             case DECK_EDIT_DATA:
                 draft['deckEdit'] = action.payload;
                 break;
-
+            case DECK_DELETE_TAG:
+                let filtered = state.deckEdit.tags.filter(function(value, index, arr){
+                    return value !== action.payload;
+                });
+                draft['deckEdit'].tags = filtered
+                break;
+            case DECK_FILTERED_DECKS:
+                draft['filteredDecks'] = action.payload
             default:
                 return draft
         }

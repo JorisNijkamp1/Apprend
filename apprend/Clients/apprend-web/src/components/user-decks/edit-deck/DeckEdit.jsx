@@ -2,14 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {NavigatieBar} from "../../shared/navbar/NavigatieBar";
 import {Footer} from "../../shared/footer/Footer";
-import {Button, Container, Form, Row} from "react-bootstrap";
+import {Button, Container, Form, Row, InputGroup} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import {getDeckEditAction} from "../../../redux-store/actions/decks/async-actions";
 import {useParams} from "react-router-dom";
-import {setDeckEditAction} from "../../../redux-store/actions/decks/actions";
+import {setDeckEditAction, deleteTag} from "../../../redux-store/actions/decks/actions";
 import {setDeckEditedAction} from "../../../redux-store/actions/decks/async-actions";
 import {Link} from "react-router-dom";
+import { addTag, clearTags } from '../../../redux-store/actions/create-deck/actions';
+import { Notification } from '../../shared/notification/Notification';
 
 const DeckEditUI = (props) => {
     const [deckName, setDeckname] = useState('');
@@ -22,11 +24,77 @@ const DeckEditUI = (props) => {
 
     useEffect(() => {
         props.getDecksEdit(deckId)
+        .then((response) => {
+            if (response.tags !== 0) {
+                response.tags.forEach(tag => {
+                    addListItem(tag);
+                    props.clearTags();
+                })
+            }
+        })
     }, []);
+
+    const checkAdded = (tagValue) => {
+        let tags = deckData.oldDeckTags.concat(props.tags)
+        return tags.some(tag => {
+            return tag === tagValue
+        });
+    }
+
+    const addListItem = name => {
+        let tagList = document.getElementById('tagList');
+        let entry = document.createElement('li');
+        let button = document.createElement('i');
+        entry.className = "listItem"
+        button.innerHTML = "<i id='deleteTag' class='fa fa-times tagButton'/>";
+        button.addEventListener ("click", e => {
+            e.preventDefault();
+            props.deleteTag(name);
+            tagList.removeChild(entry);
+        });
+        entry.appendChild(document.createTextNode(name));
+        entry.appendChild(button);
+        tagList.appendChild(entry);
+    }
 
     const deckData = {
         deckName: (!deckNameEdited && props.deckEdit.name) ? props.deckEdit.name : deckName,
-        deckDescription: (!deckDescriptionEdited && props.deckEdit.description) ? props.deckEdit.description : deckDescription
+        deckDescription: (!deckDescriptionEdited && props.deckEdit.description) ? props.deckEdit.description : deckDescription,
+        oldDeckTags: props.deckEdit.tags
+    }
+
+    const getTagValue = () => {
+        let tagValue = document.getElementById("tags").value;
+        document.getElementById("tags").value = "";
+        let match = false;
+        if (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0) {
+            if (checkAdded(tagValue)){
+                Notification("You already have that tag");
+            } else {
+                match = true;
+            }
+            if (match === true) {
+                if (tagValue.trim() !== "") {
+                    props.addTag(tagValue);
+                    addListItem(tagValue);
+                    match = false;
+                } else {
+                    Notification("You can't add an empty tag");
+                }
+            }
+        } else {
+            if (tagValue.trim() !== "") {
+                props.addTag(tagValue);
+                addListItem(tagValue);
+            } else {
+                Notification("You can't add an empty tag");
+            }
+        }
+    }
+
+    const saveDeck = () => {
+        props.setDeckEditedAction(props.deckEdit.creatorId, props.deckEdit._id, deckData.deckName, deckData.deckDescription, deckData.oldDeckTags, props.tags)
+        props.clearTags();
     }
 
     return (
@@ -40,7 +108,7 @@ const DeckEditUI = (props) => {
                             <Link to={`/decks/${props.deckEdit._id}`}>
                                 <Button className={'float-right'}
                                         onClick={() =>
-                                            props.setDeckEditedAction(props.deckEdit.creatorId, props.deckEdit._id, deckData.deckName, deckData.deckDescription)
+                                            saveDeck()
                                         }
                                         name={"save-deck"}
                                 >Save deck</Button>
@@ -87,6 +155,33 @@ const DeckEditUI = (props) => {
                                                 Change here you deck description
                                             </Form.Text>
                                         </Form.Group>
+                                        <hr/>
+                                        <Form.Group>
+                                            <Form.Label>Deck tags</Form.Label>
+                                            <InputGroup className="mb-3 pt-2">
+                                                <Form.Control
+                                                    id="tags"
+                                                    placeholder="Your tags"
+                                                    className="text-center"
+                                                />
+                                                <InputGroup.Append>
+                                                    <Button className={'bg-blue text-white hover-shadow'} onClick={() => getTagValue()}>Add tag</Button>
+                                                </InputGroup.Append>
+                                            </InputGroup>
+                                            <Form.Text className="text-muted">
+                                                Change here you deck tags
+                                            </Form.Text>
+                                            <Form.Label 
+                                                className="text-center" 
+                                                column 
+                                                sm="12"
+                                            >
+                                                Your tags
+                                            </Form.Label>
+                                            <Col sm={{span: 6, offset: 3}}>
+                                                <ul id="tagList"></ul>
+                                            </Col>
+                                        </Form.Group>
                                     </Card.Body>
                                 </Card>
                             </Col>
@@ -101,14 +196,18 @@ const DeckEditUI = (props) => {
 
 const mapStateToProps = state => {
     return {
-        deckEdit: state.decks.deckEdit
+        deckEdit: state.decks.deckEdit,
+        tags: state.createDeck.tags
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         getDecksEdit: (deckId) => dispatch(getDeckEditAction(deckId)),
-        setDeckEditedAction: (creatorId, _id, deckName, deckDescription) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription))
+        setDeckEditedAction: (creatorId, _id, deckName, deckDescription, oldTags, newTags) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription, oldTags, newTags)),
+        addTag: (tag) => dispatch(addTag(tag)),
+        deleteTag: (tag) => dispatch(deleteTag(tag)),
+        clearTags: () => dispatch(clearTags())
     }
 }
 

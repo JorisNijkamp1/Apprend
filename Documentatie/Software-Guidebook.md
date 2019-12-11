@@ -44,6 +44,7 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 	De volgende invoervelden zijn aanwezig:
 		- De gebruiker kan een naam opgeven.
 		- De gebruiker kan een beschrijving opgeven.
+		- De gebruiker kan tags toevoegen aan zijn deck.
 
 - **Deck spelen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Deck-playing.svg)
@@ -62,6 +63,7 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 	> De volgende invoervelden zijn aanwezig:
 		- De gebruiker kan een naam aanpassen.
 		- De gebruiker kan een beschrijving aanpassen.
+		- De gebruiker kan tags toevoegen en verwijderen.
 
 - **Decks verwijderen**
 	> De gebruiker krijgt een bevestigingsmelding.
@@ -118,7 +120,7 @@ De onderstaande lijst bevat een overzicht van niet-functionele kwaliteitsattribu
 	- Wachtwoorden worden geëncrypt opgeslagen volgens de Bcrypt encryptie.
 
 - **Usability**
-	- Responsive, werkt op mobiele apparaten.
+	- Responsive, wordt mobile first gebouwd.
 
 - **Legal, compliance and regulatory requirements**
 	- Voldoet aan de AVG-wetten.
@@ -208,6 +210,7 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 | GET    | /api/v1/decks/home               | Haal de decks voor de homepage op.      |
 | GET    | /api/v1/decks/:deckId            | Haalt een specifiek deck op.            |
 | GET    | /api/v1/decks/:deckId/flashcards | Haalt alle flashcard van een deck op.   |
+| GET	 | /api/v1/decks/:username/tags	    | Haalt alle decks van een user op.	      |
 | POST   | /api/v1/decks/:deckId/flashcards | Edit flashcards van een specifiek deck. |
 | POST   | /api/v1/decks                    | Maakt een nieuw deck aan.               |
 | DELETE | /api/v1/decks/:deckId            | Verwijdert een specifiek deck.          |
