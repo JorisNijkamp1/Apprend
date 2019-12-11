@@ -15,8 +15,8 @@ describe('Edit a deck', () => {
 
     test('Get deck endpoint', async () => {
         const expectedResult = {
-            "name": "Frans woordjes",
-            "description": "Mooie lijst met 50 woordjes frans erg gaaf!",
+            "name": "Finnish to Dutch prefixes",
+            "description": "Learning prefixes ",
             "creatorId": "Joris"
         };
         const response = await fetch(`http://localhost:3001/api/v1/decks/5ddfadab612b09570c6f3a33`, {
