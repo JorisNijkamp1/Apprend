@@ -47,41 +47,15 @@ const PlayingComponent = (props) => {
     }, []);
 
     const changeScore = (id, status) => {
-        // props.doGetGameData(deckId, props.gameId).then(response => {
-            // const currentCard = props.activeCard;
-            //
-            // if (status === 'correct' && !cardWasAlreadyAnsweredWrong(id)) {
-            //     props.doSetCorrectCardsAction(id);
-            //     props.doMoveFlashcardToBox(deckId, id, true);
-            // } else if (status === 'wrong' && !cardWasAlreadyAnsweredWrong(id)) {
-            //     props.doSetWrongCardsAction(id);
-            //     props.doMoveFlashcardToBox(deckId, id, false);
-            //
-            //     const newCards = [...props.cards];
-            //     newCards.push(currentCard);
-            //     props.doSetCards(newCards);
-            // }
-            //
-            // const nPlayedCards = props.correctCards.length + props.wrongCards.length;
-            //
-            // if ((props.correctCards.length + props.wrongCards.length) === props.cards.length) {
-            //     props.doUpdateGame(deckId, response._id, currentCard, [], status);
-            //     props.doSetActiveCardAction('');
-            //     history.push('/score');
-            //     return;
-            // }
-            //
-            // const nextCard = props.cards[nPlayedCards];
-            // props.doSetActiveCardAction(nextCard);
-            // props.doUpdateGame(deckId, response._id, currentCard, nextCard, status);
-        // });
+        const STATUS_CORRECT = 'correct';
+        const STATUS_WRONG = 'wrong';
 
         const currentCard = props.activeCard;
-        const cardAlreadyAnsweredWrong = props.wrongCards.find(id => id === currentCard._id);
+        const cardAlreadyAnsweredWrong = props.wrongCards.includes(currentCard._id);
         let nCardsInDeck = props.cards.length;
         let nCardsAnswered = props.correctCards.length + props.wrongCards.length;
 
-        if (status === 'correct') {
+        if (status === STATUS_CORRECT) {
             props.doSetCorrectCardsAction(id);
 
             if (!cardAlreadyAnsweredWrong) {
@@ -90,9 +64,10 @@ const PlayingComponent = (props) => {
 
             nCardsAnswered++;
 
-        } else if (status === 'wrong') {
+        } else if (status === STATUS_WRONG) {
+            props.doSetWrongCardsAction(id);
+
             if (!cardAlreadyAnsweredWrong) {
-                props.doSetWrongCardsAction(id);
                 props.doMoveFlashcardToBox(deckId, id, false);
 
                 const newCards = [...props.cards];
@@ -104,9 +79,6 @@ const PlayingComponent = (props) => {
             nCardsAnswered++;
         }
 
-        console.log(`nCardsInDeck: ${nCardsInDeck}`);
-        console.log(`nCardsAnswered: ${nCardsAnswered}`);
-
         if (nCardsAnswered === nCardsInDeck) {
             props.doUpdateGame(deckId, props.gameId, currentCard, [], status);
             props.doSetActiveCardAction('');
@@ -114,7 +86,14 @@ const PlayingComponent = (props) => {
             return;
         }
 
-        const nextCard = props.cards[nCardsAnswered];
+        let nextCard = props.cards[nCardsAnswered];
+
+        // Only activated when the last card is wrong for the first time.
+        // Needed because pushing a new card into the deck is async.
+        if (nCardsAnswered === (nCardsInDeck - 1) && status === STATUS_WRONG) {
+            nextCard = currentCard;
+        }
+
         props.doSetActiveCardAction(nextCard);
         props.doUpdateGame(deckId, props.gameId, currentCard, nextCard, status);
     };
@@ -184,10 +163,7 @@ const mapDispatchToProps = dispatch => {
     return {
         doSetCorrectCardsAction: (cards) => dispatch(setCorrectCardsAction(cards)),
         doSetWrongCardsAction: (cards) => dispatch(setWrongCardsAction(cards)),
-        doSetActiveCardAction: (card) => {
-            console.log(card.question)
-            dispatch(setActiveCardAction(card))
-        },
+        doSetActiveCardAction: (card) => dispatch(setActiveCardAction(card)),
         doGetDeck: (deckId) => dispatch(getDeck(deckId)),
         doSetGame: (deckId, flashcards) => dispatch(setGame(deckId, flashcards)),
         doUpdateGame: (deckId, gameId, oldCard, newCard, status) => dispatch(updateGame(deckId, gameId, oldCard, newCard, status)),

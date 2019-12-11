@@ -19,7 +19,6 @@ export const getDeck = (deckId) => {
             .then(data => {
                 if (data.success) {
                     setTimeout(function () {
-                        dispatch(setCardsAction(data.deck.flashcards));
                         dispatch(setLoadingAction(false));
                     }, 1000);
                     return data.deck;
