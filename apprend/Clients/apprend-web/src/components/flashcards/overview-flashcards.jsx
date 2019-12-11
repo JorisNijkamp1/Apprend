@@ -72,6 +72,19 @@ const FlashcardsOverview = (props) => {
             })
         }
 
+        const noResultOnFilter = () => {
+            if (filteredFlashcards.length === 0) {
+                return (
+                    <h2>Geen resultaten gevonden!</h2>
+                )
+            } else {
+                return (
+                    <>
+                    </>
+                )
+            }
+        }
+
         const isSaving = () => {
             if (props.isSaving) {
                 return (
@@ -150,6 +163,7 @@ const FlashcardsOverview = (props) => {
                     {deckHeader()}
                     <Card.Body>
                         {isSaving()}
+                        {noResultOnFilter()}
                         <Row>
                             {allFlashcards}
                             {flashcard}
