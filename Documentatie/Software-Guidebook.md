@@ -45,32 +45,6 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 		- De gebruiker kan een naam opgeven.
 		- De gebruiker kan een beschrijving opgeven.
 
-- **Decks bewerken**
-[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/edit-deck.svg)
-	> De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een naam aanpassen.
-		- De gebruiker kan een beschrijving aanpassen.
-
-- **Decks verwijderen**
-	> De gebruiker krijgt een bevestigingsmelding.
-
-- **Flashcards uit een deck verwijderen**
-[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
-	> De gebruiker kan een oneindig aantal flashcards toevoegen.\
-	\
-	De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een vraag/term opgeven op de ene kant.
-		- De gebruiker kan een antwoord/definitie opgeven op de andere kant.
-
-- **Flashcards bewerken**
-[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
-	>	De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een vraag/term aanpassen op de ene kant.
-		- De gebruiker kan een antwoord/definitie aanpassen op de andere kant.
-
-- **Flashcards uit een deck verwijderen**
-	> De gebruiker krijgt een bevestigingsmelding.
-
 - **Deck spelen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Deck-playing.svg)
 	> De gebruiker krijgt een selectie van kaarten die op willekeurige volgorde gepresenteerd worden. Dit is gebaseerd op het [Leitner Systeem](https://en.wikipedia.org/wiki/Leitner_system) (Zie hoofdstuk 7: Infrastructure Architecture).\
@@ -82,6 +56,39 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 		- Aangeven of hij/zij de flashcard fout had;
 		- Het spel beëindigen;
 		- Een scoreboard inzien wanneer het spelen voorbij is;
+
+- **Decks bewerken**
+[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/edit-deck.svg)
+	> De volgende invoervelden zijn aanwezig:
+		- De gebruiker kan een naam aanpassen.
+		- De gebruiker kan een beschrijving aanpassen.
+
+- **Decks verwijderen**
+	> De gebruiker krijgt een bevestigingsmelding.
+
+- **Flashcards bewerken**
+[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
+	>	De volgende invoervelden zijn aanwezig:
+		- De gebruiker kan een vraag/term aanpassen op de ene kant.
+		- De gebruiker kan een antwoord/definitie aanpassen op de andere kant.
+
+- **Flashcards uit een deck verwijderen**
+[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
+	> De gebruiker kan een oneindig aantal flashcards toevoegen.\
+	\
+	De volgende invoervelden zijn aanwezig:
+		- De gebruiker kan een vraag/term opgeven op de ene kant.
+		- De gebruiker kan een antwoord/definitie opgeven op de andere kant.
+		- De gebruiker krijgt een bevestigingsmelding.
+
+- **Importeren van een deck**
+	> Als gast of (anonieme) gebruiker wil ik decks kunnen importeren van een andere Apprend gebruiker, zodat ik iets kan oefenen zonder dat ik daarvoor een deck aan moet maken.\
+	\
+	De volgende invoervelden zijn aanwezig:
+		- Een deck importeren en hem daarna zelf aanpassen
+		- Een deck alleen importeren als dit deck public is.
+		- De gebruiker krijgt een bevestigingsmelding.
+
 
 - **Registreren nieuw account**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-registreren-webapp.svg)
@@ -196,57 +203,34 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 
 **Decks endpoints**:
 
-GET /api/v1/decks/home
-Haal de decks voor de homepage op.
-
-POST /api/v1/decks
-Maakt een nieuw deck aan.
-
-DELETE /api/v1/decks/:deckId
-Verwijderd een specifiek deck.
-
-GET /api/v1/decks/:deckId
-Haalt een specifiek deck op.
-
-GET /api/v1/decks/:deckId/flashcards
-Haalt alle flashcard van een deck op.
-
-POST /api/v1/decks/:deckId/flashcards
-Edit flashcards van een specifiek deck.
-
-PUT /api/v1/decks/:deckId
-Edit een deck.
+| Method | URL                              | Beschrijving                            |
+|--------|----------------------------------|-----------------------------------------|
+| GET    | /api/v1/decks/home               | Haal de decks voor de homepage op.      |
+| GET    | /api/v1/decks/:deckId            | Haalt een specifiek deck op.            |
+| GET    | /api/v1/decks/:deckId/flashcards | Haalt alle flashcard van een deck op.   |
+| POST   | /api/v1/decks/:deckId/flashcards | Edit flashcards van een specifiek deck. |
+| POST   | /api/v1/decks                    | Maakt een nieuw deck aan.               |
+| DELETE | /api/v1/decks/:deckId            | Verwijdert een specifiek deck.          |
+| POST	 | /api/v1/decks/:deckId            | Importeer een deck van een ander        |
 
 **Users endpoints**:
 
-GET /api/v1/users/:username/decks
-Haalt alle deck van een specifieke user op.
-
-GET /api/v1/users/:id
-Haalt een gebruik op basis  van id op.
-
-GET /api/v1/users/:id/_id
-Haalt een gebruik op bij ID bij het _id.
-
-POST /api/v1/users/
-Maak een nieuwe gebruiker aan.
-
-GET /api/v1/users/email
-Haal een gebruiker op op basis van email.
-
-DELETE /api/v1/users/:id
-Verwijder een gebruiken op basis van id.
+| Method | URL                           | Beschrijving                                |
+|--------|-------------------------------|---------------------------------------------|
+| GET    | /api/v1/users/:username/decks | Haalt alle deck van een specifieke user op. |
+| GET    | /api/v1/users/:id             | Haalt een gebruik op basis van id op.       |
+| GET    | /api/v1/users/:id/_id         | Haalt een gebruik op bij ID bij het _id.    |
+| GET    | /api/v1/users/email           | Haal een gebruiker op op basis van email.   |
+| POST   | /api/v1/users/                | Maak een nieuwe gebruiker aan.              |
+| DELETE | /api/v1/users/:id             | Verwijder een gebruiken op basis van id.    |
 
 **Login endpoints**:
 
-POST /api/v1/login/check
-Kijk of de gegevens kloppen.
-
-GET /api/v1/login/success
-Redirect als het success is.
-
-GET /api/v1/login/error
-Redirect als er een error is.
+| Method | URL                  | Beschrijving                  |
+|--------|----------------------|-------------------------------|
+| GET    | /api/v1/login/succes | Redirect als het success is.  |
+| GET    | /api/v1/login/error  | Redirect als er een error is. |
+| POST   | /api/v1/login/check  | Kijk of de gegevens kloppen.  |
 
 ### MongoDB Database
 
