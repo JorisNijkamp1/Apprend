@@ -47,28 +47,45 @@ decks.get('/', async (req, res) => {
 | GET ALL DECKS FOR HOMEPAGE FROM USERS
 */
 decks.get('/home', async (req, res) => {
-    let allDecksUsers = await User.find({}).sort({signupDate: 'desc'});
-
-    const homeDecks = [];
-
-    allDecksUsers.forEach((index, key) => {
-        allDecksUsers[key].decks.forEach((decksIndex, decksKey) => {
-            if (homeDecks.length <= 2) {
-                homeDecks.push({
-                    deckId: allDecksUsers[key].decks[decksKey]._id,
-                    deckName: allDecksUsers[key].decks[decksKey].name,
-                    deckDescription: allDecksUsers[key].decks[decksKey].description,
-                    deckCreator: !(allDecksUsers[key].email && allDecksUsers[key]) ? 'anonymous user' : allDecksUsers[key].decks[decksKey].creatorId,
-                    deckUserId: allDecksUsers[key].decks[decksKey].creatorId
-                });
+    try {
+        let allDecks = await User.aggregate([
+            { $unwind : "$decks"},
+            { $match: { 'decks.private': false } },
+            { $group : {
+                _id: null,
+                decks: {
+                    $push: "$decks"
+            } }
+        }
+        ])
+        if (!allDecks) return res.status(404).json('cant find any public deck')
+        let decks = []
+        if (allDecks[0].decks.length < 3){
+            decks = allDecks[0].decks.map(deck => {
+                return deck
+            })
+        } else {
+            const amountOfDecks = 3
+            const indexPicked = []
+            let infCounter = 0
+            for (let i = 0; i < amountOfDecks; i++){
+                const randomIndex = Math.floor(Math.random() * allDecks[0].decks.length)
+                if (indexPicked.includes(randomIndex)){
+                    i--
+                    infCounter++
+                    if (infCounter > 500) break;
+                } else {
+                    indexPicked.push(randomIndex)
+                    decks.push(allDecks[0].decks[randomIndex])
+                }
             }
-        });
-    });
+        }
+        res.status(200).json(decks)
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('Er gaat iets goed fout')
+    }
 
-    await res.json({
-        success: true,
-        homeDecks: homeDecks,
-    })
 });
 
 decks.post('/', async (req, res) => {
@@ -78,8 +95,8 @@ decks.post('/', async (req, res) => {
         if (!req.session.username && !req.cookies.username) {
             req.session.username = req.session.id
             const deck = {
-                name: req.body.deckName,
-                description: req.body.description,
+                name: req.body.deckName ? req.body.deckName : 'My awesome deck',
+                description: req.body.description ? req.body.description : 'Awesome description',
                 creatorId: req.session.id,
                 status: 'original',
                 flashcards: [],
@@ -97,11 +114,10 @@ decks.post('/', async (req, res) => {
             }
             response = await User.create(user)
         } else {
-            console.log('Session username in decks.post', req.session.username, req.cookies.username)
             const player = await User.findById(req.session.username ? req.session.username : req.cookies.username)
             const deck = {
-                name: req.body.deckName,
-                description: req.body.description,
+                name: req.body.deckName ? req.body.deckName : 'My awesome deck',
+                description: req.body.description ? req.body.description : 'Awesome description',
                 private: req.body.private,
                 creatorId: req.session.username ? req.session.username : req.cookies.username,
                 status: 'original',

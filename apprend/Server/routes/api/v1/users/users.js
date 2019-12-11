@@ -182,6 +182,7 @@ users.post('/', async (req, res) => {
                     'lastPlayedDate': oldUser.decks[i].lastPlayedDate,
                     'status': oldUser.decks[i].status,
                     'flashcards': oldUser.decks[i].flashcards,
+                    'private': oldUser.decks[i].private
                 })
             );
         }

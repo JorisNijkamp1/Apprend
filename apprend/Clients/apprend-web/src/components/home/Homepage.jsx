@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as ReactRedux from 'react-redux'
 import {NavigatieBar} from '../shared/navbar/NavigatieBar';
 import Container from 'react-bootstrap/Container';
@@ -12,8 +12,11 @@ import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import SearchDecksInput from "../search-input/SearchDecksInput";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
+import { LoadingComponent } from '../shared/loader/loader' 
 
 const HomepageUI = (props) => {
+
+    const [isLoading, setisLoading] = useState(false)
 
     //Check if user is logged in
     useEffect(() => {
@@ -21,29 +24,31 @@ const HomepageUI = (props) => {
     }, []);
 
     useEffect(() => {
-        props.getHomepageDecks();
+        props.getHomepageDecks(setisLoading);
     }, []);
 
     const decksHomepage = () => {
         if (props.deckName) {
+            console.log(props.deckName)
             return props.deckName.map((deck, index) => (
-                <Col lg={{span: 4}} md={{span: 6}} key={deck.deckName + index}>
-                    <Link to={`/decks/${deck.deckId}`} className={'deck-card-link'}>
+                <Col lg={{span: 4}} md={{span: 6}} key={deck.name + index}>
+                    <Link to={`/decks/${deck._id}`} className={'deck-card-link'}>
                         <Card className={'hover-shadow mb-4'}>
-                            <Card.Header className={'bg-blue text-white text-center'}><h2>{deck.deckName}</h2>
+                            <Card.Header className={'bg-blue text-white text-center'}><h2>{deck.name}</h2>
                             </Card.Header>
                             <Card.Body>
                                 <p className={'text-center'} style={{color: '#000'}}>
-                                    {deck.deckDescription}
+                                    {deck.description}
                                 </p>
                                 <strong>
-                                    <Link id="creator" to={`/${deck.deckUserId}/decks`}>
+                                    <Link id="creator" to={`/${deck.creatorId}/decks`}>
                                         <FontAwesomeIcon icon={faUser}
                                                          size={'1x'}
                                                          title={`Search`}
-                                                         color={'#000'}
+                                                        //  color={'#000'}
+                                                        className={props.username === deck.creatorId ? 'text-green' : 'text-red'}
                                         />
-                                        <span style={{marginLeft: 5, color: '#000'}}>{deck.deckCreator}</span>
+                                    <span className={props.username === deck.creatorId ? 'text-green' : ''} style={{marginLeft: 5, color: '#000'}}>{deck.creatorId.length === 32 ? 'Anonymous' : deck.creatorId}</span>
                                     </Link>
                                 </strong>
                             </Card.Body>
@@ -53,6 +58,26 @@ const HomepageUI = (props) => {
             ));
         }
     };
+
+    const showContent = () => {
+        if (isLoading){
+            return <LoadingComponent giveClass="my-5" loadingText="Loading some decks..." />
+        } else if (props.deckName){
+            return (
+                <>
+                <Row className={'mt-7'}>
+                    <h1 className={'text-center w-100'}>Try out these badboys</h1>
+                </Row>
+
+                <Row className={'mt-5'}>
+                    {decksHomepage()}
+                </Row>
+                </>
+            )
+        } else {
+            return <h2>We couldn't find any decks</h2>
+        }
+    }
 
     return (
         <>
@@ -81,13 +106,8 @@ const HomepageUI = (props) => {
                     <SearchDecksInput linkTo={`/search?q=${props.searchValue}`}/>
                 </div>
 
-                <Row className={'mt-7'}>
-                    <h1 className={'text-center w-100'}>Latest decks</h1>
-                </Row>
+                {showContent()}
 
-                <Row className={'mt-5'}>
-                    {decksHomepage()}
-                </Row>
             </Container>
             <Footer/>
         </>
@@ -105,7 +125,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         isLoggedIn: () => dispatch(isLoggedIn()),
-        getHomepageDecks: (deckName) => dispatch(getHomepageDecks(deckName)),
+        getHomepageDecks: (funct) => dispatch(getHomepageDecks(funct)),
     }
 }
 
