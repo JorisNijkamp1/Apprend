@@ -118,7 +118,7 @@ const SearchDecksInput = (props) => {
 
     return (
         <>
-            <Form onSubmit={(e) => onSubmit(e)}>
+            <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search'}>
                 <Row>
                     <Col md={{span: 10, offset: 1}}>
                         <Row>
