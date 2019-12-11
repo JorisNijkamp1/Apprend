@@ -4,7 +4,7 @@ import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {Footer} from "../shared/footer/Footer"
 import {getDeckAction, getUserDecksAction} from "../../redux-store/actions/decks/async-actions";
 import Card from "react-bootstrap/Card";
@@ -13,10 +13,11 @@ import Loader from 'react-loaders'
 import 'loaders.css/src/animations/square-spin.scss'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
-import Button from "react-bootstrap/Button";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import { deleteDeckFromUser } from '../../redux-store/actions/decks/async-actions';
-import SearchTagsInput from "../search-input/SearchTagsInput";
+import FilterTagsInput from "../search-input/FilterTagsInput";
+import {AddCard} from "./sub-components/AddCard";
+import {setFilteredDecks} from "../../redux-store/actions/decks/actions";
 
 const Deck = (props) => {
     const {username} = useParams();
@@ -25,6 +26,7 @@ const Deck = (props) => {
 
     useEffect(() => {
         props.getUserDecks(username)
+        props.setFilteredDecks([])
     }, []);
 
     const handleDeleteDeck = event => {
@@ -113,35 +115,30 @@ const Deck = (props) => {
                 <h2>Loading decks...</h2>
             </Row>
         )
+    } else if (props.filteredDecks.length !== 0) {
+        if (typeof(props.filteredDecks) === "string") {
+            userDecks = (
+            <Row className="mx-auto align-items-center flex-column py-5">
+                <h2>{props.filteredDecks} ☹️ </h2>
+            </Row>
+            )
+        } else {
+            userDecks = props.filteredDecks.map((deck, key) =>
+                <Col xs={12} sm={6} lg={4} className="my-2">
+                    <Card key={deck.name + key} id={'card-' + key}>
+                        {AddCard(deck, key)}
+                        {userOptions(deck)}
+                    </Card>
+                </Col>
+            )
+        }
     } else if (props.userDecks.decks) {
         userDecks = props.userDecks.decks.map((deck, key) =>
             <Col xs={12} sm={6} lg={4} className="my-2">
-            <Card key={deck.name + key} id={'card-' + key}>
-                <Card.Body>
-                    <Card.Title>
-                        <Row>
-                            <Col xs={12} className="text-center">
-                                {deck.name}
-                            </Col>
-                        </Row>
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted text-center">
-                         ({deck.flashcards.length} {(deck.flashcards.length > 1 || deck.flashcards.length === 0) ? 'flashcards' : 'flashcard'})
-                    </Card.Subtitle>
-                    <Card.Text className="text-center">
-                        {deck.description}
-                    </Card.Text>
-                    <Row>
-                        <Col xs={{span: 10  , offset: 1}}>
-                            <Link to={`/decks/${deck._id}`}>
-                                <Button variant="outline-primary" className={'w-100'} id={'card-' + key + '-link'}>View deck</Button>
-                            </Link>
-                        </Col>
-                    </Row>
-                </Card.Body>
-                {userOptions(deck)}
-
-            </Card>
+                <Card key={deck.name + key} id={'card-' + key}>
+                    {AddCard(deck, key)}
+                    {userOptions(deck)}
+                </Card>
             </Col>
         )
     } else if (props.userDecks.toString() === 'no-decks') {
@@ -183,7 +180,7 @@ const Deck = (props) => {
                     </Col>
                 </Row>
                 <div className={'pt-3 pb-5'}>
-                    <SearchTagsInput linkTo={`/search?q=${props.searchValue}`}/>
+                    <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`} username={props.userDecks.user}/>
                 </div>
                 {loader}
                 {showErrors()}
@@ -207,6 +204,7 @@ function mapStateToProps(state) {
         isLoading: state.decks.isLoading,
         username: state.login.username,
         searchValue: state.search.searchValue,
+        filteredDecks: state.decks.filteredDecks
     }
 }
 
@@ -215,6 +213,7 @@ function mapDispatchToProps(dispatch) {
         isLoggedIn: () => dispatch(isLoggedIn()),
         getUserDecks: (username) => dispatch(getUserDecksAction(username)),
         deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
+        setFilteredDecks: (decks) => dispatch(setFilteredDecks(decks))
     }
 }
 

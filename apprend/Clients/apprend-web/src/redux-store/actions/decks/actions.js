@@ -3,7 +3,8 @@ import {
     DECKS_ADD_DECK, DECKS_SET_DECK, DECKS_SET_DECK_DATA, DECKS_SET_ISLOADING,
     DECKS_SET_USERDECKS_DECKS,
     DECKS_SET_USER_DECKS, DECK_EDIT_DATA,
-    DECK_DELETE_TAG
+    DECK_DELETE_TAG,
+    DECK_FILTERED_DECKS
 } from "../action-types";
 
 export function decksAddDeckAction(deck){
@@ -58,5 +59,12 @@ export function deleteTag(deckEdit){
     return {
         type: DECK_DELETE_TAG,
         payload: deckEdit
+    }
+}
+
+export function setFilteredDecks(decks){
+    return {
+        type: DECK_FILTERED_DECKS,
+        payload: decks
     }
 }
