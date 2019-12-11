@@ -71,7 +71,7 @@ const NavbarUI = (props) => {
     }
 
     return (
-        <Navbar className={"bg-green"} expand="lg">
+        <Navbar className={"bg-nav"} expand="lg">
             <Container>
                 <Navbar.Brand as={Link} className={"text-white"} to="/"><h1>Apprend</h1></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>

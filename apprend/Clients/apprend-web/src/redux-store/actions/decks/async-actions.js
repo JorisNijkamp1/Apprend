@@ -66,7 +66,7 @@ export const getDeckAction = (deckId) => {
                 dispatch(setDeckAction(data));
                 dispatch(setIsLoading(false))
             }, 500);
-        }else {
+        } else {
             setTimeout(function () {
                 dispatch(setDeckAction('deck-not-found'));
                 dispatch(setIsLoading(false))
@@ -85,7 +85,7 @@ export const deleteDeckFromUser = (deckId) => {
                 'Content-Type': 'application/json'
             },
         })
-        if (response.status === 200){
+        if (response.status === 200) {
             const data = await response.json()
             dispatch(setUserDecksDecksAction(data))
         }
@@ -150,6 +150,25 @@ export const toggleDeckStatus = (deckId, userId) => {
         if (response.status === 201){
             const data = await response.json()
             dispatch(setSpecificDeckDataAction(data))
+        }
+    }
+}
+
+export const importDeckAction = deckId => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/${deckId}`;
+        const options = {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        }
+        const response = await fetch(url, options);
+        const data = await response.json();
+        if (response.status === 201) {
+            return data
         }
     }
 }

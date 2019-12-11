@@ -5,14 +5,41 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 require('../../../../database/models/deck');
 const Decks = mongoose.model('Deck');
-const UserSchema = require('../../../../database/models/user')
-require('../../../../database/models/user')
-const User = mongoose.model('User')
+const UserSchema = require('../../../../database/models/user');
+require('../../../../database/models/user');
+const User = mongoose.model('User');
 
+/*====================================
+| SEARCH FOR SOME DECKS
+*/
+decks.get('/', async (req, res) => {
+    const searchQuery = req.query.deck;
+    let foundDecks = await User.find({
+        decks: {
+            $elemMatch:
+                {
+                    name: {'$regex': searchQuery, '$options': 'i'}
+                }
+        }
+    });
 
-decks.get('/', (req, res) => {
-    res.json({
-        success: true
+    let decks = [];
+    foundDecks.forEach((index, key) => {
+        foundDecks[key].decks.forEach((decksIndex, decksKey) => {
+            decks.push({
+                name: foundDecks[key].decks[decksKey].name,
+                deckCreator: !(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
+                totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
+                deckId: foundDecks[key].decks[decksKey]._id
+            });
+        });
+    });
+
+    //Sort decks on totalFlashcards
+    decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
+
+    await res.json({
+        decks: (decks.length > 4) ? decks.slice(0, 4) : decks,
     })
 });
 
@@ -28,6 +55,7 @@ decks.get('/home', async (req, res) => {
         allDecksUsers[key].decks.forEach((decksIndex, decksKey) => {
             if (homeDecks.length <= 2) {
                 homeDecks.push({
+                    deckId: allDecksUsers[key].decks[decksKey]._id,
                     deckName: allDecksUsers[key].decks[decksKey].name,
                     deckDescription: allDecksUsers[key].decks[decksKey].description,
                     deckCreator: !(allDecksUsers[key].email && allDecksUsers[key]) ? 'anonymous user' : allDecksUsers[key].decks[decksKey].creatorId,
@@ -69,6 +97,7 @@ decks.post('/', async (req, res) => {
             }
             response = await User.create(user)
         } else {
+            console.log('Session username in decks.post', req.session.username, req.cookies.username)
             const player = await User.findById(req.session.username ? req.session.username : req.cookies.username)
             const deck = {
                 name: req.body.deckName,
@@ -148,7 +177,6 @@ decks.get('/:deckId', async (req, res) => {
 
 });
 
-
 /*====================================
 | GET ALL FLASHCARDS FROM A DECK
 */
@@ -185,8 +213,8 @@ decks.get('/:deckId/flashcards', async (req, res) => {
 | EDIT FLASHCARDS OF A DECK
 */
 decks.post('/:deckId/flashcards', async (req, res) => {
-    const { flashcards } = req.body;
-    const { deckId } = req.params;
+    const {flashcards} = req.body;
+    const {deckId} = req.params;
     let username;
 
     if (req.body.test === true) {
@@ -342,6 +370,53 @@ decks.put('/:deckId', async (req, res) => {
     } catch (e) {
         console.log(e)
         res.status(500).json('Sorry something went horribly wrong on our end...')
+    }
+
+})
+
+decks.post('/:deckId', async (req, res) => {
+    try {
+        const deckId = req.params.deckId;
+        const username = req.session.username ? req.session.username : req.cookies.username;
+        let targetUser = await User.findOne({
+            "decks._id": deckId
+        });
+        const importToUser = await User.findById(username)
+        const currentDeck = targetUser.decks.id(deckId)
+
+        const newDeck = {...currentDeck._doc}
+
+        delete newDeck.games
+        delete newDeck._id
+
+        if (username) {
+            if (importToUser._id === targetUser._id) {
+                res.status(400).json('Cant import own deck')
+            } else {
+                newDeck.creatorId = importToUser._id
+                const result = await importToUser.importDeck(newDeck, importToUser._id);
+                res.status(201).json(result.decks[result.decks.length-1])
+            }
+        } else {
+            req.session.username = req.session.id
+            newDeck.creatorId = req.session.id
+
+            const user = {
+                _id: req.session.id,
+                email: '',
+                password: '',
+                decks: [newDeck]
+            }
+            const cookie = req.cookies.username
+            if (cookie === undefined) {
+                res.cookie('username', req.session.id, {maxAge: (10 * 365 * 24 * 60 * 60 * 1000)})
+            }
+            const madeUser = await User.create(user)
+            res.status(201).json(madeUser)
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('Something went wrong on our end')
     }
 
 })
