@@ -1,6 +1,8 @@
 /*
 |----------------------------------------------------------------------
-| This file includes all Leitner system algorithm functions.
+| This file includes all Leitner system algorithm functions for
+| creating a selection of cards to play with.
+|
 | Please refer to the Apprend Software Guidebook, chapter 7:
 | Infrastructure Architecture, for a more detailed explanation.
 |----------------------------------------------------------------------
@@ -12,7 +14,7 @@ import {X, W2, W3} from './config';
 | Shuffle the values of an array.
 |--------------------------------------------------
  */
-const shuffleCards = (array) => {
+export const shuffleCards = (array) => {
     let random, temp;
 
     for (let i = (array.length - 1); i > 0; i -= 1) {
@@ -31,7 +33,7 @@ const shuffleCards = (array) => {
 | Select X cards from box 0.
 |--------------------------------------------------
  */
-const selectBox0Cards = (cardsInDeck) => {
+export const selectBox0Cards = (cardsInDeck) => {
     const box0Cards = cardsInDeck.filter(card => card.box === 0);
     return shuffleCards(box0Cards).splice(0, X);
 };
@@ -41,7 +43,7 @@ const selectBox0Cards = (cardsInDeck) => {
 | Select all cards from box 1.
 |--------------------------------------------------
  */
-const selectBox1Cards = (cardsInDeck) => {
+export const selectBox1Cards = (cardsInDeck) => {
     return cardsInDeck.filter(card => card.box === 1);
 };
 
@@ -51,9 +53,9 @@ const selectBox1Cards = (cardsInDeck) => {
 | played W2 sessions back.
 |--------------------------------------------------
  */
-const selectBox2Cards = (cardsInDeck, currentSessionNumber) => {
+export const selectBox2Cards = (cardsInDeck, currentSessionNumber) => {
     return cardsInDeck.filter(card => {
-        return card.box === 2 && (currentSessionNumber - W2) === card.sessionPlayed;
+        return card.box === 2 && (currentSessionNumber - W2) >= card.sessionPlayed;
     });
 };
 
@@ -63,9 +65,9 @@ const selectBox2Cards = (cardsInDeck, currentSessionNumber) => {
 | played W3 sessions back.
 |--------------------------------------------------
  */
-const selectBox3Cards = (cardsInDeck, currentSessionNumber) => {
+export const selectBox3Cards = (cardsInDeck, currentSessionNumber) => {
     return cardsInDeck.filter(card => {
-        return card.box === 3 && (currentSessionNumber - W3) === card.sessionPlayed;
+        return card.box === 3 && (currentSessionNumber - W3) >= card.sessionPlayed;
     });
 };
 
@@ -80,10 +82,6 @@ const leitner = (cardsInDeck, currentSessionNumber) => {
     const selectedBox1Cards = selectBox1Cards(cardsInDeck);
     const selectedBox2Cards = selectBox2Cards(cardsInDeck, currentSessionNumber);
     const selectedBox3Cards = selectBox3Cards(cardsInDeck, currentSessionNumber);
-    console.log(selectedBox0Cards);
-    console.log(selectedBox1Cards);
-    console.log(selectedBox2Cards);
-    console.log(selectedBox3Cards);
     const selection = [...selectedBox0Cards, ...selectedBox1Cards, ...selectedBox2Cards, ...selectedBox3Cards];
 
     return shuffleCards(selection);

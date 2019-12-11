@@ -25,7 +25,6 @@ import leitner from '../../util/leitner-system/leitnerSystem';
 
 const PlayingComponent = (props) => {
     const history = useHistory();
-    const [wrongCardsToRepeat, setWrongCardsToRepeat] = useState([]);
     const {deckId} = useParams();
     let loader;
 
@@ -35,7 +34,7 @@ const PlayingComponent = (props) => {
             let currentSession = response.session + 1;
             let allCards = leitner(response.flashcards, currentSession);
 
-            if (allCards.length === 0) {
+            while (allCards.length === 0) {
                 currentSession++;
                 allCards = leitner(response.flashcards, currentSession);
             }
@@ -47,36 +46,77 @@ const PlayingComponent = (props) => {
         });
     }, []);
 
-    const cardWasAlreadyAnsweredWrong = (flashcardId) => {
-        const card = wrongCardsToRepeat.find(flashcard => flashcard._id.toString() === flashcardId);
-        return !!card;
-    };
-
     const changeScore = (id, status) => {
-        props.doGetGameData(deckId, props.gameId).then(response => {
-            const i = response.correctCards.length + response.wrongCards.length + 1;
-            const previousCard = response.flashcards[i - 1];
-            const nextCard = response.flashcards[i];
+        // props.doGetGameData(deckId, props.gameId).then(response => {
+            // const currentCard = props.activeCard;
+            //
+            // if (status === 'correct' && !cardWasAlreadyAnsweredWrong(id)) {
+            //     props.doSetCorrectCardsAction(id);
+            //     props.doMoveFlashcardToBox(deckId, id, true);
+            // } else if (status === 'wrong' && !cardWasAlreadyAnsweredWrong(id)) {
+            //     props.doSetWrongCardsAction(id);
+            //     props.doMoveFlashcardToBox(deckId, id, false);
+            //
+            //     const newCards = [...props.cards];
+            //     newCards.push(currentCard);
+            //     props.doSetCards(newCards);
+            // }
+            //
+            // const nPlayedCards = props.correctCards.length + props.wrongCards.length;
+            //
+            // if ((props.correctCards.length + props.wrongCards.length) === props.cards.length) {
+            //     props.doUpdateGame(deckId, response._id, currentCard, [], status);
+            //     props.doSetActiveCardAction('');
+            //     history.push('/score');
+            //     return;
+            // }
+            //
+            // const nextCard = props.cards[nPlayedCards];
+            // props.doSetActiveCardAction(nextCard);
+            // props.doUpdateGame(deckId, response._id, currentCard, nextCard, status);
+        // });
 
-            if (status === 'correct' && !cardWasAlreadyAnsweredWrong(id)) {
-                props.doSetCorrectCardsAction(id);
+        const currentCard = props.activeCard;
+        const cardAlreadyAnsweredWrong = props.wrongCards.find(id => id === currentCard._id);
+        let nCardsInDeck = props.cards.length;
+        let nCardsAnswered = props.correctCards.length + props.wrongCards.length;
+
+        if (status === 'correct') {
+            props.doSetCorrectCardsAction(id);
+
+            if (!cardAlreadyAnsweredWrong) {
                 props.doMoveFlashcardToBox(deckId, id, true);
-            } else if (status === 'wrong' && !cardWasAlreadyAnsweredWrong(id)) {
+            }
+
+            nCardsAnswered++;
+
+        } else if (status === 'wrong') {
+            if (!cardAlreadyAnsweredWrong) {
                 props.doSetWrongCardsAction(id);
                 props.doMoveFlashcardToBox(deckId, id, false);
-                wrongCardsToRepeat.push(previousCard);
+
+                const newCards = [...props.cards];
+                newCards.push(currentCard);
+                props.doSetCards(newCards);
+                nCardsInDeck++;
             }
 
-            if (i < response.flashcards.length) {
-                props.doSetActiveCardAction(nextCard);
-                props.doUpdateGame(deckId, response._id, previousCard, nextCard, status);
-                return;
-            }
+            nCardsAnswered++;
+        }
 
-            props.doUpdateGame(deckId, response._id, previousCard, [], status);
+        console.log(`nCardsInDeck: ${nCardsInDeck}`);
+        console.log(`nCardsAnswered: ${nCardsAnswered}`);
+
+        if (nCardsAnswered === nCardsInDeck) {
+            props.doUpdateGame(deckId, props.gameId, currentCard, [], status);
             props.doSetActiveCardAction('');
             history.push('/score');
-        })
+            return;
+        }
+
+        const nextCard = props.cards[nCardsAnswered];
+        props.doSetActiveCardAction(nextCard);
+        props.doUpdateGame(deckId, props.gameId, currentCard, nextCard, status);
     };
 
     if (props.isLoading) {
@@ -144,7 +184,10 @@ const mapDispatchToProps = dispatch => {
     return {
         doSetCorrectCardsAction: (cards) => dispatch(setCorrectCardsAction(cards)),
         doSetWrongCardsAction: (cards) => dispatch(setWrongCardsAction(cards)),
-        doSetActiveCardAction: (card) => dispatch(setActiveCardAction(card)),
+        doSetActiveCardAction: (card) => {
+            console.log(card.question)
+            dispatch(setActiveCardAction(card))
+        },
         doGetDeck: (deckId) => dispatch(getDeck(deckId)),
         doSetGame: (deckId, flashcards) => dispatch(setGame(deckId, flashcards)),
         doUpdateGame: (deckId, gameId, oldCard, newCard, status) => dispatch(updateGame(deckId, gameId, oldCard, newCard, status)),
