@@ -17,6 +17,7 @@ import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import { deleteDeckFromUser } from '../../redux-store/actions/decks/async-actions';
 import FilterTagsInput from "../search-input/FilterTagsInput";
 import {AddCard} from "./sub-components/AddCard";
+import {setFilteredDecks} from "../../redux-store/actions/decks/actions";
 
 const Deck = (props) => {
     const {username} = useParams();
@@ -25,6 +26,7 @@ const Deck = (props) => {
 
     useEffect(() => {
         props.getUserDecks(username)
+        props.setFilteredDecks([])
     }, []);
 
     const handleDeleteDeck = event => {
@@ -212,6 +214,7 @@ function mapDispatchToProps(dispatch) {
         isLoggedIn: () => dispatch(isLoggedIn()),
         getUserDecks: (username) => dispatch(getUserDecksAction(username)),
         deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
+        setFilteredDecks: (decks) => dispatch(setFilteredDecks(decks))
     }
 }
 

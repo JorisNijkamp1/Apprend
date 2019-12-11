@@ -3,11 +3,13 @@ import {Link} from "react-router-dom";
 import { Card, Col, Row, Button } from "react-bootstrap";
 
 export const AddCard = (deck, key) => {
-    let end;
+    let end, id;
     if (deck.totalFlashcards === undefined) {
         end = deck.flashcards.length;
+        id = deck._id;
     } else if (deck.flashcards === undefined) {
         end = deck.totalFlashcards;
+        id = deck.deckId;
     }
 
     return <Card.Body>
@@ -26,7 +28,7 @@ export const AddCard = (deck, key) => {
         </Card.Text>
         <Row>
             <Col xs={{span: 6, offset: 3}}>
-                <Link to={`/decks/${deck._id}`}>
+                <Link to={`/decks/${id}`}>
                     <Button variant="outline-primary" className={'w-100'} id={'card-' + key + '-link'}>View deck</Button>
                 </Link>
             </Col>

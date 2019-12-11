@@ -30,9 +30,9 @@ const getMatchingLanguages = (value, decks) => {
 };
 
 describe('Login API tests', function () {
-    const value = "d";
+    const value = "test";
 
-    test('Not able to filter because you don\'t have any decks', async () => {
+    test('Not able to filter because this user doesn\'t have any decks', async () => {
         const response = await fetch(`${API_URL}/decks/Jantje/tags?tag=${value}`, {
             method: 'GET',
             headers: {
@@ -47,15 +47,15 @@ describe('Login API tests', function () {
         expect(result.decks).toStrictEqual([]);
     });
 
-    test('Filter deck with tag "d" from user Joris', async () => {
+    test('Filter deck with tag "test" from user Joris', async () => {
         const data = [
             {
-                name: 'test1',
+                name: 'Finnish to Dutch prefixes',
                 deckCreator: 'Joris',
-                totalFlashcards: 0,
-                deckId: '5dea4c91db367563d4a9eada',
-                description: 'test',
-                tags: [ 'dfvsdv' ]
+                totalFlashcards: 2,
+                deckId: '5ddfadab612b09570c6f3a33',
+                description: 'Learning prefixes ',
+                tags: ['test']
             }
         ];
         const response = await fetch(`${API_URL}/decks/Joris/tags?tag=${value}`, {
