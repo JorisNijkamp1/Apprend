@@ -2,10 +2,8 @@ import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import {useParams} from "react-router-dom";
 import {
-    Container,
     Card,
     Row,
-    Col,
     Button
 } from "react-bootstrap";
 import EditableFlashcard from "./sub-components/editable-flashcard";
@@ -97,7 +95,6 @@ const FlashcardsOverview = (props) => {
                                 <Form.Group className={"float-left w-50"} controlId="formFilterFlashcards">
                                     <Form.Control type="text" placeholder="Filter flashcards"/>
                                 </Form.Group>
-
                             </Form>
                             <Button className={'float-right mt-1'}
                                     id={'save-flashcards-button'}
@@ -107,18 +104,17 @@ const FlashcardsOverview = (props) => {
                         </Card.Title>
                     </Card.Header>
                 )
-            } else if (deckExist && !isCreator) {
+            } else {
                 return (
                     <Card.Header style={{backgroundColor: "#EEEEEE"}}>
                         <Card.Title>
                             <Form onChange={(e) => {
-                                filterFlashcards();
+                                filterFlashcards(e);
                                 e.preventDefault();
                             }}>
                                 <Form.Group className={"float-left w-50"} controlId="formFilterFlashcards">
                                     <Form.Control type="text" placeholder="Filter flashcards"/>
                                 </Form.Group>
-
                             </Form>
                         </Card.Title>
                     </Card.Header>
@@ -150,7 +146,6 @@ const FlashcardsOverview = (props) => {
 
         return (
             <>
-
                 <Card style={{backgroundColor: "#EEEEEE", width: "100%"}} text={'dark'}>
                     {deckHeader()}
                     <Card.Body>
@@ -161,7 +156,6 @@ const FlashcardsOverview = (props) => {
                         </Row>
                     </Card.Body>
                 </Card>
-
             </>
         );
     }
