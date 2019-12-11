@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
 import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
@@ -11,6 +11,9 @@ import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
 import Button from "react-bootstrap/Button";
 import Loader from "react-loaders";
+import { useHistory } from 'react-router'
+import {withRouter} from 'react-router-dom'
+
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {importDeckAction} from "../../redux-store/actions/decks/async-actions";
 import {Notification} from "../shared/notification/Notification";
@@ -19,6 +22,10 @@ import FlashcardsOverview from "../flashcards/overview-flashcards";
 const UserDecks = (props) => {
     const {deckId} = useParams();
     const isCreator = (props.username === props.deck.creatorId);
+
+    const [currentDeck, setcurrentDeck] = useState()
+
+    const history = useHistory()
 
     //Check if user is logged in
     useEffect(() => {
@@ -44,25 +51,41 @@ const UserDecks = (props) => {
         }
     };
 
+    const handleImportButton = async (deckId) => {
+        const result = await props.importDeck(deckId)
+        if (!result) return
+        let deck
+        if (!props.username) deck = result.decks[0]._id
+        else deck = result._id
+        console.log(result)
+        await props.isLoggedIn()
+
+        history.push(`/decks/${deck}`)
+        // window.location.reload()
+        props.getDeck(deck)
+    }
+
     const importDeckButton = () => {
-        if (!isCreator && props.username) {
+        if (!isCreator) {
             return (
-                <Link to={`/${props.username}/decks`}>
+                // <Link to={`/${props.username}/decks`}>
                     <Button id={"import-deck"}
                             variant={"info"}
                             className={"sticky-button"}
                             onClick={() => {
                                 props.importDeck(props.deck._id)
                                 Notification("You successfully imported this deck", "success")
+                                handleImportButton(props.deck._id)
                             }}>
                         Import deck
                     </Button>
-                </Link>
+                // </Link>
             )
         } else {
             return <>
             </>
         }
+
     }
 
     let loader, deck, error;
@@ -176,4 +199,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(UserDecks);
+export default withRouter(ReactRedux.connect(mapStateToProps, mapDispatchToProps)(UserDecks));
