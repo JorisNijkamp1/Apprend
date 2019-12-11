@@ -298,10 +298,11 @@ progress[value]::-webkit-progress-value {
         width: 100%;
         margin: 50px 0px;
     }
-  .flipCard {
-    width: 100%;
-    margin: 50px 0;
-  }
+
+    .flipCard {
+        width: 100%;
+        margin: 50px 0;
+    }
 }
 
 .half-circle {
@@ -312,12 +313,14 @@ progress[value]::-webkit-progress-value {
     height: 400px;
     background: #00b5fb;
 }
-.wave{
+
+.wave {
     POSITION: ABSOLUTE;
     BOTTOM: 0;
     fill: #ffff;
 }
-.mt-10{
+
+.mt-10 {
     margin-top: 10rem !important;
 }
 .mt-7{
@@ -326,4 +329,9 @@ progress[value]::-webkit-progress-value {
 
 .infinite-scroll-component  {
     overflow: hidden !important;
+}
+
+.sticky-button {
+    position: absolute;
+    bottom: 1.5rem;
 }

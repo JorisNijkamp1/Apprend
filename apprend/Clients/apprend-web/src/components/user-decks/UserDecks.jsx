@@ -32,7 +32,7 @@ const Deck = (props) => {
     const handleDeleteDeck = event => {
         const deckId = event.currentTarget.getAttribute('name')
         props.deleteDeckFromUser(deckId)
-    } 
+    }
 
     const confirmationBox = (bool, deck) => {
         if (bool) return (
@@ -51,7 +51,7 @@ const Deck = (props) => {
         </Card.Footer>
         )
         else return (
-        <> 
+        <>
         </>
         )
     }
@@ -100,7 +100,7 @@ const Deck = (props) => {
                                          className={'trash-icon'}
                                          size={'1x'}
                                          title={`Delete ${deck.name}`}
-                                         
+
                         />
                     </span>
                 </Col>
@@ -184,7 +184,6 @@ const Deck = (props) => {
                 </div>
                 {loader}
                 {showErrors()}
-
                 {error}
                 <Row>
                     {/* <CardColumns> */}

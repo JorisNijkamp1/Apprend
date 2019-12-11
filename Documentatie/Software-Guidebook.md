@@ -83,6 +83,15 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 		- De gebruiker kan een antwoord/definitie opgeven op de andere kant.
 		- De gebruiker krijgt een bevestigingsmelding.
 
+- **Importeren van een deck**
+	> Als gast of (anonieme) gebruiker wil ik decks kunnen importeren van een andere Apprend gebruiker, zodat ik iets kan oefenen zonder dat ik daarvoor een deck aan moet maken.\
+	\
+	De volgende invoervelden zijn aanwezig:
+		- Een deck importeren en hem daarna zelf aanpassen
+		- Een deck alleen importeren als dit deck public is.
+		- De gebruiker krijgt een bevestigingsmelding.
+
+
 - **Registreren nieuw account**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-registreren-webapp.svg)
 	> Een gebruiker kan een account registreren om zijn of haar decks op alle apparaten te kunnen gebruiken. Wanneer een gebruiker anonieme gegevens heeft, zullen deze omgezet worden naar een nieuw gebruikersaccount. Het sessie-ID in de database wordt dan vervangen door een username. Wanneer een gebruiker geen anonieme gegevens heeft, zal er simpelweg een nieuw gebruikersaccount aangemaakt worden. De gebruiker wordt na het registreren automatisch ingelogd.\
@@ -205,6 +214,7 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 | POST   | /api/v1/decks/:deckId/flashcards | Edit flashcards van een specifiek deck. |
 | POST   | /api/v1/decks                    | Maakt een nieuw deck aan.               |
 | DELETE | /api/v1/decks/:deckId            | Verwijdert een specifiek deck.          |
+| POST	 | /api/v1/decks/:deckId            | Importeer een deck van een ander        |
 
 **Users endpoints**:
 

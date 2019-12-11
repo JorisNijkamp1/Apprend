@@ -41,11 +41,20 @@ userSchema.methods.editDeckname = async function (deckId, name, description, tag
     return this
 }
 
-userSchema.methods.deleteDeck = async function(deckId){
+userSchema.methods.deleteDeck = async function (deckId) {
     this.decks = this.decks.filter(deck => {
         console.log(deck._id, deckId)
         return deck._id.toString() !== deckId
     })
+    this.markModified('decks')
+    await this.save()
+    return this
+
+}
+
+userSchema.methods.importDeck = async function (deck, user) {
+    delete deck.games;
+    this.decks.push(deck)
     this.markModified('decks')
     await this.save()
     return this
