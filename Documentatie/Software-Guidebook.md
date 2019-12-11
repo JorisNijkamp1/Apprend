@@ -67,6 +67,10 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 
 - **Decks verwijderen**
 	> De gebruiker krijgt een bevestigingsmelding.
+	
+- **Flashcards filteren**
+	> De gebruiker kan filteren tussen alle flashcards d.m.v een zoek balk
+	> De gebruiker krijgt een melding als er geen resultaten zijn
 
 - **Flashcards bewerken**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
