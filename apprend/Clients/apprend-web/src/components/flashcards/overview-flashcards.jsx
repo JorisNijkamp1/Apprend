@@ -11,23 +11,40 @@ import {
 import EditableFlashcard from "./sub-components/editable-flashcard";
 import {changeDeckFlashcards} from "../../redux-store/actions/flashcards/actions";
 import {AddFlashcardIcon} from "./sub-components/add-flashcard-icon";
-import {NavigatieBar} from "../shared/navbar/NavigatieBar";
-import {Footer} from "../shared/footer/Footer";
 import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../redux-store/actions/flashcards/async-actions";
 import Loader from "react-loaders";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {useHistory} from 'react-router'
 import NonEditableFlashcard from "./sub-components/noneditable-flashcard";
+import Form from "react-bootstrap/Form";
 
 const FlashcardsOverview = (props) => {
         const {deckId} = useParams();
         const deckExist = !props.deckData.error;
         const isCreator = (props.username === props.deckData.creatorId);
         const history = useHistory();
+        const filteredFlashcards = props.deckFlashcards;
+
 
         useEffect(() => {
             props.getDeckFlashcards(deckId)
         }, []);
+
+        const filterFlashcards = (e) => {
+            const valueInput = e.target.value
+            let flashcards;
+            if (valueInput) {
+                flashcards = filteredFlashcards.filter(flashcard => flashcard.term.toLowerCase().includes(
+                    valueInput.toLowerCase()
+                ) || flashcard.definition.toLowerCase().includes(
+                    valueInput.toLowerCase()
+                ))
+                props.changeDeckFlashcards(flashcards)
+            } else {
+                props.getDeckFlashcards(deckId)
+            }
+
+        }
 
         let flashcard, allFlashcards;
         if (deckExist && isCreator && !props.isSaving) {
@@ -35,7 +52,7 @@ const FlashcardsOverview = (props) => {
                 <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
             );
 
-            allFlashcards = props.deckFlashcards.map((flashcard) => {
+            allFlashcards = filteredFlashcards.map((flashcard) => {
                 return (
                     <EditableFlashcard key={flashcard.id}
                                        flashcardId={flashcard.id}
@@ -46,9 +63,9 @@ const FlashcardsOverview = (props) => {
             });
         } else if (!props.isSaving && !isCreator) {
             flashcard = null
-
-            allFlashcards = props.deckFlashcards.map((flashcard) => {
+            allFlashcards = filteredFlashcards.map((flashcard) => {
                 return (
+
                     <NonEditableFlashcard key={flashcard.id}
                                           flashcardId={flashcard.id}
                                           term={flashcard.term}
@@ -73,12 +90,36 @@ const FlashcardsOverview = (props) => {
                 return (
                     <Card.Header style={{backgroundColor: "#EEEEEE"}}>
                         <Card.Title>
-                            <span>{props.deckData.deckName}</span>
+                            <Form onChange={(e) => {
+                                filterFlashcards(e);
+                                e.preventDefault();
+                            }}>
+                                <Form.Group className={"float-left w-50"} controlId="formFilterFlashcards">
+                                    <Form.Control type="text" placeholder="Filter flashcards"/>
+                                </Form.Group>
+
+                            </Form>
                             <Button className={'float-right mt-1'}
                                     id={'save-flashcards-button'}
                                     onClick={() => saveFlashcardsAction()}
                                     style={{marginTop: '-8px'}}
                             >Save flashcards</Button>
+                        </Card.Title>
+                    </Card.Header>
+                )
+            } else if (deckExist && !isCreator) {
+                return (
+                    <Card.Header style={{backgroundColor: "#EEEEEE"}}>
+                        <Card.Title>
+                            <Form onChange={(e) => {
+                                filterFlashcards();
+                                e.preventDefault();
+                            }}>
+                                <Form.Group className={"float-left w-50"} controlId="formFilterFlashcards">
+                                    <Form.Control type="text" placeholder="Filter flashcards"/>
+                                </Form.Group>
+
+                            </Form>
                         </Card.Title>
                     </Card.Header>
                 )
@@ -109,18 +150,18 @@ const FlashcardsOverview = (props) => {
 
         return (
             <>
-                <Col lg={12} md={12} className={"mb-5"}>
-                    <Card style={{backgroundColor: "#EEEEEE"}} text={'dark'}>
-                        {deckHeader()}
-                        <Card.Body>
-                            {isSaving()}
-                            <Row>
-                                {allFlashcards}
-                                {flashcard}
-                            </Row>
-                        </Card.Body>
-                    </Card>
-                </Col>
+
+                <Card style={{backgroundColor: "#EEEEEE", width: "100%"}} text={'dark'}>
+                    {deckHeader()}
+                    <Card.Body>
+                        {isSaving()}
+                        <Row>
+                            {allFlashcards}
+                            {flashcard}
+                        </Row>
+                    </Card.Body>
+                </Card>
+
             </>
         );
     }

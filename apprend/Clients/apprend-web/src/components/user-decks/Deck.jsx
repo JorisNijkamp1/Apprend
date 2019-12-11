@@ -153,7 +153,7 @@ const UserDecks = (props) => {
                             </Card.Body>
                         </Card>
                     </Row>
-                    <Row>
+                    <Row className={"mb-5"}>
                         <FlashcardsOverview/>
                     </Row>
                 </>

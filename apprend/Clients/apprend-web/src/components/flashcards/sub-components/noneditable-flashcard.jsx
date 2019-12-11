@@ -9,7 +9,7 @@ import {store} from 'react-notifications-component';
 const NonEditableFlashcard = (props) => {
     return (
         <>
-            <Col xs={12} md={6} lg={4} id={'flashcard-' + props.flashcardId}>
+            <Col className={"mb-5"} xs={12} md={6} lg={4} id={'flashcard-' + props.flashcardId}>
                 <Card text={'dark'}>
                     {/*<Card.Header className={"text-center"}>*/}
                     {/*    <b>{flashcardName}</b>*/}
