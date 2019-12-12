@@ -33,12 +33,15 @@ const EditableFlashcard = (props) => {
     props.changeDeckFlashcards(deckFlashcards);
 
     const deleteFlashcard = (flashcardId) => {
-        let deckFlashcards = props.deckFlashcards.filter(fc => {
-            return fc.id !== flashcardId
-        });
-        props.changeDeckFlashcards(deckFlashcards)
-        setDeleteNotification(false);
+        let deckFlashcards = props.allFlashcards.filter(fc => fc.id !== flashcardId);
 
+        if (props.filteredFlashcards) {
+            let filteredFlashcards = props.filteredFlashcards.filter(fc => fc.id !== flashcardId);
+            props.filterFunc(filteredFlashcards)
+        }
+        props.changeDeckFlashcards(deckFlashcards)
+
+        setDeleteNotification(false);
         return (
             store.addNotification({
                 title: "You successfully deleted a card",

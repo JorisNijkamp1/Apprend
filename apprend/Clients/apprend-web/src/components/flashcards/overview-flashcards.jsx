@@ -21,6 +21,7 @@ const FlashcardsOverview = (props) => {
         const deckExist = !props.deckData.error;
         const isCreator = (props.username === props.deckData.creatorId);
         const history = useHistory();
+
         const [filteredFlashcards, setFilteredFlashcards] = useState(null);
 
         useEffect(() => {
@@ -50,13 +51,15 @@ const FlashcardsOverview = (props) => {
                 );
             }
 
-
             allFlashcards = ((filteredFlashcards) ? filteredFlashcards : props.deckFlashcards).map((flashcard) => {
                 return (
                     <EditableFlashcard key={flashcard.id}
                                        flashcardId={flashcard.id}
                                        term={flashcard.term}
                                        definition={flashcard.definition}
+                                       allFlashcards={props.deckFlashcards}
+                                       filterFunc={setFilteredFlashcards}
+                                       filteredFlashcards={filteredFlashcards}
                     />
                 )
             });
@@ -84,7 +87,7 @@ const FlashcardsOverview = (props) => {
                     </>
                 )
             }
-        }
+        };
 
         const isSaving = () => {
             if (props.isSaving) {
