@@ -42,28 +42,28 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 	> Wanneer een gebruiker **zonder** account een deck aanmaakt, worden zijn gegevens als anoniem in de database opgeslagen onder een sessie-ID. Deze wordt ook als cookie in de browser opgeslagen zodat de browser de anonieme gegevens kan ophalen.<br />
 	<br />
 	De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een naam opgeven.
-		- De gebruiker kan een beschrijving opgeven.
-		- De gebruiker kan tags toevoegen aan zijn deck.
+    - De gebruiker kan een naam opgeven.
+    - De gebruiker kan een beschrijving opgeven.
+    - De gebruiker kan tags toevoegen aan zijn deck.
 
 - **Deck spelen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Deck-playing.svg)
 	> De gebruiker krijgt een selectie van kaarten die op willekeurige volgorde gepresenteerd worden. Dit is gebaseerd op het [Leitner Systeem](https://en.wikipedia.org/wiki/Leitner_system) (Zie hoofdstuk 7: Infrastructure Architecture).<br />
 	<br />
 	De gebruiker kan:
-		- Een flashcard omdraaien om het antwoord of de definitie te tonen;
-		- Een flashcard nogmaals omdraaien om de vraag of de term weer in te zien;
-		- Aangeven of hij/zij de flashcard goed had;
-		- Aangeven of hij/zij de flashcard fout had;
-		- Het spel beëindigen;
-		- Een scoreboard inzien wanneer het spelen voorbij is;
+    - Een flashcard omdraaien om het antwoord of de definitie te tonen;
+    - Een flashcard nogmaals omdraaien om de vraag of de term weer in te zien;
+    - Aangeven of hij/zij de flashcard goed had;
+    - Aangeven of hij/zij de flashcard fout had;
+    - Het spel beëindigen;
+    - Een scoreboard inzien wanneer het spelen voorbij is;
 
 - **Decks bewerken**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/edit-deck.svg)
 	> De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een naam aanpassen.
-		- De gebruiker kan een beschrijving aanpassen.
-		- De gebruiker kan tags toevoegen en verwijderen.
+    - De gebruiker kan een naam aanpassen.
+    - De gebruiker kan een beschrijving aanpassen.
+    - De gebruiker kan tags toevoegen en verwijderen.
 
 - **Decks verwijderen**
 	> De gebruiker krijgt een bevestigingsmelding.
@@ -75,25 +75,25 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 - **Flashcards bewerken**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
 	>	De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een vraag/term aanpassen op de ene kant.
-		- De gebruiker kan een antwoord/definitie aanpassen op de andere kant.
+    - De gebruiker kan een vraag/term aanpassen op de ene kant.
+    - De gebruiker kan een antwoord/definitie aanpassen op de andere kant.
 
 - **Flashcards uit een deck verwijderen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
 	> De gebruiker kan een oneindig aantal flashcards toevoegen.<br />
 	<br />
 	De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een vraag/term opgeven op de ene kant.
-		- De gebruiker kan een antwoord/definitie opgeven op de andere kant.
-		- De gebruiker krijgt een bevestigingsmelding.
+    - De gebruiker kan een vraag/term opgeven op de ene kant.
+    - De gebruiker kan een antwoord/definitie opgeven op de andere kant.
+    - De gebruiker krijgt een bevestigingsmelding.
 
 - **Importeren van een deck**
 	> Als gast of (anonieme) gebruiker wil ik decks kunnen importeren van een andere Apprend gebruiker, zodat ik iets kan oefenen zonder dat ik daarvoor een deck aan moet maken.<br />
 	<br />
 	De volgende invoervelden zijn aanwezig:
-		- Een deck importeren en hem daarna zelf aanpassen
-		- Een deck alleen importeren als dit deck public is.
-		- De gebruiker krijgt een bevestigingsmelding.
+    - Een deck importeren en hem daarna zelf aanpassen
+    - Een deck alleen importeren als dit deck public is.
+    - De gebruiker krijgt een bevestigingsmelding.
 
 
 - **Registreren nieuw account**
@@ -101,10 +101,10 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 	> Een gebruiker kan een account registreren om zijn of haar decks op alle apparaten te kunnen gebruiken. Wanneer een gebruiker anonieme gegevens heeft, zullen deze omgezet worden naar een nieuw gebruikersaccount. Het sessie-ID in de database wordt dan vervangen door een username. Wanneer een gebruiker geen anonieme gegevens heeft, zal er simpelweg een nieuw gebruikersaccount aangemaakt worden. De gebruiker wordt na het registreren automatisch ingelogd.<br />
 	<br />
 	De volgende invoervelden zijn aanwezig:
-		- De gebruiker moet een gebruikersnaam opgeven. Deze moet uniek zijn en mag alleen letters of cijfers bevatten.
-		- De gebruiker moet een E-mailadres opgeven. Deze moet uniek zijn en mag alleen letters of cijfers bevatten, met uitzondering van '@' en '.'.
-		- De gebruiker moet een wachtwoord opgeven.
-		- De gebruiker moet nogmaals een wachtwoord opgeven ter bevestiging.
+    - De gebruiker moet een gebruikersnaam opgeven. Deze moet uniek zijn en mag alleen letters of cijfers bevatten.
+    - De gebruiker moet een E-mailadres opgeven. Deze moet uniek zijn en mag alleen letters of cijfers bevatten, met uitzondering van '@' en '.'.
+    - De gebruiker moet een wachtwoord opgeven.
+	- De gebruiker moet nogmaals een wachtwoord opgeven ter bevestiging.
 
 - **Inloggen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-inloggen-webapp.svg)
@@ -123,19 +123,19 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 ## Quality Attributes  
 De onderstaande lijst bevat een overzicht van niet-functionele kwaliteitsattributen van het systeem.  
   
-- **Reliability**  
- - Het systeem is getest door middel van Jest unittests.  
-   - Het systeem is getest door middel van Puppeteer end-to-end tests.  
-   - Het systeem is getest door middel van Jest API-tests.  
+**Reliability**  
+    - Het systeem is getest door middel van Jest unittests.  
+    - Het systeem is getest door middel van Puppeteer end-to-end tests.  
+    - Het systeem is getest door middel van Jest API-tests.  
   
-- **Security**  
- - Wachtwoorden worden geëncrypt opgeslagen volgens de Bcrypt encryptie.  
+**Security**  
+    - Wachtwoorden worden geëncrypt opgeslagen volgens de Bcrypt encryptie.  
   
-- **Usability**  
- - Responsive, werkt op mobiele apparaten.  
-  
-- **Legal, compliance and regulatory requirements**  
- - Voldoet aan de AVG-wetten.  
+**Usability**  
+    - Responsive, werkt op mobiele apparaten.  
+
+**Legal, compliance and regulatory requirements**  
+    - Voldoet aan de AVG-wetten.  
   
 ## Constraints  
 De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevormd tijdens het ontwikkelen. De meeste van deze beperkingen zijn door de product owner aan ons voorgelegd.  
@@ -209,16 +209,18 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
   
 **Decks endpoints**:  
   
-| Method | URL                              | Beschrijving                            |
-|--------|----------------------------------|-----------------------------------------|
-| GET    | /api/v1/decks/home               | Haal de decks voor de homepage op.      |
-| GET    | /api/v1/decks/:deckId            | Haalt een specifiek deck op.            |
-| GET    | /api/v1/decks/:deckId/flashcards | Haalt alle flashcard van een deck op.   |
-| GET	 | /api/v1/decks/:username/tags	    | Haalt alle decks van een user op.	      |
-| POST   | /api/v1/decks/:deckId/flashcards | Edit flashcards van een specifiek deck. |
-| POST   | /api/v1/decks                    | Maakt een nieuw deck aan.               |
-| DELETE | /api/v1/decks/:deckId            | Verwijdert een specifiek deck.          |
-| POST	 | /api/v1/decks/:deckId            | Importeer een deck van een ander        |
+| Method | URL                                                      | Beschrijving                                            |
+|--------|----------------------------------------------------------|---------------------------------------------------------|
+| GET    | /api/v1/decks/home                                       | Haal de decks voor de homepage op.                      |
+| GET    | /api/v1/decks/:deckId                                    | Haalt een specifiek deck op.                            |
+| GET    | /api/v1/decks/:deckId/flashcards                         | Haalt alle flashcard van een deck op.                   |
+| GET	 | /api/v1/decks/:username/tags	                            | Haalt alle decks van een user op.	                      |
+| POST   | /api/v1/decks                                            | Maakt een nieuw deck aan.                               |
+| POST	 | /api/v1/decks/:deckId                                    | Importeer een deck van een ander                        |
+| POST   | /api/v1/decks/:deckId/flashcards                         | Edit flashcards van een specifiek deck.                 |
+| PUT    | /api/v1/decks/:deckId/flashcards/:flashcardId/leitner    | Update box en sessionPlayed van een flashcard.          |
+| PUT    | /api/v1/decks/:deckId/session                            | Update session van een deck.                            |
+| DELETE | /api/v1/decks/:deckId                                    | Verwijdert een specifiek deck.                          |
 
 **Users endpoints**:
 
