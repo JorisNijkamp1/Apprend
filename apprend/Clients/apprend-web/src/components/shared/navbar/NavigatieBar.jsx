@@ -5,6 +5,8 @@ import Nav from "react-bootstrap/Nav"
 import Container from "react-bootstrap/Container";
 import {Link} from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import {logoutAction} from "../../../redux-store/actions/login/async-actions";
+import {Notification} from "../notification/Notification";
 
 const NavbarUI = (props) => {
 
@@ -13,7 +15,10 @@ const NavbarUI = (props) => {
             return (
                 <>
                     <NavDropdown.Divider/>
-                    <NavDropdown.Item onClick={() => console.log('TODO: Logout Fetch')}>Logout</NavDropdown.Item>
+                    <NavDropdown.Item id={"logout-btn"} onClick={() => {
+                        props.logout()
+                        Notification("You successfully logged out!", "success")
+                    }}>Logout</NavDropdown.Item>
                 </>
             )
         }
@@ -95,7 +100,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {}
+    return {
+        logout: () => dispatch(logoutAction()),
+    }
 }
 
 export const NavigatieBar = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(NavbarUI);
