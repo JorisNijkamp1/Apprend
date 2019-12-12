@@ -47,6 +47,7 @@ async function seedUsers() {
                     "flashcards": []
                 },
                 {
+                    "_id": "5ddfadab612b09570c6f3a33",
                     "name": "Finnish to Dutch prefixes",
                     "description": "Learning prefixes ",
                     "creatorId": "Joris",
@@ -66,6 +67,9 @@ async function seedUsers() {
                             "question": "Koira",
                             "answer": "Hond"
                         }
+                    ],
+                    "tags": [
+                        "test"
                     ]
                 }
             ]
@@ -398,6 +402,13 @@ async function seedUsers() {
                             "answer": "Rennen"
                         },
                     ]
+                },
+                {
+                    "name": "French to Chinese",
+                    "description": "Dolar English deck",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": []
                 }
             ]
         },

@@ -11,6 +11,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
+import Form from "react-bootstrap/Form";
+import {useHistory} from "react-router-dom";
 
 const getMatchingLanguages = (value, decks) => {
     const escapedValue = escapeRegexCharacters(value.trim());
@@ -20,7 +22,7 @@ const getMatchingLanguages = (value, decks) => {
     }
 
     const regex = new RegExp('^' + escapedValue, 'i');
-    decks = decks.filter(deck => regex.test(deck.name))
+    decks = decks.filter(deck => regex.test(deck.name));
     return (decks.length > 4) ? decks.slice(0, 4) : decks;
 };
 
@@ -100,6 +102,12 @@ const SearchDecksInput = (props) => {
         setSuggestions([]);
     };
 
+    let history = useHistory()
+    const onSubmit = (e) => {
+        e.preventDefault();
+        history.push(props.linkTo)
+    };
+
     const inputProps = {
         placeholder: "Search a deck",
         value,
@@ -110,39 +118,41 @@ const SearchDecksInput = (props) => {
 
     return (
         <>
-            <Row>
-                <Col md={{span: 10, offset: 1}}>
-                    <Row>
-                        <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>
-                            <InputGroup className="mb-3">
-                                <Autosuggest
-                                    suggestions={suggestions}
-                                    onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                                    onSuggestionsClearRequested={onSuggestionsClearRequested}
-                                    getSuggestionValue={getSuggestionValue}
-                                    renderSuggestion={renderSuggestion}
-                                    inputProps={inputProps}
-                                    highlightFirstSuggestion={true}
-                                />
-                            </InputGroup>
-                        </Col>
-                        <Col xs={{span: 2}} md={{span: 2}} lg={{span: 2}}>
-                            <InputGroup.Append>
-                                <Link to={props.linkTo}>
-                                    <Button className={'bg-blue text-white hover-shadow'}>
-                                        <FontAwesomeIcon icon={faSearch}
-                                                         className={'trash-icon'}
-                                                         size={'1x'}
-                                                         title={`Search`}
-                                        />
-                                        <span className={'ml-1'}>Search</span>
-                                    </Button>
-                                </Link>
-                            </InputGroup.Append>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
+            <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search'}>
+                <Row>
+                    <Col md={{span: 10, offset: 1}}>
+                        <Row>
+                            <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>
+                                <InputGroup className="mb-3">
+                                    <Autosuggest
+                                        suggestions={suggestions}
+                                        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                                        onSuggestionsClearRequested={onSuggestionsClearRequested}
+                                        getSuggestionValue={getSuggestionValue}
+                                        renderSuggestion={renderSuggestion}
+                                        inputProps={inputProps}
+                                        highlightFirstSuggestion={false}
+                                    />
+                                </InputGroup>
+                            </Col>
+                            <Col xs={{span: 2}} md={{span: 2}} lg={{span: 2}}>
+                                <InputGroup.Append>
+                                    <Link to={props.linkTo}>
+                                        <Button className={'bg-blue text-white hover-shadow'}>
+                                            <FontAwesomeIcon icon={faSearch}
+                                                             className={'trash-icon'}
+                                                             size={'1x'}
+                                                             title={`Search`}
+                                            />
+                                            <span className={'ml-1'}>Search</span>
+                                        </Button>
+                                    </Link>
+                                </InputGroup.Append>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Form>
         </>
     );
 };

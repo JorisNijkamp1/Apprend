@@ -28,13 +28,15 @@ const DeckEditUI = (props) => {
             if (response.tags !== 0) {
                 response.tags.forEach(tag => {
                     addListItem(tag);
+                    props.clearTags();
                 })
             }
         })
     }, []);
 
-    const checkAdded = tagValue => {
-        return props.tags.some(tag => {
+    const checkAdded = (tagValue) => {
+        let tags = deckData.oldDeckTags.concat(props.tags)
+        return tags.some(tag => {
             return tag === tagValue
         });
     }
@@ -42,10 +44,10 @@ const DeckEditUI = (props) => {
     const addListItem = name => {
         let tagList = document.getElementById('tagList');
         let entry = document.createElement('li');
-        let button = document.createElement('button');
-        button.innerHTML = "Delete tag";
-        button.className = "tagButton btn btn-blue hover-shadow";
-        button.addEventListener ("click", (e) => {
+        let button = document.createElement('i');
+        entry.className = "listItem"
+        button.innerHTML = "<i id='deleteTag' class='fa fa-times tagButton'/>";
+        button.addEventListener ("click", e => {
             e.preventDefault();
             props.deleteTag(name);
             tagList.removeChild(entry);
@@ -65,7 +67,7 @@ const DeckEditUI = (props) => {
         let tagValue = document.getElementById("tags").value;
         document.getElementById("tags").value = "";
         let match = false;
-        if ((props.tags.length !== 0 && deckData.oldDeckTags.length !== 0) || (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0)) {
+        if (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0) {
             if (checkAdded(tagValue)){
                 Notification("You already have that tag", "danger");
             } else {

@@ -8,25 +8,7 @@ import {setSearchValue} from "../../redux-store/actions/search/actions";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
-
-const getMatchingLanguages = (value, decks) => {
-    const escapedValue = escapeRegexCharacters(value.trim());
-
-    if (escapedValue === '') {
-        return [];
-    }
-
-    const regex = new RegExp('^' + escapedValue, 'i');
-    const match = [];
-    for (let i = 0; i < decks.length; i++) {
-        for (let j = 0; j < decks[i].tags.length; j++) {
-            if (regex.test(decks[i].tags[j])) {
-                match.push(decks[i])
-            }
-        }
-    }
-    return (match.length > 4) ? match.slice(0, 4) : match;
-};
+import {setFilteredDecks} from "../../redux-store/actions/decks/actions";
 
 /* ----------- */
 /*    Utils    */
@@ -41,14 +23,10 @@ const escapeRegexCharacters = (str) => {
 /*    Component    */
 /* --------------- */
 const getSuggestionValue = (suggestion) => {
-    console.log('jo')
     return suggestion.name;
 };
 
 function renderSuggestion(suggestion) {
-    console.log('hoi')
-    console.log(suggestion)
-    console.log(suggestion.deckId !== undefined)
     if (suggestion.deckId) {
         return (
             <Link to={`/decks/${suggestion.deckId}`} className={'search-suggestions-link'}>
@@ -56,12 +34,15 @@ function renderSuggestion(suggestion) {
             </Link>
         );
     } else {
-        console.log('hoi')
-        return "There are no decks with this tag!"
+        return (
+            <div className={'search-suggestions-link'}>
+                <span style={{fontWeight: 600}}>There are no decks with this tag!</span>
+            </div>
+        );
     }
 }
 
-const SearchDecksInput = (props) => {
+const FilterTagsInput = (props) => {
     const [value, setValue] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     let lastRequestId = null;
@@ -74,15 +55,16 @@ const SearchDecksInput = (props) => {
 
         // Request
         lastRequestId = setTimeout(async () => {
-            const url = `${API_URL}/decks/tags?tag=${value}`;
+            const url = `${API_URL}/decks/${props.username}/tags?tag=${value}`;
             let decks;
 
             const response = await fetch(url, {
-                credentials: 'include',
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
+                mode: 'cors'
             });
 
             if (response.status === 200) {
@@ -98,6 +80,9 @@ const SearchDecksInput = (props) => {
     };
 
     const onChange = (event, {newValue}) => {
+        if (newValue.length === 0) {
+            props.setFilteredDecks([]);
+        }
         props.setSearchValue(newValue);
         setValue(newValue);
     };
@@ -110,12 +95,40 @@ const SearchDecksInput = (props) => {
         setSuggestions([]);
     };
 
+    const getMatchingLanguages = (value, decks) => {
+        const escapedValue = escapeRegexCharacters(value.trim());
+    
+        if (escapedValue === '') {
+            return [];
+        }
+    
+        const regex = new RegExp('^' + escapedValue, 'i');
+        const match = [];
+        for (let i = 0; i < decks.length; i++) {
+            for (let j = 0; j < decks[i].tags.length; j++) {
+                if (regex.test(decks[i].tags[j])) {
+                    match.push(decks[i])
+                }
+            }
+        }
+    
+        if (match.length === 0) {
+            props.setFilteredDecks("There are no decks with this tag!");
+            match.push("There are no decks with this tag!")
+            return match
+        } else {
+            props.setFilteredDecks(match);
+            return (match.length > 4) ? match.slice(0, 4) : match;
+        }
+    };
+
     const inputProps = {
         placeholder: "Filter on tags",
         value,
         onChange: onChange,
         className: 'form-control',
-        style: {width: '100%'}
+        style: {width: '100%'},
+        id: "Filter"
     };
 
     return (
@@ -136,7 +149,6 @@ const SearchDecksInput = (props) => {
                                 />
                             </InputGroup>
                         </Col>
-
                     </Row>
                 </Col>
             </Row>
@@ -144,20 +156,22 @@ const SearchDecksInput = (props) => {
     );
 };
 
-SearchDecksInput.propTypes = {
+FilterTagsInput.propTypes = {
     linkTo: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => {
     return {
         searchValue: state.search.searchValue,
+        filteredDecks: state.decks.filteredDecks
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         setSearchValue: (searchValue) => dispatch(setSearchValue(searchValue)),
+        setFilteredDecks: (decks) => dispatch(setFilteredDecks(decks))
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchDecksInput);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterTagsInput);

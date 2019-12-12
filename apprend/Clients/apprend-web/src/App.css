@@ -281,7 +281,16 @@ progress[value]::-webkit-progress-value {
 }
 
 .tagButton {
-  margin-left: 50px;
+    color: red;
+    margin-left: 5px;
+}
+
+.listItem {
+    font-size: 20px;
+    text-align: center;
+    list-style: none;
+    display: inline-block;
+    width: 30%;
 }
 
 @media only screen and (max-width: 800px) {
@@ -318,10 +327,11 @@ progress[value]::-webkit-progress-value {
     margin-top: 7rem !important;
 }
 
+.infinite-scroll-component  {
+    overflow: hidden !important;
+}
+
 .sticky-button {
     position: absolute;
     bottom: 1.5rem;
-}
-.infinite-scroll-component  {
-    overflow: hidden !important;
 }
