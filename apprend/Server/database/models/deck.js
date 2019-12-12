@@ -22,6 +22,9 @@ const deckSchema = new mongoose.Schema({
     status: {
         type: String,
     },
+    tags: {
+        type: [],
+    },
     flashcards: {
         type: [{type: Flashcard}],
     },
@@ -33,9 +36,10 @@ const deckSchema = new mongoose.Schema({
     }
 });
 
-deckSchema.methods.editDeck = async function(name, description){
+deckSchema.methods.editDeck = async function(name, description, tags){
     this.name = name
     this.description = description
+    this.tags = tags
 }
 
 deckSchema.methods.toggleStatus = async function(){

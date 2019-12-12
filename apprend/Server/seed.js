@@ -67,6 +67,9 @@ async function seedUsers() {
                             "question": "Koira",
                             "answer": "Hond"
                         }
+                    ],
+                    "tags": [
+                        "test"
                     ]
                 }
             ]
@@ -75,34 +78,339 @@ async function seedUsers() {
             "_id": "Aaron",
             "email": "aaron@gmail.com",
             "password": "$2a$10$JrWeSo2Y44VI2J8LnKLSwOtPkIyVEP5Y66HJ9cUIR3CX68vjFtPrC",
-            "decks": [{
-                "name": "English to dutch verbs",
-                "description": "My english verbs",
-                "creatorId": "Aaron",
-                // "creatorId": ,
-                // "lastPlayedDate": ,
-                "status": "isEdited",
-                "flashcards": [
-                    {
-                        "_id": "Apprende0",
-                        "type": "Text only",
-                        "question": "Eating",
-                        "answer": "Eten"
-                    },
-                    {
-                        "_id": "Apprende1",
-                        "type": "Text only",
-                        "question": "Walking",
-                        "answer": "Lopen"
-                    },
-                    {
-                        "_id": "Apprende2",
-                        "type": "Text only",
-                        "question": "Running",
-                        "answer": "Rennen"
-                    },
-                ]
-            }]
+            "decks": [
+                {
+                    "name": "English to dutch verbs",
+                    "description": "My english verbs",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende0",
+                            "type": "Text only",
+                            "question": "Eating",
+                            "answer": "Eten"
+                        },
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "Lorem ipsum dolar",
+                    "description": "Lorem ipsum dolar sint description deck",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende0",
+                            "type": "Text only",
+                            "question": "Eating",
+                            "answer": "Eten"
+                        },
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "Sint dolar English",
+                    "description": "Dolar English deck",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "English to Spanish verbs",
+                    "description": "Special deck for learning Spanish",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Dolphin types",
+                    "description": "Type of Dolphins",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende0",
+                            "type": "Text only",
+                            "question": "Eating",
+                            "answer": "Eten"
+                        },
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "Talking with animals",
+                    "description": "Weekend fun",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "South Park seasons",
+                    "description": "My lovely SouthPark Seasons",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende0",
+                            "type": "Text only",
+                            "question": "Eating",
+                            "answer": "Eten"
+                        },
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "French to Dutch",
+                    "description": "Learning Dutch and French",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende0",
+                            "type": "Text only",
+                            "question": "Eating",
+                            "answer": "Eten"
+                        },
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "Tweets by Trump",
+                    "description": "For Trump fans",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Twitter",
+                            "answer": "Love"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "French to Spanish verbs",
+                    "description": "Special deck for learning French",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Spanish to French",
+                    "description": "Lorem ilar sint description deck",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende0",
+                            "type": "Text only",
+                            "question": "Eating",
+                            "answer": "Eten"
+                        },
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "English Words",
+                    "description": "Dolar English deck",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": [
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                    ]
+                },
+                {
+                    "name": "French to Chinese",
+                    "description": "Dolar English deck",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": []
+                }
+            ]
         },
     ])
 }

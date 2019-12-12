@@ -104,20 +104,24 @@ export const getDeckEditAction = (deckId) => {
             mode: 'cors'
         };
         const response = await fetch(url, options)
-        const data = await response.json();
-        if (data.success) {
-            dispatch(setDeckEditAction(data.deck))
+        if (response.status === 200) {
+            const data = await response.json();
+            dispatch(setDeckEditAction(data))
+            return data
         }
     }
 }
 
-export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription) => {
+export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription, oldTags, newTags) => {
+    let tags = oldTags
+    if (newTags && newTags.length > 0) tags = oldTags.concat(newTags)
     return async dispatch => {
         const url = `${API_URL}/decks/${deckId}`;
         let body = {
             name: deckName,
             description: deckDescription,
-            creatorId: creatorId
+            creatorId: creatorId,
+            tags: tags
         };
         const options = {
             method: 'PUT',

@@ -4,7 +4,7 @@ import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {Footer} from "../shared/footer/Footer"
 import {
     getDeckEditAction,
@@ -20,6 +20,10 @@ import Button from "react-bootstrap/Button";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {deleteDeckFromUser, toggleDeckStatus} from '../../redux-store/actions/decks/async-actions'
 import {Form} from "react-bootstrap";
+import FilterTagsInput from "../search-input/FilterTagsInput";
+import {AddCard} from "./sub-components/AddCard";
+import {setFilteredDecks} from "../../redux-store/actions/decks/actions";
+import { Link } from 'react-router-dom'
 
 const Deck = (props) => {
     const {username} = useParams();
@@ -32,6 +36,7 @@ const Deck = (props) => {
 
     useEffect(() => {
         props.getUserDecks(username)
+        props.setFilteredDecks([])
     }, []);
 
     const confirmationBoxHOC = (message, deck, funct, stateFunct, property, index) => {
@@ -73,7 +78,7 @@ const Deck = (props) => {
                 let deckData = {...decks[deckId]}
                 deckData.description = decks[deckId].description ? decks[deckId].description : storeDeck.description
                 deckData.name = decks[deckId].name ? decks[deckId].name : storeDeck.name
-                props.setDeckEditedAction(storeDeck.creatorId, deckId, deckData.name, deckData.description)
+                props.setDeckEditedAction(storeDeck.creatorId, deckId, deckData.name, deckData.description, storeDeck.tags)
                 toggleLocalStateProperty(event, 'editState')            
             }
         } catch (e) {
@@ -396,6 +401,9 @@ const Deck = (props) => {
                         </div>
                     </Col>
                 </Row>
+                <div className={'pt-3 pb-5'}>
+                    <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`} username={props.userDecks.user}/>
+                </div>
                 {showErrors()}
                 <Row>
                     {ShowDecks(props.isLoading, props.decks)}
@@ -412,7 +420,9 @@ function mapStateToProps(state) {
         userDecks: state.decks.userDecks,
         decks: state.decks.userDecks.decks,
         isLoading: state.decks.isLoading,
-        username: state.login.username
+        username: state.login.username,
+        searchValue: state.search.searchValue,
+        filteredDecks: state.decks.filteredDecks
     }
 }
 
@@ -421,9 +431,10 @@ function mapDispatchToProps(dispatch) {
         isLoggedIn: () => dispatch(isLoggedIn()),
         getUserDecks: (username) => dispatch(getUserDecksAction(username)),
         deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
-        setDeckEditedAction: (creatorId, _id, deckName, deckDescription) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription)),
+        setDeckEditedAction: (creatorId, _id, deckName, deckDescription, oldTags, newTags) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription, oldTags, newTags)),
         getDecksEdit: (deckId) => dispatch(getDeckEditAction(deckId)),
         toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),
+        setFilteredDecks: (decks) => dispatch(setFilteredDecks(decks))
     }
 }
 

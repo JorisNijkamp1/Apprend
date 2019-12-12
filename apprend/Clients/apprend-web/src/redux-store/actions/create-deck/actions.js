@@ -1,4 +1,4 @@
-import { CREATEDECK_EDIT_DECKNAME, CREATEDECK_SET_ISLOADING } from '../action-types'
+import { CREATEDECK_EDIT_DECKNAME, CREATEDECK_SET_ISLOADING, CREATEDECK_ADD_TAG, CREATEDECK_DELETE_TAG, CREATEDECK_CLEAR_TAGS } from '../action-types'
 
 export function changeDeckName(name){
     return {
@@ -11,5 +11,25 @@ export function setIsLoading(bool){
     return {
         type: CREATEDECK_SET_ISLOADING,
         payload: bool
+    }
+}
+
+export function addTag(tag){
+    return {
+        type: CREATEDECK_ADD_TAG,
+        payload: tag
+    }
+}
+
+export function deleteTag(tag){
+    return {
+        type: CREATEDECK_DELETE_TAG,
+        payload: tag
+    }
+}
+
+export function clearTags(){
+    return {
+        type: CREATEDECK_CLEAR_TAGS
     }
 }
