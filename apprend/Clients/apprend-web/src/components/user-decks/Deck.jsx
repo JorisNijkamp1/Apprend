@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import {Link, useParams} from "react-router-dom";
 import {Footer} from "../shared/footer/Footer"
-import {getDeckAction} from "../../redux-store/actions/decks/async-actions";
+import {getDeckAction, getDeckEditAction} from "../../redux-store/actions/decks/async-actions";
 import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
 import Loader from "react-loaders";
@@ -24,7 +24,8 @@ import ImportButton from "./sub-components/ImportButton";
 import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../../redux-store/actions/decks/async-actions'
 import ConfirmationBox from "./sub-components/ConfirmationBox";
 import { Notification } from '../shared/notification/Notification';
-import { addTag, clearTags, deleteTag } from '../../redux-store/actions/create-deck/actions';
+import { addTag, clearTags } from '../../redux-store/actions/create-deck/actions';
+import { deleteTag } from "../../redux-store/actions/decks/actions";
 
 
 
@@ -43,8 +44,65 @@ const UserDecks = (props) => {
     useEffect(() => {
         props.isLoggedIn()
         props.getDeck(deckId)
-
     }, []);
+
+    const checkAdded = (tagValue) => {
+        let tags = deckData.oldDeckTags.concat(props.tags)
+        return tags.some(tag => {
+            return tag === tagValue
+        });
+    }
+
+    const addListItem = name => {
+        let tagList = document.getElementById('tagList');
+        let entry = document.createElement('li');
+        let button = document.createElement('i');
+        entry.className = "listItem"
+        button.innerHTML = "<i id='deleteTag' class='fa fa-times tagButton'/>";
+        button.addEventListener ("click", e => {
+            e.preventDefault();
+            props.deleteTag(name);
+            tagList.removeChild(entry);
+        });
+        entry.appendChild(document.createTextNode(name));
+        entry.appendChild(button);
+        tagList.appendChild(entry);
+    }
+
+    const deckData = {
+        // deckName: (!deckNameEdited && props.deckEdit.name) ? props.deck.name : deckName,
+        // deckDescription: (!deckDescriptionEdited && props.deck.description) ? props.deck.description : deckDescription,
+        oldDeckTags: props.deckEdit.tags
+    }
+
+    const getTagValue = () => {
+        let tagValue = document.getElementById("tags").value;
+        document.getElementById("tags").value = "";
+        let match = false;
+        if (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0) {
+            if (checkAdded(tagValue)){
+                Notification("You already have that tag", "danger");
+            } else {
+                match = true;
+            }
+            if (match === true) {
+                if (tagValue.trim() !== "") {
+                    props.addTag(tagValue);
+                    addListItem(tagValue);
+                    match = false;
+                } else {
+                    Notification("You can't add an empty tag", "danger");
+                }
+            }
+        } else {
+            if (tagValue.trim() !== "") {
+                props.addTag(tagValue);
+                addListItem(tagValue);
+            } else {
+                Notification("You can't add an empty tag", "danger");
+            }
+        }
+    }
 
     const playDeckHandler = () => {
         history.push(`/decks/${props.deck._id}/play`)
@@ -73,7 +131,7 @@ const UserDecks = (props) => {
     }
 
     const editDeckHandler = () => {
-        props.editDeck(props.deck.creatorId, props.deck._id, editName ? editName : props.deck.name, editDescription ? editDescription : props.deck.description, props.deck.tags, props.tags )
+        props.editDeck(props.deck.creatorId, props.deck._id, editName ? editName : props.deck.name, editDescription ? editDescription : props.deck.description, deckData.oldDeckTags, props.tags )
         toggleEditStateHandler()
         props.clearTags()
     }
@@ -83,6 +141,17 @@ const UserDecks = (props) => {
     }
 
     const toggleEditStateHandler = () => {
+        if (editState !== true) {
+            props.getDecksEdit(deckId)
+            .then((response) => {
+                if (response.tags !== 0) {
+                    response.tags.forEach(tag => {
+                        addListItem(tag);
+                        props.clearTags();
+                    })
+                }
+            })
+        }
         setEditName('')
         seteditState(!editState)
     }
@@ -180,6 +249,9 @@ const UserDecks = (props) => {
                                 <Col xs={12} md={4}>
                                     <b>Total flashcards: </b>{totalFlashcards}
                                 </Col>
+                                <Col xs={12} md={4}>
+                                    <b>Tags: </b>{}
+                                </Col>
                             </Row>
                         </Card.Subtitle>
 
@@ -247,71 +319,6 @@ const UserDecks = (props) => {
         )
     }
 
-    const checkAdded = (tagValue) => {
-        let tags = deckData.oldDeckTags.concat(props.tags)
-        return tags.some(tag => {
-            return tag === tagValue
-        });
-    }
-
-    const addListItem = name => {
-        let tagList = document.getElementById('tagList');
-        let entry = document.createElement('li');
-        let button = document.createElement('i');
-        entry.className = "listItem"
-        button.innerHTML = "<i id='deleteTag' class='fa fa-times tagButton'/>";
-        button.addEventListener ("click", e => {
-            e.preventDefault();
-            props.deleteTag(name);
-            tagList.removeChild(entry);
-        });
-        entry.appendChild(document.createTextNode(name));
-        entry.appendChild(button);
-        tagList.appendChild(entry);
-    }
-
-    const x = () => {
-        if (props.decks && props.deck.length > 0)
-        return props.deck.tags(tag => (
-            tag
-        ))
-    }
-
-    const deckData = {
-        // deckName: (!deckNameEdited && props.deckEdit.name) ? props.deck.name : deckName,
-        // deckDescription: (!deckDescriptionEdited && props.deck.description) ? props.deck.description : deckDescription,
-        oldDeckTags: props.deck.tags
-    }
-
-    const getTagValue = () => {
-        let tagValue = document.getElementById("tags").value;
-        document.getElementById("tags").value = "";
-        let match = false;
-        if (props.deck.tags.length !== 0 || deckData.oldDeckTags.length !== 0) {
-            if (checkAdded(tagValue)){
-                Notification("You already have that tag", "danger");
-            } else {
-                match = true;
-            }
-            if (match === true) {
-                if (tagValue.trim() !== "") {
-                    props.addTag(tagValue);
-                    addListItem(tagValue);
-                    match = false;
-                } else {
-                    Notification("You can't add an empty tag", "danger");
-                }
-            }
-        } else {
-            if (tagValue.trim() !== "") {
-                props.addTag(tagValue);
-                addListItem(tagValue);
-            } else {
-                Notification("You can't add an empty tag", "danger");
-            }
-        }
-    }
-
     const DeckTags = () => {
         if (editState)
         return (
@@ -351,7 +358,6 @@ const UserDecks = (props) => {
         <>
             <NavigatieBar/>
             <Container>
-                {x()}
                 <Row>
                     <Col lg={{span: 8, offset: 2}}>
                         <div className="mx-auto text-center pt-5">
@@ -379,8 +385,8 @@ function mapStateToProps(state) {
         username: state.login.username,
         deck: state.decks.deck,
         isLoading: state.decks.isLoading,
-        // tags: state.decks.tags
-
+        tags: state.createDeck.tags,
+        deckEdit: state.decks.deckEdit
     }
 }
 
@@ -394,8 +400,8 @@ function mapDispatchToProps(dispatch) {
         editDeck: (creatorId, _id, deckName, deckDescription, oldTags, newTags) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription, oldTags, newTags)),
         addTag: (tag) => dispatch(addTag(tag)),
         deleteTag: (tag) => dispatch(deleteTag(tag)),
-        clearTags: () => dispatch(clearTags())
-
+        clearTags: () => dispatch(clearTags()),
+        getDecksEdit: (deckId) => dispatch(getDeckEditAction(deckId)),
     }
 }
 
