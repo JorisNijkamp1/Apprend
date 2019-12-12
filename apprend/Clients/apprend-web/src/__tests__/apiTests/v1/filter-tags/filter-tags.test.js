@@ -48,7 +48,7 @@ describe('Login API tests', function () {
     });
 
     test('Filter deck with tag "test" from user Joris', async () => {
-        const data = [
+        const data =
             {
                 name: 'Finnish to Dutch prefixes',
                 deckCreator: 'Joris',
@@ -57,7 +57,7 @@ describe('Login API tests', function () {
                 description: 'Learning prefixes ',
                 tags: ['test']
             }
-        ];
+        ;
         const response = await fetch(`${API_URL}/decks/Joris/tags?tag=${value}`, {
             method: 'GET',
             headers: {
@@ -70,7 +70,6 @@ describe('Login API tests', function () {
         const result = await response.json();
         
         let filteredDecks = getMatchingLanguages(value, result.decks)
-
-        expect(filteredDecks).toStrictEqual(data);
+        expect(filteredDecks[0]).toStrictEqual(data);
     });
 });

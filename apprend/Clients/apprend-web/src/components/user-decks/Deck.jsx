@@ -16,6 +16,8 @@ import {withRouter} from 'react-router-dom'
 
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {importDeckAction} from "../../redux-store/actions/decks/async-actions";
+import {Notification} from "../shared/notification/Notification";
+import FlashcardsOverview from "../flashcards/overview-flashcards";
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
@@ -81,7 +83,6 @@ const UserDecks = (props) => {
             return <>
             </>
         }
-
     }
 
     let loader, deck, error;
@@ -107,44 +108,52 @@ const UserDecks = (props) => {
         }
         if (props.deck.toString() !== 'deck-not-found') {
             deck = (
-                <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
-                    <Card.Body>
-                        <Card.Title><strong>{props.deck.name}   </strong></Card.Title>
-                        <Card.Subtitle className={"mb-3"}>
-                            <Row>
-                                <Col xs={12} md={4}>
-                                    <b>Created on: </b>{props.deck.creationDate}
-                                </Col>
-                                <Col xs={12} md={4}>
-                                    <b>Created by: </b>{props.deck.userName}
-                                </Col>
-                                <Col xs={12} md={4}>
-                                    <b>Total flashcards: </b>{totalFlashcards}
-                                </Col>
-                                <Col xs={12} md={4}>
-                                    <b>Description: </b>{props.deck.description}
-                                </Col>
-                            </Row>
-                        </Card.Subtitle>
-                        {editFlashcardsButton()}
-                        {importDeckButton()}
-                        {totalFlashcards > 0 ?
-                            <Link to={`/decks/${props.deck._id}/play`}>
-                                <Button variant="success" id="play" className={'float-right'}>Deck spelen</Button>
-                            </Link>
-                            :
-                            <div>
-                                <Link to={`/decks/${props.deck._id}/play`}>
-                                    <Button variant="success" id="play" disabled className={'float-right'}>Deck
-                                        spelen</Button>
-                                </Link>
-                                <small className="col buttonInfo text-muted">
-                                    A deck has to contain at least 1 flashcard in order to play the deck.
-                                </small>
-                            </div>
-                        }
-                    </Card.Body>
-                </Card>
+                <>
+                    <Row>
+                        <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
+                            <Card.Body>
+                                <Card.Title><strong>{props.deck.name}   </strong></Card.Title>
+                                <Card.Subtitle className={"mb-3"}>
+                                    <Row>
+                                        <Col xs={12} md={4}>
+                                            <b>Created on: </b>{props.deck.creationDate}
+                                        </Col>
+                                        <Col xs={12} md={4}>
+                                            <b>Created by: </b>{props.deck.userName}
+                                        </Col>
+                                        <Col xs={12} md={4}>
+                                            <b>Total flashcards: </b>{totalFlashcards}
+                                        </Col>
+                                        <Col xs={12} md={4}>
+                                            <b>Description: </b>{props.deck.description}
+                                        </Col>
+                                    </Row>
+                                </Card.Subtitle>
+                                {editFlashcardsButton()}
+                                {importDeckButton()}
+                                {totalFlashcards > 0 ?
+                                    <Link to={`/decks/${props.deck._id}/play`}>
+                                        <Button variant="success" id="play" className={'float-right'}>Deck
+                                            spelen</Button>
+                                    </Link>
+                                    :
+                                    <div>
+                                        <Link to={`/decks/${props.deck._id}/play`}>
+                                            <Button variant="success" id="play" disabled className={'float-right'}>Deck
+                                                spelen</Button>
+                                        </Link>
+                                        <small className="col buttonInfo text-muted">
+                                            A deck has to contain at least 1 flashcard in order to play the deck.
+                                        </small>
+                                    </div>
+                                }
+                            </Card.Body>
+                        </Card>
+                    </Row>
+                    <Row className={"mb-5"}>
+                        <FlashcardsOverview/>
+                    </Row>
+                </>
             )
         }
     }
@@ -164,9 +173,7 @@ const UserDecks = (props) => {
                 </Row>
                 {loader}
                 {error}
-                <Row>
-                    {deck}
-                </Row>
+                {deck}
             </Container>
             <Footer/>
         </>

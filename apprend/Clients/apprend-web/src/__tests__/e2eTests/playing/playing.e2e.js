@@ -64,17 +64,13 @@ describe(`Playing`, () => {
     await card.click()
   });
 
-  test(`The card is wrong`, async () => {
-    const wrongButton = await page.$(`button[id="wrong"]`)
-    expect(wrongButton).toBeDefined()
-    await wrongButton.click()
-  });
-
-  test(`Click the stop button`, async () => {
-    const backButton = await page.$(`[id="stop"]`)
-    expect(backButton).toBeDefined()
-    await backButton.click()
-  });
+  for (let i = 0; i < 4; i++) {
+    test(`The card is wrong`, async () => {
+      const wrongButton = await page.$(`button[id="wrong"]`)
+      expect(wrongButton).toBeDefined()
+      await wrongButton.click()
+    });
+  }
 
   test(`Click the back to homepage button`, async () => {
     const backButton = await page.$(`[id="back"]`)
