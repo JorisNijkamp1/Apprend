@@ -127,6 +127,10 @@ const UserDecks = (props) => {
         props.toggleStatus(props.deck._id, props.deck.creatorId)
     }
 
+    const showNotification = () => {
+        Notification("A deck needs atleast 1 card to play!", "info");
+    }
+
     const deleteDeckHandler = () => {
         props.deleteDeckFromUser(props.deck._id)
         history.push(`/${props.username}/decks`)
@@ -172,7 +176,11 @@ const UserDecks = (props) => {
     const findAllOptions = (isCreator) => {
         let icons = []
         if (isCreator){
-            icons.push(<PlayButton func={playDeckHandler}/>)
+            if (props.deck.flashcards.length > 0) {
+                icons.push(<PlayButton func={playDeckHandler}/>)
+            } else {
+                icons.push(<PlayButton func={showNotification}/>)
+            }
             icons.push(<EditButton func={toggleEditStateHandler} />)
             icons.push(<ToggleStatusButton func={toggleDeckStatusHandler}  isPrivate={props.deck.private}/>)
             icons.push(<DeleteButton func={toggleDeleteStatusHandler} />)
