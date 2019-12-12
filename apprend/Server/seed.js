@@ -80,13 +80,14 @@ async function seedUsers() {
             "password": "$2a$10$JrWeSo2Y44VI2J8LnKLSwOtPkIyVEP5Y66HJ9cUIR3CX68vjFtPrC",
             "decks": [
                 {
+                    "_id": "5ddfadab612b09570c6f3a34",
                     "name": "English to dutch verbs",
                     "description": "My english verbs",
                     "creatorId": "Aaron",
                     "status": "isEdited",
                     "flashcards": [
                         {
-                            "_id": "Apprende0",
+                            "_id": "Apprende",
                             "type": "Text only",
                             "question": "Eating",
                             "answer": "Eten"
@@ -125,6 +126,18 @@ async function seedUsers() {
                         },
                         {
                             "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
+                        {
+                            "_id": "Apprende4",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende5",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen"
