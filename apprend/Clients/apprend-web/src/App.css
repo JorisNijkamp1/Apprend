@@ -335,6 +335,3 @@ progress[value]::-webkit-progress-value {
     position: absolute;
     bottom: 1.5rem;
 }
-.infinite-scroll-component  {
-    overflow: hidden !important;
-}

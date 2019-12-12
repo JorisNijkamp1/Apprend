@@ -73,8 +73,6 @@ const UserDecks = (props) => {
                             variant={"info"}
                             className={"sticky-button"}
                             onClick={() => {
-                                props.importDeck(props.deck._id)
-                                Notification("You successfully imported this deck", "success")
                                 handleImportButton(props.deck._id)
                             }}>
                         Import deck
@@ -85,7 +83,6 @@ const UserDecks = (props) => {
             return <>
             </>
         }
-
     }
 
     let loader, deck, error;

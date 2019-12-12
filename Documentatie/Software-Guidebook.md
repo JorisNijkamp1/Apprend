@@ -67,6 +67,10 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 
 - **Decks verwijderen**
 	> De gebruiker krijgt een bevestigingsmelding.
+	
+- **Flashcards filteren**
+	> De gebruiker kan filteren tussen alle flashcards d.m.v een zoek balk
+	> De gebruiker krijgt een melding als er geen resultaten zijn
 
 - **Flashcards bewerken**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
@@ -107,6 +111,10 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 	> De volgende invoervelden zijn aanwezig:
 		- De gebruiker moet een gebruikersnaam opgeven.
 		- De gebruiker moet een wachtwoord opgeven.
+
+- **Uitloggen**
+	> De gebruiker kan op uitloggen klikken om uit te loggen.
+	> De gebruiker krijg een melding te zien dat hij of zij uitgelogd is.
 
 ## Quality Attributes
 De onderstaande lijst bevat een overzicht van niet-functionele kwaliteitsattributen van het systeem.
@@ -215,6 +223,123 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 | POST   | /api/v1/decks                    | Maakt een nieuw deck aan.               |
 | DELETE | /api/v1/decks/:deckId            | Verwijdert een specifiek deck.          |
 | POST	 | /api/v1/decks/:deckId            | Importeer een deck van een ander        |
+- **Uitloggen**
+	> De gebruiker kan op uitloggen klikken om uit te loggen.
+	> De gebruiker krijg een melding te zien dat hij of zij uitgelogd is.
+	
+- **Deck importeren**
+	> Een anonieme of ingelogde gebruiker kan een deck importeren.
+	> De gebruiker krijgt een melding dat het deck geïmporteerd is.
+	
+## Quality Attributes  
+De onderstaande lijst bevat een overzicht van niet-functionele kwaliteitsattributen van het systeem.  
+  
+- **Reliability**  
+ - Het systeem is getest door middel van Jest unittests.  
+   - Het systeem is getest door middel van Puppeteer end-to-end tests.  
+   - Het systeem is getest door middel van Jest API-tests.  
+  
+- **Security**  
+ - Wachtwoorden worden geëncrypt opgeslagen volgens de Bcrypt encryptie.  
+  
+- **Usability**  
+ - Responsive, werkt op mobiele apparaten.  
+  
+- **Legal, compliance and regulatory requirements**  
+ - Voldoet aan de AVG-wetten.  
+  
+## Constraints  
+De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevormd tijdens het ontwikkelen. De meeste van deze beperkingen zijn door de product owner aan ons voorgelegd.  
+  
+- **Tijd**  
+  > Het projectteam heeft een pre-game van 1 week, 3 sprints van 2 weken en een post-game van 1 week gekregen. Het project is begonnen op 11 november en eindigt op 17 januari. Hier zitten twee weken kerstvakantie tussen. \  
+ \ Binnen een sprint heeft het projectteam 46 uur per persoon beschikbaar kunnen stellen voor het ontwikkelen van de applicatie. Hier zijn afspraken en meetings al vanaf gehaald. Onverwachte problemen en onmacht zijn niet meegerekend in dit urenaantal. Door deze beperkte tijd zijn bepaalde user-stories geschrapt.  
+- **Grootte van het projectteam**  
+  > Het projectteam bestond uit vijf personen exclusief de product owner. Dit heeft effect gehad op de beschikbare ontwikkeltijd voor de applicatie.  
+  
+- **Kennis van het projectteam**  
+  > Het projectteam was niet bekend met Jest (unittests), Puppeteer (end-to-end tests) en React Native. Jest en Puppeteer moesten sowieso geïmplementeerd worden. \  
+ \ Er is een keuze gemaakt om niet alles te testen met end-to-end tests, aangezien de applicatie steeds veranderde. Het aanpassen van end-to-end tests kostte te veel tijd.\ \ De opdrachtgever had ook graag een mobiele app willen zien als er tijd over was. Het team heeft besloten om React Native hiervoor te gaan gebruiken. Er is een onderzoek uitgevoerd om in te schatten of het omzetten van de webapplicatie naar React Native gemakkelijk en haalbaar is. Het team vertrouwt er op dat dit gaat lukken, maar er is nog geen tijd gevonden om dit te kunnen doen. De prioriteit is zeer laag.   
+- **Gebruik van de Scrum methode.**  
+  > Het projectteam heeft gebruik moeten maken van Scrum. Door deze flexibele methode te gebruiken zijn de meest gewenste user-stories geïmplementeerd en minder belangrijke mogelijk niet. Toch is de applicatie een werkend product, wat de bedoeling is van de Scrum methode. Zie het [Product Backlog](https://github.com/HANICA-DWA/sep2019-project-kiwi/projects/2?fullscreen=true&card_filter_query=label%3A%22user+story%22) voor een lijst met alle user-stories.  
+  
+- **Gebruik van GitHub**  
+  > Het gebruik van GitHub was een eis vanuit de product owner. Alle documentatie moest ook in Markdown opgeslagen worden op de project repository.  
+  
+- **Gebruik van React**  
+  > Het gebruik van React is vereist door de product owner.  
+  
+- **Gebruik van Redux**  
+  > Het gebruik van Redux is vereist door de product owner.  
+  
+- **Gebruik van een NoSQL-database**  
+  > Het gebruik van een NoSQL-database is vereist door de product owner. Het projectteam heeft gekozen voor MongoDB, want dit voldoet aan de snelheid- en opslagmogelijkheden.   
+- **Gebruik van een Express API op een NodeJS server**  
+  > Het gebruik van een Express API op een NodeJS server is vereist door de product owner.   
+- **Gebruik van communicatie over HTTP**  
+  > Aangezien er gebruik wordt gemaakt van een Express API moet data verzonden worden over het HTTP-protocol. De client-applicatie verstuurt JSON naar een serverapplicatie over HTTP. De server stuurt vervolgens ook weer iets terug over dit protocol. De server gebruikt de middleware bodyParser om JSON te parsen.  
+  
+- **Verwerking AVG voorwaarden**  
+  > Het is wettelijk verplicht om aan te geven dat persoonsgegevens opgeslagen worden in een database. De product owner heeft ons verplicht om de gebruikers op de website cookie-meldingen te geven. Daarnaast moet de gebruiker akkoord gaan met algemene voorwaarden.  
+  
+## Principles  
+  
+**Client**  
+  
+- Voor elke pagina is een React Route aanwezig.  
+- React componenten zijn functionele componenten.  
+- "Build before buy", de applicatie bevat vooral zelfgemaakte algoritmes en functionaliteiten.  
+- Unittests hebben een hogere prioriteit dan end-to-end tests.  
+- Async action creators staan in een apart bestand.  
+- Zo min mogelijk DRY code.  
+  
+**Server**  
+  
+- Elk document in de database heeft een Mongoose schema en model.  
+- Mongoose methodes worden gebruikt waar mogelijk.  
+- API-endpoint URL's zijn RESTful waar mogelijk.  
+- "Build before buy", de applicatie bevat vooral zelfgemaakte algoritmes en functionaliteiten.  
+- Zo min mogelijk DRY code.  
+  
+## Software Architecture  
+De applicatie bestaat uit drie grote componenten zoals te zien in het onderstaande container diagram.  
+  
+![Apprend container diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20Apprend%20Container.svg)  
+  
+Zoals te zien op bovenstaande figuur omvat de Apprend applicatie een React client, NodeJS server en MongoDB database. De client en server zullen databasegegevens uitwisselen over de ingebouwde Express API. Door gebruik te maken van de bodyParser middleware kan JSON-data gemakkelijk ontvangen worden.  
+  
+De server praat vervolgens met de database om gegevens op te halen of op te slaan. De server reageert op de verzoeken vanuit de client en kan eventueel gegevens meegeven.  
+  
+### React WebApp  
+  
+![Apprend container diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20React%20Native%20App%20Component.svg)  
+  
+### NodeJS server  
+  
+![Apprend NodeJS server component diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)  
+  
+**Decks endpoints**:  
+  
+GET /api/v1/decks/home  
+Haal de decks voor de homepage op.  
+  
+POST /api/v1/decks  
+Maakt een nieuw deck aan.  
+  
+DELETE /api/v1/decks/:deckId  
+Verwijderd een specifiek deck.  
+  
+GET /api/v1/decks/:deckId  
+Haalt een specifiek deck op.  
+  
+GET /api/v1/decks/:deckId/flashcards  
+Haalt alle flashcard van een deck op.  
+  
+POST /api/v1/decks/:deckId/flashcards  
+Edit flashcards van een specifiek deck.  
+  
+PUT /api/v1/decks/:deckId  
+Edit een deck.  
 
 **Users endpoints**:
 
