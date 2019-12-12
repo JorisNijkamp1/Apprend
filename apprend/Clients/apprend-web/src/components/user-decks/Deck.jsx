@@ -216,7 +216,16 @@ const UserDecks = (props) => {
         return boxes
     }
 
-    let loader, deck, error;
+    
+    const showFlashcards = () => {
+        return (
+        <Row className="my-5">
+            <FlashcardsOverview />
+        </Row>
+        )
+    }
+
+    let loader, deck, error, flashcardsComp;
     if (props.isLoading) {
         loader = (
             <Row className="mx-auto align-items-center flex-column py-5">
@@ -262,8 +271,15 @@ const UserDecks = (props) => {
                 {showOptions(findAllOptions(isCreator))}
                 </>
             )
+
+            flashcardsComp = (
+                <>
+                    {showFlashcards()}
+                </>
+            )
         }
     }
+
 
     const Deckname = () => {
         if (editState)
@@ -395,9 +411,8 @@ const UserDecks = (props) => {
                     {deck}
                 </Row>
                 {showDeleteConfirmationBox()}
-                <Row className="my-5">
-                    <FlashcardsOverview />
-                </Row>
+                {/* {showFlashcards()} */}
+                {flashcardsComp}
             </Container>
             <Footer/>
         </>
