@@ -82,7 +82,7 @@ const PlayingComponent = (props) => {
         if (nCardsAnswered === nCardsInDeck) {
             props.doUpdateGame(deckId, props.gameId, currentCard, [], status);
             props.doSetActiveCardAction('');
-            history.push('/score');
+            history.push(`/decks/${deckId}/score`);
             return;
         }
 
