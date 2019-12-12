@@ -86,8 +86,7 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
     - De gebruiker krijgt een bevestigingsmelding.
 
 - **Importeren van een deck**
-	> Als gast of (anonieme) gebruiker wil ik decks kunnen importeren van een andere Apprend gebruiker, zodat ik iets kan oefenen zonder dat ik daarvoor een deck aan moet maken.<br />
-	<br />
+	> Als gast of (anonieme) gebruiker wil ik decks kunnen importeren van een andere Apprend gebruiker, zodat ik iets kan oefenen zonder dat ik daarvoor een deck aan moet maken.
 	De volgende invoervelden zijn aanwezig:
     - Een deck importeren en hem daarna zelf aanpassen
     - Een deck alleen importeren als dit deck public is.
