@@ -9,6 +9,9 @@ const PlayingCard = (props) => {
     const handleClick = (event, status) => {
         event.preventDefault();
         props.changeScore(props.id, status);
+        if (cardText === "Definition") {
+            turnCard()
+        }
     }
 
     const turnCard = () => {
