@@ -23,6 +23,7 @@ const FlashcardsOverview = (props) => {
         const history = useHistory();
 
         const [filteredFlashcards, setFilteredFlashcards] = useState(null);
+        const [filterInputValue, setFilterInputValue] = useState(null);
 
         useEffect(() => {
             props.getDeckFlashcards(deckId)
@@ -30,6 +31,7 @@ const FlashcardsOverview = (props) => {
 
         const filterFlashcards = (e) => {
             const valueInput = e.target.value;
+            setFilterInputValue(valueInput)
             if (valueInput) {
                 setFilteredFlashcards(
                     props.deckFlashcards.filter(flashcard => flashcard.term.toLowerCase().includes(
@@ -45,7 +47,7 @@ const FlashcardsOverview = (props) => {
         if (deckExist && isCreator && !props.isSaving) {
             if (((filteredFlashcards) ? filteredFlashcards : props.deckFlashcards).length === 0) {
                 flashcard = null
-            } else {
+            } else if (!filterInputValue) {
                 flashcard = (
                     <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
                 );
@@ -81,11 +83,6 @@ const FlashcardsOverview = (props) => {
                 return (
                     <h2>Geen resultaten gevonden!</h2>
                 )
-            } else {
-                return (
-                    <>
-                    </>
-                )
             }
         };
 
@@ -105,14 +102,14 @@ const FlashcardsOverview = (props) => {
                 return (
                     <Card.Header style={{backgroundColor: "#EEEEEE"}}>
                         <Card.Title>
-                            <Form onChange={(e) => {
-                                filterFlashcards(e);
-                                e.preventDefault();
-                            }}>
+                            <Card.Title>
                                 <Form.Group className={"float-left w-50"} controlId="formFilterFlashcards">
-                                    <Form.Control type="text" placeholder="Filter flashcards"/>
+                                <Form.Control type="text" onChange={(e) => {
+                                    filterFlashcards(e);
+                                }} placeholder="Filter flashcards"/>
                                 </Form.Group>
-                            </Form>
+                            </Card.Title>
+
                             <Button className={'float-right mt-1'}
                                     id={'save-flashcards-button'}
                                     onClick={() => saveFlashcardsAction()}
@@ -125,14 +122,11 @@ const FlashcardsOverview = (props) => {
                 return (
                     <Card.Header style={{backgroundColor: "#EEEEEE"}}>
                         <Card.Title>
-                            <Form onChange={(e) => {
-                                filterFlashcards(e);
-                                e.preventDefault();
-                            }}>
-                                <Form.Group className={"float-left w-50"} controlId="formFilterFlashcards">
-                                    <Form.Control type="text" placeholder="Filter flashcards"/>
-                                </Form.Group>
-                            </Form>
+                            <Form.Group className={"float-left w-50"} controlId="formFilterFlashcards">
+                                <Form.Control type="text" onChange={(e) => {
+                                    filterFlashcards(e);
+                                }} placeholder="Filter flashcards"/>
+                            </Form.Group>
                         </Card.Title>
                     </Card.Header>
                 )
