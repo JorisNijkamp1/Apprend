@@ -22,7 +22,7 @@ describe(`Playing`, () => {
     await page.goto(`http://localhost:3000`)
   	await page.waitFor(`title`)
     const title = await page.title()
-  	expect(title).toBe(`React App`)
+  	expect(title).toBe(`Apprend | Flashcard learning platform`)
   });
 
   test(`Click on an author`, async () => {
@@ -64,17 +64,13 @@ describe(`Playing`, () => {
     await card.click()
   });
 
-  test(`The card is wrong`, async () => {
-    const wrongButton = await page.$(`button[id="wrong"]`)
-    expect(wrongButton).toBeDefined()
-    await wrongButton.click()
-  });
-
-  test(`Click the stop button`, async () => {
-    const backButton = await page.$(`[id="stop"]`)
-    expect(backButton).toBeDefined()
-    await backButton.click()
-  });
+  for (let i = 0; i < 4; i++) {
+    test(`The card is wrong`, async () => {
+      const wrongButton = await page.$(`button[id="wrong"]`)
+      expect(wrongButton).toBeDefined()
+      await wrongButton.click()
+    });
+  }
 
   test(`Click the back to homepage button`, async () => {
     const backButton = await page.$(`[id="back"]`)
