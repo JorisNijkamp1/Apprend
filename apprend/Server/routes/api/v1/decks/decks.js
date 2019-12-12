@@ -58,32 +58,48 @@ decks.get('/', async (req, res) => {
     let foundDecks;
 
     if (searchQuery) {
-        foundDecks = await User.find({
-            decks: {
-                $elemMatch:
-                    {
-                        name: {'$regex': searchQuery, '$options': 'i'}
+        foundDecks = await User.aggregate([
+            {
+                "$match": {
+                    "decks": {
+                        "$elemMatch": {
+                            'name': {'$regex': searchQuery, '$options': 'i'}
+                        }
                     }
+                }
+            },
+            {'$unwind': '$decks'},
+            {
+                "$group": {
+                    "_id": "$_id",
+                    "decks": {"$push": "$decks"}
+                }
             }
-        });
-    } else {
-        foundDecks = await User.find({});
+        ]);
     }
 
     let decks = [];
-    foundDecks.forEach((index, key) => {
-        foundDecks[key].decks.forEach((decksIndex, decksKey) => {
-            decks.push({
-                name: foundDecks[key].decks[decksKey].name,
-                deckCreator: !(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
-                totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
-                deckId: foundDecks[key].decks[decksKey]._id
+    if (foundDecks) {
+        foundDecks.forEach((index, key) => {
+            foundDecks[key].decks.forEach((decksIndex, decksKey) => {
+                decks.push({
+                    name: foundDecks[key].decks[decksKey].name,
+                    description: foundDecks[key].decks[decksKey].description,
+                    deckCreator: !!(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
+                    totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
+                    deckId: foundDecks[key].decks[decksKey]._id
+                });
             });
         });
-    });
+    }
+
+    //Filter decks
+    if (decks) decks = decks.filter(deck => deck.name.toLowerCase().includes(
+        searchQuery.toLowerCase()
+    ));
 
     //Sort decks on totalFlashcards
-    decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
+    if (decks) decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
 
     await res.json({
         decks: decks,

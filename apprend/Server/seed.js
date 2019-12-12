@@ -402,6 +402,13 @@ async function seedUsers() {
                             "answer": "Rennen"
                         },
                     ]
+                },
+                {
+                    "name": "French to Chinese",
+                    "description": "Dolar English deck",
+                    "creatorId": "Aaron",
+                    "status": "isEdited",
+                    "flashcards": []
                 }
             ]
         },
