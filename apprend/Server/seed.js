@@ -130,6 +130,18 @@ async function seedUsers() {
                             "question": "Running",
                             "answer": "Rennen"
                         },
+                        {
+                            "_id": "Apprende4",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen"
+                        },
+                        {
+                            "_id": "Apprende5",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen"
+                        },
                     ]
                 },
                 {
