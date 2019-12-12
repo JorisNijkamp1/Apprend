@@ -9,7 +9,7 @@ describe(`Home`, () => {
         browser = await puppeteer.launch({
             headless: false,
             slowMo: 100,
-            args: [`--window-size=1500,800`, `--window-position=0,0`]
+            args: [`--window-size=1600,800`, `--window-position=0,0`]
         })
         page = await browser.newPage()
     })
@@ -40,6 +40,20 @@ describe(`Home`, () => {
         const loginButton = await page.$(`form[name="login"] button`)
         expect(loginButton).toBeDefined()
         await loginButton.click()
+    })
+
+    test('Click on hamburger menu', async () => {
+        await page.waitFor(`.navbar-toggler`);
+        const hamburgerMenu = await page.$(`.navbar-toggler`);
+        expect(hamburgerMenu).toBeDefined()
+        await hamburgerMenu.click()
+    })
+
+    test('Click on dropdown', async () => {
+        await page.waitFor(`.dropdown-toggle`);
+        const welcomeClick = await page.$(`.dropdown-toggle`);
+        expect(welcomeClick).toBeDefined()
+        await welcomeClick.click()
     })
 
     test('Logout button klikken', async () => {
