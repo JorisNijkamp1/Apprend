@@ -98,6 +98,12 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
     - Een deck alleen importeren als dit deck public is.
     - De gebruiker krijgt een bevestigingsmelding.
 
+- **Zoeken naar decks**
+	> Als gast of (anonieme) gebruiker wil ik decks kunnen zoeken.
+	De gebruiker kan:
+    - Een deck zoeken aan de hand van een invoerveld.
+    - Geholpen worden met zoeken aan de hand van suggesties.
+    - Gelijk naar een deck gaan door op een suggestie te klikken.
 
 - **Registreren nieuw account**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-registreren-webapp.svg)

@@ -34,9 +34,10 @@ const FlashcardsOverview = (props) => {
             setFilterInputValue(valueInput)
             if (valueInput) {
                 setFilteredFlashcards(
-                    props.deckFlashcards.filter(flashcard => flashcard.term.toLowerCase().includes(
-                        valueInput.toLowerCase()
-                    ))
+                    props.deckFlashcards.filter(flashcard =>
+                        flashcard.term.toLowerCase().includes(valueInput.toLowerCase())
+                        ||
+                        flashcard.definition.toLowerCase().includes(valueInput.toLowerCase()))
                 );
             } else {
                 setFilteredFlashcards(null);
@@ -104,9 +105,9 @@ const FlashcardsOverview = (props) => {
                         <Card.Title>
                             <Card.Title>
                                 <Form.Group className={"float-left w-50"} controlId="formFilterFlashcards">
-                                <Form.Control type="text" onChange={(e) => {
-                                    filterFlashcards(e);
-                                }} placeholder="Filter flashcards"/>
+                                    <Form.Control type="text" onChange={(e) => {
+                                        filterFlashcards(e);
+                                    }} placeholder="Filter flashcards"/>
                                 </Form.Group>
                             </Card.Title>
 
