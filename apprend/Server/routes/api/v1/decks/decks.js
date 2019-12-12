@@ -311,9 +311,144 @@ decks.post('/:deckId/flashcards', async (req, res) => {
     } else {
         return await res.json({
             success: false,
-            error: "Deck doesn't exist"
+            error: 'Deck doesn\'t exist'
         })
     }
+});
+
+decks.put('/:deckId/flashcards/:flashcardId/leitner', async (req, res) => {
+    const deckId = req.params.deckId;
+    const flashcardId = req.params.flashcardId;
+    let username = 'Aaron';
+
+    if (req.body.test === undefined) {
+        username = req.session.username ? req.session.username : req.cookies.username;
+    }
+
+    if (req.body.answeredCorrect === undefined) {
+        res.status(400);
+        await res.json({
+            'success': false,
+            'error': 'The required POST data was not set...'
+        });
+
+        return;
+    }
+
+    if (!username) {
+        res.status(401);
+        await res.json({
+            'success': false,
+            'error': 'You are not a registered user...'
+        });
+
+        return;
+    }
+
+    let user = await User.findOne({'_id': username});
+
+    if (user === null) {
+        res.status(401);
+        await res.json({
+            'success': false,
+            'error': 'You are not a registered user...'
+        });
+
+        return;
+    }
+
+    let deck = user.decks.find(deck => deck._id.toString() === deckId);
+
+    if (deck === undefined ||
+        deck === null) {
+        res.status(404);
+        await res.json({
+            'success': false,
+            'error': 'This deck does not exist...'
+        });
+
+        return;
+    }
+
+    let flashcard = deck.flashcards.find(flashcard => flashcard._id.toString() === flashcardId);
+
+    if (flashcard === undefined ||
+        flashcard === null) {
+        res.status(404);
+        await res.json({
+            'success': false,
+            'error': 'This flashcard does not exist...'
+        });
+
+        return;
+    }
+
+    const newDeck = await user.editFlashcardLeitner(deckId, flashcardId, req.body.answeredCorrect);
+
+    await res.json({
+        'success': true,
+        'deck': newDeck
+    });
+});
+
+decks.put('/:deckId/session', async (req, res) => {
+    const deckId = req.params.deckId;
+    let username = 'Aaron';
+
+    if (req.body.test === undefined) {
+        username = req.session.username ? req.session.username : req.cookies.username;
+    }
+
+    if (req.body.session === undefined) {
+        res.status(400);
+        await res.json({
+            'success': false,
+            'error': 'The required POST data was not set...'
+        });
+
+        return;
+    }
+
+    if (!username) {
+        res.status(401);
+        await res.json({
+            'success': false,
+            'error': 'You are not a registered user...'
+        });
+
+        return;
+    }
+
+    let user = await User.findOne({'_id': username});
+
+    if (user === null) {
+        res.status(401);
+        await res.json({
+            'success': false,
+            'error': 'You are not a registered user...'
+        });
+
+        return;
+    }
+
+    let deck = user.decks.find(deck => deck._id.toString() === deckId);
+
+    if (deck === undefined || deck === null) {
+        res.status(404);
+        await res.json({
+            'success': false,
+            'error': 'This deck does not exist...'
+        });
+
+        return;
+    }
+
+    const editedDecks = await user.editDeckSession(deckId, req.body.session);
+
+    await res.json({
+        'success': true,
+        'session': editedDecks.session
+    });
 });
 
 // Insert game
@@ -343,7 +478,7 @@ decks.put('/:deckId/updateGame', async (req, res) => {
             users[userKey].decks.forEach((deck, deckKey) => {
                 if (deck._id == req.params.deckId) {
                     if (deck.games[0]._id == req.body.gameId) {
-                        if (req.body.status === "correct") {
+                        if (req.body.status === 'correct') {
                             deck.games[0] = {
                                 _id: deck.games[0]._id,
                                 flashcards: deck.games[0].flashcards,
@@ -351,7 +486,7 @@ decks.put('/:deckId/updateGame', async (req, res) => {
                                 correctCards: deck.games[0].correctCards.concat(req.body.oldCard),
                                 wrongCards: deck.games[0].wrongCards
                             }
-                        } else if (req.body.status === "wrong") {
+                        } else if (req.body.status === 'wrong') {
                             deck.games[0] = {
                                 _id: deck.games[0]._id,
                                 flashcards: deck.games[0].flashcards,

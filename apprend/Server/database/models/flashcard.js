@@ -13,6 +13,14 @@ const flashcardSchema = new mongoose.Schema({
     },
     answer: {
         type: String,
+    },
+    box: {
+        type: Number,
+        default: 0
+    },
+    sessionPlayed: {
+        type: Number,
+        default: 0
     }
 });
 

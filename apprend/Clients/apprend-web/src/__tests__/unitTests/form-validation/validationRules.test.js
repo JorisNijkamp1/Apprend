@@ -1,9 +1,10 @@
 import {
     emailValid,
-    passwordValid, registerFormMaySubmit,
+    passwordValid,
+    registerFormMaySubmit,
     repeatPasswordValid,
     usernameValid
-} from '../../../redux-store/form-validation/validationRules';
+} from '../../../util/form-validation/validationRules';
 
 test('Username should be valid', () => {
     const expected = true;
