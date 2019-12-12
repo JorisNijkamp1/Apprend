@@ -109,8 +109,8 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 - **Inloggen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-inloggen-webapp.svg)
 	> De volgende invoervelden zijn aanwezig:
-		- De gebruiker moet een gebruikersnaam opgeven.
-		- De gebruiker moet een wachtwoord opgeven.
+    - De gebruiker moet een gebruikersnaam opgeven.
+    - De gebruiker moet een wachtwoord opgeven.
 
 - **Uitloggen**
 	> De gebruiker kan op uitloggen klikken om uit te loggen.
