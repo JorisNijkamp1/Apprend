@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {connect} from "react-redux";
 import {useParams} from "react-router-dom";
 import {
@@ -21,36 +21,37 @@ const FlashcardsOverview = (props) => {
         const deckExist = !props.deckData.error;
         const isCreator = (props.username === props.deckData.creatorId);
         const history = useHistory();
-        const filteredFlashcards = props.deckFlashcards;
-
+        const [filteredFlashcards, setFilteredFlashcards] = useState(null);
 
         useEffect(() => {
             props.getDeckFlashcards(deckId)
         }, []);
 
         const filterFlashcards = (e) => {
-            const valueInput = e.target.value
-            let flashcards;
+            const valueInput = e.target.value;
             if (valueInput) {
-                flashcards = filteredFlashcards.filter(flashcard => flashcard.term.toLowerCase().includes(
-                    valueInput.toLowerCase()
-                ) || flashcard.definition.toLowerCase().includes(
-                    valueInput.toLowerCase()
-                ))
-                props.changeDeckFlashcards(flashcards)
+                setFilteredFlashcards(
+                    props.deckFlashcards.filter(flashcard => flashcard.term.toLowerCase().includes(
+                        valueInput.toLowerCase()
+                    ))
+                );
             } else {
-                props.getDeckFlashcards(deckId)
+                setFilteredFlashcards(null);
             }
-
-        }
+        };
 
         let flashcard, allFlashcards;
         if (deckExist && isCreator && !props.isSaving) {
-            flashcard = (
-                <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
-            );
+            if (((filteredFlashcards) ? filteredFlashcards : props.deckFlashcards).length === 0) {
+                flashcard = null
+            } else {
+                flashcard = (
+                    <AddFlashcardIcon onClick={() => addFlashcardToDeck()}/>
+                );
+            }
 
-            allFlashcards = filteredFlashcards.map((flashcard) => {
+
+            allFlashcards = ((filteredFlashcards) ? filteredFlashcards : props.deckFlashcards).map((flashcard) => {
                 return (
                     <EditableFlashcard key={flashcard.id}
                                        flashcardId={flashcard.id}
@@ -61,7 +62,7 @@ const FlashcardsOverview = (props) => {
             });
         } else if (!props.isSaving && !isCreator) {
             flashcard = null
-            allFlashcards = filteredFlashcards.map((flashcard) => {
+            allFlashcards = ((filteredFlashcards) ? filteredFlashcards : props.deckFlashcards).map((flashcard) => {
                 return (
 
                     <NonEditableFlashcard key={flashcard.id}
@@ -73,7 +74,7 @@ const FlashcardsOverview = (props) => {
         }
 
         const noResultOnFilter = () => {
-            if (filteredFlashcards.length === 0) {
+            if (((filteredFlashcards) ? filteredFlashcards : props.deckFlashcards).length === 0) {
                 return (
                     <h2>Geen resultaten gevonden!</h2>
                 )

@@ -38,8 +38,9 @@ const EditableFlashcard = (props) => {
         });
         props.changeDeckFlashcards(deckFlashcards)
         setDeleteNotification(false);
-        return <Row>
-            {store.addNotification({
+
+        return (
+            store.addNotification({
                 title: "You successfully deleted a card",
                 message: " ",
                 type: "info",
@@ -51,29 +52,31 @@ const EditableFlashcard = (props) => {
                     duration: 3000
                 },
                 width: 250
-            })}
-        </Row>
+            })
+        )
     };
 
     const confirmationBox = (bool) => {
         if (bool) return (
-        <Card.Footer>
-            <Row>
-                <Col className="text-left" xs={8}>
-                    Are you sure?
-                </Col>
-                <Col xs={2} className="text-center text-green">
-                    <FontAwesomeIcon icon={faCheck} name={props.flashcardId} id={"green"} onClick={() => deleteFlashcard(props.flashcardId)} />
-                </Col>
-                <Col xs={2} className="text-center text-red">
-                    <FontAwesomeIcon icon={faTimes} name={props.flashcardId} id={"red"} onClick={() => setDeleteNotification(false)} />
-                </Col>
-            </Row>
-        </Card.Footer>
+            <Card.Footer>
+                <Row>
+                    <Col className="text-left" xs={8}>
+                        Are you sure?
+                    </Col>
+                    <Col xs={2} className="text-center text-green">
+                        <FontAwesomeIcon icon={faCheck} name={props.flashcardId} id={"green"}
+                                         onClick={() => deleteFlashcard(props.flashcardId)}/>
+                    </Col>
+                    <Col xs={2} className="text-center text-red">
+                        <FontAwesomeIcon icon={faTimes} name={props.flashcardId} id={"red"}
+                                         onClick={() => setDeleteNotification(false)}/>
+                    </Col>
+                </Row>
+            </Card.Footer>
         )
         else return (
-        <> 
-        </>
+            <>
+            </>
         )
     }
 
