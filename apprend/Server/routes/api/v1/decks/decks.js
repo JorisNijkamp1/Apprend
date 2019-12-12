@@ -221,7 +221,11 @@ decks.post('/:deckId/flashcards', async (req, res) => {
 decks.put('/:deckId/flashcards/:flashcardId/leitner', async (req, res) => {
     const deckId = req.params.deckId;
     const flashcardId = req.params.flashcardId;
-    const username = req.session.username ? req.session.username : req.cookies.username;
+    let username = 'Aaron';
+
+    if (req.body.test === undefined) {
+        username = req.session.username ? req.session.username : req.cookies.username;
+    }
 
     if (req.body.answeredCorrect === undefined) {
         res.status(400);
@@ -291,7 +295,11 @@ decks.put('/:deckId/flashcards/:flashcardId/leitner', async (req, res) => {
 
 decks.put('/:deckId/session', async (req, res) => {
     const deckId = req.params.deckId;
-    const username = req.session.username ? req.session.username : req.cookies.username;
+    let username = 'Aaron';
+
+    if (req.body.test === undefined) {
+        username = req.session.username ? req.session.username : req.cookies.username;
+    }
 
     if (req.body.session === undefined) {
         res.status(400);
