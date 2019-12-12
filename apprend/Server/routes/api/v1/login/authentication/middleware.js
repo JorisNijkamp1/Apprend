@@ -4,7 +4,7 @@ function authenticationMiddleware() {
         if (req.isAuthenticated() || username) {
             return next()
         }
-        res.redirect('/api/v1/login/error')
+        return res.redirect('/api/v1/login/error')
     }
 }
 

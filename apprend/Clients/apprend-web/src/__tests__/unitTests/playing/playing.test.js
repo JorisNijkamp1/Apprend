@@ -18,10 +18,10 @@ describe(`Shuffle cards`, () => {
     beforeEach(async () => {
         cards = [1, 2, 3, 4, 5];
     });
-    
+
     test('Shuffle cards array', async () => {
         const result = await shuffleCards(cards);
-        
+
         console.log(result)
     });
 });
@@ -37,7 +37,7 @@ describe(`Setting game`, () => {
                 "answer" : "Hoi"
             }
         };
-    
+
         const response = await fetch('http://localhost:3001/api/v1/decks/' + deckId + '/setGame', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -48,7 +48,7 @@ describe(`Setting game`, () => {
             mode: 'cors'
         })
         const result = await response.json();
-    
+
         expect(result.success).toBe(true)
     });
 })

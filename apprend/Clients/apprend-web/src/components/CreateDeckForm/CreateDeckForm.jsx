@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Container, Form, Row, Col, Button, InputGroup } from 'react-bootstrap'
 import { changeDeckName, addTag, deleteTag } from '../../redux-store/actions/create-deck/actions'
@@ -8,9 +8,12 @@ import { CreateButton } from './sub-components/CreateButton';
 import { useHistory } from 'react-router'
 import { NavigatieBar } from '../shared/navbar/NavigatieBar';
 import { Footer } from '../shared/footer/Footer';
+import { StatusButtons } from './sub-components/StatusButtons'
 import { Notification } from '../shared/notification/Notification';
 
 const CreateDeckFormComponent = (props) => {
+
+    const [status, setStatus] = useState(false)
 
     useEffect(() => {
         props.changeDeckName('')
@@ -20,12 +23,18 @@ const CreateDeckFormComponent = (props) => {
 
     const showDeckNameOrThis = (text) => props.deckName ? <b>'{props.deckName}'</b> : text
 
+    const handleSwitch = (e) => {
+        console.log(status)
+        setStatus(!status)
+    }
+
     const handleCreateDeck = async (e) => {
         try {
             e.preventDefault()
             const deck = {
                 deckName: props.deckName,
                 description: e.target.description.value,
+                private: status,
                 tags: props.tags
             }
             const response = await props.createNewDeck(deck)
@@ -136,6 +145,7 @@ const CreateDeckFormComponent = (props) => {
                             />
                         </Col>
                     </Form.Group>
+                    <StatusButtons handleSwitch={handleSwitch} />
                     <Form.Group as={Row}>
                         <Form.Label 
                             className="text-center" 

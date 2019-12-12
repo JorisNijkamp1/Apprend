@@ -55,6 +55,12 @@ export function setDeckEditAction(deckEdit){
     }
 }
 
+export function setSpecificDeckDataAction(deck){
+    return {
+        type: 'DECKS_SET_SPECIFIC_DECK',
+        payload: deck
+    }
+}
 export function deleteTag(deckEdit){
     return {
         type: DECK_DELETE_TAG,

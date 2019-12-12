@@ -15,12 +15,9 @@ describe('Edit a deck', () => {
 
     test('Get deck endpoint', async () => {
         const expectedResult = {
-            "success": true,
-            "deck": {
-                "name": "Frans woordjes",
-                "description": "Mooie lijst met 50 woordjes frans erg gaaf!",
-                "userName": "Joris"
-            }
+            "name": "Finnish to Dutch prefixes",
+            "description": "Learning prefixes ",
+            "creatorId": "Joris"
         };
         const response = await fetch(`http://localhost:3001/api/v1/decks/5ddfadab612b09570c6f3a33`, {
             method: 'GET',
@@ -32,9 +29,8 @@ describe('Edit a deck', () => {
         });
         const result = await response.json();
 
-        expect(result.success).toBe(expectedResult.success)
-        expect(result.deck.name).toBe(expectedResult.deck.name)
-        expect(result.deck.description).toBe(expectedResult.deck.description)
-        expect(result.deck.userName).toBe(expectedResult.deck.userName)
+        expect(result.name).toBe(expectedResult.name)
+        expect(result.description).toBe(expectedResult.description)
+        expect(result.creatorId).toBe(expectedResult.creatorId)
     })
 })

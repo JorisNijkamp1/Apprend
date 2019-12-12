@@ -31,11 +31,24 @@ const deckSchema = new mongoose.Schema({
     games: {
         type: [{type: Game}],
     },
+    private: {
+        type: Boolean, default: false
+    },
     session: {
         type: Number,
         default: 0
     }
 });
+
+deckSchema.methods.editDeck = async function(name, description, tags){
+    this.name = name
+    this.description = description
+    this.tags = tags
+}
+
+deckSchema.methods.toggleStatus = async function(){
+    this.private = !this.private
+}
 
 deckSchema.methods.editFlashcardLeitner = async function (flashcardId, answeredCorrect, sessionPlayed) {
     this.flashcards = this.flashcards.map(flashcard => {
