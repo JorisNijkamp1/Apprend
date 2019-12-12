@@ -1,12 +1,13 @@
 import React from "react";
 import * as ReactRedux from "react-redux";
-import {NavLink} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import {NavigatieBar} from "../../shared/navbar/NavigatieBar";
 import {Footer} from "../../shared/footer/Footer";
 import {PageTitle} from "../../shared/PageTitle";
 import {Container, Row, Card} from "react-bootstrap";
 
 const ScoreComponent = (props) => {
+    const {deckId} = useParams();
     return (
     <>
     <NavigatieBar/>
@@ -45,8 +46,8 @@ const ScoreComponent = (props) => {
             </Card>
         </Row>
         <Row className={"justify-content-center"}>
-            <NavLink to="/" id="back" className="btn btn-blue">
-                Go to the homepage
+            <NavLink to={`/decks/${deckId}`} id="back" className="btn btn-blue">
+                Go back to the deck
             </NavLink>
         </Row>
     </Container>
