@@ -287,11 +287,25 @@ Bij het Leitner systeem worden flashcards verdeeld over een aantal dozen. Bij on
 
 Bij het spelen van een deck wordt er een selectie gemaakt aan kaarten dat bij de huidige sessie aan bod komt. De selectie is gebaseerd op het Leitner systeem en de formule ziet er als volgt uit:
 
-*Selectie = (Maximaal **X** aantal kaarten uit doos 0 (als deze nog niet leeg is)) + (Alle flashcards uit doos 1) + (Alle kaarten uit doos 2 waarvan het huide sessienummer - **W2** gelijk is aan de 'sessionPlayed' van de kaart) + (Alle kaarten uit doos 3 waarvan het huide sessienummer - **W3** gelijk is aan de 'sessionPlayed' van de kaart)*
+*Selectie = (Maximaal **X** aantal kaarten uit doos 0 (als deze nog niet leeg is)) + (Alle flashcards uit doos 1) + (Alle kaarten uit doos 2 waarvan het huidige sessienummer - **W2** >= aan de 'sessionPlayed' van de kaart) + (Alle kaarten uit doos 3 waarvan het huidige sessienummer - **W3** >= aan de 'sessionPlayed' van de kaart)*
 
-Elke flashcard houdt individueel zijn 'sessionPlayed' bij. Dit is het nummer van de sessie waarin deze kaart aan bod is gekomen. Elke flashcard houdt ook een 'box' nummer bij om aan te geven in welke box deze zit.
+Elke flashcard houdt individueel zijn 'sessionPlayed' bij. Dit is het nummer van de sessie waarin deze kaart aan bod is gekomen. Elke flashcard houdt ook een 'box' nummer bij om aan te geven in welke doos deze zit.
 
-Stel je voor **X** = 10, **W2** = 3 en **W3** = 5. Dit betekent dat doos 2 elke 3 sessies aan bod komt, en doos 3 elke 5 sessies. Een flashcard uit doos 0 of 1 kan in sessie 4 goed worden beantwoordt. Het sessionPlayed-nummer van de kaart wordt dan 4 en het box-nummer wordt 2, aangezien deze naar doos 2 verplaatst wordt. Deze kaart, nu uit doos 2, zal vervolgens weer terugkomen in sessie 7 terugkomen, omdat **_currentSession (7) - W2 (3) = sessionPlayed van de flashcard en dus de sessie waarin de kaart goed is beantwoord (4)._**
+Stel je voor **X** = 10, **W2** = 3 en **W3** = 5. Dit betekent dat doos 2 elke 3 sessies aan bod komt, en doos 3 elke 5 sessies. Een flashcard uit doos 0 of 1 kan in sessie 4 goed worden beantwoordt. Het sessionPlayed-nummer van de kaart wordt dan 4 en het box-nummer wordt 2, aangezien deze naar doos 2 verplaatst wordt. Deze kaart, nu uit doos 2, zal vervolgens weer terugkomen in sessie 7 terugkomen, omdat **_currentSession (7) - W2 (3) >= sessionPlayed van de flashcard en dus de sessie waarin de kaart goed is beantwoord (4)._**
+
+### Verantwoordelijkheden client
+De client-applicatie krijgt alle flashcards en maakt een selectie op basis van het Leitner systeem. 
+
+### Verantwoordelijkheden server
+De server-applicatie verplaatst flashcards naar de juiste doos op basis van het Leitner systeem en een goed of fout antwoord. 
+
+### Situatie: Geen kaarten meer
+Stel je voor dat een gebruiker aan het begin alle kaarten goed heeft, en er zijn geen kaarten meer over in doos 0. Deze kaarten worden dan naar doos 2 verplaatst en komen over **W2** sessies pas terug. De volgende sessie zou dan geen kaarten bevatten, omdat er niks in doos 1 zit. 
+<br />
+We hebben deze situatie opgelost door sessies over te slaan totdat er kaarten aanwezig zijn. Dit zal de client-applicatie uitvoeren en versturen naar de server.
+
+### Situatie: Verloren kaarten
+Stel je voor dat de gebruiker stopt met spelen in het midden van het spel. De kaarten die niet zijn gespeeld zullen nooit meer aan bod komen omdat de het sessionPlayed-nummer niet werd geüpdatet (dit gebeurt pas bij het opgeven van een antwoord). Dit hebben we opgelost door niet meer te kijken of (*huidige sessienummer - VARIABELE **gelijk** is aan de 'sessionPlayed' van de kaart*), maar *huidige sessienummer - VARIABELE **groter of gelijk** is aan de 'sessionPlayed' van de kaart*. Deze "verloren" kaarten zullen op deze manier altijd aan bod komen.
 
 ## Deployment
 Hier komt Deployment (POST GAME)
