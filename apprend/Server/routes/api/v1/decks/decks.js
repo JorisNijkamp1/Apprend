@@ -110,42 +110,77 @@ decks.get('/', async (req, res) => {
 | GET ALL DECKS FOR HOMEPAGE FROM USERS
 */
 decks.get('/home', async (req, res) => {
-    let allDecksUsers = await User.find({}).sort({signupDate: 'desc'});
+    try {
 
-    const homeDecks = [];
-
-    allDecksUsers.forEach((index, key) => {
-        allDecksUsers[key].decks.forEach((decksIndex, decksKey) => {
-            if (homeDecks.length <= 2) {
-                homeDecks.push({
-                    deckId: allDecksUsers[key].decks[decksKey]._id,
-                    deckName: allDecksUsers[key].decks[decksKey].name,
-                    deckDescription: allDecksUsers[key].decks[decksKey].description,
-                    deckCreator: !(allDecksUsers[key].email && allDecksUsers[key]) ? 'anonymous user' : allDecksUsers[key].decks[decksKey].creatorId,
-                    deckUserId: allDecksUsers[key].decks[decksKey].creatorId
-                });
+        let allDecks
+        if (req.session.username){
+            allDecks = await User.aggregate([
+                { $unwind : "$decks"},
+                { $match: { $and: [ { 'email': {$ne: ''} }, { 'decks.private': false }, { 'decks.creatorId': { $ne: req.session.username } }] } },
+                { $group : {
+                    _id: null,
+                    decks: {
+                        $push: "$decks"
+                } }
             }
-        });
-    });
+            ])
+        } else {
+            allDecks = await User.aggregate([
+                { $unwind : "$decks"},
+                { $match: { $and: [ { 'email': {$ne: ''} }, { 'decks.private': false }] } },
+                { $group : {
+                    _id: null,
+                    decks: {
+                        $push: "$decks"
+                } }
+            }
+            ])
+        }
 
-    await res.json({
-        success: true,
-        homeDecks: homeDecks,
-    })
+        if (!allDecks[0]) return res.status(404).json('cant find any public deck')
+        let decks = []
+        if (allDecks[0].decks.length < 3){
+            decks = allDecks[0].decks.map(deck => {
+                return deck
+            })
+        } else {
+            const amountOfDecks = 3
+            const indexPicked = []
+            let infCounter = 0
+            for (let i = 0; i < amountOfDecks; i++){
+                const randomIndex = Math.floor(Math.random() * allDecks[0].decks.length)
+                if (indexPicked.includes(randomIndex)){
+                    i--
+                    infCounter++
+                    if (infCounter > 500) break;
+                } else {
+                    indexPicked.push(randomIndex)
+                    decks.push(allDecks[0].decks[randomIndex])
+                }
+            }
+        }
+        res.status(200).json(decks)
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('Er gaat iets goed fout')
+    }
+
 });
 
 decks.post('/', async (req, res) => {
     try {
+        if (!req.body.deckName || req.body.deckName.trim().length === 0) return res.status(400).json('Failed to provide a deck name')
         let response;
         if (!req.session.username && !req.cookies.username) {
             req.session.username = req.session.id
             const deck = {
-                name: req.body.deckName,
-                description: req.body.description,
+                name: req.body.deckName ? req.body.deckName : 'My awesome deck',
+                description: req.body.description ? req.body.description : 'Awesome description',
                 creatorId: req.session.id,
                 status: 'original',
                 tags: req.body.tags,
                 flashcards: [],
+                private: req.body.private,
             }
             const user = {
                 _id: req.session.id,
@@ -159,11 +194,11 @@ decks.post('/', async (req, res) => {
             }
             response = await User.create(user)
         } else {
-            console.log('Session username in decks.post', req.session.username, req.cookies.username)
             const player = await User.findById(req.session.username ? req.session.username : req.cookies.username)
             const deck = {
-                name: req.body.deckName,
-                description: req.body.description,
+                name: req.body.deckName ? req.body.deckName : 'My awesome deck',
+                description: req.body.description ? req.body.description : 'Awesome description',
+                private: req.body.private,
                 creatorId: req.session.username ? req.session.username : req.cookies.username,
                 status: 'original',
                 tags: req.body.tags,
@@ -199,32 +234,44 @@ decks.delete('/:deckId', async (req, res) => {
 | GET A SPECIFIC DECK
 */
 decks.get('/:deckId', async (req, res) => {
-    const users = await User.find({});
+    try {
     const deckId = req.params.deckId;
 
-    let currentDeck, anonymousUser;
-    users.forEach((user, userKey) => {
-        users[userKey].decks.forEach((deck, deckKey) => {
-            if (deck._id == deckId) {
-                currentDeck = deck;
-                anonymousUser = !(user.email && user.password) ? 'anonymous user' : user._id
-            }
-        });
-    });
-
-    if (currentDeck) {
-        await res.json({
-            success: true,
-            deck: {
-                ...currentDeck._doc,
-                userName: anonymousUser,
-            }
-        })
-    } else {
-        await res.json({
-            success: false,
-        })
+    if (!deckId){
+        return res.status(404).json('Cant work without a deck id')
     }
+    const userAndDeck = await User.findOne({
+        'decks': {
+            $elemMatch: {
+                '_id': deckId
+            }
+        }
+    }, {
+        'decks': {
+            $elemMatch: {
+                '_id': deckId
+            }
+        }
+    })
+    if (!userAndDeck) return res.status(404).json('Does not exist')
+    if (!userAndDeck.decks) return res.status(404).json('Does not exist')
+
+    if (userAndDeck.decks[0].private){
+        if (req.session.username !== userAndDeck._id) return res.status(401).json('User has made this deck private')
+    } 
+
+    const user = await User.findById(userAndDeck.decks[0].creatorId)
+    if (user.email.length === 0) userAndDeck.decks[0].LOL = true
+    // if (user.email.length === 0) console.log('REEEEEEEEEEEEEEEE')
+    // console.log(user)
+    console.log(userAndDeck)
+
+    res.status(200).json(userAndDeck.decks[0])
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('oopsie')
+    }
+
 });
 
 /*====================================
@@ -529,25 +576,34 @@ decks.get('/:deckId/games/:gameId', async (req, res) => {
 | EDIT DECK
 */
 decks.put('/:deckId', async (req, res) => {
-    const {deckId} = req.params;
-    const {name, description, creatorId, tags} = req.body;
-    let user = await User.findById(creatorId);
-    await user.editDeckname(deckId, name, description, tags);
-    let currentDeck;
+    try {
+        const {deckId} = req.params;
+        const {name, description, creatorId, tags} = req.body;
 
-    user.decks.forEach(deck => {
-        if (deck._id.toString() === deckId) {
-            currentDeck = deck
+        let user = await User.findById(creatorId)
+
+        if (!user) return res.status(500).json('No such user is known on this server')
+
+        let deckToEdit = await user.decks.id(deckId)
+
+        if (!deckToEdit) return res.status(404).json('Deck not found')
+
+        if (req.session.username){
+            if (req.session.username !== deckToEdit.creatorId) return res.status(401).json('This deck doesnt belong to you')
+        } else {
+            return res.status(401).json('This deck doesnt belong to you')
         }
-    })
 
-    res.json({
-        success: true,
-        name: name,
-        description: description,
-        deck: currentDeck,
-        tags: tags
-    })
+        await deckToEdit.editDeck(name, description, tags)
+        await user.save()
+    
+        return res.status(201).json(deckToEdit)
+    
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('Sorry something went horribly wrong on our end...')
+    }
+
 })
 
 decks.post('/:deckId', async (req, res) => {

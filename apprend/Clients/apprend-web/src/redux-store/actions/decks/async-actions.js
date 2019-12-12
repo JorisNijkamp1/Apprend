@@ -1,9 +1,9 @@
 import {API_URL} from '../../urls'
-import {setDeckAction, setIsLoading, setUserDecksAction, setUserDecksDecksAction, setDeckEditAction} from "./actions";
+import {setDeckAction, setIsLoading, setUserDecksAction, setUserDecksDecksAction, setDeckEditAction, setSpecificDeckDataAction} from "./actions";
 
-export const getUserDecksAction = (username) => {
+export const getUserDecksAction = (username, skipLoader = false) => {
     return async dispatch => {
-        await dispatch(setIsLoading(true))
+        if (!skipLoader) await dispatch(setIsLoading(true))
         const url = `${API_URL}/users/${username}/decks`;
         const options = {
             method: 'GET',
@@ -16,15 +16,21 @@ export const getUserDecksAction = (username) => {
         const response = await fetch(url, options);
         const data = await response.json();
         if (data.success) {
-            setTimeout(function () {
-                dispatch(setUserDecksAction(data.decks));
-                dispatch(setIsLoading(false))
-            }, 1000);
-        } else {
-            setTimeout(function () {
-                dispatch(setUserDecksAction('no-decks'));
-                dispatch(setIsLoading(false))
-            }, 1000);
+            if (skipLoader) setUserDecksAction(data.decks)
+            else {
+                setTimeout(function () {
+                    dispatch(setUserDecksAction(data.decks));
+                    dispatch(setIsLoading(false))
+                }, 1000);
+            }
+        }else {
+            if (skipLoader) dispatch(setUserDecksAction('no-decks'));
+            else {
+                setTimeout(function () {
+                    dispatch(setUserDecksAction('no-decks'));
+                    dispatch(setIsLoading(false))
+                }, 1000);
+            }
         }
     }
 };
@@ -43,9 +49,10 @@ export const getDeckAction = (deckId) => {
         };
         const response = await fetch(url, options);
         const data = await response.json();
-        if (data.success) {
+        if (response.status === 200) {
+            dispatch(setDeckAction(data));
+
             setTimeout(function () {
-                dispatch(setDeckAction(data.deck));
                 dispatch(setIsLoading(false))
             }, 500);
         } else {
@@ -85,17 +92,17 @@ export const getDeckEditAction = (deckId) => {
             mode: 'cors'
         };
         const response = await fetch(url, options)
-        const data = await response.json();
-        if (data.success) {
-            console.log(data);
-            dispatch(setDeckEditAction(data.deck))
-            return data.deck
+        if (response.status === 200) {
+            const data = await response.json();
+            dispatch(setDeckEditAction(data))
+            return data
         }
     }
 }
 
 export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription, oldTags, newTags) => {
-    const tags = oldTags.concat(newTags)
+    let tags = oldTags
+    if (newTags && newTags.length > 0) tags = oldTags.concat(newTags)
     return async dispatch => {
         const url = `${API_URL}/decks/${deckId}`;
         let body = {
@@ -115,8 +122,29 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
         };
         const response = await fetch(url, options);
         const data = await response.json();
-        if (data.success) {
-            dispatch(setDeckEditAction(data.deck));
+        if (response.status === 201) {
+            dispatch(setSpecificDeckDataAction(data))
+            dispatch(setDeckAction(data))
+        }
+    }
+}
+
+export const toggleDeckStatus = (deckId, userId) => {
+    return async dispatch => {
+        const url = `${API_URL}/users/${userId}/decks/${deckId}`
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        })
+
+        if (response.status === 201){
+            const data = await response.json()
+            dispatch(setSpecificDeckDataAction(data))
+            dispatch(setDeckAction(data))
         }
     }
 }

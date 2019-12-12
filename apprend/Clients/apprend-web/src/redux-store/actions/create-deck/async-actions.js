@@ -2,7 +2,6 @@ import { API_URL } from '../../urls'
 import {setIsLoading } from './actions'
 
 export const createDeck = deck => {
-    console.log('IK WIL EEN NIEUW DECK AANMAKEN')
     return async dispatch => {
         let givenDeck = deck
         const url = `${API_URL}/decks`
@@ -31,7 +30,7 @@ export const createDeck = deck => {
                 return data
             }
 
-            
+
         // } catch (e) {
         //     await dispatch(setIsLoading(false))
 

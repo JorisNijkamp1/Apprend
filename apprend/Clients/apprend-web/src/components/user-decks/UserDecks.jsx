@@ -6,164 +6,386 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {useParams} from "react-router-dom";
 import {Footer} from "../shared/footer/Footer"
-import {getDeckAction, getUserDecksAction} from "../../redux-store/actions/decks/async-actions";
+import {
+    getDeckEditAction,
+    getUserDecksAction,
+    setDeckEditedAction
+} from "../../redux-store/actions/decks/async-actions";
 import Card from "react-bootstrap/Card";
-import CardColumns from "react-bootstrap/CardColumns";
 import Loader from 'react-loaders'
 import 'loaders.css/src/animations/square-spin.scss'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash, faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faTrash, faCheck, faTimes, faEdit, faLockOpen, faLock} from "@fortawesome/free-solid-svg-icons";
+import Button from "react-bootstrap/Button";
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
-import { deleteDeckFromUser } from '../../redux-store/actions/decks/async-actions';
+import {deleteDeckFromUser, toggleDeckStatus} from '../../redux-store/actions/decks/async-actions'
+import {Form} from "react-bootstrap";
 import FilterTagsInput from "../search-input/FilterTagsInput";
 import {AddCard} from "./sub-components/AddCard";
 import {setFilteredDecks} from "../../redux-store/actions/decks/actions";
+import { Link } from 'react-router-dom'
 
 const Deck = (props) => {
     const {username} = useParams();
     const isCreator = (props.username === props.userDecks.userId);
-    const [decks, setDecks] = useState(['a'])
+
+    const [decks, setDecks] = useState()
+    const params = useParams()
+
+    let {deckId} = useParams()
 
     useEffect(() => {
         props.getUserDecks(username)
         props.setFilteredDecks([])
     }, []);
 
-    const handleDeleteDeck = event => {
-        const deckId = event.currentTarget.getAttribute('name')
-        props.deleteDeckFromUser(deckId)
-    }
-
-    const confirmationBox = (bool, deck) => {
-        if (bool) return (
+    const confirmationBoxHOC = (message, deck, funct, stateFunct, property, index) => {
+        return (
             <Card.Footer>
             <Row>
                 <Col className="text-left" xs={8}>
-                    Are you sure ?
+                    {message}
                 </Col>
                 <Col xs={2} className="text-center text-green">
-                    <FontAwesomeIcon icon={faCheck} name={deck._id} onClick={e => handleDeleteDeck(e)} />
+                    <FontAwesomeIcon icon={faCheck} name={deck._id}
+                                    id={`confirm-icon-button-${index}`}
+                                    onClick={(event) => {
+                                        funct(event)
+                                    }}
+                    />
                 </Col>
                 <Col xs={2} className="text-center text-red">
-                    <FontAwesomeIcon icon={faTimes} name={deck._id} onClick={e => addDeleteDeckToState(e)} />
+                    <FontAwesomeIcon icon={faTimes} name={deck._id} id={`cancel-icon-button-${index}`} onClick={(event) => {
+                        stateFunct(event, property)
+                    }}/>
                 </Col>
             </Row>
         </Card.Footer>
         )
-        else return (
-        <>
-        </>
+    }
+
+    const handleDeleteDeck = event => {
+        const deckId = event.currentTarget.getAttribute('name')
+        props.deleteDeckFromUser(deckId)
+    };
+
+    const handleEditDeck = event => {
+        try {
+            const deckId = event.currentTarget.getAttribute('name');
+            const storeDeck = props.decks[props.decks.findIndex(d => d._id === deckId)]
+
+            if (decks && decks[deckId]){
+                let deckData = {...decks[deckId]}
+                deckData.description = decks[deckId].description ? decks[deckId].description : storeDeck.description
+                deckData.name = decks[deckId].name ? decks[deckId].name : storeDeck.name
+                props.setDeckEditedAction(storeDeck.creatorId, deckId, deckData.name, deckData.description, storeDeck.tags)
+                toggleLocalStateProperty(event, 'editState')            
+            }
+        } catch (e) {
+            console.log('SOMETHING WENT WRONG WITH EDITING A DECK', e)
+        }
+    }
+
+    const editProperty = (event, property) => {
+        const deckId = event.currentTarget.getAttribute('name')
+        const newPropertyValue = event.currentTarget.value
+        let updatedDecks = {}
+
+        let newDeck = {}
+        newDeck['id'] = deckId
+        newDeck[property] = newPropertyValue
+
+        if (decks){
+            if (decks[deckId]){
+                updatedDecks = {...decks}
+                updatedDecks[deckId][property] = newPropertyValue
+            } else {
+                updatedDecks = {...decks}
+                updatedDecks[deckId] = newDeck
+            }
+        } else {
+            updatedDecks[deckId] = newDeck
+        }
+        setDecks({...updatedDecks})
+    }
+
+    const toggleLocalStateProperty = (event, property, reset = false) => {
+        const deckId = event.currentTarget.getAttribute('name')
+        let updatedDecks = {}
+
+        let newDeck = {}
+        newDeck['id'] = deckId
+        newDeck[property] = true
+
+        if (decks){
+            if (decks[deckId]){
+                updatedDecks = {...decks}
+                updatedDecks[deckId][property] = !updatedDecks[deckId][property]
+                delete updatedDecks[deckId]['name']
+                delete updatedDecks[deckId]['description']
+            } else {
+                updatedDecks = {...decks}
+                updatedDecks[deckId] = newDeck
+            }
+        } else {
+            updatedDecks[deckId] = newDeck
+        }
+
+        setDecks({...updatedDecks})
+    }
+
+    const toggleDeckStatus = (event) => {
+        
+    }
+
+    /* Lijst met alle opties die de eigenaar ziet
+    
+        icon: FontAwesome icon die je importeert
+        title: >String< decknaam als je op de icon hovert
+        funct: functie die je aanroept als je op de icon drukt
+        statePropertyName: de propertyname die je aanpast wanneer je op de icon klikt 
+
+    */
+
+    const allIcons = [
+        {
+            icon: faTrash,
+            title: 'Delete',
+            funct: toggleLocalStateProperty,
+            statePropertyName: 'deleteState',
+            classColor: '',
+        },
+        {
+            icon: faEdit,
+            title: 'Edit',
+            funct: toggleLocalStateProperty,
+            statePropertyName: 'editState',
+            classColor: ''
+        },
+    ]
+
+    const handleToggleDeckStatus = (event) => {
+        const deckId = event.currentTarget.getAttribute('name')
+        const storeDeck = props.decks[props.decks.findIndex(d => d._id === deckId)]
+
+        props.toggleStatus(deckId, storeDeck.creatorId)
+
+    }
+
+    const StatusIcon = (hoc, deck) => {
+        let icon
+        if (deck.private) {
+            icon = {
+                icon: faLock,
+                title: 'Set this deck to public',
+                ownTitle: true,
+                funct: handleToggleDeckStatus,
+                classColor: 'text-red',
+            }
+        } else {
+            icon = {
+                icon: faLockOpen,
+                title: 'Set this deck to private',
+                ownTitle: true,
+                funct: handleToggleDeckStatus,
+                classColor: 'text-green',
+            }
+        }
+        return (
+            hoc(icon, deck, 0)
         )
     }
 
-    const addDeleteDeckToState = event => {
-        const deckId = event.currentTarget.getAttribute('name')
-        console.log(deckId)
-        let updatedDecks
-        if (!decks.includes(deckId)){
-            updatedDecks = [...decks]
-            updatedDecks.push(deckId)
-            console.log(updatedDecks)
-        } else {
-            updatedDecks = decks.filter(deck => {
-                return deck !== deckId
-            })
-        }
-        setDecks(updatedDecks)
+    const showAllIcons = (icons, deck, index) => {
+        return icons.map(icon => {
+            return iconHOC(icon, deck, index )
+        })
     }
 
-    const userOptions = (deck) => {
-        if (isCreator)
+    const userOptions = (deck, index) => {
+
+        // Laat alle confirmationBoxes onder elkaar zien
+        const allConfirmationBoxes = (decks) => {
+            let boxes = []
+
+            if (decks){
+                if (decks[deck._id]){
+                    if (decks[deck._id].deleteState){
+                        boxes.push(confirmationBoxHOC('Confirm delete?', deck, handleDeleteDeck, toggleLocalStateProperty, 'deleteState', index))
+                    }
+                    if (decks[deck._id].editState){
+                        boxes.push(confirmationBoxHOC('Confirm edit?', deck, handleEditDeck, toggleLocalStateProperty, 'editState', index))
+                    }
+                }
+            }
+
+            return boxes
+        }
+
         return (
             <>
-            <Card.Footer>
-                <Row>
-                    <Col className="text-center" xs={12}>
-                        <b>Options</b>
-                    </Col>
-                    {deleteDeckIcon(deck)}
-                </Row>
-            </Card.Footer>
-            {confirmationBox(decks.includes(deck._id), deck)}
-        </>
+                <Card.Footer>
+                    <Row>
+                        <Col className="text-center">
+                        <b><p className="small">Owner options:</p></b>
+                        </Col>
+                    </Row>
+                    <Row>
+                        {showAllIcons(allIcons, deck, index)}
+                        {StatusIcon(iconHOC, deck)}
+                    </Row>
+                </Card.Footer>
+                {allConfirmationBoxes(decks)}
+            </>
         )
-        else return <> </>
     }
 
-    const deleteDeckIcon = (deck) => {
-        if (isCreator) {
-            return (
-                <Col xs={2}>
-                    <span className={"float-right"} name={deck._id}
-                                         onClick={(event) => addDeleteDeckToState(event)}>
-                        <FontAwesomeIcon icon={faTrash}
-                                         className={'trash-icon'}
-                                         size={'1x'}
-                                         title={`Delete ${deck.name}`}
+    const iconHOC = (icon, deck, index) => {
+        return (
+            <Col xs={2}>
+            <span className={"float-right"} name={deck._id}
+                  onClick={(event) => {
+                      icon.funct(event, icon.statePropertyName)
+                  }}>
+                <FontAwesomeIcon icon={icon.icon}
+                                 className={`trash-icon ${icon.classColor}`}
+                                 size={`1x`}
+                                 title={icon.ownTitle ? icon.title : `${icon.title} ${deck.name}`}
+                                 id={`${icon.title.toLowerCase().replace(/\s/g, "")}-icon-button-${index}`}
+                />
+            </span>
+        </Col>
+        )
+    }
 
-                        />
-                    </span>
-                </Col>
+    const FlashcardAmount = (deck) => {
+        return (
+            <Card.Subtitle className="mb-2 text-muted text-center">
+            ({deck.flashcards.length} {(deck.flashcards.length > 1 || deck.flashcards.length === 0) ? 'flashcards' : 'flashcard'})
+        </Card.Subtitle>
+        )
+    }
+
+    const showViewButton = (bool, deckId, index) => {
+        if (!bool) return (
+        <Row>
+        <Col xs={{span: 6, offset: 3}}>
+            <Link to={`/decks/${deckId}`}>
+                <Button variant="outline-primary" className={'w-100'} id={'card-' + index + '-link'}>View
+                    deck</Button>
+            </Link>
+        </Col>
+    </Row>
+        )
+    }
+
+    const ShowCard = (deck, deckId, index) => {
+
+        if (decks && decks[deckId] && decks[deckId].editState) {
+            return (
+                <>
+                    <Form.Group controlId="formBasicEmail" className={"text-center"}>
+                        <Form.Label column={true}>
+                            <strong>Edit {deck.name}</strong>
+                        </Form.Label>
+                    <Form.Control type="text"
+                                  name={deckId}
+                                  placeholder={deck.name}
+                                  defaultValue={deck.name}
+                                  id={`input-name-${index}`}
+                                  onChange={(e) => {
+
+                                    editProperty(e, 'name')
+                                  }}
+                    />
+                </Form.Group>
+                {FlashcardAmount(deck)}
+
+                <Form.Group controlId="formBasicEmail" className={"text-center"}>
+                    <Form.Label column={true}><strong>Edit deck description</strong></Form.Label>
+                    <Form.Control 
+                                  type="text"
+                                  as="textarea"
+                                  name={deckId}
+                                  placeholder={deck.description}
+                                  defaultValue={deck.description}  
+                                  id={`input-description-${index}`}
+                                  className={'form-control'}
+                                  onChange={(e) => {
+
+                                    editProperty(e, 'description')
+
+                                  }}
+                    />
+                </Form.Group>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <Card.Title className={"text-center"}>
+                        <Row>
+                            <Col xs={12}>
+                                <span id={`deck-name-${index}`}>{deck.name}</span>
+                            </Col>
+                        </Row>
+                    </Card.Title>
+                    {FlashcardAmount(deck)}
+
+                    <Card.Title className={"text-center font-weight-normal"}>
+                        <Row>
+                            <Col xs={12}>
+                                <span id={`deck-description-${index}`}>{deck.description}</span>
+                            </Col>
+                        </Row>
+                    </Card.Title>
+                    {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, deck._id, index)}
+                </>
             )
         }
-    };
-    let loader, userDecks, error;
-    if (props.isLoading) {
-        loader = (
+    }
+
+    const LoaderComponent = () => {
+        return (
             <Row className="mx-auto align-items-center flex-column py-5">
                 <Loader type="square-spin" active={true} color={'#758BFE'}/>
                 <h2>Loading decks...</h2>
             </Row>
         )
-    } else if (props.filteredDecks.length !== 0) {
-        if (typeof(props.filteredDecks) === "string") {
-            userDecks = (
-            <Row className="mx-auto align-items-center flex-column py-5">
-                <h2>{props.filteredDecks} ☹️ </h2>
-            </Row>
-            )
-        } else {
-            userDecks = props.filteredDecks.map((deck, key) =>
-                <Col xs={12} sm={6} lg={4} className="my-2">
-                    <Card key={deck.name + key} id={'card-' + key}>
-                        {AddCard(deck, key)}
-                        {userOptions(deck)}
-                    </Card>
-                </Col>
-            )
-        }
-    } else if (props.userDecks.decks) {
-        userDecks = props.userDecks.decks.map((deck, key) =>
-            <Col xs={12} sm={6} lg={4} className="my-2">
-                <Card key={deck.name + key} id={'card-' + key}>
-                    {AddCard(deck, key)}
-                    {userOptions(deck)}
-                </Card>
-            </Col>
-        )
-    } else if (props.userDecks.toString() === 'no-decks') {
-
-    } else if (props.decks === 0){
-
     }
 
     const showErrors = () => {
         let errors = []
-        if (props.userDecks.toString() === 'no-decks'){
-            errors.push(            <Row className="mx-auto align-items-center flex-column py-5">
-            <h2>User not found... 🙄</h2>
-        </Row>)
-        }
-        else if (props.decks && !props.isLoading){
-            if (props.decks.length === 0){
-                errors.push(<Row className="mx-auto align-items-center flex-column py-5">
-                <h2>User has no decks... ☹️</h2>
+        if (props.userDecks.toString() === 'no-decks') {
+            errors.push(<Row className="mx-auto align-items-center flex-column py-5">
+                <h2>User not found... 🙄</h2>
             </Row>)
+        } else if (props.decks && !props.isLoading) {
+            if (props.decks.length === 0) {
+                errors.push(
+                    <Row className="mx-auto align-items-center flex-column py-5">
+                        <h2>User has no decks... ☹️</h2>
+                    </Row>)
             }
-
         }
-
         return (errors.map(error => error))
+    }
+
+    const ShowDecks = (loading, decks) => {
+        if (loading) return <LoaderComponent />
+
+        if (!decks) return ''
+
+        return decks.map((deck, index) => (
+            <Col xs={12} sm={6} lg={4} className="my-2">
+                <Card key={deck.name + index} id={'card-' + index}>
+                    <Card.Body>
+                        {ShowCard(deck, deck._id, index)}
+                    </Card.Body>
+                    {isCreator ? userOptions(deck, index) : ''}
+                </Card>
+            </Col>)
+        )
     }
 
     return (
@@ -174,7 +396,7 @@ const Deck = (props) => {
                     <Col lg={{span: 8, offset: 2}}>
                         <div className="mx-auto text-green pt-5">
                             <h1 className="display-5 text-center">
-                                {props.userDecks.user ? `Decks of ${props.userDecks.user}`: ''}
+                                {props.userDecks.user ? `Decks of ${props.userDecks.user}` : ''}
                             </h1>
                         </div>
                     </Col>
@@ -182,13 +404,9 @@ const Deck = (props) => {
                 <div className={'pt-3 pb-5'}>
                     <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`} username={props.userDecks.user}/>
                 </div>
-                {loader}
                 {showErrors()}
-                {error}
                 <Row>
-                    {/* <CardColumns> */}
-                        {userDecks}
-                    {/* </CardColumns> */}
+                    {ShowDecks(props.isLoading, props.decks)}
                 </Row>
             </Container>
             <Footer/>
@@ -213,6 +431,9 @@ function mapDispatchToProps(dispatch) {
         isLoggedIn: () => dispatch(isLoggedIn()),
         getUserDecks: (username) => dispatch(getUserDecksAction(username)),
         deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
+        setDeckEditedAction: (creatorId, _id, deckName, deckDescription, oldTags, newTags) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription, oldTags, newTags)),
+        getDecksEdit: (deckId) => dispatch(getDeckEditAction(deckId)),
+        toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),
         setFilteredDecks: (decks) => dispatch(setFilteredDecks(decks))
     }
 }

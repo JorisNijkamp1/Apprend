@@ -71,7 +71,6 @@ userSchema.methods.editDeckSession = async function (deckId, session) {
 
 userSchema.methods.deleteDeck = async function (deckId) {
     this.decks = this.decks.filter(deck => {
-        console.log(deck._id, deckId)
         return deck._id.toString() !== deckId
     })
     this.markModified('decks')

@@ -45,6 +45,13 @@ export default function decksReducer(state = initialState, action) {
             case DECK_EDIT_DATA:
                 draft['deckEdit'] = action.payload;
                 break;
+
+            // Kijken of ik een specifieke deck kan updaten
+            case 'DECKS_SET_SPECIFIC_DECK':
+                const index = draft['userDecks']['decks'].findIndex(d => d._id === action.payload._id)
+                draft['userDecks']['decks'][index] = action.payload
+                break;
+
             case DECK_DELETE_TAG:
                 let filtered = state.deckEdit.tags.filter(function(value, index, arr){
                     return value !== action.payload;
@@ -53,6 +60,7 @@ export default function decksReducer(state = initialState, action) {
                 break;
             case DECK_FILTERED_DECKS:
                 draft['filteredDecks'] = action.payload
+                break;
             default:
                 return draft
         }

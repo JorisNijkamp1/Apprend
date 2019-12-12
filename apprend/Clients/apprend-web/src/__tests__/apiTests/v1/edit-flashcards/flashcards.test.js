@@ -2,28 +2,28 @@
 import {API_URL} from "../../../../redux-store/urls";
 
 describe('Get flashcards from a deck', () => {
-    test('Get deck endpoint', async () => {
-        const expectedResult = {
-            "success": true,
-            "deck": {
-                "name": "Frans woordjes",
-                "flashcards": [
-                    {
-                        "_id": "0",
-                        "type": "Text only",
-                        "question": "Hond",
-                        "answer": "Dog"
-                    },
-                    {
-                        "_id": "1",
-                        "type": "Text only",
-                        "question": "Kat",
-                        "answer": "Cat"
-                    }
-                ]
-            }
-        };
+    const expectedResult = {
+        "success": true,
+        "deck": {
+            "name": "Finnish to Dutch prefixes",
+            "flashcards": [
+                {
+                    "_id": "Apprende0",
+                    "type": "Text only",
+                    "question": "Kissa",
+                    "answer": "Kat"
+                },
+                {
+                    "_id": "Apprende1",
+                    "type": "Text only",
+                    "question": "Koira",
+                    "answer": "Hond"
+                }
+            ]
+        }
+    };
 
+    test('Get deck endpoint', async () => {
         const response = await fetch(`${API_URL}/decks/5ddfadab612b09570c6f3a33/flashcards`, {
             method: 'GET',
             headers: {
@@ -39,41 +39,20 @@ describe('Get flashcards from a deck', () => {
         expect(result.flashcards).toStrictEqual(expectedResult.deck.flashcards)
     });
 
-    test('Edit deck endpoint', async () => {
-        const expectedResult = {
-            "success": true,
-            "deck": {
-                "name": "Frans woordjes",
-                "flashcards": [
-                    {
-                        "_id": "0",
-                        "type": "Text only",
-                        "question": "Geit",
-                        "answer": "Goat"
-                    },
-                    {
-                        "_id": "1",
-                        "type": "Text only",
-                        "question": "Kat",
-                        "answer": "Cat"
-                    }
-                ]
-            }
-        };
-        
+    test('Edit deck endpoint', async () => {     
         const data = {
             "flashcards": [
                 {
-                    "id": "0",
+                    "id": "Apprende0",
                     "type": "Text only",
-                    "term": "Geit",
-                    "definition": "Goat"
+                    "term": "Kissa",
+                    "definition": "Kat"
                 },
                 {
-                    "id": "1",
+                    "id": "Apprende1",
                     "type": "Text only",
-                    "term": "Kat",
-                    "definition": "Cat"
+                    "term": "Koira",
+                    "definition": "Hond"
                 }
             ],
             "test": true

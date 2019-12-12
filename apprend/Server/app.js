@@ -30,6 +30,13 @@ app.use(session({
     resave: true
 }));
 
+app.use('/', (req, res, next) => {
+    if (req.cookies && !req.session.username){
+        if (req.cookies.username) req.session.username = req.cookies.username
+    }
+    next()
+})
+
 //Routes
 app.use('/api', apiRoute);
 

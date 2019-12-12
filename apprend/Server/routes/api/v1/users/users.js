@@ -26,12 +26,16 @@ users.get('/', async (req, res) => {
 users.get('/:username/decks', async (req, res) => {
     await User.findOne({_id: req.params.username}, function (err, user) {
         if (user) {
+            let allowedDecks = [...user.decks]
+            if (req.session.username !== user._id){
+                allowedDecks = allowedDecks.filter(d => d.private === false)
+            }
             return res.json({
                 success: true,
                 decks: {
                     user: !(user.email && user.password) ? 'anonymous user' : user._id,
                     userId: user._id,
-                    decks: user.decks,
+                    decks: allowedDecks
                 }
             })
         } else {
@@ -178,6 +182,7 @@ users.post('/', async (req, res) => {
                     'lastPlayedDate': oldUser.decks[i].lastPlayedDate,
                     'status': oldUser.decks[i].status,
                     'flashcards': oldUser.decks[i].flashcards,
+                    'private': oldUser.decks[i].private
                 })
             );
         }
@@ -266,3 +271,25 @@ users.delete('/:id', async (req, res) => {
         });
     });
 });
+
+users.patch('/:userId/decks/:deckId', async (req, res) => {
+    try {
+        const { deckId, userId } = req.params
+
+        if (req.session.username !== userId) return res.status(401).json('Not your deck')
+
+        const user = await User.findById(userId)
+        const deck = await user.decks.id(deckId)
+        if (!deck) return res.status(404).json('No such deck exists')
+
+        const result = deck.toggleStatus()
+        user.markModified('decks')
+        await user.save()
+
+        res.status(201).json(deck)
+
+    } catch (e) {
+        console.log(e)
+        res.status(500).status('Something went wrong')
+    }
+})

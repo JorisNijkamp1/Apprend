@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 
 jest.setTimeout(12000)
 
-describe(`Edit a deck e2e`, () => {
+describe(`Toggle the share status of a deck`, () => {
     let browser, page;
     let deckNameBeforeEdit
     let descriptionBeforeEdit
@@ -60,36 +60,20 @@ describe(`Edit a deck e2e`, () => {
         await page.goto(`http://localhost:3000/Joris/decks`);
     });
 
-    test(`Load deck frans woordjes`, async () => {
-        await page.waitFor(`#edit-icon-button-0`);
-        deckNameBeforeEdit = await page.$eval('#deck-name-0', el => el.textContent)
-        descriptionBeforeEdit = await page.$eval('#deck-description-0', el => el.textContent)
-        const editButton = await page.$(`#edit-icon-button-0`);
-        await editButton.click();
+    test(`Toggle the status`, async () => {
+        await page.waitFor(1200);
+        let toggleStatusButton = await page.$(`#setthisdecktoprivate-icon-button-0`);
+        let privatePath = false
+        if (!toggleStatusButton){
+            privatePath = true
+            toggleStatusButton = await page.$(`#setthisdecktopublic-icon-button-0`)
+        } 
+        await toggleStatusButton.click();
+        let newToggleStatusButton
+        if (privatePath) newToggleStatusButton = await page.$(`#setthisdecktoprivate-icon-button-0`)
+        else newToggleStatusButton = await page.$(`#setthisdecktopublic-icon-button-0`)
+        expect(newToggleStatusButton).toBeDefined()
     });
 
-    test('Edit deck name', async () => {
-        await page.waitFor('#input-name-0')
-        await page.type(`input[id="input-name-0"]`, `${typeInName}`, {delay: 15});
-    })
-
-    test('Edit deck description', async () => {
-        await page.type(`textarea[id="input-description-0"]`, `${typeInDescription}`, {delay: 15});
-    })
-
-    test('Save changes', async () => {
-
-        await page.waitFor(`#confirm-icon-button-0`);
-        const confirmButton = await page.$(`#confirm-icon-button-0`);
-        await confirmButton.click();
-    })
-
-    test('Check if changes were saved', async () => {
-        await page.waitFor('#deck-name-0')
-        const nameAfterEdit = await page.$eval('#deck-name-0', el => el.textContent)
-        const descriptionAfterEdit = await page.$eval('#deck-description-0', el => el.textContent)
-        expect(nameAfterEdit).toEqual(deckNameBeforeEdit + typeInName)
-        expect(descriptionAfterEdit).toEqual(typeInDescription + descriptionBeforeEdit)
-    } )
 })
 

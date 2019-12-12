@@ -67,8 +67,8 @@ describe(`Home`, () => {
     })
 
     test(`Load a specific deck to import`, async () => {
-        await page.waitFor(`#import-deck`);
-        const goToDeck = await page.$(`#import-deck`);
+        await page.waitFor(`#import-deck-button`);
+        const goToDeck = await page.$(`#import-deck-button`);
         await goToDeck.click();
         const theTitle = await page.title();
         expect(theTitle).toBe(`Apprend | Flashcard learning platform`)

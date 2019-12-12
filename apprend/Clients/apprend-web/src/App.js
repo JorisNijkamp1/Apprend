@@ -61,6 +61,9 @@ function App(props) {
                 <Route path={"/search"}>
                     <Search/>
                 </Route>
+                <Route>
+                    <Homepage />
+                </Route>
             </Switch>
         </div>
     )
