@@ -82,7 +82,7 @@ const PlayingComponent = (props) => {
                 Back
             </NavLink>
             <Col className={"text-center"}>
-                <progress value={props.correctCards.length + props.wrongCards.length + 1} max={props.cards.length} className="bar"/>
+                <progress value={props.correctCards.length + props.wrongCards.length + 1} max={props.cards.length}/>
             </Col>
             <Col className={"text-center"}>
                 <b>Card {props.correctCards.length + props.wrongCards.length + 1} out of {props.cards.length}</b>

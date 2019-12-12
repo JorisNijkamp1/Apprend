@@ -144,16 +144,19 @@ h2 {
     transform: rotatey(-180deg);
 }
 
-.btn-green {
+.btn-green, .btn-green:focus {
     background-color: #1bba63;
+    border: none;
 }
 
-.btn-red {
+.btn-red, .btn-red:focus {
     background-color: #dc3545;
+    border: none;
 }
 
 .btn-blue {
     background-color: #00b5fb;
+    border: none;
     color: white;
     margin: 20px 0px;
 }
@@ -162,12 +165,16 @@ progress[value] {
     appearance: none;
     border: none;
     width: 50%;
-    height: 20px;
+    height: 5px;
+}
+
+progress[value]::-webkit-progress-bar {
+    background-color: #EEEEEE;
 }
 
 progress[value]::-webkit-progress-value {
-    background-image: -webkit-linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, .1) 33%, rgba(0, 0, 0, .1) 66%, transparent 66%),
-    -webkit-linear-gradient(left, #7AD765, #758BFE);
+    background-image: -webkit-linear-gradient(17deg, #381868, #913bb7);
+    transition: width 0.4s;
 }
 
 .buttonInfo {
