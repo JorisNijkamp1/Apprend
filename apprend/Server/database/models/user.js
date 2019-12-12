@@ -40,10 +40,10 @@ userSchema.methods.editDeckname = async function (deckId, name, description) {
     return this
 }
 
-userSchema.methods.editFlashcardBoxSessionPlayed = async function (deckId, flashcardId, answeredCorrect) {
+userSchema.methods.editFlashcardLeitner = async function (deckId, flashcardId, answeredCorrect) {
     this.decks = this.decks.map(deck => {
         if (deck._id.toString() === deckId) {
-            deck.editFlashcardBoxSessionPlayed(flashcardId, answeredCorrect, deck.session);
+            deck.editFlashcardLeitner(flashcardId, answeredCorrect, deck.session);
         }
 
         return deck;

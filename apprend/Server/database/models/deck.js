@@ -34,7 +34,7 @@ const deckSchema = new mongoose.Schema({
     }
 });
 
-deckSchema.methods.editFlashcardBoxSessionPlayed = async function (flashcardId, answeredCorrect, sessionPlayed) {
+deckSchema.methods.editFlashcardLeitner = async function (flashcardId, answeredCorrect, sessionPlayed) {
     this.flashcards = this.flashcards.map(flashcard => {
         if (flashcard._id.toString() === flashcardId) {
             if (answeredCorrect) {

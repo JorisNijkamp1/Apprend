@@ -139,7 +139,7 @@ export const updateDeckSession = (deckId, session) => {
 
 export const moveFlashcardToBox = (deckId, flashcardId, answeredCorrect) => {
     return async dispatch => {
-        const url = `${API_URL}/decks/${deckId}/flashcards/${flashcardId}`;
+        const url = `${API_URL}/decks/${deckId}/flashcards/${flashcardId}/leitner`;
         const options = {
             method: 'PUT',
             headers: {

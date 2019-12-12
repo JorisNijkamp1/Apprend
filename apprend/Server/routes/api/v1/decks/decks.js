@@ -218,7 +218,7 @@ decks.post('/:deckId/flashcards', async (req, res) => {
     }
 });
 
-decks.put('/:deckId/flashcards/:flashcardId', async (req, res) => {
+decks.put('/:deckId/flashcards/:flashcardId/leitner', async (req, res) => {
     const deckId = req.params.deckId;
     const flashcardId = req.params.flashcardId;
     const username = req.session.username ? req.session.username : req.cookies.username;
@@ -281,7 +281,7 @@ decks.put('/:deckId/flashcards/:flashcardId', async (req, res) => {
         return;
     }
 
-    const newDeck = await user.editFlashcardBoxSessionPlayed(deckId, flashcardId, req.body.answeredCorrect);
+    const newDeck = await user.editFlashcardLeitner(deckId, flashcardId, req.body.answeredCorrect);
 
     await res.json({
         'success': true,
