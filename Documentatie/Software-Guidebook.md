@@ -39,8 +39,7 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 
 - **Decks aanmaken**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/create-deck.svg)
-	> Wanneer een gebruiker **zonder** account een deck aanmaakt, worden zijn gegevens als anoniem in de database opgeslagen onder een sessie-ID. Deze wordt ook als cookie in de browser opgeslagen zodat de browser de anonieme gegevens kan ophalen.<br />
-	<br />
+	> Wanneer een gebruiker **zonder** account een deck aanmaakt, worden zijn gegevens als anoniem in de database opgeslagen onder een sessie-ID. Deze wordt ook als cookie in de browser opgeslagen zodat de browser de anonieme gegevens kan ophalen.
 	De volgende invoervelden zijn aanwezig:
     - De gebruiker kan een naam opgeven.
     - De gebruiker kan een beschrijving opgeven.
@@ -48,8 +47,7 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 
 - **Deck spelen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Deck-playing.svg)
-	> De gebruiker krijgt een selectie van kaarten die op willekeurige volgorde gepresenteerd worden. Dit is gebaseerd op het [Leitner Systeem](https://en.wikipedia.org/wiki/Leitner_system) (Zie hoofdstuk 7: Infrastructure Architecture).<br />
-	<br />
+	> De gebruiker krijgt een selectie van kaarten die op willekeurige volgorde gepresenteerd worden. Dit is gebaseerd op het [Leitner Systeem](https://en.wikipedia.org/wiki/Leitner_system) (Zie hoofdstuk 7: Infrastructure Architecture).
 	De gebruiker kan:
     - Een flashcard omdraaien om het antwoord of de definitie te tonen;
     - Een flashcard nogmaals omdraaien om de vraag of de term weer in te zien;
