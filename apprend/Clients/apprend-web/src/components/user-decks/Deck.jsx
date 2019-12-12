@@ -57,7 +57,6 @@ const UserDecks = (props) => {
         let deck
         if (!props.username) deck = result.decks[0]._id
         else deck = result._id
-        console.log(result)
         await props.isLoggedIn()
 
         history.push(`/decks/${deck}`)

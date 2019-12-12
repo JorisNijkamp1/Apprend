@@ -58,12 +58,10 @@ const Deck = (props) => {
 
     const addDeleteDeckToState = event => {
         const deckId = event.currentTarget.getAttribute('name')
-        console.log(deckId)
         let updatedDecks
         if (!decks.includes(deckId)){
             updatedDecks = [...decks]
             updatedDecks.push(deckId)
-            console.log(updatedDecks)
         } else {
             updatedDecks = decks.filter(deck => {
                 return deck !== deckId
