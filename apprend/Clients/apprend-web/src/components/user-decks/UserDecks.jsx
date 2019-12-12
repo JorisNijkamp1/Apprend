@@ -290,7 +290,7 @@ const Deck = (props) => {
                         </Form.Label>
                     <Form.Control type="text"
                                   name={deckId}
-                                  placeholder="Haustiere"
+                                  placeholder={deck.name}
                                   defaultValue={deck.name}
                                   id={`input-name-${index}`}
                                   onChange={(e) => {
@@ -307,7 +307,7 @@ const Deck = (props) => {
                                   type="text"
                                   as="textarea"
                                   name={deckId}
-                                  placeholder="Haustiere"
+                                  placeholder={deck.description}
                                   defaultValue={deck.description}  
                                   id={`input-description-${index}`}
                                   className={'form-control'}

@@ -44,6 +44,7 @@ const UserDecks = (props) => {
     useEffect(() => {
         props.isLoggedIn()
         props.getDeck(deckId)
+
     }, []);
 
     const checkAdded = (tagValue) => {
@@ -140,20 +141,23 @@ const UserDecks = (props) => {
         setdeleteStatus(!deleteStatus)
     }
 
+
+
     const toggleEditStateHandler = () => {
         if (editState !== true) {
             props.getDecksEdit(deckId)
-            .then((response) => {
-                if (response.tags !== 0) {
-                    response.tags.forEach(tag => {
-                        addListItem(tag);
-                        props.clearTags();
-                    })
-                }
+    .then((response) => {
+        if (response.tags !== 0) {
+            response.tags.forEach(tag => {
+                addListItem(tag);
+                props.clearTags();
             })
+        }
+    })
         }
         setEditName('')
         seteditState(!editState)
+
     }
 
     const setStateHandler = (e, func) => {
@@ -249,9 +253,6 @@ const UserDecks = (props) => {
                                 <Col xs={12} md={4}>
                                     <b>Total flashcards: </b>{totalFlashcards}
                                 </Col>
-                                <Col xs={12} md={4}>
-                                    <b>Tags: </b>{}
-                                </Col>
                             </Row>
                         </Card.Subtitle>
 
@@ -320,6 +321,27 @@ const UserDecks = (props) => {
     }
 
     const DeckTags = () => {
+        let tags
+        if (props.deck && props.deck.tags && props.deck.tags.length > 0) {
+
+            const allTags = props.deck.tags.map(tag => (
+                <>
+                    <Col sm={6} md={3} className="text-center my-1">
+                        <Card>
+                        <h6>{tag}</h6>
+
+                        </Card>
+                    </Col>
+                </>
+            ))
+
+            tags = (
+                <Row>
+                    {allTags}
+                </Row>
+            )
+        }
+
         if (editState)
         return (
             <>
@@ -348,9 +370,7 @@ const UserDecks = (props) => {
             </>
         )
         else return (
-                                    <Col sm={12}>
-                        <ul id="tagList"></ul>
-                    </Col>
+            tags
         )
     }
 
