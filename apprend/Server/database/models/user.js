@@ -41,6 +41,34 @@ userSchema.methods.editDeckname = async function (deckId, name, description, tag
     return this
 }
 
+userSchema.methods.editFlashcardLeitner = async function (deckId, flashcardId, answeredCorrect) {
+    this.decks = this.decks.map(deck => {
+        if (deck._id.toString() === deckId) {
+            deck.editFlashcardLeitner(flashcardId, answeredCorrect, deck.session);
+        }
+
+        return deck;
+    });
+
+    this.markModified('decks');
+    await this.save();
+    return this.decks.find(deck => deck._id.toString() === deckId);
+};
+
+userSchema.methods.editDeckSession = async function (deckId, session) {
+    this.decks = this.decks.map(deck => {
+        if (deck._id.toString() === deckId) {
+            deck.session = session;
+        }
+
+        return deck;
+    });
+
+    this.markModified('decks');
+    await this.save();
+    return this.decks.find(deck => deck._id.toString() === deckId);
+};
+
 userSchema.methods.deleteDeck = async function (deckId) {
     this.decks = this.decks.filter(deck => {
         console.log(deck._id, deckId)
@@ -61,7 +89,7 @@ userSchema.methods.importDeck = async function (deck, user) {
 }
 
 //Create model
-mongoose.model("User", userSchema);
+mongoose.model('User', userSchema);
 
 module.exports = userSchema;
 // module.exports = mongoose.model('User', userSchema)
