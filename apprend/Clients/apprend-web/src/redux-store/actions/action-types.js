@@ -36,3 +36,4 @@ export const SET_GAME_ID = 'SET_GAME_ID';
 
 // search
 export const SEARCH_SET_SEARCH_VALUE = 'SEARCH_SET_SEARCH_VALUE';
+export const SEARCH_SET_IS_LOADING = 'SEARCH_SET_IS_LOADING';
