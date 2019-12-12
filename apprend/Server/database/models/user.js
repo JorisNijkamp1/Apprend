@@ -27,11 +27,12 @@ userSchema.methods.addDeck = async function (deck) {
     return this.decks[this.decks.length - 1]
 }
 
-userSchema.methods.editDeckname = async function (deckId, name, description) {
+userSchema.methods.editDeckname = async function (deckId, name, description, tags) {
     this.decks = this.decks.map(deck => {
         if (deck._id.toString() === deckId) {
             deck.name = name
             deck.description = description
+            deck.tags = tags
         }
         return deck
     })
@@ -73,6 +74,15 @@ userSchema.methods.deleteDeck = async function (deckId) {
         console.log(deck._id, deckId)
         return deck._id.toString() !== deckId
     })
+    this.markModified('decks')
+    await this.save()
+    return this
+
+}
+
+userSchema.methods.importDeck = async function (deck, user) {
+    delete deck.games;
+    this.decks.push(deck)
     this.markModified('decks')
     await this.save()
     return this

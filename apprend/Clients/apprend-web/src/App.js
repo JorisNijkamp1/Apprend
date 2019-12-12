@@ -14,6 +14,10 @@ import {PlayingScore} from "./components/playing/sub-components/PlayingScore";
 import {isLoggedIn} from "./redux-store/actions/login/async-actions";
 import * as ReactRedux from "react-redux";
 import {DeckEdit} from "./components/user-decks/edit-deck/DeckEdit";
+import 'react-notifications-component/dist/theme.css'
+import 'animate.css/animate.css'
+import Search from "./components/search/Search";
+
 function App(props) {
 
     //Check if user is logged in
@@ -36,9 +40,6 @@ function App(props) {
                 <Route path={"/login"}>
                     <LoginPage/>
                 </Route>
-                <Route exact path={"/decks/flashcards/add"}>
-                    <Flashcards/>
-                </Route>
                 <Route exact path={"/decks/:deckId/flashcards"}>
                     <Flashcards/>
                 </Route>
@@ -56,6 +57,9 @@ function App(props) {
                 </Route>
                 <Route path={"/score"}>
                     <PlayingScore/>
+                </Route>
+                <Route path={"/search"}>
+                    <Search/>
                 </Route>
             </Switch>
         </div>

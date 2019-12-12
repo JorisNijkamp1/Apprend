@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
 import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
@@ -11,11 +11,19 @@ import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
 import Button from "react-bootstrap/Button";
 import Loader from "react-loaders";
+import { useHistory } from 'react-router'
+import {withRouter} from 'react-router-dom'
+
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
+import {importDeckAction} from "../../redux-store/actions/decks/async-actions";
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
     const isCreator = (props.username === props.deck.creatorId);
+
+    const [currentDeck, setcurrentDeck] = useState()
+
+    const history = useHistory()
 
     //Check if user is logged in
     useEffect(() => {
@@ -34,12 +42,47 @@ const UserDecks = (props) => {
                         <Button variant="warning" id={'edit-flashcard-button'}>Edit flashcards</Button>
                     </Link>
                     <Link to={`/decks/${props.deck._id}/edit`}>
-                        <Button id={"edit-deck"} className={"ml-4"} variant={"info"}>Edit deck</Button>
+                        <Button id={"edit-deck"} className={"ml-4 mr-4"} variant={"info"}>Edit deck</Button>
                     </Link>
                 </>
             )
         }
     };
+
+    const handleImportButton = async (deckId) => {
+        const result = await props.importDeck(deckId)
+        if (!result) return
+        let deck
+        if (!props.username) deck = result.decks[0]._id
+        else deck = result._id
+        console.log(result)
+        await props.isLoggedIn()
+
+        history.push(`/decks/${deck}`)
+        // window.location.reload()
+        props.getDeck(deck)
+    }
+
+    const importDeckButton = () => {
+        if (!isCreator) {
+            return (
+                // <Link to={`/${props.username}/decks`}>
+                    <Button id={"import-deck"}
+                            variant={"info"}
+                            className={"sticky-button"}
+                            onClick={() => {
+                                handleImportButton(props.deck._id)
+                            }}>
+                        Import deck
+                    </Button>
+                // </Link>
+            )
+        } else {
+            return <>
+            </>
+        }
+
+    }
 
     let loader, deck, error;
     if (props.isLoading) {
@@ -62,12 +105,12 @@ const UserDecks = (props) => {
         if (props.deck.flashcards) {
             totalFlashcards = props.deck.flashcards.length
         }
-        if (props.deck.toString() !== 'deck-not-found'){
+        if (props.deck.toString() !== 'deck-not-found') {
             deck = (
                 <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
                     <Card.Body>
-                        <Card.Title>{props.deck.name}</Card.Title>
-                        <Card.Subtitle>
+                        <Card.Title><strong>{props.deck.name}   </strong></Card.Title>
+                        <Card.Subtitle className={"mb-3"}>
                             <Row>
                                 <Col xs={12} md={4}>
                                     <b>Created on: </b>{props.deck.creationDate}
@@ -78,26 +121,28 @@ const UserDecks = (props) => {
                                 <Col xs={12} md={4}>
                                     <b>Total flashcards: </b>{totalFlashcards}
                                 </Col>
+                                <Col xs={12} md={4}>
+                                    <b>Description: </b>{props.deck.description}
+                                </Col>
                             </Row>
                         </Card.Subtitle>
-                        <Card.Text>
-                            {props.deck.description}
-                        </Card.Text>
                         {editFlashcardsButton()}
+                        {importDeckButton()}
                         {totalFlashcards > 0 ?
-                        <Link to={`/decks/${props.deck._id}/play`}>
-                            <Button variant="success" id="play" className={'float-right'}>Deck spelen</Button>
-                        </Link>
-                        :
-                        <div>
                             <Link to={`/decks/${props.deck._id}/play`}>
-                                <Button variant="success" id="play" disabled className={'float-right'}>Deck spelen</Button>
+                                <Button variant="success" id="play" className={'float-right'}>Deck spelen</Button>
                             </Link>
-                            <small className="col buttonInfo text-muted">
-                                A deck has to contain at least 1 flashcard in order to play the deck.
-                            </small>
-                        </div>
-                    }
+                            :
+                            <div>
+                                <Link to={`/decks/${props.deck._id}/play`}>
+                                    <Button variant="success" id="play" disabled className={'float-right'}>Deck
+                                        spelen</Button>
+                                </Link>
+                                <small className="col buttonInfo text-muted">
+                                    A deck has to contain at least 1 flashcard in order to play the deck.
+                                </small>
+                            </div>
+                        }
                     </Card.Body>
                 </Card>
             )
@@ -140,7 +185,8 @@ function mapDispatchToProps(dispatch) {
     return {
         isLoggedIn: () => dispatch(isLoggedIn()),
         getDeck: (deckId) => dispatch(getDeckAction(deckId)),
+        importDeck: (deck) => dispatch(importDeckAction(deck))
     }
 }
 
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(UserDecks);
+export default withRouter(ReactRedux.connect(mapStateToProps, mapDispatchToProps)(UserDecks));

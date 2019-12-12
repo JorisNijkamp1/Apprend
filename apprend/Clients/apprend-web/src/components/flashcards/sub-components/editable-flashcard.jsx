@@ -1,11 +1,10 @@
 import React, {useState} from "react";
 import {connect} from "react-redux";
-import Col from "react-bootstrap/Col";
-import {Form} from "react-bootstrap";
-import Card from "react-bootstrap/Card";
+import {Row, Col, Form, Card, Alert} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTrash} from '@fortawesome/free-solid-svg-icons'
+import {faTrash, faCheck, faTimes} from '@fortawesome/free-solid-svg-icons'
 import {changeDeckFlashcards} from "../../../redux-store/actions/flashcards/actions";
+import {store} from 'react-notifications-component';
 
 const EditableFlashcard = (props) => {
     const [flashcardTerm, setFlashcardTerm] = useState('');
@@ -13,6 +12,8 @@ const EditableFlashcard = (props) => {
 
     const [flashcardDefinition, setFlashcardDefinition] = useState('');
     const [flashcardDefinitionEdited, setFlashcardDefinitionEdited] = useState(false);
+
+    const [deleteNotification, setDeleteNotification] = useState(false);
 
     const flashcardName = (flashcardTerm === '' && !props.term) ? 'Empty flashcard' : ((props.term && !flashcardTermEdited) ? props.term : flashcardTerm);
 
@@ -36,7 +37,45 @@ const EditableFlashcard = (props) => {
             return fc.id !== flashcardId
         });
         props.changeDeckFlashcards(deckFlashcards)
+        setDeleteNotification(false);
+        return <Row>
+            {store.addNotification({
+                title: "You successfully deleted a card",
+                message: " ",
+                type: "info",
+                insert: "top",
+                container: "top-center",
+                animationIn: ["animated", "bounceIn"],
+                animationOut: ["animated", "bounceOut"],
+                dismiss: {
+                    duration: 3000
+                },
+                width: 250
+            })}
+        </Row>
     };
+
+    const confirmationBox = (bool) => {
+        if (bool) return (
+        <Card.Footer>
+            <Row>
+                <Col className="text-left" xs={8}>
+                    Are you sure?
+                </Col>
+                <Col xs={2} className="text-center text-green">
+                    <FontAwesomeIcon icon={faCheck} name={props.flashcardId} id={"green"} onClick={() => deleteFlashcard(props.flashcardId)} />
+                </Col>
+                <Col xs={2} className="text-center text-red">
+                    <FontAwesomeIcon icon={faTimes} name={props.flashcardId} id={"red"} onClick={() => setDeleteNotification(false)} />
+                </Col>
+            </Row>
+        </Card.Footer>
+        )
+        else return (
+        <> 
+        </>
+        )
+    }
 
     let flashcardDeleteIcon;
     if (props.deckFlashcards.length > 1) {
@@ -44,9 +83,19 @@ const EditableFlashcard = (props) => {
             <FontAwesomeIcon icon={faTrash}
                              className={'trash-icon'}
                              id={'flashcard-' + flashcardData.id + '-delete-icon'}
-                             onClick={() => deleteFlashcard(props.flashcardId)}
+                             onClick={() => setDeleteNotification(true)}
             />
         )
+    }
+
+    const showDeleteNotification = () => {
+        let aCard;
+        deckFlashcards.forEach(card => {
+            if (card.id === props.flashcardId) {
+                aCard = card
+            }
+        })
+        return deleteNotification ? confirmationBox(aCard.id === props.flashcardId) : ""
     }
 
     return (
@@ -59,7 +108,8 @@ const EditableFlashcard = (props) => {
                         <b>{flashcardName}</b>
                         <span className={"float-right"}>
                             {flashcardDeleteIcon}
-                    </span>
+                        </span>
+                        {showDeleteNotification()}
                     </Card.Header>
                     <Card.Body>
                         <Form.Group>

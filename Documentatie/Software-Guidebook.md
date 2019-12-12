@@ -39,214 +39,203 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 
 - **Decks aanmaken**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/create-deck.svg)
-	> Wanneer een gebruiker **zonder** account een deck aanmaakt, worden zijn gegevens als anoniem in de database opgeslagen onder een sessie-ID. Deze wordt ook als cookie in de browser opgeslagen zodat de browser de anonieme gegevens kan ophalen.\
-	\
+	> Wanneer een gebruiker **zonder** account een deck aanmaakt, worden zijn gegevens als anoniem in de database opgeslagen onder een sessie-ID. Deze wordt ook als cookie in de browser opgeslagen zodat de browser de anonieme gegevens kan ophalen.
 	De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een naam opgeven.
-		- De gebruiker kan een beschrijving opgeven.
+    - De gebruiker kan een naam opgeven.
+    - De gebruiker kan een beschrijving opgeven.
+    - De gebruiker kan tags toevoegen aan zijn deck.
+
+- **Deck spelen**
+[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Deck-playing.svg)
+	> De gebruiker krijgt een selectie van kaarten die op willekeurige volgorde gepresenteerd worden. Dit is gebaseerd op het [Leitner Systeem](https://en.wikipedia.org/wiki/Leitner_system) (Zie hoofdstuk 7: Infrastructure Architecture).
+	De gebruiker kan:
+    - Een flashcard omdraaien om het antwoord of de definitie te tonen;
+    - Een flashcard nogmaals omdraaien om de vraag of de term weer in te zien;
+    - Aangeven of hij/zij de flashcard goed had;
+    - Aangeven of hij/zij de flashcard fout had;
+    - Het spel beëindigen;
+    - Een scoreboard inzien wanneer het spelen voorbij is;
 
 - **Decks bewerken**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/edit-deck.svg)
 	> De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een naam aanpassen.
-		- De gebruiker kan een beschrijving aanpassen.
+    - De gebruiker kan een naam aanpassen.
+    - De gebruiker kan een beschrijving aanpassen.
+    - De gebruiker kan tags toevoegen en verwijderen.
 
 - **Decks verwijderen**
 	> De gebruiker krijgt een bevestigingsmelding.
-
-- **Flashcards uit een deck verwijderen**
-[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
-	> De gebruiker kan een oneindig aantal flashcards toevoegen.\
-	\
-	De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een vraag/term opgeven op de ene kant.
-		- De gebruiker kan een antwoord/definitie opgeven op de andere kant.
+	
+- **Flashcards filteren**
+	> De gebruiker kan filteren tussen alle flashcards d.m.v een zoek balk
+	> De gebruiker krijgt een melding als er geen resultaten zijn
 
 - **Flashcards bewerken**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
 	>	De volgende invoervelden zijn aanwezig:
-		- De gebruiker kan een vraag/term aanpassen op de ene kant.
-		- De gebruiker kan een antwoord/definitie aanpassen op de andere kant.
+    - De gebruiker kan een vraag/term aanpassen op de ene kant.
+    - De gebruiker kan een antwoord/definitie aanpassen op de andere kant.
 
 - **Flashcards uit een deck verwijderen**
-	> De gebruiker krijgt een bevestigingsmelding.
+[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
+	> De gebruiker kan een oneindig aantal flashcards toevoegen.<br />
+	<br />
+	De volgende invoervelden zijn aanwezig:
+    - De gebruiker kan een vraag/term opgeven op de ene kant.
+    - De gebruiker kan een antwoord/definitie opgeven op de andere kant.
+    - De gebruiker krijgt een bevestigingsmelding.
 
-- **Deck spelen**
-[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Deck-playing.svg)
-	> De gebruiker krijgt een selectie van kaarten die op willekeurige volgorde gepresenteerd worden. Dit is gebaseerd op het [Leitner Systeem](https://en.wikipedia.org/wiki/Leitner_system) (Zie hoofdstuk 7: Infrastructure Architecture).\
-	\
-	De gebruiker kan:
-		- Een flashcard omdraaien om het antwoord of de definitie te tonen;
-		- Een flashcard nogmaals omdraaien om de vraag of de term weer in te zien;
-		- Aangeven of hij/zij de flashcard goed had;
-		- Aangeven of hij/zij de flashcard fout had;
-		- Het spel beëindigen;
-		- Een scoreboard inzien wanneer het spelen voorbij is;
+- **Importeren van een deck**
+	> Als gast of (anonieme) gebruiker wil ik decks kunnen importeren van een andere Apprend gebruiker, zodat ik iets kan oefenen zonder dat ik daarvoor een deck aan moet maken.
+	De volgende invoervelden zijn aanwezig:
+    - Een deck importeren en hem daarna zelf aanpassen
+    - Een deck alleen importeren als dit deck public is.
+    - De gebruiker krijgt een bevestigingsmelding.
+
 
 - **Registreren nieuw account**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-registreren-webapp.svg)
-	> Een gebruiker kan een account registreren om zijn of haar decks op alle apparaten te kunnen gebruiken. Wanneer een gebruiker anonieme gegevens heeft, zullen deze omgezet worden naar een nieuw gebruikersaccount. Het sessie-ID in de database wordt dan vervangen door een username. Wanneer een gebruiker geen anonieme gegevens heeft, zal er simpelweg een nieuw gebruikersaccount aangemaakt worden. De gebruiker wordt na het registreren automatisch ingelogd.\
-	\
+	> Een gebruiker kan een account registreren om zijn of haar decks op alle apparaten te kunnen gebruiken. Wanneer een gebruiker anonieme gegevens heeft, zullen deze omgezet worden naar een nieuw gebruikersaccount. Het sessie-ID in de database wordt dan vervangen door een username. Wanneer een gebruiker geen anonieme gegevens heeft, zal er simpelweg een nieuw gebruikersaccount aangemaakt worden. De gebruiker wordt na het registreren automatisch ingelogd.
 	De volgende invoervelden zijn aanwezig:
-		- De gebruiker moet een gebruikersnaam opgeven. Deze moet uniek zijn en mag alleen letters of cijfers bevatten.
-		- De gebruiker moet een E-mailadres opgeven. Deze moet uniek zijn en mag alleen letters of cijfers bevatten, met uitzondering van '@' en '.'.
-		- De gebruiker moet een wachtwoord opgeven.
-		- De gebruiker moet nogmaals een wachtwoord opgeven ter bevestiging.
+    - De gebruiker moet een gebruikersnaam opgeven. Deze moet uniek zijn en mag alleen letters of cijfers bevatten.
+    - De gebruiker moet een E-mailadres opgeven. Deze moet uniek zijn en mag alleen letters of cijfers bevatten, met uitzondering van '@' en '.'.
+    - De gebruiker moet een wachtwoord opgeven.
+	- De gebruiker moet nogmaals een wachtwoord opgeven ter bevestiging.
 
 - **Inloggen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-inloggen-webapp.svg)
 	> De volgende invoervelden zijn aanwezig:
-		- De gebruiker moet een gebruikersnaam opgeven.
-		- De gebruiker moet een wachtwoord opgeven.
+    - De gebruiker moet een gebruikersnaam opgeven.
+    - De gebruiker moet een wachtwoord opgeven.
 
-## Quality Attributes
-De onderstaande lijst bevat een overzicht van niet-functionele kwaliteitsattributen van het systeem.
+- **Uitloggen**
+	> De gebruiker kan op uitloggen klikken om uit te loggen.
+	> De gebruiker krijg een melding te zien dat hij of zij uitgelogd is.
+	
+- **Deck importeren**
+	> Een anonieme of ingelogde gebruiker kan een deck importeren.
+	> De gebruiker krijgt een melding dat het deck geïmporteerd is.
+	
+## Quality Attributes  
+De onderstaande lijst bevat een overzicht van niet-functionele kwaliteitsattributen van het systeem.  
+  
+**Reliability**  
+    - Het systeem is getest door middel van Jest unittests.  
+    - Het systeem is getest door middel van Puppeteer end-to-end tests.  
+    - Het systeem is getest door middel van Jest API-tests.  
+  
+**Security**  
+    - Wachtwoorden worden geëncrypt opgeslagen volgens de Bcrypt encryptie.  
+  
+**Usability**  
+    - Responsive, werkt op mobiele apparaten.  
 
-- **Reliability**
-	- Het systeem is getest door middel van Jest unittests.
-	- Het systeem is getest door middel van Puppeteer end-to-end tests.
-	- Het systeem is getest door middel van Jest API-tests.
-
-- **Security**
-	- Wachtwoorden worden geëncrypt opgeslagen volgens de Bcrypt encryptie.
-
-- **Usability**
-	- Responsive, werkt op mobiele apparaten.
-
-- **Legal, compliance and regulatory requirements**
-	- Voldoet aan de AVG-wetten.
-
-## Constraints
-De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevormd tijdens het ontwikkelen. De meeste van deze beperkingen zijn door de product owner aan ons voorgelegd.
-
-- **Tijd**
-	> Het projectteam heeft een pre-game van 1 week, 3 sprints van 2 weken en een post-game van 1 week gekregen. Het project is begonnen op 11 november en eindigt op 17 januari. Hier zitten twee weken kerstvakantie tussen. \
-	\
-	Binnen een sprint heeft het projectteam 46 uur per persoon beschikbaar kunnen stellen voor het ontwikkelen van de applicatie. Hier zijn afspraken en meetings al vanaf gehaald. Onverwachte problemen en onmacht zijn niet meegerekend in dit urenaantal. Door deze beperkte tijd zijn bepaalde user-stories geschrapt.
-
-- **Grootte van het projectteam**
-	> Het projectteam bestond uit vijf personen exclusief de product owner. Dit heeft effect gehad op de beschikbare ontwikkeltijd voor de applicatie.
-
-- **Kennis van het projectteam**
-	> Het projectteam was niet bekend met Jest (unittests), Puppeteer (end-to-end tests) en React Native. Jest en Puppeteer moesten sowieso geïmplementeerd worden. \
-	\
-	Er is een keuze gemaakt om niet alles te testen met end-to-end tests, aangezien de applicatie steeds veranderde. Het aanpassen van end-to-end tests kostte te veel tijd.\
-	\
-	De opdrachtgever had ook graag een mobiele app willen zien als er tijd over was. Het team heeft besloten om React Native hiervoor te gaan gebruiken. Er is een onderzoek uitgevoerd om in te schatten of het omzetten van de webapplicatie naar React Native gemakkelijk en haalbaar is. Het team vertrouwt er op dat dit gaat lukken, maar er is nog geen tijd gevonden om dit te kunnen doen. De prioriteit is zeer laag. 
-
-- **Gebruik van de Scrum methode.**
-	> Het projectteam heeft gebruik moeten maken van Scrum. Door deze flexibele methode te gebruiken zijn de meest gewenste user-stories geïmplementeerd en minder belangrijke mogelijk niet. Toch is de applicatie een werkend product, wat de bedoeling is van de Scrum methode. Zie het [Product Backlog](https://github.com/HANICA-DWA/sep2019-project-kiwi/projects/2?fullscreen=true&card_filter_query=label%3A%22user+story%22) voor een lijst met alle user-stories.
-
-- **Gebruik van GitHub**
-	> Het gebruik van GitHub was een eis vanuit de product owner. Alle documentatie moest ook in Markdown opgeslagen worden op de project repository.
-
-- **Gebruik van React**
-	> Het gebruik van React is vereist door de product owner.
-
-- **Gebruik van Redux**
-	> Het gebruik van Redux is vereist door de product owner.
-
-- **Gebruik van een NoSQL-database**
-	> Het gebruik van een NoSQL-database is vereist door de product owner. Het projectteam heeft gekozen voor MongoDB, want dit voldoet aan de snelheid- en opslagmogelijkheden. 
-
-- **Gebruik van een Express API op een NodeJS server**
-	> Het gebruik van een Express API op een NodeJS server is vereist door de product owner. 
-
-- **Gebruik van communicatie over HTTP**
-	> Aangezien er gebruik wordt gemaakt van een Express API moet data verzonden worden over het HTTP-protocol. De client-applicatie verstuurt JSON naar een serverapplicatie over HTTP. De server stuurt vervolgens ook weer iets terug over dit protocol. De server gebruikt de middleware bodyParser om JSON te parsen.
-
-- **Verwerking AVG voorwaarden**
-	> Het is wettelijk verplicht om aan te geven dat persoonsgegevens opgeslagen worden in een database. De product owner heeft ons verplicht om de gebruikers op de website cookie-meldingen te geven. Daarnaast moet de gebruiker akkoord gaan met algemene voorwaarden.
-
-## Principles
-
-**Client**
-
-- Voor elke pagina is een React Route aanwezig.
-- React componenten zijn functionele componenten.
-- "Build before buy", de applicatie bevat vooral zelfgemaakte algoritmes en functionaliteiten.
-- Unittests hebben een hogere prioriteit dan end-to-end tests.
-- Async action creators staan in een apart bestand.
-- Zo min mogelijk DRY code.
-
-**Server**
-
-- Elk document in de database heeft een Mongoose schema en model.
-- Mongoose methodes worden gebruikt waar mogelijk.
-- API-endpoint URL's zijn RESTful waar mogelijk.
-- "Build before buy", de applicatie bevat vooral zelfgemaakte algoritmes en functionaliteiten.
-- Zo min mogelijk DRY code.
-
-## Software Architecture
-De applicatie bestaat uit drie grote componenten zoals te zien in het onderstaande container diagram.
-
-![Apprend container diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20Apprend%20Container.svg)
-
-Zoals te zien op bovenstaande figuur omvat de Apprend applicatie een React client, NodeJS server en MongoDB database. De client en server zullen databasegegevens uitwisselen over de ingebouwde Express API. Door gebruik te maken van de bodyParser middleware kan JSON-data gemakkelijk ontvangen worden.
-
-De server praat vervolgens met de database om gegevens op te halen of op te slaan. De server reageert op de verzoeken vanuit de client en kan eventueel gegevens meegeven.
-
-### React WebApp
-
-![Apprend container diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20React%20Native%20App%20Component.svg)
-
-### NodeJS server
-
-![Apprend NodeJS server component diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)
-
-**Decks endpoints**:
-
-GET /api/v1/decks/home
-Haal de decks voor de homepage op.
-
-POST /api/v1/decks
-Maakt een nieuw deck aan.
-
-DELETE /api/v1/decks/:deckId
-Verwijderd een specifiek deck.
-
-GET /api/v1/decks/:deckId
-Haalt een specifiek deck op.
-
-GET /api/v1/decks/:deckId/flashcards
-Haalt alle flashcard van een deck op.
-
-POST /api/v1/decks/:deckId/flashcards
-Edit flashcards van een specifiek deck.
-
-PUT /api/v1/decks/:deckId
-Edit een deck.
+**Legal, compliance and regulatory requirements**  
+    - Voldoet aan de AVG-wetten.  
+  
+## Constraints  
+De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevormd tijdens het ontwikkelen. De meeste van deze beperkingen zijn door de product owner aan ons voorgelegd.  
+  
+- **Tijd**  
+  > Het projectteam heeft een pre-game van 1 week, 3 sprints van 2 weken en een post-game van 1 week gekregen. Het project is begonnen op 11 november en eindigt op 17 januari. Hier zitten twee weken kerstvakantie tussen. 
+ <br /> Binnen een sprint heeft het projectteam 46 uur per persoon beschikbaar kunnen stellen voor het ontwikkelen van de applicatie. Hier zijn afspraken en meetings al vanaf gehaald. Onverwachte problemen en onmacht zijn niet meegerekend in dit urenaantal. Door deze beperkte tijd zijn bepaalde user-stories geschrapt.  
+- **Grootte van het projectteam**  
+  > Het projectteam bestond uit vijf personen exclusief de product owner. Dit heeft effect gehad op de beschikbare ontwikkeltijd voor de applicatie.  
+  
+- **Kennis van het projectteam**  
+  > Het projectteam was niet bekend met Jest (unittests), Puppeteer (end-to-end tests) en React Native. Jest en Puppeteer moesten sowieso geïmplementeerd worden. <br />  
+ Er is een keuze gemaakt om niet alles te testen met end-to-end tests, aangezien de applicatie steeds veranderde. Het aanpassen van end-to-end tests kostte te veel tijd.<br /><br /> De opdrachtgever had ook graag een mobiele app willen zien als er tijd over was. Het team heeft besloten om React Native hiervoor te gaan gebruiken. Er is een onderzoek uitgevoerd om in te schatten of het omzetten van de webapplicatie naar React Native gemakkelijk en haalbaar is. Het team vertrouwt er op dat dit gaat lukken, maar er is nog geen tijd gevonden om dit te kunnen doen. De prioriteit is zeer laag.   
+- **Gebruik van de Scrum methode.**  
+  > Het projectteam heeft gebruik moeten maken van Scrum. Door deze flexibele methode te gebruiken zijn de meest gewenste user-stories geïmplementeerd en minder belangrijke mogelijk niet. Toch is de applicatie een werkend product, wat de bedoeling is van de Scrum methode. Zie het [Product Backlog](https://github.com/HANICA-DWA/sep2019-project-kiwi/projects/2?fullscreen=true&card_filter_query=label%3A%22user+story%22) voor een lijst met alle user-stories.  
+  
+- **Gebruik van GitHub**  
+  > Het gebruik van GitHub was een eis vanuit de product owner. Alle documentatie moest ook in Markdown opgeslagen worden op de project repository.  
+  
+- **Gebruik van React**  
+  > Het gebruik van React is vereist door de product owner.  
+  
+- **Gebruik van Redux**  
+  > Het gebruik van Redux is vereist door de product owner.  
+  
+- **Gebruik van een NoSQL-database**  
+  > Het gebruik van een NoSQL-database is vereist door de product owner. Het projectteam heeft gekozen voor MongoDB, want dit voldoet aan de snelheid- en opslagmogelijkheden.   
+- **Gebruik van een Express API op een NodeJS server**  
+  > Het gebruik van een Express API op een NodeJS server is vereist door de product owner.   
+- **Gebruik van communicatie over HTTP**  
+  > Aangezien er gebruik wordt gemaakt van een Express API moet data verzonden worden over het HTTP-protocol. De client-applicatie verstuurt JSON naar een serverapplicatie over HTTP. De server stuurt vervolgens ook weer iets terug over dit protocol. De server gebruikt de middleware bodyParser om JSON te parsen.  
+  
+- **Verwerking AVG voorwaarden**  
+  > Het is wettelijk verplicht om aan te geven dat persoonsgegevens opgeslagen worden in een database. De product owner heeft ons verplicht om de gebruikers op de website cookie-meldingen te geven. Daarnaast moet de gebruiker akkoord gaan met algemene voorwaarden.  
+  
+## Principles  
+  
+**Client**  
+  
+- Voor elke pagina is een React Route aanwezig.  
+- React componenten zijn functionele componenten.  
+- "Build before buy", de applicatie bevat vooral zelfgemaakte algoritmes en functionaliteiten.  
+- Unittests hebben een hogere prioriteit dan end-to-end tests.  
+- Async action creators staan in een apart bestand.  
+- Zo min mogelijk DRY code.  
+  
+**Server**  
+  
+- Elk document in de database heeft een Mongoose schema en model.  
+- Mongoose methodes worden gebruikt waar mogelijk.  
+- API-endpoint URL's zijn RESTful waar mogelijk.  
+- "Build before buy", de applicatie bevat vooral zelfgemaakte algoritmes en functionaliteiten.  
+- Zo min mogelijk DRY code.  
+  
+## Software Architecture  
+De applicatie bestaat uit drie grote componenten zoals te zien in het onderstaande container diagram.  
+  
+![Apprend container diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20Apprend%20Container.svg)  
+  
+Zoals te zien op bovenstaande figuur omvat de Apprend applicatie een React client, NodeJS server en MongoDB database. De client en server zullen databasegegevens uitwisselen over de ingebouwde Express API. Door gebruik te maken van de bodyParser middleware kan JSON-data gemakkelijk ontvangen worden.  
+  
+De server praat vervolgens met de database om gegevens op te halen of op te slaan. De server reageert op de verzoeken vanuit de client en kan eventueel gegevens meegeven.  
+  
+### React WebApp  
+  
+![Apprend container diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20React%20Native%20App%20Component.svg)  
+  
+### NodeJS server  
+  
+![Apprend NodeJS server component diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)  
+  
+**Decks endpoints**:  
+  
+| Method | URL                                                      | Beschrijving                                            |
+|--------|----------------------------------------------------------|---------------------------------------------------------|
+| GET    | /api/v1/decks/home                                       | Haal de decks voor de homepage op.                      |
+| GET    | /api/v1/decks/:deckId                                    | Haalt een specifiek deck op.                            |
+| GET    | /api/v1/decks/:deckId/flashcards                         | Haalt alle flashcard van een deck op.                   |
+| GET	 | /api/v1/decks/:username/tags	                            | Haalt alle decks van een user op.	                      |
+| POST   | /api/v1/decks                                            | Maakt een nieuw deck aan.                               |
+| POST	 | /api/v1/decks/:deckId                                    | Importeer een deck van een ander                        |
+| POST   | /api/v1/decks/:deckId/flashcards                         | Edit flashcards van een specifiek deck.                 |
+| PUT    | /api/v1/decks/:deckId/flashcards/:flashcardId/leitner    | Update box en sessionPlayed van een flashcard.          |
+| PUT    | /api/v1/decks/:deckId/session                            | Update session van een deck.                            |
+| DELETE | /api/v1/decks/:deckId                                    | Verwijdert een specifiek deck.                          |
 
 **Users endpoints**:
 
-GET /api/v1/users/:username/decks
-Haalt alle deck van een specifieke user op.
-
-GET /api/v1/users/:id
-Haalt een gebruik op basis  van id op.
-
-GET /api/v1/users/:id/_id
-Haalt een gebruik op bij ID bij het _id.
-
-POST /api/v1/users/
-Maak een nieuwe gebruiker aan.
-
-GET /api/v1/users/email
-Haal een gebruiker op op basis van email.
-
-DELETE /api/v1/users/:id
-Verwijder een gebruiken op basis van id.
+| Method | URL                           | Beschrijving                                |
+|--------|-------------------------------|---------------------------------------------|
+| GET    | /api/v1/users/:username/decks | Haalt alle deck van een specifieke user op. |
+| GET    | /api/v1/users/:id             | Haalt een gebruik op basis van id op.       |
+| GET    | /api/v1/users/:id/_id         | Haalt een gebruik op bij ID bij het _id.    |
+| GET    | /api/v1/users/email           | Haal een gebruiker op op basis van email.   |
+| POST   | /api/v1/users/                | Maak een nieuwe gebruiker aan.              |
+| DELETE | /api/v1/users/:id             | Verwijder een gebruiken op basis van id.    |
 
 **Login endpoints**:
 
-POST /api/v1/login/check
-Kijk of de gegevens kloppen.
-
-GET /api/v1/login/success
-Redirect als het success is.
-
-GET /api/v1/login/error
-Redirect als er een error is.
+| Method | URL                  | Beschrijving                  |
+|--------|----------------------|-------------------------------|
+| GET    | /api/v1/login/succes | Redirect als het success is.  |
+| GET    | /api/v1/login/error  | Redirect als er een error is. |
+| POST   | /api/v1/login/check  | Kijk of de gegevens kloppen.  |
 
 ### MongoDB Database
 
@@ -294,11 +283,25 @@ Bij het Leitner systeem worden flashcards verdeeld over een aantal dozen. Bij on
 
 Bij het spelen van een deck wordt er een selectie gemaakt aan kaarten dat bij de huidige sessie aan bod komt. De selectie is gebaseerd op het Leitner systeem en de formule ziet er als volgt uit:
 
-*Selectie = (Maximaal **X** aantal kaarten uit doos 0 (als deze nog niet leeg is)) + (Alle flashcards uit doos 1) + (Alle kaarten uit doos 2 waarvan het huide sessienummer - **W2** gelijk is aan de 'sessionPlayed' van de kaart) + (Alle kaarten uit doos 3 waarvan het huide sessienummer - **W3** gelijk is aan de 'sessionPlayed' van de kaart)*
+*Selectie = (Maximaal **X** aantal kaarten uit doos 0 (als deze nog niet leeg is)) + (Alle flashcards uit doos 1) + (Alle kaarten uit doos 2 waarvan het huidige sessienummer - **W2** >= aan de 'sessionPlayed' van de kaart) + (Alle kaarten uit doos 3 waarvan het huidige sessienummer - **W3** >= aan de 'sessionPlayed' van de kaart)*
 
-Elke flashcard houdt individueel zijn 'sessionPlayed' bij. Dit is het nummer van de sessie waarin deze kaart aan bod is gekomen. Elke flashcard houdt ook een 'box' nummer bij om aan te geven in welke box deze zit.
+Elke flashcard houdt individueel zijn 'sessionPlayed' bij. Dit is het nummer van de sessie waarin deze kaart aan bod is gekomen. Elke flashcard houdt ook een 'box' nummer bij om aan te geven in welke doos deze zit.
 
-Stel je voor **X** = 10, **W2** = 3 en **W3** = 5. Dit betekent dat doos 2 elke 3 sessies aan bod komt, en doos 3 elke 5 sessies. Een flashcard uit doos 0 of 1 kan in sessie 4 goed worden beantwoordt. Het sessionPlayed-nummer van de kaart wordt dan 4 en het box-nummer wordt 2, aangezien deze naar doos 2 verplaatst wordt. Deze kaart, nu uit doos 2, zal vervolgens weer terugkomen in sessie 7 terugkomen, omdat **_currentSession (7) - W2 (3) = sessionPlayed van de flashcard en dus de sessie waarin de kaart goed is beantwoord (4)._**
+Stel je voor **X** = 10, **W2** = 3 en **W3** = 5. Dit betekent dat doos 2 elke 3 sessies aan bod komt, en doos 3 elke 5 sessies. Een flashcard uit doos 0 of 1 kan in sessie 4 goed worden beantwoordt. Het sessionPlayed-nummer van de kaart wordt dan 4 en het box-nummer wordt 2, aangezien deze naar doos 2 verplaatst wordt. Deze kaart, nu uit doos 2, zal vervolgens weer terugkomen in sessie 7 terugkomen, omdat **_currentSession (7) - W2 (3) >= sessionPlayed van de flashcard en dus de sessie waarin de kaart goed is beantwoord (4)._**
+
+### Verantwoordelijkheden client
+De client-applicatie krijgt alle flashcards en maakt een selectie op basis van het Leitner systeem. 
+
+### Verantwoordelijkheden server
+De server-applicatie verplaatst flashcards naar de juiste doos op basis van het Leitner systeem en een goed of fout antwoord. 
+
+### Situatie: Geen kaarten meer
+Stel je voor dat een gebruiker aan het begin alle kaarten goed heeft, en er zijn geen kaarten meer over in doos 0. Deze kaarten worden dan naar doos 2 verplaatst en komen over **W2** sessies pas terug. De volgende sessie zou dan geen kaarten bevatten, omdat er niks in doos 1 zit. 
+<br />
+We hebben deze situatie opgelost door sessies over te slaan totdat er kaarten aanwezig zijn. Dit zal de client-applicatie uitvoeren en versturen naar de server.
+
+### Situatie: Verloren kaarten
+Stel je voor dat de gebruiker stopt met spelen in het midden van het spel. De kaarten die niet zijn gespeeld zullen nooit meer aan bod komen omdat de het sessionPlayed-nummer niet werd geüpdatet (dit gebeurt pas bij het opgeven van een antwoord). Dit hebben we opgelost door niet meer te kijken of (*huidige sessienummer - VARIABELE **gelijk** is aan de 'sessionPlayed' van de kaart*), maar *huidige sessienummer - VARIABELE **groter of gelijk** is aan de 'sessionPlayed' van de kaart*. Deze "verloren" kaarten zullen op deze manier altijd aan bod komen.
 
 ## Deployment
 Hier komt Deployment (POST GAME)

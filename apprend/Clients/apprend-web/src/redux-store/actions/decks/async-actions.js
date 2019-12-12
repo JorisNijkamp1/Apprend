@@ -20,7 +20,7 @@ export const getUserDecksAction = (username) => {
                 dispatch(setUserDecksAction(data.decks));
                 dispatch(setIsLoading(false))
             }, 1000);
-        }else {
+        } else {
             setTimeout(function () {
                 dispatch(setUserDecksAction('no-decks'));
                 dispatch(setIsLoading(false))
@@ -48,7 +48,7 @@ export const getDeckAction = (deckId) => {
                 dispatch(setDeckAction(data.deck));
                 dispatch(setIsLoading(false))
             }, 500);
-        }else {
+        } else {
             setTimeout(function () {
                 dispatch(setDeckAction('deck-not-found'));
                 dispatch(setIsLoading(false))
@@ -67,7 +67,7 @@ export const deleteDeckFromUser = (deckId) => {
                 'Content-Type': 'application/json'
             },
         })
-        if (response.status === 200){
+        if (response.status === 200) {
             const data = await response.json()
             dispatch(setUserDecksDecksAction(data))
         }
@@ -89,17 +89,20 @@ export const getDeckEditAction = (deckId) => {
         if (data.success) {
             console.log(data);
             dispatch(setDeckEditAction(data.deck))
+            return data.deck
         }
     }
 }
 
-export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription) => {
+export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription, oldTags, newTags) => {
+    const tags = oldTags.concat(newTags)
     return async dispatch => {
         const url = `${API_URL}/decks/${deckId}`;
         let body = {
             name: deckName,
             description: deckDescription,
-            creatorId: creatorId
+            creatorId: creatorId,
+            tags: tags
         };
         const options = {
             method: 'PUT',
@@ -114,6 +117,25 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
         const data = await response.json();
         if (data.success) {
             dispatch(setDeckEditAction(data.deck));
+        }
+    }
+}
+
+export const importDeckAction = deckId => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/${deckId}`;
+        const options = {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        }
+        const response = await fetch(url, options);
+        const data = await response.json();
+        if (response.status === 201) {
+            return data
         }
     }
 }

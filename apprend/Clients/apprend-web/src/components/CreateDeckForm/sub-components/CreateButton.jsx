@@ -1,18 +1,20 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Container, Form, Row, Col, 
-        Button,
-        Spinner
-         } from 'react-bootstrap'
+import {connect} from 'react-redux';
+import {
+    Container, Form, Row, Col,
+    Button,
+    Spinner
+} from 'react-bootstrap'
+import {Notification} from "../../shared/notification/Notification";
 
-import { changeDeckName } from '../../../redux-store/actions/create-deck/actions'
+import {changeDeckName} from '../../../redux-store/actions/create-deck/actions'
 
-import { createDeck } from '../../../redux-store/actions/create-deck/async-actions'
+import {createDeck} from '../../../redux-store/actions/create-deck/async-actions'
 
 const CreateButtonComponent = (props) => {
 
     const createButton = () => {
-        if (props.isLoading){
+        if (props.isLoading) {
             return (
                 <Button variant="primary" disabled className="w-100" id="create-deck-button">
                     <Spinner
@@ -27,12 +29,15 @@ const CreateButtonComponent = (props) => {
             )
         } else {
             return (
-                <Button 
-                    className="w-100" 
-                    variant="primary" 
+                <Button
+                    className="w-100"
+                    variant="primary"
                     type="submit"
                     id="create-deck-button"
-                    disabled={props.deckName ? false: true}
+                    disabled={props.deckName ? false : true}
+                    onClick={() => {
+                        Notification("You successfully created a deck", "success")
+                    }}
                 >
                     {props.deckName ? 'Create deck!' : 'Please fill in a deckname'}
                 </Button>
@@ -57,7 +62,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         changeDeckName: (name) => dispatch(changeDeckName(name)),
-        createNewDeck: (deck) => dispatch(createDeck(deck)), 
+        createNewDeck: (deck) => dispatch(createDeck(deck)),
     }
 }
 
