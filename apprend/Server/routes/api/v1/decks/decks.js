@@ -74,7 +74,7 @@ decks.get('/home', async (req, res) => {
             ])
         }
 
-        if (!allDecks) return res.status(404).json('cant find any public deck')
+        if (!allDecks[0]) return res.status(404).json('cant find any public deck')
         let decks = []
         if (allDecks[0].decks.length < 3){
             decks = allDecks[0].decks.map(deck => {

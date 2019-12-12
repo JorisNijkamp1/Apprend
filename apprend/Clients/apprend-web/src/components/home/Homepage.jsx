@@ -12,7 +12,7 @@ import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import SearchDecksInput from "../search-input/SearchDecksInput";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
-import { LoadingComponent } from '../shared/loader/loader' 
+import { LoadingComponent } from '../shared/loadingComponent/LoadingComponent' 
 
 const HomepageUI = (props) => {
 
@@ -21,10 +21,8 @@ const HomepageUI = (props) => {
     //Check if user is logged in
     useEffect(() => {
         props.isLoggedIn()
-    }, []);
-
-    useEffect(() => {
         props.getHomepageDecks(setisLoading);
+
     }, []);
 
     const decksHomepage = () => {
@@ -61,7 +59,7 @@ const HomepageUI = (props) => {
     const showContent = () => {
         if (isLoading){
             return <LoadingComponent giveClass="my-5" loadingText="Loading some decks..." />
-        } else if (props.deckName){
+        } else if (props.deckName && props.deckName.length > 0){
             return (
                 <>
                 <Row className={'mt-7'}>
@@ -77,7 +75,13 @@ const HomepageUI = (props) => {
                 </>
             )
         } else {
-            return <h2>We couldn't find any decks</h2>
+            return (
+                <Row className="mt-7">
+                    <Col className="text-center">
+                        <h2>We couldn't find any decks</h2>
+                    </Col>
+                </Row>
+            )
         }
     }
 

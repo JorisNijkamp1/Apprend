@@ -21,6 +21,8 @@ export const getHomepageDecks = (funct) => {
                 await dispatch(setHomepageDecksAction(data))
                 funct(false)
             }, 500)
+        } else {
+            funct(false)
         }
     }
 };

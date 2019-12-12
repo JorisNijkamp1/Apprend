@@ -4,24 +4,34 @@ import {NavigatieBar} from "../shared/navbar/NavigatieBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
 import {Link, useParams} from "react-router-dom";
 import {Footer} from "../shared/footer/Footer"
 import {getDeckAction} from "../../redux-store/actions/decks/async-actions";
 import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
-import Button from "react-bootstrap/Button";
 import Loader from "react-loaders";
 import { useHistory } from 'react-router'
 import {withRouter} from 'react-router-dom'
 
 import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {importDeckAction} from "../../redux-store/actions/decks/async-actions";
+import PlayButton from "./sub-components/PlayButton";
+import EditButton from "./sub-components/EditButton";
+import ToggleStatusButton from "./sub-components/ToggleStatusButton";
+import DeleteButton from "./sub-components/DeleteButton";
+import ImportButton from "./sub-components/ImportButton";
+import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../../redux-store/actions/decks/async-actions'
+import ConfirmationBox from "./sub-components/ConfirmationBox";
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
     const isCreator = (props.username === props.deck.creatorId);
 
-    const [currentDeck, setcurrentDeck] = useState()
+    const [editName, setEditName] = useState()
+    const [editDescription, seteditDescription] = useState()
+    const [editState, seteditState] = useState()
+    const [deleteStatus, setdeleteStatus] = useState(false)
 
     const history = useHistory()
 
@@ -32,54 +42,99 @@ const UserDecks = (props) => {
 
     }, []);
 
-    const editFlashcardsButton = () => {
-        if (isCreator) {
-            return (
-                <>
-                    <Link to={`/decks/${props.deck._id}/flashcards`}>
-                        <Button variant="warning" id={'edit-flashcard-button'}>Manage flashcards</Button>
-                    </Link>
-                    <Link to={`/decks/${props.deck._id}/edit`}>
-                        <Button id={"edit-deck"} className={"ml-4 mr-4"} variant={"info"}>Edit deck</Button>
-                    </Link>
-                </>
-            )
-        }
-    };
+    const playDeckHandler = () => {
+        history.push(`/decks/${props.deck._id}/play`)
+    }
 
-    const handleImportButton = async (deckId) => {
-        const result = await props.importDeck(deckId)
+    const handleImportButton = async () => {
+        const result = await props.importDeck(props.deck._id)
         if (!result) return
         let deck
         if (!props.username) deck = result.decks[0]._id
         else deck = result._id
-        console.log(result)
         await props.isLoggedIn()
 
         history.push(`/decks/${deck}`)
-        // window.location.reload()
         props.getDeck(deck)
     }
 
-    const importDeckButton = () => {
-        if (!isCreator) {
-            return (
-                // <Link to={`/${props.username}/decks`}>
-                    <Button id={"import-deck"}
-                            variant={"info"}
-                            className={"sticky-button"}
-                            onClick={() => {
-                                handleImportButton(props.deck._id)
-                            }}>
-                        Import deck
-                    </Button>
-                // </Link>
-            )
-        } else {
-            return <>
-            </>
-        }
+    // Toggles public/private status of a deck
+    const toggleDeckStatusHandler = () => {
+        props.toggleStatus(props.deck._id, props.deck.creatorId)
+    }
 
+    const deleteDeckHandler = () => {
+        props.deleteDeckFromUser(props.deck._id)
+        history.push(`/${props.username}/decks`)
+    }
+
+    const editDeckHandler = () => {
+        props.editDeck(props.deck.creatorId, props.deck._id, editName ? editName : props.deck.name, editDescription ? editDescription : props.deck.description )
+        toggleEditStateHandler()
+    }
+
+    const toggleDeleteStatusHandler = () => {
+        setdeleteStatus(!deleteStatus)
+    }
+
+    const toggleEditStateHandler = () => {
+        setEditName('')
+        seteditState(!editState)
+    }
+
+    const setStateHandler = (e, func) => {
+        let value
+        if (e){
+            value = e.currentTarget.value
+        }
+        func(value)
+    }
+
+    const findAllOptions = (isCreator) => {
+        let icons = []
+        if (isCreator){
+            icons.push(<PlayButton func={playDeckHandler}/>)
+            icons.push(<EditButton func={toggleEditStateHandler} />)
+            icons.push(<ToggleStatusButton func={toggleDeckStatusHandler}  isPrivate={props.deck.private}/>)
+            icons.push(<DeleteButton func={toggleDeleteStatusHandler} />)
+        } else {
+            icons.push(<ImportButton func={handleImportButton} />)
+        }
+        return icons
+    }
+
+    const showOptions = (icons) => {
+        return icons.map(icon => (
+            <Col xs={6} md={3}>
+                {icon}
+            </Col>
+        ))
+    }
+
+    const showDeleteConfirmationBox = () => {
+        const boxes = []
+        if (deleteStatus){
+            boxes.push(<ConfirmationBox 
+                            message="Confirm delete?" 
+                            boxClass="py-2" 
+                            colClass="my-3"
+                            func={deleteDeckHandler}
+                            cancelFunc={toggleDeleteStatusHandler} />)
+        }
+        return boxes
+    }
+
+    const showEditConfirmationBox = () => {
+        const boxes = []
+        if (editState){
+            boxes.push(<ConfirmationBox 
+                            message="Confirm edit?" 
+                            boxClass="py-2" 
+                            colClass="my-3"
+                            func={editDeckHandler}
+                            cancelFunc={toggleEditStateHandler} />)
+        }
+        return boxes
     }
 
     let loader, deck, error;
@@ -106,7 +161,8 @@ const UserDecks = (props) => {
         if (props.deck.toString() !== 'deck-not-found'){
             const datum = new Date(props.deck.creationDate).toLocaleDateString()
             deck = (
-                <Card style={{width: '100%'}} bg={'light'} className={'my-5'}>
+                <>
+                <Card style={{width: '100%'}} bg={'light'} className={'my-5 text-center'}>
                     <Card.Body>
                         <Card.Subtitle>
                             <Row>
@@ -119,32 +175,71 @@ const UserDecks = (props) => {
                                 <Col xs={12} md={4}>
                                     <b>Total flashcards: </b>{totalFlashcards}
                                 </Col>
-                                <Col xs={12} md={4}>
-                                    <b>Description: </b>{props.deck.description}
-                                </Col>
                             </Row>
                         </Card.Subtitle>
-                        {editFlashcardsButton()}
-                        {importDeckButton()}
-                        {totalFlashcards > 0 ?
-                            <Link to={`/decks/${props.deck._id}/play`}>
-                                <Button variant="success" id="play" className={'float-right'}>Deck spelen</Button>
-                            </Link>
-                            :
-                            <div>
-                                <Link to={`/decks/${props.deck._id}/play`}>
-                                    <Button variant="success" id="play" disabled className={'float-right'}>Deck
-                                        spelen</Button>
-                                </Link>
-                                <small className="col buttonInfo text-muted">
-                                    A deck has to contain at least 1 flashcard in order to play the deck.
-                                </small>
-                            </div>
-                        }
+
                     </Card.Body>
                 </Card>
+                {showOptions(findAllOptions(isCreator))}
+                </>
             )
         }
+    }
+
+    const Deckname = () => {
+        if (editState)
+        return (
+            <>
+                <Form.Group controlId="formBasicEmail" className={"text-center"}>
+                    <Form.Label column={true}>
+                            <strong>Edit {props.deck.name}</strong>
+                    </Form.Label>
+                    <Form.Control type="text"
+                                  name={props.deck._id}
+                                  placeholder={props.deck.name}
+                                  defaultValue={props.deck.name}
+                                  id={`input-name`}
+                                  onChange={(e) => {
+                                    setStateHandler(e, setEditName)
+                                  }}
+                    />
+                </Form.Group>
+            </>
+        )
+
+        else return (
+            <h1 className="display-5 text-green ">
+                {props.deck.name}
+            </h1>
+        )
+    }
+
+    const Deckdescription = () => {
+        if (editState)
+        return (
+            <>
+                <Form.Group controlId="formBasicEmail" className={"text-center"}>
+                    <Form.Label column={true}>
+                            <strong>Edit description</strong>
+                    </Form.Label>
+                    <Form.Control type="text"
+                                  name={props.deck._id}
+                                  placeholder={props.deck.description}
+                                  defaultValue={props.deck.description}
+                                  id={`input-description`}
+                                  onChange={(e) => {
+                                    setStateHandler(e, seteditDescription)
+                                  }}
+                    />
+                </Form.Group>
+            </>
+        )
+
+        else return (
+            <h4 className="display-5 text-black ">
+                {props.deck.description}
+            </h4>
+        )
     }
 
     return (
@@ -154,18 +249,18 @@ const UserDecks = (props) => {
                 <Row>
                     <Col lg={{span: 8, offset: 2}}>
                         <div className="mx-auto text-center pt-5">
-                            <h1 className="display-5 text-green ">
-                                {props.deck.name}
-                            </h1>
-                            <h4>{props.deck.description}</h4>
+                            {Deckname()}
+                            {Deckdescription()}
                         </div>
                     </Col>
                 </Row>
                 {loader}
                 {error}
+                {showEditConfirmationBox()}
                 <Row>
                     {deck}
                 </Row>
+                {showDeleteConfirmationBox()}
             </Container>
             <Footer/>
         </>
@@ -184,7 +279,11 @@ function mapDispatchToProps(dispatch) {
     return {
         isLoggedIn: () => dispatch(isLoggedIn()),
         getDeck: (deckId) => dispatch(getDeckAction(deckId)),
-        importDeck: (deck) => dispatch(importDeckAction(deck))
+        importDeck: (deck) => dispatch(importDeckAction(deck)),
+        toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),
+        deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
+        editDeck: (creatorId, _id, deckName, deckDescription) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription)),
+
     }
 }
 

@@ -62,8 +62,9 @@ export const getDeckAction = (deckId) => {
         //     }, 500);
         // }
         if (response.status === 200) {
+            dispatch(setDeckAction(data));
+
             setTimeout(function () {
-                dispatch(setDeckAction(data));
                 dispatch(setIsLoading(false))
             }, 500);
         } else {
@@ -131,6 +132,7 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
         const data = await response.json();
         if (response.status === 201) {
             dispatch(setSpecificDeckDataAction(data))
+            dispatch(setDeckAction(data))
         }
     }
 }
@@ -150,6 +152,7 @@ export const toggleDeckStatus = (deckId, userId) => {
         if (response.status === 201){
             const data = await response.json()
             dispatch(setSpecificDeckDataAction(data))
+            dispatch(setDeckAction(data))
         }
     }
 }
