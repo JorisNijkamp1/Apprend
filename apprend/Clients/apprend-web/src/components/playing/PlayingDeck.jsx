@@ -88,9 +88,14 @@ const PlayingComponent = (props) => {
 
         let nextCard = props.cards[nCardsAnswered];
 
+        console.log('nCardsAnswered: ', nCardsAnswered);
+        console.log('nCardsInDeck: ', nCardsInDeck);
+
         // Only activated when the last card is wrong for the first time.
         // Needed because pushing a new card into the deck is async.
-        if (nCardsAnswered === (nCardsInDeck - 1) && status === STATUS_WRONG) {
+        if (nextCard === undefined &&
+            nCardsAnswered === (nCardsInDeck - 1) &&
+            status === STATUS_WRONG) {
             nextCard = currentCard;
         }
 
