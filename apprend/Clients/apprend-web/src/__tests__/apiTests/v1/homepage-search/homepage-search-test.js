@@ -27,6 +27,5 @@ describe('Home search API', function () {
         expect(expectedResult.decks.name).toEqual(result.name);
         expect(expectedResult.decks.description).toEqual(result.description);
         expect(expectedResult.decks.deckCreator).toEqual(result.deckCreator);
-        expect(expectedResult.decks.deckId).toEqual(result.deckId);
     });
 });
