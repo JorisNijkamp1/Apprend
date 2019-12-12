@@ -288,7 +288,7 @@ progress[value]::-webkit-progress-value {
 }
 
 .tagButton {
-    color: red;
+    color: #dc3545;
     margin-left: 5px;
 }
 
@@ -297,7 +297,8 @@ progress[value]::-webkit-progress-value {
     text-align: center;
     list-style: none;
     display: inline-block;
-    width: 30%;
+    margin-right: 20px;
+    word-break: break-all;
 }
 
 @media only screen and (max-width: 800px) {
