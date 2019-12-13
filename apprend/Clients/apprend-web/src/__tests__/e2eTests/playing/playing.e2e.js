@@ -19,28 +19,32 @@ describe(`Playing`, () => {
   });
 
   test(`Page loads in the browser`, async () => {
-    await page.goto(`http://localhost:3000`)
-  	await page.waitFor(`title`)
+    await page.goto(`http://localhost:3000/login`)
+    await page.waitFor(`title`)
     const title = await page.title()
   	expect(title).toBe(`Apprend | Flashcard learning platform`)
-  });
+  })
 
-  test(`Click on an author`, async () => {
-    const authorButton = await page.$(`[id="creator"]`)
-    expect(authorButton).toBeDefined()
-    await authorButton.click()
-  });
+  test(`Fill username`, async () => {
+    await page.type(`input#loginUsernameInput`, `Aaron`, {delay: 15});
+  })
+  test(`Fill in password`, async () => {
+    await page.type(`input#loginPasswordInput`, `ica`, {delay: 15});
+  })
 
-  test(`Choose a deck from the author`, async () => {
-    await page.waitFor(`[id="card-0-link"]`);
-    const deckButton = await page.$(`button[id="card-0-link"]`)
-    expect(deckButton).toBeDefined()
-    await deckButton.click()
+  test(`Login and redirect`, async () => {
+    const loginButton = await page.$(`form[name="login"] button`)
+    expect(loginButton).toBeDefined()
+    await loginButton.click()
+  })
+
+  test(`Go to deck overview`, async () => {
+    await page.goto(`http://localhost:3000/decks/5ddfadab612b09570c6f3a34`)
   });
 
   test(`Click play button`, async () => {
-    await page.waitFor(`[id="play"]`);
-    const playButton = await page.$(`button[id="play"]`)
+    await page.waitFor(`[id="play-deck-button"]`);
+    const playButton = await page.$(`button[id="play-deck-button"]`)
     expect(playButton).toBeDefined()
     await playButton.click()
   });
@@ -66,6 +70,7 @@ describe(`Playing`, () => {
 
   for (let i = 0; i < 4; i++) {
     test(`The card is wrong`, async () => {
+      await page.waitFor(`[id="wrong"]`);
       const wrongButton = await page.$(`button[id="wrong"]`)
       expect(wrongButton).toBeDefined()
       await wrongButton.click()
