@@ -46,6 +46,9 @@ function App(props) {
                 <Route path={"/decks/:deckId/play"}>
                     <PlayingDeck/>
                 </Route>
+                <Route path={"/decks/:deckId/score"}>
+                    <PlayingScore/>
+                </Route>
                 <Route exact path={"/decks/:deckId/edit"}>
                     <DeckEdit/>
                 </Route>
@@ -54,9 +57,6 @@ function App(props) {
                 </Route>
                 <Route exact path={"/:username/decks"}>
                     <UserDecks/>
-                </Route>
-                <Route path={"/score"}>
-                    <PlayingScore/>
                 </Route>
                 <Route path={"/search"}>
                     <Search/>

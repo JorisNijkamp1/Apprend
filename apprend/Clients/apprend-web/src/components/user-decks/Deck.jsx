@@ -45,30 +45,14 @@ const UserDecks = (props) => {
     useEffect(() => {
         props.isLoggedIn()
         props.getDeck(deckId)
-
+        props.clearTags()
     }, []);
 
     const checkAdded = (tagValue) => {
         let tags = deckData.oldDeckTags.concat(props.tags)
         return tags.some(tag => {
-            return tag === tagValue
+            return tag === tagValue.trim()
         });
-    }
-
-    const addListItem = name => {
-        let tagList = document.getElementById('tagList');
-        let entry = document.createElement('li');
-        let button = document.createElement('i');
-        entry.className = "listItem"
-        button.innerHTML = "<i id='deleteTag' class='fa fa-times tagButton'/>";
-        button.addEventListener ("click", e => {
-            e.preventDefault();
-            props.deleteTag(name);
-            tagList.removeChild(entry);
-        });
-        entry.appendChild(document.createTextNode(name));
-        entry.appendChild(button);
-        tagList.appendChild(entry);
     }
 
     const deckData = {
@@ -90,7 +74,6 @@ const UserDecks = (props) => {
             if (match === true) {
                 if (tagValue.trim() !== "") {
                     props.addTag(tagValue);
-                    addListItem(tagValue);
                     match = false;
                 } else {
                     Notification("You can't add an empty tag", "danger");
@@ -99,7 +82,6 @@ const UserDecks = (props) => {
         } else {
             if (tagValue.trim() !== "") {
                 props.addTag(tagValue);
-                addListItem(tagValue);
             } else {
                 Notification("You can't add an empty tag", "danger");
             }
@@ -127,6 +109,10 @@ const UserDecks = (props) => {
         props.toggleStatus(props.deck._id, props.deck.creatorId)
     }
 
+    const showNotification = () => {
+        Notification("A deck needs atleast 1 card to play!", "info");
+    }
+
     const deleteDeckHandler = () => {
         props.deleteDeckFromUser(props.deck._id)
         history.push(`/${props.username}/decks`)
@@ -147,14 +133,6 @@ const UserDecks = (props) => {
     const toggleEditStateHandler = () => {
         if (editState !== true) {
             props.getDecksEdit(deckId)
-    .then((response) => {
-        if (response.tags !== 0) {
-            response.tags.forEach(tag => {
-                addListItem(tag);
-                props.clearTags();
-            })
-        }
-    })
         }
         setEditName('')
         seteditState(!editState)
@@ -172,7 +150,11 @@ const UserDecks = (props) => {
     const findAllOptions = (isCreator) => {
         let icons = []
         if (isCreator){
-            icons.push(<PlayButton func={playDeckHandler}/>)
+            if (props.deck.flashcards.length > 0) {
+                icons.push(<PlayButton func={playDeckHandler}/>)
+            } else {
+                icons.push(<PlayButton func={showNotification}/>)
+            }
             icons.push(<EditButton func={toggleEditStateHandler} />)
             icons.push(<ToggleStatusButton func={toggleDeckStatusHandler}  isPrivate={props.deck.private}/>)
             icons.push(<DeleteButton func={toggleDeleteStatusHandler} />)
@@ -369,7 +351,18 @@ const UserDecks = (props) => {
                 <Form.Group>
                     <Form.Label><b>Deck tags</b></Form.Label>
                     <Col sm={12}>
-                        <ul id="tagList"></ul>
+                        <ul id="tagList">
+                            {(props.deckEdit.tags) ? props.deckEdit.tags.map((tag) => 
+                            <li key={tag} className="listItem">
+                                {tag}
+                                <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>
+                            </li>) : ""}
+                            {props.tags.map((tag) => 
+                            <li key={tag} className="listItem">
+                                {tag}
+                                <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>
+                            </li>)}
+                        </ul>
                     </Col>
                     <InputGroup className="mb-3 pt-2">
                         <Form.Control

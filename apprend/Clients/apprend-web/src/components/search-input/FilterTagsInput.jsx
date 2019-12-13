@@ -111,14 +111,20 @@ const FilterTagsInput = (props) => {
                 }
             }
         }
+
+        const filteredMatch = match.filter((deck, index) => {
+            return index === match.findIndex(filter => {
+                return filter === deck;
+            });
+        });
     
-        if (match.length === 0) {
+        if (filteredMatch.length === 0) {
             props.setFilteredDecks("There are no decks with this tag!");
-            match.push("There are no decks with this tag!")
-            return match
+            filteredMatch.push("There are no decks with this tag!")
+            return filteredMatch
         } else {
-            props.setFilteredDecks(match);
-            return (match.length > 4) ? match.slice(0, 4) : match;
+            props.setFilteredDecks(filteredMatch);
+            return (filteredMatch.length > 4) ? filteredMatch.slice(0, 4) : filteredMatch;
         }
     };
 
