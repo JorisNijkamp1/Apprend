@@ -33,10 +33,15 @@ const PlayingComponent = (props) => {
         props.doGetDeck(deckId).then(response => {
             let currentSession = response.session + 1;
             let allCards = leitner(response.flashcards, currentSession);
+            let counter = 0;
 
             while (allCards.length === 0) {
+                counter++;
+
                 currentSession++;
                 allCards = leitner(response.flashcards, currentSession);
+
+                if (counter > 500) break;
             }
 
             props.doSetGame(deckId, allCards);
