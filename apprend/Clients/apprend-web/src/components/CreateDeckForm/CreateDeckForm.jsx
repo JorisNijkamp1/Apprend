@@ -56,25 +56,8 @@ const CreateDeckFormComponent = (props) => {
 
     const checkAdded = tagValue => {
         return props.tags.some(tag => {
-            return tag === tagValue
+            return tag === tagValue.trim()
         });
-    }
-
-    const addListItem = name => {
-        props.addTag(name);
-        let tagList = document.getElementById('tagList');
-        let entry = document.createElement('li');
-        let button = document.createElement('i');
-        entry.className = "listItem"
-        button.innerHTML = "<i id='deleteTag' class='fa fa-times tagButton'/>";
-        button.addEventListener ("click", e => {
-            e.preventDefault();
-            props.deleteTag(name);
-            tagList.removeChild(entry);
-        });
-        entry.appendChild(document.createTextNode(name));
-        entry.appendChild(button);
-        tagList.appendChild(entry);
     }
 
     const getTagValue = () => {
@@ -89,7 +72,7 @@ const CreateDeckFormComponent = (props) => {
             }
             if (match === true) {
                 if (tagValue.trim() !== "") {
-                    addListItem(tagValue);
+                    props.addTag(tagValue);
                     match = false;
                 } else {
                     Notification("You can't add an empty tag");
@@ -97,7 +80,7 @@ const CreateDeckFormComponent = (props) => {
             }
         } else {
             if (tagValue.trim() !== "") {
-                addListItem(tagValue);
+                props.addTag(tagValue);
             } else {
                 Notification("You can't add an empty tag");
             }
@@ -176,7 +159,12 @@ const CreateDeckFormComponent = (props) => {
                             Your tags
                         </Form.Label>
                         <Col sm={{span: 6, offset: 3}}>
-                            <ul id="tagList"></ul>
+                            <ul id="tagList">
+                                {props.tags.map((tag) => <li key={tag} className="listItem">
+                                    {tag}
+                                    <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>
+                                </li>)}
+                            </ul>
                         </Col>
                     </Form.Group>
                     <Row>

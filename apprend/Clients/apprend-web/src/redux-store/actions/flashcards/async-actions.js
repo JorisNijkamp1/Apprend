@@ -24,7 +24,9 @@ export const getDeckFlashcardsAction = (deckId) => {
                     flashcards.push({
                         id: key,
                         term: flashcard.question,
-                        definition: flashcard.answer
+                        definition: flashcard.answer,
+                        sessionPlayed: flashcard.sessionPlayed,
+                        box: flashcard.box
                     })
                 });
 
@@ -32,7 +34,9 @@ export const getDeckFlashcardsAction = (deckId) => {
                     flashcards.push({
                         id: 0,
                         term: '',
-                        definition: ''
+                        definition: '',
+                        sessionPlayed: 0,
+                        box: 0
                     })
                 }
 
