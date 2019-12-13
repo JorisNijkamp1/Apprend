@@ -259,9 +259,15 @@ const Deck = (props) => {
     }
 
     const FlashcardAmount = (deck) => {
+        let flashcards;
+        if (deck.totalFlashcards === undefined) {
+            flashcards = deck.flashcards.length;
+        } else if (deck.flashcards === undefined) {
+            flashcards = deck.totalFlashcards;
+        }
         return (
             <Card.Subtitle className="mb-2 text-muted text-center">
-            ({deck.flashcards.length} {(deck.flashcards.length > 1 || deck.flashcards.length === 0) ? 'flashcards' : 'flashcard'})
+            ({flashcards} {(flashcards > 1 || flashcards === 0) ? 'flashcards' : 'flashcard'})
         </Card.Subtitle>
         )
     }
@@ -321,6 +327,12 @@ const Deck = (props) => {
                 </>
             )
         } else {
+            let id;
+            if (deck.totalFlashcards === undefined) {
+                id = deck._id;
+            } else if (deck.flashcards === undefined) {
+                id = deck.deckId;
+            }
             return (
                 <>
                     <Card.Title className={"text-center"}>
@@ -339,7 +351,8 @@ const Deck = (props) => {
                             </Col>
                         </Row>
                     </Card.Title>
-                    {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, deck._id, index)}
+                    
+                    {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, id, index)}
                 </>
             )
         }
@@ -375,6 +388,24 @@ const Deck = (props) => {
         if (loading) return <LoaderComponent />
 
         if (!decks) return ''
+        if (typeof(props.filteredDecks) === "string") {
+            return <Row className="mx-auto align-items-center flex-column py-5">
+                <h2>{props.filteredDecks} ☹️ </h2>
+            </Row>
+        }
+
+        if (props.filteredDecks.length > 0) {
+            return props.filteredDecks.map((deck, index) =>
+                <Col xs={12} sm={6} lg={4} className="my-2">
+                    <Card index={deck.name + index} id={'card-' + index}>
+                    <Card.Body>
+                        {ShowCard(deck, deck.deckId, index)}
+                    </Card.Body>
+                    {isCreator ? userOptions(deck, index) : ''}
+                    </Card>
+                </Col>
+            )
+        }
 
         return decks.map((deck, index) => (
             <Col xs={12} sm={6} lg={4} className="my-2">

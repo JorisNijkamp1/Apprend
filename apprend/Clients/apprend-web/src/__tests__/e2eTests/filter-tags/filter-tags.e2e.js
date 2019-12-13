@@ -108,6 +108,7 @@ describe(`Filter`, () => {
     });
 
     test(`Filter on tag`, async () => {
+        await page.waitFor(`[id="Filter"]`);
         await page.type(`input[id="Filter"]`, `test`, {delay: 15});
     });
 
