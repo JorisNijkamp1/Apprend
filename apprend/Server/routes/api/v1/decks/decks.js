@@ -85,7 +85,7 @@ decks.get('/', async (req, res) => {
                 decks.push({
                     name: foundDecks[key].decks[decksKey].name,
                     description: foundDecks[key].decks[decksKey].description,
-                    deckCreator: !!(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
+                    deckCreator: foundDecks[key].decks[decksKey].creatorId,
                     totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
                     deckId: foundDecks[key].decks[decksKey]._id
                 });
@@ -100,6 +100,7 @@ decks.get('/', async (req, res) => {
 
     //Sort decks on totalFlashcards
     if (decks) decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
+
 
     await res.json({
         decks: decks,
@@ -258,13 +259,10 @@ decks.get('/:deckId', async (req, res) => {
 
     if (userAndDeck.decks[0].private){
         if (req.session.username !== userAndDeck._id) return res.status(401).json('User has made this deck private')
-    } 
+    }
 
     const user = await User.findById(userAndDeck.decks[0].creatorId)
     if (user.email.length === 0) userAndDeck.decks[0].LOL = true
-    // if (user.email.length === 0) console.log('REEEEEEEEEEEEEEEE')
-    // console.log(user)
-    console.log(userAndDeck)
 
     res.status(200).json(userAndDeck.decks[0])
     } catch (e) {
@@ -596,9 +594,9 @@ decks.put('/:deckId', async (req, res) => {
 
         await deckToEdit.editDeck(name, description, tags)
         await user.save()
-    
+
         return res.status(201).json(deckToEdit)
-    
+
     } catch (e) {
         console.log(e)
         res.status(500).json('Sorry something went horribly wrong on our end...')
