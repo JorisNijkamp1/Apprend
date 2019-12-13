@@ -550,6 +550,9 @@ decks.put('/:deckId/updateGame', async (req, res) => {
             });
             user.save();
         });
+        res.json({
+            success: true
+        })
     }).exec();
 });
 

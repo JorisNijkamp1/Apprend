@@ -145,7 +145,9 @@ const FlashcardsOverview = (props) => {
             flashcards.push({
                 id: highestId + 1,
                 term: '',
-                definition: ''
+                definition: '',
+                box: 0,
+                sessionPlayed: 0
             });
             props.changeDeckFlashcards(flashcards)
         };
