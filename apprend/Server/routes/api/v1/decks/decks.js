@@ -264,7 +264,7 @@ decks.get('/:deckId', async (req, res) => {
     if (user.email.length === 0) userAndDeck.decks[0].LOL = true
     // if (user.email.length === 0) console.log('REEEEEEEEEEEEEEEE')
     // console.log(user)
-    console.log(userAndDeck)
+    // console.log(userAndDeck)
 
     res.status(200).json(userAndDeck.decks[0])
     } catch (e) {
@@ -545,9 +545,10 @@ decks.put('/:deckId/updateGame', async (req, res) => {
                     }
                 }
             });
-            user.save();
+            // user.save();
         });
     }).exec();
+    res.json('ok')
 });
 
 // Get data from a specific game

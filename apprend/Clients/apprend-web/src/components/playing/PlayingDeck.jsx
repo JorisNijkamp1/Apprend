@@ -4,7 +4,7 @@ import {useHistory} from 'react-router';
 import {NavLink, useParams} from 'react-router-dom';
 import {NavigatieBar} from '../shared/navbar/NavigatieBar';
 import {Footer} from '../shared/footer/Footer';
-import {Container, Row, Col} from 'react-bootstrap';
+import {Container, Row, Col, Button} from 'react-bootstrap';
 import PlayingCard from './sub-components/PlayingCard';
 import {
     getDeck,
@@ -22,6 +22,24 @@ import {
 import Loader from 'react-loaders';
 import 'loaders.css/src/animations/square-spin.scss';
 import leitner from '../../util/leitner-system/leitnerSystem';
+
+const ginoTestFunc = (user, deck, card, body) => {
+        return async dispatch => {
+            console.log('IK BEN GINO AAN HET TESTEN')
+            const response = await fetch(`http://localhost:3001/api/v1/users/${user}/decks/${deck}/flashcards/${card}`, {
+                method: 'PUT',
+                body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+
+            if (response) {
+
+            }
+        }
+}
 
 const PlayingComponent = (props) => {
     const history = useHistory();
@@ -118,6 +136,10 @@ const PlayingComponent = (props) => {
                 <NavLink to={`/decks/${deckId}`} className="btn btn-blue">
                     Back
                 </NavLink>
+                <Button onClick={() =>             props.ginoTest(props.username, deckId, props.activeCard._id, {data: 'hallo'})
+}>
+                    KLIK MIJ
+                </Button>
                 <Col className={'text-center'}>
                     <progress value={props.correctCards.length + props.wrongCards.length + 1} max={props.cards.length}/>
                 </Col>
@@ -159,7 +181,8 @@ const mapStateToProps = state => {
         wrongCards: state.playing.wrongCards,
         activeCard: state.playing.activeCard,
         isLoading: state.playing.isLoading,
-        gameId: state.playing.gameId
+        gameId: state.playing.gameId,
+        username: state.login.username,
     }
 };
 
@@ -175,7 +198,8 @@ const mapDispatchToProps = dispatch => {
         doResetStateAction: () => dispatch(resetStateAction()),
         doMoveFlashcardToBox: (deckId, flashcardId, answeredCorrect) => dispatch(moveFlashcardToBox(deckId, flashcardId, answeredCorrect)),
         doUpdateDeckSession: (deckId, currentSession) => dispatch(updateDeckSession(deckId, currentSession)),
-        doSetCards: (cards) => dispatch(setCardsAction(cards))
+        doSetCards: (cards) => dispatch(setCardsAction(cards)),
+        ginoTest: (userId, deckId, flashcardId) => dispatch(ginoTestFunc(userId, deckId, flashcardId)),
     }
 };
 

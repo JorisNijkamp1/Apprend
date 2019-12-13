@@ -293,3 +293,28 @@ users.patch('/:userId/decks/:deckId', async (req, res) => {
         res.status(500).status('Something went wrong')
     }
 })
+
+users.put('/:userId/decks/:deckId/flashcards/:flashcardId', async (req, res) => {
+    try {
+        console.log('CARD UPDATO')
+        const { userId, deckId, flashcardId} = req.params
+        if (req.session.username !== userId) return res.status(401).json({message: 'Not your deck to update'}) //wegwerken in middleware
+        const user = await User.findById(userId) //wegwerken in middleware
+        const deck = await user.decks.id(deckId) //wegwerken in middleware
+        if (!deck) return res.status(404).json({message: 'User doesnt have this deck'})
+        const flashcard = await deck.flashcards.id(flashcardId) //wegwerken in middleware
+        if (!flashcard) return res.status(404).json({message: 'User doesnt have this flashcard'})
+        const updatedFlashcard = await flashcard.editCard(99) //=subdocument methode
+        user.markModified('deck')
+        const result = await user.save()
+        res.status(201).json({
+            message: 'Lekker bezig pik', //optioneel
+            data: updatedFlashcard
+        })
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('Something went horribly wrong...')
+    }
+
+
+})
