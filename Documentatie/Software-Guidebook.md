@@ -44,6 +44,7 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
     - De gebruiker kan een naam opgeven.
     - De gebruiker kan een beschrijving opgeven.
     - De gebruiker kan tags toevoegen aan zijn deck.
+    - De gebruiker kan het deck public of private maken, standaard instelling is public.
 
 - **Deck spelen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Deck-playing.svg)
@@ -97,6 +98,13 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
     - Een deck importeren en hem daarna zelf aanpassen
     - Een deck alleen importeren als dit deck public is.
     - De gebruiker krijgt een bevestigingsmelding.
+    
+- **Decks afschermen voor andere gebruikers**
+	> Als gast of (anonieme) gebruiker wil ik decks kunnen private kunnen maken.
+	De gebruiker kan:
+    - Bij het aanmaken van een deck kiezen tussen een public of private deck.
+    - Achteraf op de specifieke deckpagina of in het overzicht van al zijn decks een deck private/public maken door op een knop te drukken die de huidige sharestatus laat zien.
+
 
 - **Zoeken naar decks**
 	> Als gast of (anonieme) gebruiker wil ik decks kunnen zoeken.
@@ -229,6 +237,8 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 | PUT    | /api/v1/decks/:deckId/flashcards/:flashcardId/leitner    | Update box en sessionPlayed van een flashcard.          |
 | PUT    | /api/v1/decks/:deckId/session                            | Update session van een deck.                            |
 | DELETE | /api/v1/decks/:deckId                                    | Verwijdert een specifiek deck.                          |
+| PATCH | /api/v1/decks/:deckId                                    | Zet een deck op public of private (toggle)                         |
+
 
 **Users endpoints**:
 
