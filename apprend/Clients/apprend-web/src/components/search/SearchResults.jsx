@@ -81,14 +81,14 @@ const SearchResults = (props) => {
                                     {deck.description}
                                 </p>
                                 <strong>
-                                    <Link id="creator" to={`/Aaron/decks`}>
+                                    <Link id="creator" to={`/${deck.deckCreator}/decks`}>
                                         <FontAwesomeIcon icon={faUser}
                                                          size={'1x'}
                                                          title={`Search`}
                                                          color={'#000'}
                                         />
                                         <span style={{marginLeft: 5, color: '#000'}}>
-                                            {deck.deckCreator}
+                                            {(deck.deckCreator.length === 32) ? 'Guest' : deck.deckCreator}
                                         </span>
                                     </Link>
                                     <span className={'float-right'} style={{color: '#000'}}>
