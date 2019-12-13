@@ -297,7 +297,7 @@ decks.get('/:deckId/flashcards', async (req, res) => {
             name: currentDeck.name,
             creatorId: currentDeck.creatorId,
             flashcards: currentDeck.flashcards,
-
+            session: currentDeck.session
         })
     } else {
         await res.json({
@@ -333,7 +333,9 @@ decks.post('/:deckId/flashcards', async (req, res) => {
             _id: flashcard.id,
             type: "Text only",
             question: flashcard.term,
-            answer: flashcard.definition
+            answer: flashcard.definition,
+            sessionPlayed: flashcard.sessionPlayed,
+            box: flashcard.box
         })
     });
 
