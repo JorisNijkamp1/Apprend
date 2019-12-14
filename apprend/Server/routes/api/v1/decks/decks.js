@@ -83,23 +83,23 @@ decks.get('/', async (req, res) => {
         foundDecks.forEach((index, key) => {
             foundDecks[key].decks.forEach((decksIndex, decksKey) => {
                 decks.push({
+                    deckId: foundDecks[key].decks[decksKey]._id,
                     name: foundDecks[key].decks[decksKey].name,
                     description: foundDecks[key].decks[decksKey].description,
-                    deckCreator: !!(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
                     totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
-                    deckId: foundDecks[key].decks[decksKey]._id
+                    deckCreator: foundDecks[key].decks[decksKey].creatorId,
+                    private: foundDecks[key].decks[decksKey].private
                 });
             });
         });
     }
 
     //Filter decks
-    if (decks) decks = decks.filter(deck => deck.name.toLowerCase().includes(
-        searchQuery.toLowerCase()
-    ));
+    if (decks) decks = decks.filter(deck => deck.name.toLowerCase().includes(searchQuery.toLowerCase()) && deck.private === false);
 
     //Sort decks on totalFlashcards
     if (decks) decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
+
 
     await res.json({
         decks: decks,
@@ -113,33 +113,37 @@ decks.get('/home', async (req, res) => {
     try {
 
         let allDecks
-        if (req.session.username){
+        if (req.session.username) {
             allDecks = await User.aggregate([
-                { $unwind : "$decks"},
-                { $match: { $and: [ { 'email': {$ne: ''} }, { 'decks.private': false }, { 'decks.creatorId': { $ne: req.session.username } }] } },
-                { $group : {
-                    _id: null,
-                    decks: {
-                        $push: "$decks"
-                } }
-            }
+                {$unwind: "$decks"},
+                {$match: {$and: [{'email': {$ne: ''}}, {'decks.private': false}, {'decks.creatorId': {$ne: req.session.username}}]}},
+                {
+                    $group: {
+                        _id: null,
+                        decks: {
+                            $push: "$decks"
+                        }
+                    }
+                }
             ])
         } else {
             allDecks = await User.aggregate([
-                { $unwind : "$decks"},
-                { $match: { $and: [ { 'email': {$ne: ''} }, { 'decks.private': false }] } },
-                { $group : {
-                    _id: null,
-                    decks: {
-                        $push: "$decks"
-                } }
-            }
+                {$unwind: "$decks"},
+                {$match: {$and: [{'email': {$ne: ''}}, {'decks.private': false}]}},
+                {
+                    $group: {
+                        _id: null,
+                        decks: {
+                            $push: "$decks"
+                        }
+                    }
+                }
             ])
         }
 
         if (!allDecks[0]) return res.status(404).json('cant find any public deck')
         let decks = []
-        if (allDecks[0].decks.length < 3){
+        if (allDecks[0].decks.length < 3) {
             decks = allDecks[0].decks.map(deck => {
                 return deck
             })
@@ -147,9 +151,9 @@ decks.get('/home', async (req, res) => {
             const amountOfDecks = 3
             const indexPicked = []
             let infCounter = 0
-            for (let i = 0; i < amountOfDecks; i++){
+            for (let i = 0; i < amountOfDecks; i++) {
                 const randomIndex = Math.floor(Math.random() * allDecks[0].decks.length)
-                if (indexPicked.includes(randomIndex)){
+                if (indexPicked.includes(randomIndex)) {
                     i--
                     infCounter++
                     if (infCounter > 500) break;
@@ -235,38 +239,35 @@ decks.delete('/:deckId', async (req, res) => {
 */
 decks.get('/:deckId', async (req, res) => {
     try {
-    const deckId = req.params.deckId;
+        const deckId = req.params.deckId;
 
-    if (!deckId){
-        return res.status(404).json('Cant work without a deck id')
-    }
-    const userAndDeck = await User.findOne({
-        'decks': {
-            $elemMatch: {
-                '_id': deckId
-            }
+        if (!deckId) {
+            return res.status(404).json('Cant work without a deck id')
         }
-    }, {
-        'decks': {
-            $elemMatch: {
-                '_id': deckId
+        const userAndDeck = await User.findOne({
+            'decks': {
+                $elemMatch: {
+                    '_id': deckId
+                }
             }
+        }, {
+            'decks': {
+                $elemMatch: {
+                    '_id': deckId
+                }
+            }
+        })
+        if (!userAndDeck) return res.status(404).json('Does not exist')
+        if (!userAndDeck.decks) return res.status(404).json('Does not exist')
+
+        if (userAndDeck.decks[0].private) {
+            if (req.session.username !== userAndDeck._id) return res.status(401).json('User has made this deck private')
         }
-    })
-    if (!userAndDeck) return res.status(404).json('Does not exist')
-    if (!userAndDeck.decks) return res.status(404).json('Does not exist')
 
-    if (userAndDeck.decks[0].private){
-        if (req.session.username !== userAndDeck._id) return res.status(401).json('User has made this deck private')
-    } 
+        const user = await User.findById(userAndDeck.decks[0].creatorId)
+        if (user.email.length === 0) userAndDeck.decks[0].LOL = true
 
-    const user = await User.findById(userAndDeck.decks[0].creatorId)
-    if (user.email.length === 0) userAndDeck.decks[0].LOL = true
-    // if (user.email.length === 0) console.log('REEEEEEEEEEEEEEEE')
-    // console.log(user)
-    // console.log(userAndDeck)
-
-    res.status(200).json(userAndDeck.decks[0])
+        res.status(200).json(userAndDeck.decks[0])
     } catch (e) {
         console.log(e)
         res.status(500).json('oopsie')
@@ -297,7 +298,7 @@ decks.get('/:deckId/flashcards', async (req, res) => {
             name: currentDeck.name,
             creatorId: currentDeck.creatorId,
             flashcards: currentDeck.flashcards,
-
+            session: currentDeck.session
         })
     } else {
         await res.json({
@@ -333,7 +334,9 @@ decks.post('/:deckId/flashcards', async (req, res) => {
             _id: flashcard.id,
             type: "Text only",
             question: flashcard.term,
-            answer: flashcard.definition
+            answer: flashcard.definition,
+            sessionPlayed: flashcard.sessionPlayed,
+            box: flashcard.box
         })
     });
 
@@ -547,6 +550,9 @@ decks.put('/:deckId/updateGame', async (req, res) => {
             });
             // user.save();
         });
+        res.json({
+            success: true
+        })
     }).exec();
     res.json('ok')
 });
@@ -589,7 +595,7 @@ decks.put('/:deckId', async (req, res) => {
 
         if (!deckToEdit) return res.status(404).json('Deck not found')
 
-        if (req.session.username){
+        if (req.session.username) {
             if (req.session.username !== deckToEdit.creatorId) return res.status(401).json('This deck doesnt belong to you')
         } else {
             return res.status(401).json('This deck doesnt belong to you')
@@ -597,9 +603,9 @@ decks.put('/:deckId', async (req, res) => {
 
         await deckToEdit.editDeck(name, description, tags)
         await user.save()
-    
+
         return res.status(201).json(deckToEdit)
-    
+
     } catch (e) {
         console.log(e)
         res.status(500).json('Sorry something went horribly wrong on our end...')
@@ -628,7 +634,7 @@ decks.post('/:deckId', async (req, res) => {
             } else {
                 newDeck.creatorId = importToUser._id
                 const result = await importToUser.importDeck(newDeck, importToUser._id);
-                res.status(201).json(result.decks[result.decks.length-1])
+                res.status(201).json(result.decks[result.decks.length - 1])
             }
         } else {
             req.session.username = req.session.id

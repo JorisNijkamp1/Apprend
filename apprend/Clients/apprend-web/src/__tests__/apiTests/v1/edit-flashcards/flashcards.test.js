@@ -11,13 +11,17 @@ describe('Get flashcards from a deck', () => {
                     "_id": "Apprende0",
                     "type": "Text only",
                     "question": "Kissa",
-                    "answer": "Kat"
+                    "answer": "Kat",
+                    "sessionPlayed": 0,
+                    "box": 0
                 },
                 {
                     "_id": "Apprende1",
                     "type": "Text only",
                     "question": "Koira",
-                    "answer": "Hond"
+                    "answer": "Hond",
+                    "sessionPlayed": 0,
+                    "box": 0
                 }
             ]
         }
@@ -46,13 +50,17 @@ describe('Get flashcards from a deck', () => {
                     "id": "Apprende0",
                     "type": "Text only",
                     "term": "Kissa",
-                    "definition": "Kat"
+                    "definition": "Kat",
+                    "sessionPlayed": 0,
+                    "box": 0
                 },
                 {
                     "id": "Apprende1",
                     "type": "Text only",
                     "term": "Koira",
-                    "definition": "Hond"
+                    "definition": "Hond",
+                    "sessionPlayed": 0,
+                    "box": 0
                 }
             ],
             "test": true

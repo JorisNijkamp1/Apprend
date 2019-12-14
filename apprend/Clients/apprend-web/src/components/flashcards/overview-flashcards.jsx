@@ -15,6 +15,7 @@ import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {useHistory} from 'react-router'
 import NonEditableFlashcard from "./sub-components/noneditable-flashcard";
 import Form from "react-bootstrap/Form";
+import {getDeckAction} from '../../redux-store/actions/decks/async-actions';
 
 const FlashcardsOverview = (props) => {
         const {deckId} = useParams();
@@ -144,7 +145,9 @@ const FlashcardsOverview = (props) => {
             flashcards.push({
                 id: highestId + 1,
                 term: '',
-                definition: ''
+                definition: '',
+                box: 0,
+                sessionPlayed: 0
             });
             props.changeDeckFlashcards(flashcards)
         };
@@ -153,6 +156,7 @@ const FlashcardsOverview = (props) => {
             const result = await props.saveDeckFlashcardsAction(props.deckData.deckId, props.deckFlashcards);
             if (result === 'success') {
                 history.push(`/decks/${props.deckData.deckId}`);
+                props.getDeck(deckId);
             }
         };
 
@@ -186,6 +190,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        getDeck: (deckId) => dispatch(getDeckAction(deckId)),
         isLoggedIn: () => dispatch(isLoggedIn()),
         getDeckFlashcards: (deckId) => dispatch(getDeckFlashcardsAction(deckId)),
         changeDeckFlashcards: (flashcards) => dispatch(changeDeckFlashcards(flashcards)),

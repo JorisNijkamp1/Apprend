@@ -15,12 +15,10 @@ const flashcardSchema = new mongoose.Schema({
         type: String,
     },
     box: {
-        type: Number,
-        default: 0
+        type: Number
     },
     sessionPlayed: {
-        type: Number,
-        default: 0
+        type: Number
     }
 });
 

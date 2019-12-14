@@ -39,7 +39,7 @@ describe(`Search for some decks`, () => {
     });
 
     test(`Show deck page`, async () => {
-        const playButton = await page.waitFor(`#play`);
+        const playButton = await page.waitFor(`#import-deck-button`);
         expect(playButton).toBeDefined()
     })
 });

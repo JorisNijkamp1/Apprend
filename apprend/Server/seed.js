@@ -59,13 +59,17 @@ async function seedUsers() {
                             "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Kissa",
-                            "answer": "Kat"
+                            "answer": "Kat",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Koira",
-                            "answer": "Hond"
+                            "answer": "Hond",
+                            "sessionPlayed": 0,
+                            "box": 0
                         }
                     ],
                     "tags": [
@@ -90,19 +94,25 @@ async function seedUsers() {
                             "_id": "Apprende",
                             "type": "Text only",
                             "question": "Eating",
-                            "answer": "Eten"
+                            "answer": "Eten",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                     ]
                 },
@@ -116,31 +126,41 @@ async function seedUsers() {
                             "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Eating",
-                            "answer": "Eten"
+                            "answer": "Eten",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende4",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende5",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                     ]
                 },
@@ -154,13 +174,17 @@ async function seedUsers() {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                     ]
                 },
@@ -174,7 +198,9 @@ async function seedUsers() {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         }
                     ]
                 },
@@ -188,49 +214,65 @@ async function seedUsers() {
                             "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Eating",
-                            "answer": "Eten"
+                            "answer": "Eten",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                     ]
                 },
@@ -244,13 +286,17 @@ async function seedUsers() {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                     ]
                 },
@@ -264,19 +310,25 @@ async function seedUsers() {
                             "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Eating",
-                            "answer": "Eten"
+                            "answer": "Eten",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                     ]
                 },
@@ -290,19 +342,25 @@ async function seedUsers() {
                             "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Eating",
-                            "answer": "Eten"
+                            "answer": "Eten",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                     ]
                 },
@@ -316,13 +374,17 @@ async function seedUsers() {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Twitter",
-                            "answer": "Love"
+                            "answer": "Love",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                     ]
                 },
@@ -336,7 +398,9 @@ async function seedUsers() {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         }
                     ]
                 },
@@ -350,49 +414,65 @@ async function seedUsers() {
                             "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Eating",
-                            "answer": "Eten"
+                            "answer": "Eten",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                     ]
                 },
@@ -406,22 +486,51 @@ async function seedUsers() {
                             "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
-                            "answer": "Lopen"
+                            "answer": "Lopen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                         {
                             "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
-                            "answer": "Rennen"
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "box": 0
                         },
                     ]
                 },
                 {
-                    "name": "French to Chinese",
-                    "description": "Dolar English deck",
+                    "name": "Japans",
+                    "description": "Lekker nice Japans",
                     "creatorId": "Aaron",
                     "status": "isEdited",
-                    "flashcards": []
+                    "flashcards": [
+                        {
+                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "犬",
+                            "answer": "Hond",
+                            "sessionPlayed": 0,
+                            "box": 0
+                        },
+                        {
+                            "_id": "Apprende2",
+                            "type": "Text only",
+                            "question": "猫",
+                            "answer": "Kat",
+                            "sessionPlayed": 0,
+                            "box": 0
+                        },
+                        {
+                            "_id": "Apprende3",
+                            "type": "Text only",
+                            "question": "家",
+                            "answer": "Huis",
+                            "sessionPlayed": 0,
+                            "box": 0
+                        }
+                    ]
                 }
             ]
         },
