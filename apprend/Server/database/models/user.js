@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
     },
     signupDate: {
         type: Date, default: Date.now
+    },
+    profileAvatar: {
+        type: String
     }
 });
 

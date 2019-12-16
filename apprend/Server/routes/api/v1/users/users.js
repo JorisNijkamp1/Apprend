@@ -1,6 +1,8 @@
 const config = require('../../../../config');
 const express = require('express');
 const users = express.Router();
+const path = require('path')
+const fs = require('fs')
 const session = require('express-session');
 const mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
@@ -10,14 +12,29 @@ const User = mongoose.model('User');
 const Deck = mongoose.model('Deck');
 const Users = require('../../../../database/models/user');
 const decks = express.Router();
+const decksRoute = require('./decks/decks')
+// const imagesFolder = 'sep2019-project-kiwi/apprends/Server/files/images'
+const imagesFolder = './files/images'
+
+
+users.use('/:userId*', async (req, res, next) => {
+    if (req.params.userId) req.user = await User.findById(req.params.userId)
+    if (!req.user) return res.status(400).json({message: 'User does not exist'})
+    return next()
+})
 
 users.get('/', async (req, res) => {
-    const users = await User.find();
 
-    res.json({
-        users: users,
-        success: true
-    })
+    const users = await User.find(
+        {$and: [{'email': { $ne : ''}}, {'isPrivate': {$ne : true}}]},
+        {'_id': 1, 'signupDate': 1, 'decks': 1, 'profileAvatar': 1}
+    )
+
+    const response = users.map(user => (
+        {_id: user._id, decks: user.decks.length, avatar: user.profileAvatar, signupDate: user.signupDate }
+        ))
+
+    res.status(200).json(response)
 });
 
 /*====================================
@@ -316,5 +333,6 @@ users.put('/:userId/decks/:deckId/flashcards/:flashcardId', async (req, res) => 
         res.status(500).json('Something went horribly wrong...')
     }
 
-
 })
+
+users.use('/:userId/decks/', decksRoute)
