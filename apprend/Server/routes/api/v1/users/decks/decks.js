@@ -15,10 +15,10 @@ const imagesFolder = './files/images'
 const flashcardsRoute = require('./flashcards/flashcards')
 
 decks.use('/:deckId/', async (req, res, next) => {
-    console.log('api v1 users decks')
     req.deck = await req.user.decks.id(req.params.deckId)
     if (!req.deck) return res.status(404).json({message: 'Deck does not exist'})
-    next()
+    if (req.session.username === req.user._id || req.deck.private === false) return next()
+    return res.status(401).json({message: 'This deck is private'})
 })
 
 decks.get('/:deckId', async (req, res) => {

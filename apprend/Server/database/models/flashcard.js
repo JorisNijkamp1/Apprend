@@ -22,8 +22,9 @@ const flashcardSchema = new mongoose.Schema({
     }
 });
 
-flashcardSchema.methods.editCard = async function(sessionNumber){
-    this.sessionPlayed = sessionNumber
+flashcardSchema.methods.editCard = async function(data){
+    this[data.property] = data.value
+    return this[data.property]
 }
 
 //Create model

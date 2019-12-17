@@ -20,6 +20,7 @@ const imagesFolder = './files/images'
 users.use('/:userId*', async (req, res, next) => {
     if (req.params.userId) req.user = await User.findById(req.params.userId)
     if (!req.user) return res.status(400).json({message: 'User does not exist'})
+    if (req.cookies && req.cookies.username && !req.session.username && req.user.email.length === 0) req.session.username = req.cookies.username
     return next()
 })
 
