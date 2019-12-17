@@ -12,6 +12,11 @@ v1.get('/', (req, res) => {
     )
 });
 
+// Gets an image from the file system root/files/images/:pathParam
+v1.get('/images/:pathParam', async (req, res) => {
+    res.sendFile(`${req.params.pathParam}`, {root: path.join(__dirname, '../../../files/images')})
+})
+
 v1.use('/decks/', decksRoute)
 v1.use('/users/', usersRoute)
 v1.use('/login/', loginRoute)

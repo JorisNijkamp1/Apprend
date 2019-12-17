@@ -22,6 +22,11 @@ const flashcardSchema = new mongoose.Schema({
     }
 });
 
+flashcardSchema.methods.editCard = async function(data){
+    this[data.property] = data.value
+    return this[data.property]
+}
+
 //Create model
 mongoose.model("Flashcard", flashcardSchema);
 
