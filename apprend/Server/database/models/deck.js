@@ -37,6 +37,9 @@ const deckSchema = new mongoose.Schema({
     session: {
         type: Number,
         default: 0
+    }, 
+    columns: {
+        type: [String]
     }
 });
 
@@ -81,6 +84,30 @@ deckSchema.methods.editFlashcardLeitner = async function (flashcardId, answeredC
     await this.save();
     return this;
 };
+
+deckSchema.methods.addColumn = async function(name) {
+    this.columns.push(name)
+    this.flashcards = this.flashcards.map(flashcard => {
+        flashcard.columns.push({type: name, value: ''})
+        return flashcard
+    })
+
+    return this
+}
+
+deckSchema.methods.deleteColumn = async function(id) {
+    this.columns = this.columns.filter((column, index) => {
+        return index.toString() !== id
+    })
+    this.flashcards = this.flashcards.map(flashcard => {
+        flashcard.columns = flashcard.columns.filter((column, index) => {
+            return index.toString() !== id
+        })
+        return flashcard
+    })
+
+    return this
+}
 
 //Create model
 mongoose.model('Deck', deckSchema);

@@ -9,7 +9,7 @@ import Flashcards from "./components/flashcards/add-flashcards";
 import {PlayingDeck} from "./components/playing/PlayingDeck";
 import {LoginPage} from "./components/LoginPage";
 import UserDecks from "./components/user-decks/UserDecks";
-import Deck from "./components/user-decks/Deck";
+import Deck from "./components/deck/Deck";
 import {PlayingScore} from "./components/playing/sub-components/PlayingScore";
 import {isLoggedIn} from "./redux-store/actions/login/async-actions";
 import * as ReactRedux from "react-redux";

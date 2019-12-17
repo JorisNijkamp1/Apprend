@@ -19,12 +19,29 @@ const flashcardSchema = new mongoose.Schema({
     },
     sessionPlayed: {
         type: Number
+    },
+    columns: {
+        type: [
+            {
+                'type': {
+                    type: String
+                },
+                value: {
+                    type: String
+                }
+            }
+        ]
     }
 });
 
 flashcardSchema.methods.editCard = async function(data){
     this[data.property] = data.value
     return this[data.property]
+}
+
+flashcardSchema.methods.editColumn = async function(data){
+    this.columns[data.index].value = data.value
+    return this.columns[data.index].value
 }
 
 //Create model
