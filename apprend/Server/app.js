@@ -13,6 +13,10 @@ const apiRoute = require('./routes/api/api');
 
 const app = express();
 
+const fs = require('fs')
+const path = require('path')
+const stream = require('stream')
+
 //Middleware
 app.use(cors({
     // origin: 'http://localhost:3000',
@@ -39,7 +43,6 @@ app.use('/', (req, res, next) => {
 
 //Routes
 app.use('/api', apiRoute);
-
 
 // Create HTTP server by ourselves
 const httpServer = http.createServer(app);
