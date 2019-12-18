@@ -1,6 +1,6 @@
-import {API_URL} from '../../../../redux-store/urls';
+import {API_URL} from '../../../../../src_old/redux-store/urls';
 
-describe('Home search API', function () {
+describe('Home search-deck API', function () {
     const value = "Filipino";
 
     test('Search value after Endpoint call', async () => {

@@ -3,14 +3,14 @@ import {
     setEmailExists,
     setRegisterSuccess,
     setUsernameExists
-} from '../../../redux-store/actions/register/actions';
+} from '../../../../src_old/redux-store/actions/register/actions';
 import {
     ERROR_OCCURRED,
     SET_EMAIL_EXISTS,
     SET_REGISTER_SUCCESS,
     SET_USERNAME_EXISTS
-} from '../../../redux-store/actions/register/action-types';
-import {setLoginAction, setAnonymousUserAction} from '../../../redux-store/actions/login/actions';
+} from '../../../../src_old/redux-store/actions/register/action-types';
+import {setLoginAction, setAnonymousUserAction} from '../../../../src_old/redux-store/actions/login/actions';
 
 test('Action type SET_REGISTER_SUCCESS is correct', () => {
     expect(setRegisterSuccess().type).toBe(SET_REGISTER_SUCCESS);
