@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Form, Row, Col, Button, InputGroup } from 'react-bootstrap'
 import { changeDeckName, addTag, deleteTag } from './actions'
 import { PageTitle } from '../shared/components/PageTitle'
-import { createDeck } from './async-actions'
+import { createDeck } from './actions'
 import { CreateButton } from './subcomponents/CreateButton';
 import { useHistory } from 'react-router'
 import { NavigatieBar } from '../shared/components/NavigatieBar';

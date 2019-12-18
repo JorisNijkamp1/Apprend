@@ -9,7 +9,7 @@ import {Notification} from "../../shared/components/Notification";
 
 import {changeDeckName} from '../actions'
 
-import {createDeck} from '../async-actions'
+import {createDeck} from '../actions'
 
 const CreateButtonComponent = (props) => {
 

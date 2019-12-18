@@ -6,9 +6,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import {Footer} from '../shared/components/Footer'
-import {getHomepageDecks} from './async-actions';
+import {getHomepageDecks} from './actions';
 import {Link} from 'react-router-dom';
-import {isLoggedIn} from "../login/async-actions";
+import {isLoggedIn} from '../shared/actions/actions'
 import SearchDecksInput from "../shared/components/SearchDecksInput";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
