@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import {API_URL} from "../../../redux/urls";
 import {Link} from "react-router-dom";
-import {setSearchValue} from "../../../src_old/redux-store/actions/search/actions";
+import {setSearchValue} from "../actions/actions";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

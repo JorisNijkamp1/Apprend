@@ -1,4 +1,4 @@
-import {SET_ANONYMOUS_USER, SET_LOGINACTION} from '../actions/action-types';
+import {SET_ANONYMOUS_USER, SET_LOGINACTION} from '../../../redux/actionTypes';
 import produce from "immer";
 
 const initialState = {

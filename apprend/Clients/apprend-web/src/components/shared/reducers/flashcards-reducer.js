@@ -1,4 +1,4 @@
-import {FLASHCARDS_DECKFLASHCARDS, FLASHCARDS_SET_ISLOADING, FLASHCARDS_SET_ISSAVING} from '../actions/action-types'
+import {FLASHCARDS_DECKFLASHCARDS, FLASHCARDS_SET_ISLOADING, FLASHCARDS_SET_ISSAVING} from '../../../redux/actionTypes'
 
 const initialState = {
     deckFlashcards: [{
