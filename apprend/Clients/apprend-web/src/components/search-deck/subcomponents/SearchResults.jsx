@@ -6,8 +6,8 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
-import {API_URL} from "../../../../src_old/redux-store/urls";
-import {setIsLoading, setSearchValue} from "../../../../src_old/redux-store/actions/search/actions";
+import {API_URL} from "../../../redux/urls";
+import {setIsLoading, setSearchValue} from "../../shared/actions/actions";
 import Loader from "react-loaders";
 
 const SearchResults = (props) => {

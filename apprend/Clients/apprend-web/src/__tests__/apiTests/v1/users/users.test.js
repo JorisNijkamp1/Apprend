@@ -1,4 +1,4 @@
-import {API_URL} from '../../../../../src_old/redux-store/urls';
+import {API_URL} from '../../../../redux/urls';
 
 describe('Users API tests', function () {
     beforeAll(async function () {

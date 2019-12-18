@@ -2,8 +2,8 @@
 const mongoose = require('mongoose')
 const U = require('../../../../../../Server/database/models/user')
 const User = mongoose.model('User', U)
-import {setDeckEditAction} from '../../../../src_old/redux-store/actions/decks/actions';
-import {DECK_EDIT_DATA} from '../../../../src_old/redux-store/actions/action-types';
+import {setDeckEditAction} from '../../../components/shared/actions/actions';
+import {DECK_EDIT_DATA} from '../../../redux/actionTypes';
 
 describe('Edit a deck', () => {
     test('Action type SET_LOGINACTION is correct', () => {

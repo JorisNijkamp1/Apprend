@@ -1,15 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-    Container, Form, Row, Col,
     Button,
     Spinner
 } from 'react-bootstrap'
-import {Notification} from "../../shared/Notification";
-
-import {changeDeckName} from '../../../../src_old/redux-store/actions/create-deck/actions'
-
-import {createDeck} from '../../../../src_old/redux-store/actions/create-deck/async-actions'
+import {Notification} from "../../shared/components/Notification";
+import {changeDeckName} from '../actions'
+import {createDeck} from '../actions'
 
 const CreateButtonComponent = (props) => {
 
@@ -60,8 +57,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeDeckName: (name) => dispatch(changeDeckName(name)),
-        createNewDeck: (deck) => dispatch(createDeck(deck)),
+
     }
 }
 

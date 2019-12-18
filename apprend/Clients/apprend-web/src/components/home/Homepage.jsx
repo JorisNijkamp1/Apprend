@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import * as ReactRedux from 'react-redux'
-import {NavigatieBar} from '../shared/NavigatieBar';
+import {NavigatieBar} from '../shared/components/NavigatieBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-import {Footer} from '../shared/Footer'
-import {getHomepageDecks} from '../../../src_old/redux-store/actions/home/async-actions';
+import {Footer} from '../shared/components/Footer'
+import {getHomepageDecks} from './actions';
 import {Link} from 'react-router-dom';
-import {isLoggedIn} from "../../../src_old/redux-store/actions/login/async-actions";
-import SearchDecksInput from "../shared/SearchDecksInput";
+import {isLoggedIn} from '../shared/actions/actions'
+import SearchDecksInput from "../shared/components/SearchDecksInput";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
-import { LoadingComponent } from '../shared/LoadingComponent'
+import { LoadingComponent } from '../shared/components/LoadingComponent'
 
 const HomepageUI = (props) => {
 

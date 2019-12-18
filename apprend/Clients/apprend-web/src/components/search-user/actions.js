@@ -1,4 +1,4 @@
-import { API_URL } from '../../../src_old/redux-store/urls'
+import { API_URL } from '../../redux/urls'
 
 export const getAllUsers = (func) => {
     return async dispatch => {

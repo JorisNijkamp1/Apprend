@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import * as ReactRedux from 'react-redux';
 import {useHistory} from 'react-router';
 import {NavLink, useParams} from 'react-router-dom';
-import {NavigatieBar} from '../shared/NavigatieBar';
-import {Footer} from '../shared/Footer';
+import {NavigatieBar} from '../shared/components/NavigatieBar';
+import {Footer} from '../shared/components/Footer';
 import {Container, Row, Col, Button} from 'react-bootstrap';
 import PlayingCard from './subcomponents/PlayingCard';
 import {
@@ -12,13 +12,13 @@ import {
     updateGame,
     getGameData,
     updateDeckSession, moveFlashcardToBox
-} from '../../../src_old/redux-store/actions/playing/async-actions';
+} from './actions';
 import {
     setCorrectCardsAction,
     setWrongCardsAction,
     setActiveCardAction,
     resetStateAction, setCardsAction
-} from '../../../src_old/redux-store/actions/playing/actions';
+} from './actions';
 import Loader from 'react-loaders';
 import 'loaders.css/src/animations/square-spin.scss';
 import leitner from '../../util/leitner-system/leitnerSystem';

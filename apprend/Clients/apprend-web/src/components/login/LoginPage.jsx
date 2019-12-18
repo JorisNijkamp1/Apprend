@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import {NavigatieBar} from "../shared/NavigatieBar";
+import {NavigatieBar} from "../shared/components/NavigatieBar";
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
-import {Footer} from "../shared/Footer";
-import {isLoggedIn, userLogin} from "../../../src_old/redux-store/actions/login/async-actions";
+import {Footer} from "../shared/components/Footer";
+import { isLoggedIn, userLogin } from '../shared/actions/actions'
 import {useHistory} from 'react-router'
 
 const LoginPageUI = (props) => {

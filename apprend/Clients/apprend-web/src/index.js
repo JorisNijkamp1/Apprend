@@ -2,25 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import * as Redux from 'redux'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import {allReducers} from './redux-store/reducers'
+import * as Redux from 'redux';
+import {Provider} from 'react-redux';
+import thunk from 'redux-thunk';
+import {allReducers} from './redux/mainReducer';
 import {BrowserRouter} from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
-import ReactNotification from 'react-notifications-component'
+import ReactNotification from 'react-notifications-component';
 
 const logger = (store) => (next) => (action) => {
-    console.log(store)
+    console.log(store);
     console.log('ACTION:', action.type, action);
     let result = next(action);
     console.log('STATE AFTER ACTION:', action.type, store.getState());
     return result;
-}
+};
 
 const composeEnhancers = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()) || Redux.compose
 
-const middleware = [thunk, logger]
+const middleware = [thunk, logger];
 // const middleware = [thunk]
 const store = Redux.createStore(
     allReducers,
@@ -30,13 +30,12 @@ const store = Redux.createStore(
     )
 );
 
-const mainComponent =
-    <Provider store={store}>
-        <BrowserRouter>
-            <ReactNotification />
-            <App/>
-        </BrowserRouter>
-    </Provider>
+const mainComponent = <Provider store={store}>
+    <BrowserRouter>
+        <ReactNotification/>
+        <App/>
+    </BrowserRouter>
+</Provider>;
 
 ReactDOM.render(mainComponent, document.getElementById('root'));
 
