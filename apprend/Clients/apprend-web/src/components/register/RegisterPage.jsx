@@ -13,7 +13,7 @@ import {
     usernameValid,
     registerFormMaySubmit
 } from '../../util/form-validation/validationRules';
-import {isLoggedIn, userLogin} from '../login/actions';
+import {isLoggedIn, userLogin} from '../shared/actions/actions';
 import {useHistory} from 'react-router-dom';
 
 export const RegisterPageComponent = props => {

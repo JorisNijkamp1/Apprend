@@ -7,15 +7,15 @@ import {
     Button
 } from "react-bootstrap";
 import EditableFlashcard from "./editable-flashcard";
-import {changeDeckFlashcards} from "../../../../src_old/redux-store/actions/flashcards/actions";
+import {changeDeckFlashcards} from "../../shared/actions/actions";
 import {AddFlashcardIcon} from "./add-flashcard-icon";
-import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../../../src_old/redux-store/actions/flashcards/async-actions";
+import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../shared/actions/actions";
 import Loader from "react-loaders";
-import {isLoggedIn} from "../../login/async-actions";
+import {isLoggedIn} from "../../shared/actions/actions";
 import {useHistory} from 'react-router'
 import NonEditableFlashcard from "./noneditable-flashcard";
 import Form from "react-bootstrap/Form";
-import {getDeckAction} from '../../../../src_old/redux-store/actions/decks/async-actions';
+import {getDeckAction} from '../../shared/actions/actions';
 
 const FlashcardsOverview = (props) => {
         const {deckId} = useParams();

@@ -7,26 +7,25 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import {Link, useParams} from "react-router-dom";
 import {Footer} from "../shared/components/Footer"
-import {getDeckAction, getDeckEditAction} from "../../../src_old/redux-store/actions/decks/async-actions";
+import {getDeckAction, getDeckEditAction} from "../shared/actions/actions";
 import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
 import Loader from "react-loaders";
 import { useHistory } from 'react-router'
 import {withRouter} from 'react-router-dom'
 import { InputGroup, Button } from 'react-bootstrap'
-import {isLoggedIn} from "../login/async-actions";
-import {importDeckAction} from "../../../src_old/redux-store/actions/decks/async-actions";
+import {isLoggedIn} from "../shared/actions/actions";
+import {importDeckAction} from "../shared/actions/actions";
 import PlayButton from "./subcomponents/PlayButton";
 import EditButton from "./subcomponents/EditButton";
 import ToggleStatusButton from "./subcomponents/ToggleStatusButton";
 import DeleteButton from "./subcomponents/DeleteButton";
 import ImportButton from "./subcomponents/ImportButton";
-import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../../../src_old/redux-store/actions/decks/async-actions'
+import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../shared/actions/actions'
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
 import { Notification } from '../shared/components/Notification';
 import { addTag, clearTags } from '../create-deck/actions';
-import { deleteTag } from "../../../src_old/redux-store/actions/decks/actions";
-
+import { deleteTag } from "../shared/actions/actions";
 
 import FlashcardsOverview from "./subcomponents/overview-flashcards";
 import { FlashcardTable } from './subcomponents/FlashcardTable'
@@ -176,9 +175,9 @@ const UserDecks = (props) => {
     const showDeleteConfirmationBox = () => {
         const boxes = []
         if (deleteStatus){
-            boxes.push(<ConfirmationBox 
-                            message="Confirm delete?" 
-                            boxClass="py-2" 
+            boxes.push(<ConfirmationBox
+                            message="Confirm delete?"
+                            boxClass="py-2"
                             colClass="my-3"
                             func={deleteDeckHandler}
                             cancelFunc={toggleDeleteStatusHandler} />)
@@ -189,9 +188,9 @@ const UserDecks = (props) => {
     const showEditConfirmationBox = () => {
         const boxes = []
         if (editState){
-            boxes.push(<ConfirmationBox 
-                            message="Confirm edit?" 
-                            boxClass="py-2" 
+            boxes.push(<ConfirmationBox
+                            message="Confirm edit?"
+                            boxClass="py-2"
                             colClass="my-3"
                             func={editDeckHandler}
                             cancelFunc={toggleEditStateHandler} />)
@@ -199,7 +198,7 @@ const UserDecks = (props) => {
         return boxes
     }
 
-    
+
     const showFlashcards = () => {
         return (
         <Row className="my-5">
@@ -353,12 +352,12 @@ const UserDecks = (props) => {
                     <Form.Label><b>Deck tags</b></Form.Label>
                     <Col sm={12}>
                         <ul id="tagList">
-                            {(props.deckEdit.tags) ? props.deckEdit.tags.map((tag) => 
+                            {(props.deckEdit.tags) ? props.deckEdit.tags.map((tag) =>
                             <li key={tag} className="listItem">
                                 {tag}
                                 <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>
                             </li>) : ""}
-                            {props.tags.map((tag) => 
+                            {props.tags.map((tag) =>
                             <li key={tag} className="listItem">
                                 {tag}
                                 <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>

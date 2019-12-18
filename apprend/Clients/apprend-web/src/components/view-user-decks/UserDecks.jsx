@@ -17,7 +17,7 @@ import 'loaders.css/src/animations/square-spin.scss'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrash, faCheck, faTimes, faEdit, faLockOpen, faLock} from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
-import {isLoggedIn} from '../login/actions';
+import {isLoggedIn} from '../shared/actions/actions';
 import {deleteDeckFromUser, toggleDeckStatus} from '../shared/actions/actions'
 import {Form} from 'react-bootstrap';
 import FilterTagsInput from '../view-deck/subcomponents/FilterTagsInput';
@@ -139,11 +139,11 @@ const Deck = (props) => {
     }
 
     /* Lijst met alle opties die de eigenaar ziet
-    
+
         icon: FontAwesome icon die je importeert
         title: >String< decknaam als je op de icon hovert
         funct: functie die je aanroept als je op de icon drukt
-        statePropertyName: de propertyname die je aanpast wanneer je op de icon klikt 
+        statePropertyName: de propertyname die je aanpast wanneer je op de icon klikt
 
     */
 
