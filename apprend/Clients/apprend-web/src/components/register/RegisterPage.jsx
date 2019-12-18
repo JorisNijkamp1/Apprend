@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel, FormText, Row} from 'react-bootstrap';
-import {checkEmailExists, registerNewUser} from './async-actions';
+import {checkEmailExists, registerNewUser} from './actions';
 import {PageTitle} from '../shared/components/PageTitle';
 import {NavigatieBar} from '../shared/components/NavigatieBar';
 import {Footer} from '../shared/components/Footer';
-import {checkUsernameExists} from './async-actions';
+import {checkUsernameExists} from './actions';
 import {
     emailValid,
     passwordValid,
@@ -13,7 +13,7 @@ import {
     usernameValid,
     registerFormMaySubmit
 } from '../../util/form-validation/validationRules';
-import {isLoggedIn, userLogin} from '../login/async-actions';
+import {isLoggedIn, userLogin} from '../login/actions';
 import {useHistory} from 'react-router-dom';
 
 export const RegisterPageComponent = props => {
@@ -51,7 +51,7 @@ export const RegisterPageComponent = props => {
             <NavigatieBar/>
             <Container>
                 <Row>
-                    <Col xs={{'span': 12}} md={{'span': 6, 'offset': 3}} >
+                    <Col xs={{'span': 12}} md={{'span': 6, 'offset': 3}}>
                         <PageTitle title={'Register a new user'}/>
                         {(props.newUserRegistered) ?
                             <p className={'bg-success text-white text-center rounded p-2'}>

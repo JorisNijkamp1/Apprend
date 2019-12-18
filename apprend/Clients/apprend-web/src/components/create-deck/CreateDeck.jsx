@@ -100,36 +100,36 @@ const CreateDeckFormComponent = (props) => {
 
                 <Form name="create-deck" onSubmit={(e) => handleCreateDeck(e)}>
                     <Form.Group as={Row} controlId="create-deck-form-deckname">
-                        <Form.Label 
-                            className="text-center" 
-                            column 
+                        <Form.Label
+                            className="text-center"
+                            column
                             sm="12"
                         >
                             Give your deck a name
                         </Form.Label>
                         <Col sm={{span: 6, offset: 3}}>
-                            <Form.Control 
-                                required 
-                                onChange={(event) => setDeckName(event.target.value)} 
-                                placeholder="Your deckname" 
-                                className="text-center" 
+                            <Form.Control
+                                required
+                                onChange={(event) => setDeckName(event.target.value)}
+                                placeholder="Your deckname"
+                                className="text-center"
                             />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="create-deck-form-description">
-                        <Form.Label 
-                            className="text-center" 
-                            column 
+                        <Form.Label
+                            className="text-center"
+                            column
                             sm="12"
                         >
                             Give {showDeckNameOrThis('your deck')} a description
                         </Form.Label>
                         <Col sm={{span: 6, offset: 3}}>
-                            <Form.Control 
+                            <Form.Control
                                 as="textarea"
-                                name="description" 
-                                placeholder={`Your description`} 
-                                className="text-center" 
+                                name="description"
+                                placeholder={`Your description`}
+                                className="text-center"
                             />
                         </Col>
                     </Form.Group>
@@ -147,9 +147,9 @@ const CreateDeckFormComponent = (props) => {
                     </Row>
                     <StatusButtons handleSwitch={handleSwitch} />
                     <Form.Group as={Row}>
-                        <Form.Label 
-                            className="text-center" 
-                            column 
+                        <Form.Label
+                            className="text-center"
+                            column
                             sm="12"
                         >
                             Give {showDeckNameOrThis('your deck')} tags
@@ -168,9 +168,9 @@ const CreateDeckFormComponent = (props) => {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label 
-                            className="text-center" 
-                            column 
+                        <Form.Label
+                            className="text-center"
+                            column
                             sm="12"
                         >
                             Your tags

@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import * as ReactRedux from 'react-redux'
 import {NavigatieBar} from '../shared/components/NavigatieBar';
 import Container from 'react-bootstrap/Container';
-import {isLoggedIn} from "../login/async-actions";
+import {isLoggedIn} from "../shared/actions/actions";
 import SearchResults from "./subcomponents/SearchResults";
 
 const Search = (props) => {

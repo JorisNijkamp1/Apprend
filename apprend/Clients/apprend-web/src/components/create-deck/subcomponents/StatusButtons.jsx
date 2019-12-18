@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Form, Row, Col,
-         } from 'react-bootstrap'
-
+import {
+    Form,
+    Row,
+    Col,
+} from 'react-bootstrap'
 
 const StatusButtonsComponent = (props) => {
 
@@ -18,7 +20,7 @@ const StatusButtonsComponent = (props) => {
                     onChange={props.handleSwitch}
                     />
                 <p className="small">You can always change this setting after creation</p>
-                
+
             </Col>
         </Row>
 
