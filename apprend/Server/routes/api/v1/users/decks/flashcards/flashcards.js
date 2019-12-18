@@ -9,6 +9,7 @@ require('../../../../../../database/models/user');
 const User = mongoose.model('User');
 const Deck = mongoose.model('Deck');
 const flashcards = express.Router();
+const columnsRoute = require('./columns/columns')
 
 const auth = require('../../../../../../authentication/authentication')
 
@@ -30,8 +31,10 @@ flashcards.patch('/:flashcardId', auth.user, async (req, res) => {
         return res.status(201).json({message: req.body.editData.property, data: saveCard})
     } catch (err) {
         console.log(err)
-        res.status(500).json({message: 'Something went wrong on our end'})
+        return res.status(500).json({message: 'Something went wrong on our end'})
     }
 })
+
+flashcards.use('/:flashcardId/columns/', columnsRoute)
 
 module.exports = flashcards

@@ -29,6 +29,7 @@ import { deleteTag } from "../../redux-store/actions/decks/actions";
 
 
 import FlashcardsOverview from "../flashcards/overview-flashcards";
+import { FlashcardTable } from './FlashcardTable'
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
@@ -403,9 +404,12 @@ const UserDecks = (props) => {
                 <Row>
                     {deck}
                 </Row>
+                {/* <Row> */}
+                    <FlashcardTable />
+                {/* </Row> */}
                 {showDeleteConfirmationBox()}
                 {/* {showFlashcards()} */}
-                {flashcardsComp}
+                {/* {flashcardsComp} */}
             </Container>
             <Footer/>
         </>

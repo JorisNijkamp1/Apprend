@@ -13,6 +13,7 @@ const decks = express.Router();
 // const imagesFolder = 'sep2019-project-kiwi/apprends/Server/files/images'
 const imagesFolder = './files/images'
 const flashcardsRoute = require('./flashcards/flashcards')
+const columnsRoute = require('./columns/columns')
 
 decks.use('/:deckId/', async (req, res, next) => {
     req.deck = await req.user.decks.id(req.params.deckId)
@@ -26,5 +27,6 @@ decks.get('/:deckId', async (req, res) => {
 })
 
 decks.use('/:deckId/flashcards/', flashcardsRoute)
+decks.use('/:deckId/columns/', columnsRoute)
 
 module.exports = decks

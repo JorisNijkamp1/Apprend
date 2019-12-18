@@ -10,10 +10,14 @@ import { NavigatieBar } from '../shared/navbar/NavigatieBar';
 import { Footer } from '../shared/footer/Footer';
 import { StatusButtons } from './sub-components/StatusButtons'
 import { Notification } from '../shared/notification/Notification';
+import TypeList from './sub-components/TypeList'
 
 const CreateDeckFormComponent = (props) => {
 
     const [status, setStatus] = useState(false)
+    const [deckName, setDeckName] = useState('')
+    const [typeOne, setTypeOne] = useState('Text')
+    const [typeTwo, setTypeTwo] = useState('Text')
 
     useEffect(() => {
         props.changeDeckName('')
@@ -21,7 +25,7 @@ const CreateDeckFormComponent = (props) => {
 
     const history = useHistory()
 
-    const showDeckNameOrThis = (text) => props.deckName ? <b>'{props.deckName}'</b> : text
+    const showDeckNameOrThis = (text) => deckName ? <b>'{deckName}'</b> : text
 
     const handleSwitch = (e) => {
         console.log(status)
@@ -32,10 +36,11 @@ const CreateDeckFormComponent = (props) => {
         try {
             e.preventDefault()
             const deck = {
-                deckName: props.deckName,
+                deckName: deckName,
                 description: e.target.description.value,
                 private: status,
-                tags: props.tags
+                tags: props.tags,
+                columns: [typeOne, typeTwo]
             }
             const response = await props.createNewDeck(deck)
             let deckId;
@@ -105,7 +110,7 @@ const CreateDeckFormComponent = (props) => {
                         <Col sm={{span: 6, offset: 3}}>
                             <Form.Control 
                                 required 
-                                onChange={(event) => props.changeDeckName(event.target.value)} 
+                                onChange={(event) => setDeckName(event.target.value)} 
                                 placeholder="Your deckname" 
                                 className="text-center" 
                             />
@@ -128,6 +133,18 @@ const CreateDeckFormComponent = (props) => {
                             />
                         </Col>
                     </Form.Group>
+                    <Row>
+                        <Col xs={12} className="text-center">
+                            <p> What sides do you want? </p>
+                            <small>You can change or add more later!</small>
+                        </Col>
+                        <Col xs={6} md={{span: 3, offset: 3}}>
+                            <TypeList func={setTypeOne} selected={typeOne} text="Side 1"/>
+                        </Col>
+                        <Col xs={6} md={3}>
+                            <TypeList func={setTypeTwo} selected={typeTwo} text="Side 2"/>
+                        </Col>
+                    </Row>
                     <StatusButtons handleSwitch={handleSwitch} />
                     <Form.Group as={Row}>
                         <Form.Label 
@@ -169,7 +186,7 @@ const CreateDeckFormComponent = (props) => {
                     </Form.Group>
                     <Row>
                         <Col sm={{span: 6, offset: 3}}>
-                            <CreateButton />
+                            <CreateButton deckName={deckName}/>
                         </Col>
                     </Row>
                 </Form>

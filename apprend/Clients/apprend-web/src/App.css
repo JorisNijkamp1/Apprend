@@ -301,6 +301,10 @@ progress[value]::-webkit-progress-value {
     word-break: break-all;
 }
 
+.button-pointer:hover {
+    cursor: pointer
+}
+
 @media only screen and (max-width: 800px) {
     .flipCard {
         width: 100%;
