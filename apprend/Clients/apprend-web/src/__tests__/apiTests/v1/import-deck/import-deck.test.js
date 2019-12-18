@@ -1,4 +1,4 @@
-import {API_URL} from "../../../../redux-store/urls";
+import {API_URL} from "../../../../../src_old/redux-store/urls";
 
 describe('import decks from another user', () => {
     let testDeck

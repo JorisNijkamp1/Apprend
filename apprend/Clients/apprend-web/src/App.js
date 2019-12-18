@@ -9,14 +9,14 @@ import Flashcards from "./components/flashcards/add-flashcards";
 import {PlayingDeck} from "./components/playing/PlayingDeck";
 import {LoginPage} from "./components/LoginPage";
 import UserDecks from "./components/user-decks/UserDecks";
-import Deck from "./components/user-decks/Deck";
-import {PlayingScore} from "./components/playing/sub-components/PlayingScore";
+import Deck from "./components/deck/Deck";
+import {PlayingScore} from "./components/playing/subcomponents/PlayingScore";
 import {isLoggedIn} from "./redux-store/actions/login/async-actions";
 import * as ReactRedux from "react-redux";
 import {DeckEdit} from "./components/user-decks/edit-deck/DeckEdit";
 import 'react-notifications-component/dist/theme.css'
 import 'animate.css/animate.css'
-import Search from "./components/search/Search";
+import Search from "./components/search-deck/Search";
 import { SearchUser } from './components/search-user/SearchUser';
 
 function App(props) {
@@ -50,16 +50,13 @@ function App(props) {
                 <Route path={"/decks/:deckId/score"}>
                     <PlayingScore/>
                 </Route>
-                <Route exact path={"/decks/:deckId/edit"}>
-                    <DeckEdit/>
-                </Route>
                 <Route path={"/decks/:deckId"}>
                     <Deck/>
                 </Route>
                 <Route exact path={"/:username/decks"}>
                     <UserDecks/>
                 </Route>
-                <Route path={"/search"}>
+                <Route path={"/search-deck"}>
                     <Search/>
                 </Route>
                 <Route path={"/users"}>

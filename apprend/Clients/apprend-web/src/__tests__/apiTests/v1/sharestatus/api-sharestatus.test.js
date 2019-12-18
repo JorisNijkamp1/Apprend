@@ -1,4 +1,4 @@
-import {API_URL} from '../../../../redux-store/urls';
+import {API_URL} from '../../../../../src_old/redux-store/urls';
 
 describe('Setting decks to a new shared status', () => {
 
