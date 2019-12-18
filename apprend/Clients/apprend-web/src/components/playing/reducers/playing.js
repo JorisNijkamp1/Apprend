@@ -1,10 +1,10 @@
-import {SET_PLAYING_CARDS} from '../actions/action-types';
-import {SET_CORRECT_CARDS} from '../actions/action-types';
-import {SET_WRONG_CARDS} from '../actions/action-types';
-import {SET_ACTIVE_CARD} from '../actions/action-types';
-import {RESET_STATE} from '../actions/action-types';
-import {SET_ISLOADING} from '../actions/action-types';
-import {SET_GAME_ID} from '../actions/action-types';
+import {SET_PLAYING_CARDS} from '../../../redux/actionTypes';
+import {SET_CORRECT_CARDS} from '../../../redux/actionTypes';
+import {SET_WRONG_CARDS} from '../../../redux/actionTypes';
+import {SET_ACTIVE_CARD} from '../../../redux/actionTypes';
+import {RESET_STATE} from '../../../redux/actionTypes';
+import {SET_ISLOADING} from '../../../redux/actionTypes';
+import {SET_GAME_ID} from '../../../redux/actionTypes';
 
 const initialState = {
     cards: [],
