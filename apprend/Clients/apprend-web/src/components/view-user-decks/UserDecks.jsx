@@ -1,29 +1,28 @@
-import React, {useEffect, useState} from "react";
-import * as ReactRedux from "react-redux"
-import {NavigatieBar} from "../shared/components/NavigatieBar";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import {useParams} from "react-router-dom";
-import {Footer} from "../shared/components/Footer"
+import React, {useEffect, useState} from 'react';
+import * as ReactRedux from 'react-redux'
+import {NavigatieBar} from '../shared/components/NavigatieBar';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import {useParams} from 'react-router-dom';
+import {Footer} from '../shared/components/Footer'
 import {
     getDeckEditAction,
     getUserDecksAction,
     setDeckEditedAction
-} from "../../../src_old/redux-store/actions/decks/async-actions";
-import Card from "react-bootstrap/Card";
+} from '../shared/actions/actions';
+import Card from 'react-bootstrap/Card';
 import Loader from 'react-loaders'
 import 'loaders.css/src/animations/square-spin.scss'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash, faCheck, faTimes, faEdit, faLockOpen, faLock} from "@fortawesome/free-solid-svg-icons";
-import Button from "react-bootstrap/Button";
-import {isLoggedIn} from "../login/async-actions";
-import {deleteDeckFromUser, toggleDeckStatus} from '../../../src_old/redux-store/actions/decks/async-actions'
-import {Form} from "react-bootstrap";
-import FilterTagsInput from "../view-deck/subcomponents/FilterTagsInput";
-import {AddCard} from "./subcomponents/AddCard";
-import {setFilteredDecks} from "../../../src_old/redux-store/actions/decks/actions";
-import { Link } from 'react-router-dom'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTrash, faCheck, faTimes, faEdit, faLockOpen, faLock} from '@fortawesome/free-solid-svg-icons';
+import Button from 'react-bootstrap/Button';
+import {isLoggedIn} from '../login/actions';
+import {deleteDeckFromUser, toggleDeckStatus} from '../shared/actions/actions'
+import {Form} from 'react-bootstrap';
+import FilterTagsInput from '../view-deck/subcomponents/FilterTagsInput';
+import {setFilteredDecks} from '../shared/actions/actions';
+import {Link} from 'react-router-dom'
 
 const Deck = (props) => {
     const {username} = useParams();
@@ -42,25 +41,26 @@ const Deck = (props) => {
     const confirmationBoxHOC = (message, deck, funct, stateFunct, property, index) => {
         return (
             <Card.Footer>
-            <Row>
-                <Col className="text-left" xs={8}>
-                    {message}
-                </Col>
-                <Col xs={2} className="text-center text-green">
-                    <FontAwesomeIcon icon={faCheck} name={deck._id}
-                                    id={`confirm-icon-button-${index}`}
-                                    onClick={(event) => {
-                                        funct(event)
-                                    }}
-                    />
-                </Col>
-                <Col xs={2} className="text-center text-red">
-                    <FontAwesomeIcon icon={faTimes} name={deck._id} id={`cancel-icon-button-${index}`} onClick={(event) => {
-                        stateFunct(event, property)
-                    }}/>
-                </Col>
-            </Row>
-        </Card.Footer>
+                <Row>
+                    <Col className="text-left" xs={8}>
+                        {message}
+                    </Col>
+                    <Col xs={2} className="text-center text-green">
+                        <FontAwesomeIcon icon={faCheck} name={deck._id}
+                                         id={`confirm-icon-button-${index}`}
+                                         onClick={(event) => {
+                                             funct(event)
+                                         }}
+                        />
+                    </Col>
+                    <Col xs={2} className="text-center text-red">
+                        <FontAwesomeIcon icon={faTimes} name={deck._id} id={`cancel-icon-button-${index}`}
+                                         onClick={(event) => {
+                                             stateFunct(event, property)
+                                         }}/>
+                    </Col>
+                </Row>
+            </Card.Footer>
         )
     }
 
@@ -74,12 +74,12 @@ const Deck = (props) => {
             const deckId = event.currentTarget.getAttribute('name');
             const storeDeck = props.decks[props.decks.findIndex(d => d._id === deckId)]
 
-            if (decks && decks[deckId]){
+            if (decks && decks[deckId]) {
                 let deckData = {...decks[deckId]}
                 deckData.description = decks[deckId].description ? decks[deckId].description : storeDeck.description
                 deckData.name = decks[deckId].name ? decks[deckId].name : storeDeck.name
                 props.setDeckEditedAction(storeDeck.creatorId, deckId, deckData.name, deckData.description, storeDeck.tags)
-                toggleLocalStateProperty(event, 'editState')            
+                toggleLocalStateProperty(event, 'editState')
             }
         } catch (e) {
             console.log('SOMETHING WENT WRONG WITH EDITING A DECK', e)
@@ -95,8 +95,8 @@ const Deck = (props) => {
         newDeck['id'] = deckId
         newDeck[property] = newPropertyValue
 
-        if (decks){
-            if (decks[deckId]){
+        if (decks) {
+            if (decks[deckId]) {
                 updatedDecks = {...decks}
                 updatedDecks[deckId][property] = newPropertyValue
             } else {
@@ -117,8 +117,8 @@ const Deck = (props) => {
         newDeck['id'] = deckId
         newDeck[property] = true
 
-        if (decks){
-            if (decks[deckId]){
+        if (decks) {
+            if (decks[deckId]) {
                 updatedDecks = {...decks}
                 updatedDecks[deckId][property] = !updatedDecks[deckId][property]
                 delete updatedDecks[deckId]['name']
@@ -135,7 +135,7 @@ const Deck = (props) => {
     }
 
     const toggleDeckStatus = (event) => {
-        
+
     }
 
     /* Lijst met alle opties die de eigenaar ziet
@@ -198,7 +198,7 @@ const Deck = (props) => {
 
     const showAllIcons = (icons, deck, index) => {
         return icons.map(icon => {
-            return iconHOC(icon, deck, index )
+            return iconHOC(icon, deck, index)
         })
     }
 
@@ -208,12 +208,12 @@ const Deck = (props) => {
         const allConfirmationBoxes = (decks) => {
             let boxes = []
 
-            if (decks){
-                if (decks[deck._id]){
-                    if (decks[deck._id].deleteState){
+            if (decks) {
+                if (decks[deck._id]) {
+                    if (decks[deck._id].deleteState) {
                         boxes.push(confirmationBoxHOC('Confirm delete?', deck, handleDeleteDeck, toggleLocalStateProperty, 'deleteState', index))
                     }
-                    if (decks[deck._id].editState){
+                    if (decks[deck._id].editState) {
                         boxes.push(confirmationBoxHOC('Confirm edit?', deck, handleEditDeck, toggleLocalStateProperty, 'editState', index))
                     }
                 }
@@ -227,7 +227,7 @@ const Deck = (props) => {
                 <Card.Footer>
                     <Row>
                         <Col className="text-center">
-                        <b><p className="small">Owner options:</p></b>
+                            <b><p className="small">Owner options:</p></b>
                         </Col>
                     </Row>
                     <Row>
@@ -243,7 +243,7 @@ const Deck = (props) => {
     const iconHOC = (icon, deck, index) => {
         return (
             <Col xs={2}>
-            <span className={"float-right"} name={deck._id}
+            <span className={'float-right'} name={deck._id}
                   onClick={(event) => {
                       icon.funct(event, icon.statePropertyName)
                   }}>
@@ -251,10 +251,10 @@ const Deck = (props) => {
                                  className={`trash-icon ${icon.classColor}`}
                                  size={`1x`}
                                  title={icon.ownTitle ? icon.title : `${icon.title} ${deck.name}`}
-                                 id={`${icon.title.toLowerCase().replace(/\s/g, "")}-icon-button-${index}`}
+                                 id={`${icon.title.toLowerCase().replace(/\s/g, '')}-icon-button-${index}`}
                 />
             </span>
-        </Col>
+            </Col>
         )
     }
 
@@ -267,21 +267,21 @@ const Deck = (props) => {
         }
         return (
             <Card.Subtitle className="mb-2 text-muted text-center">
-            ({flashcards} {(flashcards > 1 || flashcards === 0) ? 'flashcards' : 'flashcard'})
-        </Card.Subtitle>
+                ({flashcards} {(flashcards > 1 || flashcards === 0) ? 'flashcards' : 'flashcard'})
+            </Card.Subtitle>
         )
     }
 
     const showViewButton = (bool, deckId, index) => {
         if (!bool) return (
-        <Row>
-        <Col xs={{span: 6, offset: 3}}>
-            <Link to={`/decks/${deckId}`}>
-                <Button variant="outline-primary" className={'w-100'} id={'card-' + index + '-link'}>View
-                    deck</Button>
-            </Link>
-        </Col>
-    </Row>
+            <Row>
+                <Col xs={{span: 6, offset: 3}}>
+                    <Link to={`/decks/${deckId}`}>
+                        <Button variant="outline-primary" className={'w-100'} id={'card-' + index + '-link'}>View
+                            deck</Button>
+                    </Link>
+                </Col>
+            </Row>
         )
     }
 
@@ -290,40 +290,40 @@ const Deck = (props) => {
         if (decks && decks[deckId] && decks[deckId].editState) {
             return (
                 <>
-                    <Form.Group controlId="formBasicEmail" className={"text-center"}>
+                    <Form.Group controlId="formBasicEmail" className={'text-center'}>
                         <Form.Label column={true}>
                             <strong>Edit {deck.name}</strong>
                         </Form.Label>
-                    <Form.Control type="text"
-                                  name={deckId}
-                                  placeholder={deck.name}
-                                  defaultValue={deck.name}
-                                  id={`input-name-${index}`}
-                                  onChange={(e) => {
+                        <Form.Control type="text"
+                                      name={deckId}
+                                      placeholder={deck.name}
+                                      defaultValue={deck.name}
+                                      id={`input-name-${index}`}
+                                      onChange={(e) => {
 
-                                    editProperty(e, 'name')
-                                  }}
-                    />
-                </Form.Group>
-                {FlashcardAmount(deck)}
+                                          editProperty(e, 'name')
+                                      }}
+                        />
+                    </Form.Group>
+                    {FlashcardAmount(deck)}
 
-                <Form.Group controlId="formBasicEmail" className={"text-center"}>
-                    <Form.Label column={true}><strong>Edit deck description</strong></Form.Label>
-                    <Form.Control 
-                                  type="text"
-                                  as="textarea"
-                                  name={deckId}
-                                  placeholder={deck.description}
-                                  defaultValue={deck.description}  
-                                  id={`input-description-${index}`}
-                                  className={'form-control'}
-                                  onChange={(e) => {
+                    <Form.Group controlId="formBasicEmail" className={'text-center'}>
+                        <Form.Label column={true}><strong>Edit deck description</strong></Form.Label>
+                        <Form.Control
+                            type="text"
+                            as="textarea"
+                            name={deckId}
+                            placeholder={deck.description}
+                            defaultValue={deck.description}
+                            id={`input-description-${index}`}
+                            className={'form-control'}
+                            onChange={(e) => {
 
-                                    editProperty(e, 'description')
+                                editProperty(e, 'description')
 
-                                  }}
-                    />
-                </Form.Group>
+                            }}
+                        />
+                    </Form.Group>
                 </>
             )
         } else {
@@ -335,7 +335,7 @@ const Deck = (props) => {
             }
             return (
                 <>
-                    <Card.Title className={"text-center"}>
+                    <Card.Title className={'text-center'}>
                         <Row>
                             <Col xs={12}>
                                 <span id={`deck-name-${index}`}>{deck.name}</span>
@@ -344,14 +344,14 @@ const Deck = (props) => {
                     </Card.Title>
                     {FlashcardAmount(deck)}
 
-                    <Card.Title className={"text-center font-weight-normal"}>
+                    <Card.Title className={'text-center font-weight-normal'}>
                         <Row>
                             <Col xs={12}>
                                 <span id={`deck-description-${index}`}>{deck.description}</span>
                             </Col>
                         </Row>
                     </Card.Title>
-                    
+
                     {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, id, index)}
                 </>
             )
@@ -385,10 +385,10 @@ const Deck = (props) => {
     }
 
     const ShowDecks = (loading, decks) => {
-        if (loading) return <LoaderComponent />
+        if (loading) return <LoaderComponent/>
 
         if (!decks) return ''
-        if (typeof(props.filteredDecks) === "string") {
+        if (typeof (props.filteredDecks) === 'string') {
             return <Row className="mx-auto align-items-center flex-column py-5">
                 <h2>{props.filteredDecks} ☹️ </h2>
             </Row>
@@ -398,10 +398,10 @@ const Deck = (props) => {
             return props.filteredDecks.map((deck, index) =>
                 <Col xs={12} sm={6} lg={4} className="my-2">
                     <Card index={deck.name + index} id={'card-' + index}>
-                    <Card.Body>
-                        {ShowCard(deck, deck.deckId, index)}
-                    </Card.Body>
-                    {isCreator ? userOptions(deck, index) : ''}
+                        <Card.Body>
+                            {ShowCard(deck, deck.deckId, index)}
+                        </Card.Body>
+                        {isCreator ? userOptions(deck, index) : ''}
                     </Card>
                 </Col>
             )
@@ -433,7 +433,8 @@ const Deck = (props) => {
                     </Col>
                 </Row>
                 <div className={'pt-3 pb-5'}>
-                    <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`} username={props.userDecks.user}/>
+                    <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`}
+                                     username={props.userDecks.user}/>
                 </div>
                 {showErrors()}
                 <Row>
