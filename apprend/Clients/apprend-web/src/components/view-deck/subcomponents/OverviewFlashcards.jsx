@@ -6,14 +6,14 @@ import {
     Row,
     Button
 } from "react-bootstrap";
-import EditableFlashcard from "./editable-flashcard";
+import EditableFlashcard from "./EditableFlashcard";
 import {changeDeckFlashcards} from "../../shared/actions/actions";
-import {AddFlashcardIcon} from "./addFlashcardIcon";
+import {AddFlashcardIcon} from "./AddFlashcardIcon";
 import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../shared/actions/actions";
 import Loader from "react-loaders";
 import {isLoggedIn} from "../../shared/actions/actions";
 import {useHistory} from 'react-router'
-import NonEditableFlashcard from "./nonEditableFlashcard";
+import NonEditableFlashcard from "./NonEditableFlashcard";
 import Form from "react-bootstrap/Form";
 import {getDeckAction} from '../../shared/actions/actions';
 

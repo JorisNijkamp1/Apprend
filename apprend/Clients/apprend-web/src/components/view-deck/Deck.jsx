@@ -27,7 +27,7 @@ import { Notification } from '../shared/components/Notification';
 import { addTag, clearTags } from '../create-deck/actions';
 import { deleteTag } from "../shared/actions/actions";
 
-import FlashcardsOverview from "./subcomponents/overviewFlashcards";
+import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
 import { FlashcardTable } from './subcomponents/FlashcardTable'
 
 const UserDecks = (props) => {
