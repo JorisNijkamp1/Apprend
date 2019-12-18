@@ -335,15 +335,20 @@ progress[value]::-webkit-progress-value {
 .mt-10 {
     margin-top: 10rem !important;
 }
-.mt-7{
+
+.mt-7 {
     margin-top: 7rem !important;
 }
 
-.infinite-scroll-component  {
+.infinite-scroll-component {
     overflow: hidden !important;
 }
 
 .sticky-button {
     position: absolute;
     bottom: 1.5rem;
+}
+
+.custom-control-label:before, .custom-control-label:after {
+    cursor: pointer;
 }
