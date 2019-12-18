@@ -15,7 +15,7 @@ import 'react-notifications-component/dist/theme.css'
 import 'animate.css/animate.css'
 import Search from './components/search-deck/Search';
 import {SearchUser} from './components/search-user/SearchUser';
-import {isLoggedIn} from './components/login/actions';
+import {isLoggedIn} from './components/shared/actions/actions';
 
 function App(props) {
     //Check if user is logged in

@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav"
 import Container from "react-bootstrap/Container";
 import {Link} from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import {logoutAction} from "../../login/async-actions";
+import {logoutAction} from "../../shared/actions/actions";
 import {Notification} from "./Notification";
 
 const NavbarUI = (props) => {
