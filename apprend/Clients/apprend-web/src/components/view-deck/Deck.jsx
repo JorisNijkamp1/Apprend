@@ -11,9 +11,9 @@ import {getDeckAction, getDeckEditAction} from "../shared/actions/actions";
 import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
 import Loader from "react-loaders";
-import { useHistory } from 'react-router'
+import {useHistory} from 'react-router'
 import {withRouter} from 'react-router-dom'
-import { InputGroup, Button } from 'react-bootstrap'
+import {InputGroup, Button} from 'react-bootstrap'
 import {isLoggedIn} from "../shared/actions/actions";
 import {importDeckAction} from "../shared/actions/actions";
 import PlayButton from "./subcomponents/PlayButton";
@@ -23,12 +23,12 @@ import DeleteButton from "./subcomponents/DeleteButton";
 import ImportButton from "./subcomponents/ImportButton";
 import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../shared/actions/actions'
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
-import { Notification } from '../shared/components/Notification';
-import { addTag, clearTags } from '../create-deck/actions';
-import { deleteTag } from "../shared/actions/actions";
+import {Notification} from '../shared/components/Notification';
+import {addTag, clearTags} from '../create-deck/actions';
+import {deleteTag} from "../shared/actions/actions";
 
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
-import { FlashcardTable } from './subcomponents/FlashcardTable'
+import {FlashcardTable} from './subcomponents/FlashcardTable'
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
@@ -66,7 +66,7 @@ const UserDecks = (props) => {
         document.getElementById("tags").value = "";
         let match = false;
         if (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0) {
-            if (checkAdded(tagValue)){
+            if (checkAdded(tagValue)) {
                 Notification("You already have that tag", "danger");
             } else {
                 match = true;
@@ -93,15 +93,15 @@ const UserDecks = (props) => {
     }
 
     const handleImportButton = async () => {
-        const result = await props.importDeck(props.deck._id)
-        if (!result) return
-        let deck
-        if (!props.username) deck = result.decks[0]._id
-        else deck = result._id
-        await props.isLoggedIn()
-
-        history.push(`/decks/${deck}`)
-        props.getDeck(deck)
+        const result = await props.importDeck(props.deck._id, props.deck.creatorId);
+        if (result.success) {
+            if (!props.username) deck = result.data.decks[0]._id
+            else deck = result.data._id
+            await props.isLoggedIn()
+            history.push(`/decks/${deck}`)
+            props.getDeck(deck)
+        }
+        Notification(result.message, result.success ? 'success' : 'danger')
     }
 
     // Toggles public/private status of a deck
@@ -119,7 +119,7 @@ const UserDecks = (props) => {
     }
 
     const editDeckHandler = () => {
-        props.editDeck(props.deck.creatorId, props.deck._id, editName ? editName : props.deck.name, editDescription ? editDescription : props.deck.description, deckData.oldDeckTags, props.tags )
+        props.editDeck(props.deck.creatorId, props.deck._id, editName ? editName : props.deck.name, editDescription ? editDescription : props.deck.description, deckData.oldDeckTags, props.tags)
         toggleEditStateHandler()
         props.clearTags()
     }
@@ -127,7 +127,6 @@ const UserDecks = (props) => {
     const toggleDeleteStatusHandler = () => {
         setdeleteStatus(!deleteStatus)
     }
-
 
 
     const toggleEditStateHandler = () => {
@@ -141,7 +140,7 @@ const UserDecks = (props) => {
 
     const setStateHandler = (e, func) => {
         let value
-        if (e){
+        if (e) {
             value = e.currentTarget.value
         }
         func(value)
@@ -149,17 +148,17 @@ const UserDecks = (props) => {
 
     const findAllOptions = (isCreator) => {
         let icons = []
-        if (isCreator){
+        if (isCreator) {
             if (props.deck.flashcards.length > 0) {
                 icons.push(<PlayButton func={playDeckHandler}/>)
             } else {
                 icons.push(<PlayButton func={showNotification}/>)
             }
-            icons.push(<EditButton func={toggleEditStateHandler} />)
-            icons.push(<ToggleStatusButton func={toggleDeckStatusHandler}  isPrivate={props.deck.private}/>)
-            icons.push(<DeleteButton func={toggleDeleteStatusHandler} />)
+            icons.push(<EditButton func={toggleEditStateHandler}/>)
+            icons.push(<ToggleStatusButton func={toggleDeckStatusHandler} isPrivate={props.deck.private}/>)
+            icons.push(<DeleteButton func={toggleDeleteStatusHandler}/>)
         } else {
-            icons.push(<ImportButton func={handleImportButton} />)
+            icons.push(<ImportButton func={handleImportButton}/>)
         }
         return icons
     }
@@ -174,26 +173,26 @@ const UserDecks = (props) => {
 
     const showDeleteConfirmationBox = () => {
         const boxes = []
-        if (deleteStatus){
+        if (deleteStatus) {
             boxes.push(<ConfirmationBox
-                            message="Confirm delete?"
-                            boxClass="py-2"
-                            colClass="my-3"
-                            func={deleteDeckHandler}
-                            cancelFunc={toggleDeleteStatusHandler} />)
+                message="Confirm delete?"
+                boxClass="py-2"
+                colClass="my-3"
+                func={deleteDeckHandler}
+                cancelFunc={toggleDeleteStatusHandler}/>)
         }
         return boxes
     }
 
     const showEditConfirmationBox = () => {
         const boxes = []
-        if (editState){
+        if (editState) {
             boxes.push(<ConfirmationBox
-                            message="Confirm edit?"
-                            boxClass="py-2"
-                            colClass="my-3"
-                            func={editDeckHandler}
-                            cancelFunc={toggleEditStateHandler} />)
+                message="Confirm edit?"
+                boxClass="py-2"
+                colClass="my-3"
+                func={editDeckHandler}
+                cancelFunc={toggleEditStateHandler}/>)
         }
         return boxes
     }
@@ -201,9 +200,9 @@ const UserDecks = (props) => {
 
     const showFlashcards = () => {
         return (
-        <Row className="my-5">
-            <FlashcardsOverview />
-        </Row>
+            <Row className="my-5">
+                <FlashcardsOverview/>
+            </Row>
         )
     }
 
@@ -228,29 +227,30 @@ const UserDecks = (props) => {
         if (props.deck.flashcards) {
             totalFlashcards = props.deck.flashcards.length
         }
-        if (props.deck.toString() !== 'deck-not-found'){
+        if (props.deck.toString() !== 'deck-not-found') {
             const datum = new Date(props.deck.creationDate).toLocaleDateString()
             deck = (
                 <>
-                <Card style={{width: '100%'}} bg={'light'} className={'my-5 text-center'}>
-                    <Card.Body>
-                        <Card.Subtitle>
-                            <Row>
-                                <Col xs={12} md={4}>
-                                    <b>Created on: </b>{datum ? datum : '' }
-                                </Col>
-                                <Col xs={12} md={4}>
-                                    <b>Created by: </b>{props.deck.creatorId ? props.deck.creatorId.length === 32 ? 'Anon' : props.deck.creatorId : ''}
-                                </Col>
-                                <Col xs={12} md={4}>
-                                    <b>Total flashcards: </b>{totalFlashcards}
-                                </Col>
-                            </Row>
-                        </Card.Subtitle>
+                    <Card style={{width: '100%'}} bg={'light'} className={'my-5 text-center'}>
+                        <Card.Body>
+                            <Card.Subtitle>
+                                <Row>
+                                    <Col xs={12} md={4}>
+                                        <b>Created on: </b>{datum ? datum : ''}
+                                    </Col>
+                                    <Col xs={12} md={4}>
+                                        <b>Created
+                                            by: </b>{props.deck.creatorId ? props.deck.creatorId.length === 32 ? 'Anon' : props.deck.creatorId : ''}
+                                    </Col>
+                                    <Col xs={12} md={4}>
+                                        <b>Total flashcards: </b>{totalFlashcards}
+                                    </Col>
+                                </Row>
+                            </Card.Subtitle>
 
-                    </Card.Body>
-                </Card>
-                {showOptions(findAllOptions(isCreator))}
+                        </Card.Body>
+                    </Card>
+                    {showOptions(findAllOptions(isCreator))}
                 </>
             )
 
@@ -265,24 +265,24 @@ const UserDecks = (props) => {
 
     const Deckname = () => {
         if (editState)
-        return (
-            <>
-                <Form.Group controlId="formBasicEmail" className={"text-center"}>
-                    <Form.Label column={true}>
+            return (
+                <>
+                    <Form.Group controlId="formBasicEmail" className={"text-center"}>
+                        <Form.Label column={true}>
                             <strong>Edit {props.deck.name}</strong>
-                    </Form.Label>
-                    <Form.Control type="text"
-                                  name={props.deck._id}
-                                  placeholder={props.deck.name}
-                                  defaultValue={props.deck.name}
-                                  id={`input-name`}
-                                  onChange={(e) => {
-                                    setStateHandler(e, setEditName)
-                                  }}
-                    />
-                </Form.Group>
-            </>
-        )
+                        </Form.Label>
+                        <Form.Control type="text"
+                                      name={props.deck._id}
+                                      placeholder={props.deck.name}
+                                      defaultValue={props.deck.name}
+                                      id={`input-name`}
+                                      onChange={(e) => {
+                                          setStateHandler(e, setEditName)
+                                      }}
+                        />
+                    </Form.Group>
+                </>
+            )
 
         else return (
             <h1 className="display-5 text-green ">
@@ -293,24 +293,24 @@ const UserDecks = (props) => {
 
     const Deckdescription = () => {
         if (editState)
-        return (
-            <>
-                <Form.Group controlId="formBasicEmail" className={"text-center"}>
-                    <Form.Label column={true}>
+            return (
+                <>
+                    <Form.Group controlId="formBasicEmail" className={"text-center"}>
+                        <Form.Label column={true}>
                             <strong>Edit description</strong>
-                    </Form.Label>
-                    <Form.Control type="text"
-                                  name={props.deck._id}
-                                  placeholder={props.deck.description}
-                                  defaultValue={props.deck.description}
-                                  id={`input-description`}
-                                  onChange={(e) => {
-                                    setStateHandler(e, seteditDescription)
-                                  }}
-                    />
-                </Form.Group>
-            </>
-        )
+                        </Form.Label>
+                        <Form.Control type="text"
+                                      name={props.deck._id}
+                                      placeholder={props.deck.description}
+                                      defaultValue={props.deck.description}
+                                      id={`input-description`}
+                                      onChange={(e) => {
+                                          setStateHandler(e, seteditDescription)
+                                      }}
+                        />
+                    </Form.Group>
+                </>
+            )
 
         else return (
             <h4 className="display-5 text-black ">
@@ -327,7 +327,7 @@ const UserDecks = (props) => {
                 <>
                     <Col sm={6} md={3} className="text-center my-1">
                         <Card>
-                        <h6>{tag}</h6>
+                            <h6>{tag}</h6>
 
                         </Card>
                     </Col>
@@ -342,43 +342,46 @@ const UserDecks = (props) => {
         }
 
         if (editState)
-        return (
-            <>
-            <Form onSubmit={e => {
-                    e.preventDefault()
-                    getTagValue()
-                }}>
-                <Form.Group>
-                    <Form.Label><b>Deck tags</b></Form.Label>
-                    <Col sm={12}>
-                        <ul id="tagList">
-                            {(props.deckEdit.tags) ? props.deckEdit.tags.map((tag) =>
-                            <li key={tag} className="listItem">
-                                {tag}
-                                <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>
-                            </li>) : ""}
-                            {props.tags.map((tag) =>
-                            <li key={tag} className="listItem">
-                                {tag}
-                                <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>
-                            </li>)}
-                        </ul>
-                    </Col>
-                    <InputGroup className="mb-3 pt-2">
-                        <Form.Control
-                            id="tags"
-                            placeholder="Add a tag"
-                            className="text-center"
-                        />
-                        <InputGroup.Append>
-                            <Button className={'bg-blue text-white hover-shadow'} onClick={() => getTagValue()}>Add tag</Button>
-                        </InputGroup.Append>
-                    </InputGroup>
+            return (
+                <>
+                    <Form onSubmit={e => {
+                        e.preventDefault()
+                        getTagValue()
+                    }}>
+                        <Form.Group>
+                            <Form.Label><b>Deck tags</b></Form.Label>
+                            <Col sm={12}>
+                                <ul id="tagList">
+                                    {(props.deckEdit.tags) ? props.deckEdit.tags.map((tag) =>
+                                        <li key={tag} className="listItem">
+                                            {tag}
+                                            <i id='deleteTag' className='fa fa-times tagButton'
+                                               onClick={() => props.deleteTag(tag)}/>
+                                        </li>) : ""}
+                                    {props.tags.map((tag) =>
+                                        <li key={tag} className="listItem">
+                                            {tag}
+                                            <i id='deleteTag' className='fa fa-times tagButton'
+                                               onClick={() => props.deleteTag(tag)}/>
+                                        </li>)}
+                                </ul>
+                            </Col>
+                            <InputGroup className="mb-3 pt-2">
+                                <Form.Control
+                                    id="tags"
+                                    placeholder="Add a tag"
+                                    className="text-center"
+                                />
+                                <InputGroup.Append>
+                                    <Button className={'bg-blue text-white hover-shadow'} onClick={() => getTagValue()}>Add
+                                        tag</Button>
+                                </InputGroup.Append>
+                            </InputGroup>
 
-                </Form.Group>
-                </Form>
-            </>
-        )
+                        </Form.Group>
+                    </Form>
+                </>
+            )
         else return (
             tags
         )
@@ -404,7 +407,7 @@ const UserDecks = (props) => {
                     {deck}
                 </Row>
                 {/* <Row> */}
-                    <FlashcardTable />
+                <FlashcardTable/>
                 {/* </Row> */}
                 {showDeleteConfirmationBox()}
                 {/* {showFlashcards()} */}
@@ -429,7 +432,7 @@ function mapDispatchToProps(dispatch) {
     return {
         isLoggedIn: () => dispatch(isLoggedIn()),
         getDeck: (deckId) => dispatch(getDeckAction(deckId)),
-        importDeck: (deck) => dispatch(importDeckAction(deck)),
+        importDeck: (deckId, creatorId) => dispatch(importDeckAction(deckId, creatorId)),
         toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),
         deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
         editDeck: (creatorId, _id, deckName, deckDescription, oldTags, newTags) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription, oldTags, newTags)),
