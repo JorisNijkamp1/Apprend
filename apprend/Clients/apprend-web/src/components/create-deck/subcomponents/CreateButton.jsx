@@ -57,8 +57,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeDeckName: (name) => dispatch(changeDeckName(name)),
-        createNewDeck: (deck) => dispatch(createDeck(deck)),
+
     }
 }
 

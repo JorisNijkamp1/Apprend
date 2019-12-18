@@ -4,7 +4,8 @@ import {NavigatieBar} from "../shared/components/NavigatieBar";
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {Footer} from "../shared/components/Footer";
-import {isLoggedIn, userLogin} from "./async-actions";
+import { userLogin } from "./actions";
+import { isLoggedIn } from '../shared/actions/actions'
 import {useHistory} from 'react-router'
 
 const LoginPageUI = (props) => {
