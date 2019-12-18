@@ -185,6 +185,7 @@ decks.post('/', async (req, res) => {
                 tags: req.body.tags,
                 flashcards: [],
                 private: req.body.private,
+                columns: req.body.columns
             }
             const user = {
                 _id: req.session.id,
@@ -207,6 +208,7 @@ decks.post('/', async (req, res) => {
                 status: 'original',
                 tags: req.body.tags,
                 flashcards: [],
+                columns: req.body.columns
             }
             if (player) response = await player.addDeck(deck)
             else {

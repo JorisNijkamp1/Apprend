@@ -54,7 +54,6 @@ const CreateButtonComponent = (props) => {
 
 const mapStateToProps = state => {
     return {
-        deckName: state.createDeck.deckName,
         isLoading: state.createDeck.isLoading,
     }
 }
