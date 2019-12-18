@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Container, Form, Row, Col, Button, InputGroup } from 'react-bootstrap'
-import { changeDeckName, addTag, deleteTag } from '../../../src_old/redux-store/actions/create-deck/actions'
-import { PageTitle } from '../shared/PageTitle'
-import { createDeck } from '../../../src_old/redux-store/actions/create-deck/async-actions'
+import { changeDeckName, addTag, deleteTag } from './actions'
+import { PageTitle } from '../shared/components/PageTitle'
+import { createDeck } from './async-actions'
 import { CreateButton } from './subcomponents/CreateButton';
 import { useHistory } from 'react-router'
-import { NavigatieBar } from '../shared/NavigatieBar';
-import { Footer } from '../shared/Footer';
+import { NavigatieBar } from '../shared/components/NavigatieBar';
+import { Footer } from '../shared/components/Footer';
 import { StatusButtons } from './subcomponents/StatusButtons'
-import { Notification } from '../shared/Notification';
+import { Notification } from '../shared/components/Notification';
 import TypeList from './subcomponents/TypeList'
 
 const CreateDeckFormComponent = (props) => {

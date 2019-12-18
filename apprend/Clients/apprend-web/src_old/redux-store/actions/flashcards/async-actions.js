@@ -1,4 +1,4 @@
-import {API_URL} from "../../urls";
+import {API_URL} from "../../../../src/redux/urls";
 import {changeDeckFlashcards, setIsLoading} from "../flashcards/actions";
 import {setDeckDataAction} from "../decks/actions";
 import {setIsSaving} from "./actions";

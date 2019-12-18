@@ -5,11 +5,11 @@ import {
     Button,
     Spinner
 } from 'react-bootstrap'
-import {Notification} from "../../shared/Notification";
+import {Notification} from "../../shared/components/Notification";
 
-import {changeDeckName} from '../../../../src_old/redux-store/actions/create-deck/actions'
+import {changeDeckName} from '../actions'
 
-import {createDeck} from '../../../../src_old/redux-store/actions/create-deck/async-actions'
+import {createDeck} from '../async-actions'
 
 const CreateButtonComponent = (props) => {
 

@@ -5,7 +5,7 @@ import App from './App';
 import * as Redux from 'redux'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
-import {allReducers} from './redux-store/reducers'
+import {allReducers} from './reducers-store/reducers'
 import {BrowserRouter} from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
 import ReactNotification from 'react-notifications-component'

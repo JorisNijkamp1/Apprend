@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
-import {API_URL} from "../../../src_old/redux-store/urls";
+import {API_URL} from "../../../redux/urls";
 import {Link} from "react-router-dom";
 import {setSearchValue} from "../../../src_old/redux-store/actions/search/actions";
 import Col from "react-bootstrap/Col";

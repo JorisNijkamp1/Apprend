@@ -11,7 +11,7 @@ import {changeDeckFlashcards} from "../../../../src_old/redux-store/actions/flas
 import {AddFlashcardIcon} from "./add-flashcard-icon";
 import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../../../src_old/redux-store/actions/flashcards/async-actions";
 import Loader from "react-loaders";
-import {isLoggedIn} from "../../../../src_old/redux-store/actions/login/async-actions";
+import {isLoggedIn} from "../../login/async-actions";
 import {useHistory} from 'react-router'
 import NonEditableFlashcard from "./noneditable-flashcard";
 import Form from "react-bootstrap/Form";

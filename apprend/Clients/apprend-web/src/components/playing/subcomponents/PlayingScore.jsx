@@ -1,9 +1,9 @@
 import React from "react";
 import * as ReactRedux from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
-import {NavigatieBar} from "../../shared/NavigatieBar";
-import {Footer} from "../../shared/Footer";
-import {PageTitle} from "../../shared/PageTitle";
+import {NavigatieBar} from "../../shared/components/NavigatieBar";
+import {Footer} from "../../shared/components/Footer";
+import {PageTitle} from "../../shared/components/PageTitle";
 import {Container, Row, Card} from "react-bootstrap";
 
 const ScoreComponent = (props) => {

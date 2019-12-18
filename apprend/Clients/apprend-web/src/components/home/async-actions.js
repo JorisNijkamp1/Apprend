@@ -1,4 +1,4 @@
-import {API_URL} from '../../urls'
+import {API_URL} from '../../redux/urls'
 import {setHomepageDecksAction} from "./actions";
 
 export const getHomepageDecks = (funct) => {

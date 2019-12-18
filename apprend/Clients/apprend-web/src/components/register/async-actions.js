@@ -1,5 +1,5 @@
-import {API_URL} from '../../urls';
-import {setRegisterSuccess, setUsernameExists, setEmailExists, errorOccurred} from '../register/actions';
+import {API_URL} from '../../redux/urls';
+import {setRegisterSuccess, setUsernameExists, setEmailExists, errorOccurred} from './actions';
 import {setLoginAction, setAnonymousUserAction} from '../login/actions';
 
 export const registerNewUser = function (username, email, password) {

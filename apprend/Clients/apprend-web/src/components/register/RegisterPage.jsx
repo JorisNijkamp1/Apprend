@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel, FormText, Row} from 'react-bootstrap';
-import {checkEmailExists, registerNewUser} from '../../../src_old/redux-store/actions/register/async-actions';
-import {PageTitle} from '../shared/PageTitle';
-import {NavigatieBar} from '../shared/NavigatieBar';
-import {Footer} from '../shared/Footer';
-import {checkUsernameExists} from '../../../src_old/redux-store/actions/register/async-actions';
+import {checkEmailExists, registerNewUser} from './async-actions';
+import {PageTitle} from '../shared/components/PageTitle';
+import {NavigatieBar} from '../shared/components/NavigatieBar';
+import {Footer} from '../shared/components/Footer';
+import {checkUsernameExists} from './async-actions';
 import {
     emailValid,
     passwordValid,
@@ -13,7 +13,7 @@ import {
     usernameValid,
     registerFormMaySubmit
 } from '../../util/form-validation/validationRules';
-import {isLoggedIn, userLogin} from '../../../src_old/redux-store/actions/login/async-actions';
+import {isLoggedIn, userLogin} from '../login/async-actions';
 import {useHistory} from 'react-router-dom';
 
 export const RegisterPageComponent = props => {

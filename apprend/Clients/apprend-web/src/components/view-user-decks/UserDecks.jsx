@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
-import {NavigatieBar} from "../shared/NavigatieBar";
+import {NavigatieBar} from "../shared/components/NavigatieBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {useParams} from "react-router-dom";
-import {Footer} from "../shared/Footer"
+import {Footer} from "../shared/components/Footer"
 import {
     getDeckEditAction,
     getUserDecksAction,
@@ -17,7 +17,7 @@ import 'loaders.css/src/animations/square-spin.scss'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faCheck, faTimes, faEdit, faLockOpen, faLock} from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
-import {isLoggedIn} from "../../../src_old/redux-store/actions/login/async-actions";
+import {isLoggedIn} from "../login/async-actions";
 import {deleteDeckFromUser, toggleDeckStatus} from '../../../src_old/redux-store/actions/decks/async-actions'
 import {Form} from "react-bootstrap";
 import FilterTagsInput from "../view-deck/subcomponents/FilterTagsInput";

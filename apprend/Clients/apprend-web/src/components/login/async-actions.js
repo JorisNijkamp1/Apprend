@@ -1,7 +1,7 @@
-import {API_URL} from "../../urls";
+import {API_URL} from "../../redux/urls";
 import {setLoginAction} from './actions.js'
 import {setAnonymousUserAction} from "./actions";
-import {setDeckEditAction} from "../decks/actions";
+import {setDeckEditAction} from "../../../src_old/redux-store/actions/decks/actions";
 
 export const userLogin = (username, password) => {
     return async dispatch => {

@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
-import {NavigatieBar} from "../shared/NavigatieBar";
+import {NavigatieBar} from "../shared/components/NavigatieBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import {Link, useParams} from "react-router-dom";
-import {Footer} from "../shared/Footer"
+import {Footer} from "../shared/components/Footer"
 import {getDeckAction, getDeckEditAction} from "../../../src_old/redux-store/actions/decks/async-actions";
 import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
@@ -14,7 +14,7 @@ import Loader from "react-loaders";
 import { useHistory } from 'react-router'
 import {withRouter} from 'react-router-dom'
 import { InputGroup, Button } from 'react-bootstrap'
-import {isLoggedIn} from "../../../src_old/redux-store/actions/login/async-actions";
+import {isLoggedIn} from "../login/async-actions";
 import {importDeckAction} from "../../../src_old/redux-store/actions/decks/async-actions";
 import PlayButton from "./subcomponents/PlayButton";
 import EditButton from "./subcomponents/EditButton";
@@ -23,8 +23,8 @@ import DeleteButton from "./subcomponents/DeleteButton";
 import ImportButton from "./subcomponents/ImportButton";
 import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../../../src_old/redux-store/actions/decks/async-actions'
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
-import { Notification } from '../shared/Notification';
-import { addTag, clearTags } from '../../../src_old/redux-store/actions/create-deck/actions';
+import { Notification } from '../shared/components/Notification';
+import { addTag, clearTags } from '../create-deck/actions';
 import { deleteTag } from "../../../src_old/redux-store/actions/decks/actions";
 
 

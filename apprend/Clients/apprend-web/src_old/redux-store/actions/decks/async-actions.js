@@ -1,4 +1,4 @@
-import {API_URL} from '../../urls'
+import {API_URL} from '../../../../src/redux/urls'
 import {setDeckAction, setIsLoading, setUserDecksAction, setUserDecksDecksAction, setDeckEditAction, setSpecificDeckDataAction} from "./actions";
 
 export const getUserDecksAction = (username, skipLoader = false) => {
