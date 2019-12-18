@@ -8,12 +8,12 @@ import {
 } from "react-bootstrap";
 import EditableFlashcard from "./editable-flashcard";
 import {changeDeckFlashcards} from "../../shared/actions/actions";
-import {AddFlashcardIcon} from "./add-flashcard-icon";
+import {AddFlashcardIcon} from "./addFlashcardIcon";
 import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../shared/actions/actions";
 import Loader from "react-loaders";
 import {isLoggedIn} from "../../shared/actions/actions";
 import {useHistory} from 'react-router'
-import NonEditableFlashcard from "./noneditable-flashcard";
+import NonEditableFlashcard from "./nonEditableFlashcard";
 import Form from "react-bootstrap/Form";
 import {getDeckAction} from '../../shared/actions/actions';
 

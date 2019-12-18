@@ -9,7 +9,7 @@ import {
 } from "react-bootstrap";
 import EditableFlashcard from "./editable-flashcard";
 import {changeDeckFlashcards} from "../../shared/actions/actions";
-import {AddFlashcardIcon} from "./add-flashcard-icon";
+import {AddFlashcardIcon} from "./addFlashcardIcon";
 import {NavigatieBar} from "../../shared/components/NavigatieBar";
 import {Footer} from "../../shared/components/Footer";
 import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../shared/actions/actions";
