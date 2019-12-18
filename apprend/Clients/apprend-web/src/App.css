@@ -335,11 +335,12 @@ progress[value]::-webkit-progress-value {
 .mt-10 {
     margin-top: 10rem !important;
 }
-.mt-7{
+
+.mt-7 {
     margin-top: 7rem !important;
 }
 
-.infinite-scroll-component  {
+.infinite-scroll-component {
     overflow: hidden !important;
 }
 
@@ -354,4 +355,8 @@ progress[value]::-webkit-progress-value {
 
 .search-deck-suggestions-link:hover {
     text-decoration: none;
+}
+
+.custom-control-label:before, .custom-control-label:after {
+    cursor: pointer;
 }
