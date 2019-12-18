@@ -5,7 +5,7 @@ import flashcards from "../components/shared/reducers/flashcards-reducer";
 import decksReducer from '../components/shared/reducers/decks-reducer'
 import registerReducer from '../components/register/reducers/registerReducer';
 import loginReducer from "../components/shared/reducers/login-reducer";
-import playingReducer from '../components/playing/playing';
+import playingReducer from '../components/playing/reducers/playing';
 import searchReducer from "../components/shared/reducers/search-reducer";
 
 export const allReducers = combineReducers({
