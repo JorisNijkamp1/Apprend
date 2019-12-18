@@ -213,4 +213,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export const CreateDeckForm = connect(mapStateToProps, mapDispatchToProps)(CreateDeckFormComponent);
+export const CreateDeck = connect(mapStateToProps, mapDispatchToProps)(CreateDeckFormComponent);
