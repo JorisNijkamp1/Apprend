@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import {API_URL} from "../../../redux/urls";
 import {Link} from "react-router-dom";
-import {setSearchValue} from "../../../../src_old/redux-store/actions/search/actions";
+import {setSearchValue} from "../../shared/actions/actions";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
-import {setFilteredDecks} from "../../../../src_old/redux-store/actions/decks/actions";
+import {setFilteredDecks} from "../../shared/actions/actions";
 
 /* ----------- */
 /*    Utils    */
@@ -97,11 +97,11 @@ const FilterTagsInput = (props) => {
 
     const getMatchingLanguages = (value, decks) => {
         const escapedValue = escapeRegexCharacters(value.trim());
-    
+
         if (escapedValue === '') {
             return [];
         }
-    
+
         const regex = new RegExp('^' + escapedValue, 'i');
         const match = [];
         for (let i = 0; i < decks.length; i++) {
@@ -117,7 +117,7 @@ const FilterTagsInput = (props) => {
                 return filter === deck;
             });
         });
-    
+
         if (filteredMatch.length === 0) {
             props.setFilteredDecks("There are no decks with this tag!");
             filteredMatch.push("There are no decks with this tag!")

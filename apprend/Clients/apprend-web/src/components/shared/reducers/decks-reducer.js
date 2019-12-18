@@ -7,7 +7,7 @@ import {
     DECK_EDIT_DATA,
     DECK_DELETE_TAG,
     DECK_FILTERED_DECKS
-} from '../actions/action-types'
+} from '../../../redux/actionTypes'
 import produce from 'immer'
 
 const initialState = {

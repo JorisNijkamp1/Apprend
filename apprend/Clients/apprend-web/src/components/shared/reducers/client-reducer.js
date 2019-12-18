@@ -1,4 +1,4 @@
-import {set_DecksHome} from "../actions/action-types";
+import {set_DecksHome} from "../../../redux/actionTypes";
 
 const initialState = {
     decksHome: [],

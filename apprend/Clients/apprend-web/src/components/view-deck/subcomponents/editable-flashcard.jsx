@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Row, Col, Form, Card, Alert} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrash, faCheck, faTimes} from '@fortawesome/free-solid-svg-icons'
-import {changeDeckFlashcards} from "../../../../src_old/redux-store/actions/flashcards/actions";
+import {changeDeckFlashcards} from "../../shared/actions/actions";
 import {store} from 'react-notifications-component';
 
 const EditableFlashcard = (props) => {
