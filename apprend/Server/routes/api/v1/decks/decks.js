@@ -548,12 +548,13 @@ decks.put('/:deckId/updateGame', async (req, res) => {
                     }
                 }
             });
-            user.save();
+            // user.save();
         });
         res.json({
             success: true
         })
     }).exec();
+    res.json('ok')
 });
 
 // Get data from a specific game
