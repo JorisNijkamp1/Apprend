@@ -1,15 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-    Container, Form, Row, Col,
     Button,
     Spinner
 } from 'react-bootstrap'
 import {Notification} from "../../shared/components/Notification";
-
 import {changeDeckName} from '../actions'
-
-import {createDeck} from '../async-actions'
+import {createDeck} from '../actions'
 
 const CreateButtonComponent = (props) => {
 
