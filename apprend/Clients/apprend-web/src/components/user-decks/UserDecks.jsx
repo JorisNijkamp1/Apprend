@@ -21,7 +21,7 @@ import {isLoggedIn} from "../../redux-store/actions/login/async-actions";
 import {deleteDeckFromUser, toggleDeckStatus} from '../../redux-store/actions/decks/async-actions'
 import {Form} from "react-bootstrap";
 import FilterTagsInput from "../search-input/FilterTagsInput";
-import {AddCard} from "./sub-components/AddCard";
+// import {AddCard} from "./sub-components/AddCard";
 import {setFilteredDecks} from "../../redux-store/actions/decks/actions";
 import { Link } from 'react-router-dom'
 
