@@ -10,11 +10,11 @@ import {
 import EditableFlashcard from "./editable-flashcard";
 import {changeDeckFlashcards} from "../../../../src_old/redux-store/actions/flashcards/actions";
 import {AddFlashcardIcon} from "./add-flashcard-icon";
-import {NavigatieBar} from "../../shared/NavigatieBar";
-import {Footer} from "../../shared/Footer";
+import {NavigatieBar} from "../../shared/components/NavigatieBar";
+import {Footer} from "../../shared/components/Footer";
 import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../../../src_old/redux-store/actions/flashcards/async-actions";
 import Loader from "react-loaders";
-import {isLoggedIn} from "../../../../src_old/redux-store/actions/login/async-actions";
+import {isLoggedIn} from "../../login/async-actions";
 import {useHistory} from 'react-router'
 
 const Flashcards = (props) => {

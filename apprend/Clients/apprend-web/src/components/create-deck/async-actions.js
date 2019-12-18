@@ -1,4 +1,4 @@
-import { API_URL } from '../../urls'
+import { API_URL } from '../../redux/urls'
 import {setIsLoading } from './actions'
 
 export const createDeck = deck => {

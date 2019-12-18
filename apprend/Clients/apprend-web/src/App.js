@@ -11,7 +11,7 @@ import {LoginPage} from "./components/LoginPage";
 import UserDecks from "./components/user-decks/UserDecks";
 import Deck from "./components/deck/Deck";
 import {PlayingScore} from "./components/playing/subcomponents/PlayingScore";
-import {isLoggedIn} from "./redux-store/actions/login/async-actions";
+import {isLoggedIn} from "./reducers-store/actions/login/async-actions";
 import * as ReactRedux from "react-redux";
 import {DeckEdit} from "./components/user-decks/edit-deck/DeckEdit";
 import 'react-notifications-component/dist/theme.css'

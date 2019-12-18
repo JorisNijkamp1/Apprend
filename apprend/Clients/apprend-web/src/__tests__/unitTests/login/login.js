@@ -1,4 +1,4 @@
-import {setLoginAction} from '../../../../src_old/redux-store/actions/login/actions';
+import {setLoginAction} from '../../../components/login/actions';
 import {SET_LOGINACTION} from '../../../../src_old/redux-store/actions/action-types';
 
 test('Action type SET_LOGINACTION is correct', () => {

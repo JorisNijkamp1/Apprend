@@ -1,5 +1,5 @@
 'use strict';
-import {API_URL} from "../../../../../src_old/redux-store/urls";
+import {API_URL} from "../../../../redux/urls";
 
 describe('Get flashcards from a deck', () => {
     const expectedResult = {

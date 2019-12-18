@@ -3,7 +3,7 @@ import {
     SET_REGISTER_SUCCESS,
     SET_EMAIL_EXISTS,
     SET_USERNAME_EXISTS
-} from '../actions/register/action-types';
+} from '../../../redux/actionTypes';
 
 const initialState = {
     'newUserRegistered': false,
