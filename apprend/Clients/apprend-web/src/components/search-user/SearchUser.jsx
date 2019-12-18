@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Col, Row, Container } from 'react-bootstrap'
-import { NavigatieBar } from '../shared/navbar/NavigatieBar';
+import { NavigatieBar } from '../shared/NavigatieBar';
 import { PageTitle } from '../shared/PageTitle';
-import { getAllUsers } from './actions/actions'
-import UserCard from './sub-components/UserCard';
-import UserList from './sub-components/UserList';
+import { getAllUsers } from './actions'
+import UserCard from './subcomponents/UserCard';
+import UserList from './subcomponents/UserList';
 
 
 const SearchUserComponent = (props) => {
