@@ -1,4 +1,4 @@
-import {SET_REGISTER_SUCCESS, SET_USERNAME_EXISTS, SET_EMAIL_EXISTS, ERROR_OCCURRED} from './action-types';
+import {SET_REGISTER_SUCCESS, SET_USERNAME_EXISTS, SET_EMAIL_EXISTS, ERROR_OCCURRED} from '../../redux/actionTypes';
 import {API_URL} from '../../redux/urls';
 import {setAnonymousUserAction, setLoginAction} from '../login/actions';
 
