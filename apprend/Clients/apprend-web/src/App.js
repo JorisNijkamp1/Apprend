@@ -17,7 +17,8 @@ import {DeckEdit} from "./components/user-decks/edit-deck/DeckEdit";
 import 'react-notifications-component/dist/theme.css'
 import 'animate.css/animate.css'
 import Search from "./components/search/Search";
-import { SearchUser } from './components/search-user/SearchUser';
+import {SearchUser} from './components/search-user/SearchUser';
+import {MyProfile} from "./components/my-profile/MyProfile";
 
 function App(props) {
 
@@ -63,11 +64,13 @@ function App(props) {
                     <Search/>
                 </Route>
                 <Route path={"/users"}>
-                    <SearchUser />
+                    <SearchUser/>
                 </Route>
-
+                <Route path={"/profile/:username"}>
+                    <MyProfile/>
+                </Route>
                 <Route>
-                    <Homepage />
+                    <Homepage/>
                 </Route>
             </Switch>
         </div>
