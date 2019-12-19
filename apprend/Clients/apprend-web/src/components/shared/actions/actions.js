@@ -2,7 +2,6 @@ import {API_URL} from '../../../redux/urls';
 import {
     SEARCH_SET_IS_LOADING,
     SEARCH_SET_SEARCH_VALUE,
-    CREATEDECK_SET_ISLOADING,
     DECKS_ADD_DECK, DECKS_SET_DECK,
     DECKS_SET_DECK_DATA,
     DECKS_SET_ISLOADING,
@@ -13,9 +12,11 @@ import {
     DECK_FILTERED_DECKS,
     FLASHCARDS_SET_ISLOADING,
     FLASHCARDS_DECKFLASHCARDS,
-    FLASHCARDS_SET_ISSAVING
+    FLASHCARDS_SET_ISSAVING,
+    SEARCH_SUGGESTIONS
 } from '../../../redux/actionTypes';
 import {setAnonymousUserAction, setLoginAction} from "../../login/actions";
+import { Notification } from '../components/Notification'
 
 /*
 |----------------------------------------------------------------
@@ -215,13 +216,24 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
     let tags = oldTags;
     if (newTags && newTags.length > 0) tags = oldTags.concat(newTags);
     return async dispatch => {
-        const url = `${API_URL}/decks/${deckId}`;
-        let body = {
-            name: deckName,
-            description: deckDescription,
-            creatorId: creatorId,
-            tags: tags
-        };
+        const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
+
+        const body = {
+            properties: [
+                {
+                    name: "name",
+                    value: deckName,
+                },
+                {
+                    name: "description",
+                    value: deckDescription
+                },
+                {
+                    name: "tags",
+                    value: tags
+                }
+            ]
+        }
         const options = {
             method: 'PUT',
             body: JSON.stringify(body),
@@ -233,10 +245,14 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
         };
         const response = await fetch(url, options);
         const data = await response.json();
+        console.log(data)
         if (response.status === 201) {
-            dispatch(setSpecificDeckDataAction(data));
-            dispatch(setDeckAction(data));
+            dispatch(setSpecificDeckDataAction(data.data));
+            dispatch(setDeckAction(data.data));
+            return {message: data.message, success: true}
         }
+        return {message: data.message ? data.message : 'There was an error', success: false}
+
     }
 };
 
@@ -414,7 +430,7 @@ export const editDeckFlashcardsAction = (deckId, flashcards) => {
 
 /*
 |----------------------------------------------------------------
-| isLoggedIn (Async)
+| Login (Async)
 |----------------------------------------------------------------
  */
 export const isLoggedIn = () => {
@@ -499,5 +515,40 @@ export const logoutAction = () => {
         const data = await response.json();
         dispatch(setLoginAction(data.username))
         dispatch(setAnonymousUserAction(true))
+    }
+};
+
+/*
+|----------------------------------------------------------------
+| Auto-suggest search input
+|----------------------------------------------------------------
+ */
+export function setSearchSuggestions(suggestions) {
+    return {
+        type: SEARCH_SUGGESTIONS,
+        payload: suggestions
+    }
+}
+
+/*
+|----------------------------------------------------------------
+| Auto-suggest search input (Async)
+|----------------------------------------------------------------
+ */
+export const getSearchSuggestions = (value) => {
+    return async dispatch => {
+        const url = `${API_URL}/decks?deck=${value}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        if (response.status === 200) {
+            const data = await response.json();
+            dispatch(setSearchSuggestions(data.decks))
+            return data.decks
+        }
     }
 };
