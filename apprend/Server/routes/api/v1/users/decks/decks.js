@@ -27,6 +27,53 @@ decks.get('/:deckId', async (req, res) => {
     res.status(200).json({message: 'Users deck', data: req.deck})
 })
 
+decks.post('/:deckId', async (req, res) => {
+    try {
+        const username = req.session.username;
+        const importToUser = await User.findById(username);
+        const newDeck = {...req.deck._doc};
+        delete newDeck.games;
+        delete newDeck._id;
+
+        if (username) {
+            if (importToUser._id === req.user._id) {
+                res.status(400).json({message: 'Cant import own deck'})
+            } else {
+                newDeck.creatorId = importToUser._id
+                const result = await importToUser.addDeck(newDeck);
+                res.status(201).json({
+                    message: 'Deck successfully imported',
+                    data: result
+                })
+            }
+        } else {
+            req.session.username = req.session.id
+            newDeck.creatorId = req.session.id
+
+            const user = {
+                _id: req.session.id,
+                email: '',
+                password: '',
+                decks: [newDeck]
+            }
+            const cookie = req.cookies.username
+            if (cookie === undefined) {
+                res.cookie('username', req.session.id, {maxAge: (10 * 365 * 24 * 60 * 60 * 1000)})
+            }
+            const madeUser = await User.create(user)
+
+            res.status(201).json({
+                message: 'Deck successfully imported',
+                data: madeUser
+            })
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(500).json('Something went wrong on our end')
+    }
+})
+
+decks.put('/:deckId', async (req, res) => {
 decks.get('/', async (req, res) => {
     const decks = req.user.decks.filter(deck => (req.session.username === req.user._id) || deck.private === false)
     res.status(200).json({message: 'All decks', data: {userId: req.user._id, decks: decks}})

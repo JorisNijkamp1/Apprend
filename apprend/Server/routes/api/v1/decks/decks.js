@@ -538,9 +538,9 @@ decks.put('/:deckId/updateGame', async (req, res) => {
             });
             // user.save();
         });
-        res.json({
-            success: true
-        })
+        // res.json({
+        //     success: true
+        // })
     }).exec();
     res.json('ok')
 });
@@ -566,52 +566,5 @@ decks.get('/:deckId/games/:gameId', async (req, res) => {
         }
     }).exec();
 });
-
-decks.post('/:deckId', async (req, res) => {
-    try {
-        const deckId = req.params.deckId;
-        const username = req.session.username ? req.session.username : req.cookies.username;
-        let targetUser = await User.findOne({
-            "decks._id": deckId
-        });
-        const importToUser = await User.findById(username)
-        const currentDeck = targetUser.decks.id(deckId)
-
-        const newDeck = {...currentDeck._doc}
-
-        delete newDeck.games
-        delete newDeck._id
-
-        if (username) {
-            if (importToUser._id === targetUser._id) {
-                res.status(400).json({message: 'Cant import own deck'})
-            } else {
-                newDeck.creatorId = importToUser._id
-                const result = await importToUser.importDeck(newDeck, importToUser._id);
-                res.status(201).json({message: 'New deck', data: result.decks[result.decks.length - 1]})
-            }
-        } else {
-            req.session.username = req.session.id
-            newDeck.creatorId = req.session.id
-
-            const user = {
-                _id: req.session.id,
-                email: '',
-                password: '',
-                decks: [newDeck]
-            }
-            const cookie = req.cookies.username
-            if (cookie === undefined) {
-                res.cookie('username', req.session.id, {maxAge: (10 * 365 * 24 * 60 * 60 * 1000)})
-            }
-            const madeUser = await User.create(user)
-            res.status(201).json({message: 'New anonymous user' , data :madeUser})
-        }
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({message: 'Something went wrong on our end'})
-    }
-
-})
 
 module.exports = decks

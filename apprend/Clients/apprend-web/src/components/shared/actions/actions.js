@@ -283,9 +283,10 @@ export const toggleDeckStatus = (deckId, userId) => {
     }
 };
 
-export const importDeckAction = deckId => {
+export const importDeckAction = (deckId, creatorId) => {
     return async dispatch => {
-        const url = `${API_URL}/decks/${deckId}`;
+        console.log(creatorId)
+        const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
         const options = {
             credentials: 'include',
             method: 'POST',
@@ -297,7 +298,16 @@ export const importDeckAction = deckId => {
         const response = await fetch(url, options);
         const data = await response.json();
         if (response.status === 201) {
-            return data
+            return {
+                data: data.data,
+                success: true,
+                message: data.message
+            }
+        } else {
+            return {
+                message: data.message,
+                success: false,
+            }
         }
     }
 };

@@ -46,11 +46,13 @@ describe('import decks from another user', () => {
         const JorisDeck = jorisDecks.decks.decks[0]._id
 
         const expectedResult = {
-            status: 201,
-            account: account
+            message: 'Deck successfully imported',
+            data: {
+                name: 'French to Dutch words'
+            }
         }
 
-        const response = await fetch(`${API_URL}/decks/${JorisDeck}`, {
+        const response = await fetch(`${API_URL}/users/Joris/decks/${JorisDeck}`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -58,8 +60,7 @@ describe('import decks from another user', () => {
             },
         })
         const result = await response.json();
-
-        expect(response.status).toBe(expectedResult.status)
-        expect(result.creatorId).toBe(expectedResult.account)
+        expect(result.message).toBe(expectedResult.message)
+        expect(result.data.name).toBe(expectedResult.data.name)
     })
 })
