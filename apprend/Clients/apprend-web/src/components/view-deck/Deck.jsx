@@ -55,23 +55,25 @@ const UserDecks = (props) => {
     }, []);
 
     const checkAdded = (tagValue) => {
-        let tags = deckData.oldDeckTags.concat(props.tags)
+        let tags = props.deckEdit.data.tags.concat(props.tags)
         return tags.some(tag => {
             return tag === tagValue.trim().toLowerCase();
         });
     }
 
-    const deckData = {
-        // deckName: (!deckNameEdited && props.deckEdit.name) ? props.deck.name : deckName,
-        // deckDescription: (!deckDescriptionEdited && props.deck.description) ? props.deck.description : deckDescription,
-        oldDeckTags: props.deckEdit.tags
-    }
+    // const deckData = {
+    //     // deckName: (!deckNameEdited && props.deckEdit.name) ? props.deck.name : deckName,
+    //     // deckDescription: (!deckDescriptionEdited && props.deck.description) ? props.deck.description : deckDescription,
+    //     oldDeckTags: props.deckEdit.data.tags
+    // }
 
     const getTagValue = () => {
         let tagValue = input;
         setInput('');
         let match = false;
-        if (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0) {
+        console.log(props.deckEdit)
+        console.log(props.deckEdit.data.tags)
+        if (props.tags.length !== 0 || props.deckEdit.data.tags.length !== 0) {
             if (checkAdded(tagValue)) {
                 Notification("You already have that tag", "danger");
             } else {
@@ -125,23 +127,21 @@ const UserDecks = (props) => {
         history.push(`/${props.username}/decks`)
     }
 
-    const editDeckHandler = () => {
-        props.editDeck(props.deck.creatorId, props.deck._id, editName ? editName : props.deck.name, editDescription ? editDescription : props.deck.description, deckData.oldDeckTags, props.tags)
-        const editDeckHandler = async () => {
-            const result = await props.editDeck(props.deck.creatorId, props.deck._id, editName ? editName : props.deck.name, editDescription ? editDescription : props.deck.description, deckData.oldDeckTags, props.tags)
-            toggleEditStateHandler()
-            props.clearTags()
-            Notification(result.message, result.success ? 'success' : 'danger')
-        }
+    const editDeckHandler = async () => {
+        const result = await props.editDeck(props.deck.creatorId, props.deck._id, editName ? editName : props.deck.name, editDescription ? editDescription : props.deck.description, props.deckEdit.data.tags, props.tags)
+        toggleEditStateHandler()
+        props.clearTags()
+        Notification(result.message, result.success ? 'success' : 'danger')
     }
+
     const toggleDeleteStatusHandler = () => {
         setdeleteStatus(!deleteStatus)
     }
 
 
-    const toggleEditStateHandler = () => {
+    const toggleEditStateHandler = async () => {
         if (editState !== true) {
-            props.getDecksEdit(deckId)
+            await props.getDecksEdit(deckId)
         }
         setEditName('')
         seteditState(!editState)

@@ -16,7 +16,7 @@ import 'animate.css/animate.css'
 import Search from './components/search-deck/Search';
 import {SearchUser} from './components/search-user/SearchUser';
 import {isLoggedIn} from './components/shared/actions/actions';
-import TagOverview from "./components/tags/TagOverview";
+import TagOverview from "./components/filter-tags/TagOverview";
 
 function App(props) {
     //Check if user is logged in

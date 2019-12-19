@@ -2,6 +2,7 @@ import React from 'react'
 import { Form, Col, InputGroup, Button, Card, Row } from 'react-bootstrap'
 
 export default props => {
+    console.log(props)
     if (props.state){
         return (
             <>
@@ -13,7 +14,7 @@ export default props => {
                     <Form.Label><b>Deck tags</b></Form.Label>
                     <Col sm={12}>
                         <ul id="tagList">
-                            {(props.deckEdit.tags) ? props.deckEdit.tags.map((tag) =>
+                            {(props.deckEdit.data.tags) ? props.deckEdit.data.tags.map((tag) =>
                             <li key={tag} className="listItem">
                                 {tag}
                                 <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteOldTag(tag)}/>

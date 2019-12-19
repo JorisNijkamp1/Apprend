@@ -53,10 +53,10 @@ export default function decksReducer(state = initialState, action) {
                 break;
 
             case DECK_DELETE_TAG:
-                let filtered = state.deckEdit.tags.filter(function(value, index, arr){
+                let filtered = state.deckEdit.data.tags.filter(function(value, index, arr){
                     return value !== action.payload;
                 });
-                draft['deckEdit'].tags = filtered
+                draft['deckEdit'].data.tags = filtered
                 break;
             case DECK_FILTERED_DECKS:
                 draft['filteredDecks'] = action.payload
