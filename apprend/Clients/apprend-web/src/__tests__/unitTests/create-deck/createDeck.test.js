@@ -28,7 +28,7 @@ describe('creating a deck for a new anonymous user', () => {
 
         const data = await response.json()
 
-        const madeDeck = data.decks[0]
+        const madeDeck = data.data.decks[0]
 
         expect(typeof madeDeck._id).toBe('string')
         expect(madeDeck._id).toHaveLength(24)

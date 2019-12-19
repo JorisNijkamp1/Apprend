@@ -11,6 +11,7 @@ import { Footer } from '../shared/components/Footer';
 import { StatusButtons } from './subcomponents/StatusButtons'
 import { Notification } from '../shared/components/Notification';
 import TypeList from './subcomponents/TypeList'
+import { LoadingComponent } from '../shared/components/LoadingComponent';
 
 const CreateDeckFormComponent = (props) => {
 
@@ -19,6 +20,7 @@ const CreateDeckFormComponent = (props) => {
     const [deckName, setDeckName] = useState('')
     const [typeOne, setTypeOne] = useState('Text')
     const [typeTwo, setTypeTwo] = useState('Text')
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         props.changeDeckName('')
@@ -34,30 +36,25 @@ const CreateDeckFormComponent = (props) => {
     }
 
     const handleCreateDeck = async (e) => {
-        try {
-            e.preventDefault()
-            const deck = {
-                deckName: deckName,
-                description: e.target.description.value,
-                private: status,
-                tags: props.tags,
-                columns: [typeOne, typeTwo]
-            }
-            const response = await props.createNewDeck(deck)
-            let deckId;
-            if (response){
-                if (response.decks){
-                    deckId = response.decks[0]._id.toString()
-                } else {
-                    deckId = response._id.toString()
-                }
-                history.push(`/decks/${deckId}/cards/`)
-            } else {
-                throw Error('Something went wrong')
-            }
-        } catch (e) {
-            console.log(e)
+        e.preventDefault()
+        const deck = {
+            deckName: deckName,
+            description: e.target.description.value,
+            private: status,
+            tags: props.tags,
+            columns: [typeOne, typeTwo]
         }
+        const response = await props.createNewDeck(deck, setIsLoading)
+        let deckId;
+        if (response.success){
+            if (response.data.decks){
+                deckId = response.data.decks[0]._id.toString()
+            } else {
+                deckId = response.data._id.toString()
+            }
+            history.push(`/decks/${deckId}/cards/`)
+        } 
+        Notification(response.message, response.success ? 'success' : 'danger')
     }
 
     const checkAdded = tagValue => {
@@ -93,10 +90,11 @@ const CreateDeckFormComponent = (props) => {
         }
     }
 
-    return (
-        <>
-            <NavigatieBar/>
-            <Container className={"pt-5 pb-5"}>
+    const showContent = () => {
+        if (isLoading) return <LoadingComponent loadingText={'Creating the deck for you'}/>
+        return (
+            <>
+
                 <PageTitle  title="Create your deck" />
 
                 <Form name="create-deck" onSubmit={(e) => handleCreateDeck(e)}>
@@ -193,7 +191,17 @@ const CreateDeckFormComponent = (props) => {
                         </Col>
                     </Row>
                 </Form>
-            </Container>
+
+        </>
+        )
+    }
+
+    return (
+        <>
+                    <NavigatieBar/>
+            <Container className={"pt-5 pb-5"}>
+        {showContent()}
+        </Container>
             <Footer />
         </>
     )
@@ -210,7 +218,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         changeDeckName: (name) => dispatch(changeDeckName(name)),
-        createNewDeck: (deck) => dispatch(createDeck(deck)),
+        createNewDeck: (deck, setLoader) => dispatch(createDeck(deck, setLoader)),
         addTag: (tag) => dispatch(addTag(tag)),
         deleteTag: (tag) => dispatch(deleteTag(tag))
     }
