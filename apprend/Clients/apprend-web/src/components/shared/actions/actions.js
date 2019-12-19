@@ -13,7 +13,10 @@ import {
     DECK_FILTERED_DECKS,
     FLASHCARDS_SET_ISLOADING,
     FLASHCARDS_DECKFLASHCARDS,
-    FLASHCARDS_SET_ISSAVING
+    FLASHCARDS_SET_ISSAVING,
+    DELETE_FILTERED_TAG,
+    FILTER_SET_TAGS,
+    CLEAR_FILTERED_TAGS
 } from '../../../redux/actionTypes';
 import {setAnonymousUserAction, setLoginAction} from "../../login/actions";
 
@@ -489,5 +492,88 @@ export const logoutAction = () => {
         const data = await response.json();
         dispatch(setLoginAction(data.username))
         dispatch(setAnonymousUserAction(true))
+    }
+};
+
+/*
+|----------------------------------------------------------------
+| Filter
+|----------------------------------------------------------------
+ */
+export function setFilteredTag(tag) {
+    return {
+        type: FILTER_SET_TAGS,
+        payload: tag
+    }
+}
+
+export function deleteFilteredTag(tag) {
+    return {
+        type: DELETE_FILTERED_TAG,
+        payload: tag
+    }
+}
+
+export function clearFilteredTags() {
+    return {
+        type: CLEAR_FILTERED_TAGS
+    }
+}
+
+export const loadDecks = username => {
+    return async dispatch => {
+        const url = `${API_URL}/users/${username}/decks`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        return fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                return data.decks
+            } else {
+                console.log('User bestaat niet')
+            }
+        }).catch(err => {
+            console.log(err);
+            console.log("Er gaat iets fout met ophalen van de decks")
+        })
+    }
+};
+
+/*
+|----------------------------------------------------------------
+| Tag page
+|----------------------------------------------------------------
+ */
+
+export const getAllDecks = () => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/tags`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        return fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                return data.decks
+            } else {
+                console.log('Geen decks gevonden')
+            }
+        }).catch(err => {
+            console.log(err);
+            console.log("Er gaat iets fout met ophalen van de decks")
+        })
     }
 };

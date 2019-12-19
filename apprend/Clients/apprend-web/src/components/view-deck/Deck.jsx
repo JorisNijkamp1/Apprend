@@ -38,6 +38,7 @@ const UserDecks = (props) => {
     const [editDescription, seteditDescription] = useState()
     const [editState, seteditState] = useState()
     const [deleteStatus, setdeleteStatus] = useState(false)
+    const [input, setInput] = useState('');
 
     const history = useHistory()
 
@@ -51,7 +52,7 @@ const UserDecks = (props) => {
     const checkAdded = (tagValue) => {
         let tags = deckData.oldDeckTags.concat(props.tags)
         return tags.some(tag => {
-            return tag === tagValue.trim()
+            return tag === tagValue.trim().toLowerCase();
         });
     }
 
@@ -62,8 +63,8 @@ const UserDecks = (props) => {
     }
 
     const getTagValue = () => {
-        let tagValue = document.getElementById("tags").value;
-        document.getElementById("tags").value = "";
+        let tagValue = input;
+        setInput('');
         let match = false;
         if (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0) {
             if (checkAdded(tagValue)){
@@ -369,6 +370,8 @@ const UserDecks = (props) => {
                             id="tags"
                             placeholder="Add a tag"
                             className="text-center"
+                            value={input}
+                            onChange={e => setInput(e.target.value)}
                         />
                         <InputGroup.Append>
                             <Button className={'bg-blue text-white hover-shadow'} onClick={() => getTagValue()}>Add tag</Button>

@@ -9,45 +9,27 @@ const UserSchema = require('../../../../database/models/user');
 require('../../../../database/models/user');
 const User = mongoose.model('User');
 
-/*====================================
-| SEARCH FOR SOME TAGS
-*/
-decks.get('/:username/tags', async (req, res) => {
-    const searchQuery = req.query.deck;
-    const username = req.params.username;
-    let foundDecks;
-
-    if (searchQuery) {
-        foundDecks = await User.find({
-            decks: {
-                $elemMatch: {
-                    tags: {'$regex': searchQuery, '$options': 'i'}
-                }
-            }
-        });
-    } else {
-        foundDecks = await User.find({});
-    }
-
+decks.get('/tags', async (req, res) => {
+    let foundDecks = await User.find({});
     let decks = [];
-    foundDecks.forEach((index, key) => {
-        foundDecks[key].decks.forEach((decksIndex, decksKey) => {
-            if (username === foundDecks[key].decks[decksKey].creatorId) {
-                decks.push({
-                    name: foundDecks[key].decks[decksKey].name,
-                    deckCreator: !(foundDecks[key].email && foundDecks[key]) ? 'anonymous user' : foundDecks[key].decks[decksKey].creatorId,
-                    totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
-                    deckId: foundDecks[key].decks[decksKey]._id,
-                    description: foundDecks[key].decks[decksKey].description,
-                    tags: foundDecks[key].decks[decksKey].tags
-                });
-            }
+
+    foundDecks.forEach(user => {
+        user.decks.forEach(deck => {
+            decks.push(deck);
         });
     });
-
-    await res.json({
-        decks: decks,
-    })
+    
+    if (decks.length > 0) {
+        return res.json({
+            success: true,
+            decks: decks
+        })
+    } else {
+        return res.json({
+            success: false,
+            error: 'No decks found'
+        })
+    }
 });
 
 /*====================================

@@ -7,6 +7,7 @@ import registerReducer from '../components/register/reducers/registerReducer';
 import loginReducer from "../components/shared/reducers/loginReducer";
 import playingReducer from '../components/playing/reducers/playing';
 import searchReducer from "../components/shared/reducers/searchReducer";
+import filterReducer from "../components/shared/reducers/filterReducer";
 
 export const allReducers = combineReducers({
     client: clientReducer,
@@ -17,4 +18,5 @@ export const allReducers = combineReducers({
     playing: playingReducer,
     login: loginReducer,
     search: searchReducer,
+    filter: filterReducer
 });

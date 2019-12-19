@@ -16,6 +16,7 @@ import 'animate.css/animate.css'
 import Search from './components/search-deck/Search';
 import {SearchUser} from './components/search-user/SearchUser';
 import {isLoggedIn} from './components/shared/actions/actions';
+import TagOverview from "./components/tags/TagOverview";
 
 function App(props) {
     //Check if user is logged in
@@ -55,6 +56,9 @@ function App(props) {
                 </Route>
                 <Route path={'/users'}>
                     <SearchUser/>
+                </Route>
+                <Route exact path={"/tags/:tag"}>
+                    <TagOverview/>
                 </Route>
                 <Route>
                     <Homepage/>

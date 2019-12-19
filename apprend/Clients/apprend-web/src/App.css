@@ -347,3 +347,18 @@ progress[value]::-webkit-progress-value {
     position: absolute;
     bottom: 1.5rem;
 }
+
+.filterTags {
+    font-size: 20px;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.filterList {
+    position: absolute;
+    z-index: 2;
+    background-color: white;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    top: 45px;
+}
