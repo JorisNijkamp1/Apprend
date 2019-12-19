@@ -23,12 +23,14 @@ flashcards.get('/:flashcardId', async (req, res) => {
     return res.status(200).json({message: 'Ok', data: req.flashcard})
 })
 
-flashcards.patch('/:flashcardId', auth.user, async (req, res) => {
+flashcards.patch('/:flashcardId', async (req, res) => {
     try {
-        const saveCard = await req.flashcard.editCard(req.body.editData)
+        const { properties } = req.body
+        if (!properties) return res.status(400).json({message: 'No properties to change!'})
+        const saveCard = await req.flashcard.editCard(properties)
         req.user.markModified('decks')
         await req.user.save()
-        return res.status(201).json({message: req.body.editData.property, data: saveCard})
+        return res.status(201).json({message: 'Edit was succesfull!', data: saveCard})
     } catch (err) {
         console.log(err)
         return res.status(500).json({message: 'Something went wrong on our end'})

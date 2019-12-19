@@ -43,10 +43,10 @@ const deckSchema = new mongoose.Schema({
     }
 });
 
-deckSchema.methods.editDeck = async function(name, description, tags){
-    this.name = name
-    this.description = description
-    this.tags = tags
+deckSchema.methods.editDeck = async function(properties){
+    properties.forEach(property => {
+        this[property.name] = property.value
+    })
 }
 
 deckSchema.methods.toggleStatus = async function(){

@@ -34,9 +34,13 @@ const flashcardSchema = new mongoose.Schema({
     }
 });
 
-flashcardSchema.methods.editCard = async function(data){
-    this[data.property] = data.value
-    return this[data.property]
+flashcardSchema.methods.editCard = async function(properties){
+    let changes = []
+    properties.forEach(property => {
+        this[property.name] = property.value
+        changes.push(property)
+    })
+    return changes
 }
 
 flashcardSchema.methods.editColumn = async function(data){

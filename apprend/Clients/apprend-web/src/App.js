@@ -51,7 +51,7 @@ function App(props) {
                 <Route exact path={'/:username/decks'}>
                     <UserDecks/>
                 </Route>
-                <Route path={'/search-deck'}>
+                <Route path={'/search'}>
                     <Search/>
                 </Route>
                 <Route path={'/users'}>
