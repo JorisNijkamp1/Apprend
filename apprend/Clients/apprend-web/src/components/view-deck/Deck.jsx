@@ -24,8 +24,8 @@ import ImportButton from "./subcomponents/ImportButton";
 import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../shared/actions/actions'
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
 import { Notification } from '../shared/components/Notification';
-import { addTag, clearTags } from '../create-deck/actions';
-import { deleteTag } from "../shared/actions/actions";
+import { addTag, clearTags, deleteTag } from '../create-deck/actions';
+import { deleteOldTag } from "../shared/actions/actions";
 
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
 import { FlashcardTable } from './subcomponents/FlashcardTable'
@@ -43,6 +43,7 @@ const UserDecks = (props) => {
     const [editState, seteditState] = useState()
     const [deleteStatus, setdeleteStatus] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
+    const [input, setInput] = useState('')
 
     const history = useHistory()
 
@@ -287,9 +288,13 @@ const UserDecks = (props) => {
         return <DeckTags 
                     state={editState}
                     deck={props.deck}
+                    deckEdit={props.deckEdit}
                     getTagValue={getTagValue}
-                    deleteTag={props.deleteTag}
+                    deleteOldTag={props.deleteOldTag}
                     tags={props.tags}
+                    value={input}
+                    setInput={setInput}
+                    deleteNewTag={props.deleteNewTag}
                     />
     }
 
@@ -351,9 +356,10 @@ function mapDispatchToProps(dispatch) {
         deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
         editDeck: (creatorId, _id, deckName, deckDescription, oldTags, newTags) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription, oldTags, newTags)),
         addTag: (tag) => dispatch(addTag(tag)),
-        deleteTag: (tag) => dispatch(deleteTag(tag)),
+        deleteOldTag: (tag) => dispatch(deleteOldTag(tag)),
         clearTags: () => dispatch(clearTags()),
         getDecksEdit: (deckId) => dispatch(getDeckEditAction(deckId)),
+        deleteNewTag: (tag) => dispatch(deleteTag(tag))
     }
 }
 

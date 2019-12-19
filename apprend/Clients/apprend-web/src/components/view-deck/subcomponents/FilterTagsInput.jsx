@@ -22,7 +22,7 @@ const escapeRegexCharacters = (str) => {
 const FilterTagsInput = (props) => {
     const [value, setValue] = useState('');
     const [decks, setDecks] = useState([]);
-    const [allTags, setAllTags] = useState([]);
+    //const [allTags, setAllTags] = useState([]);
     const [displayTags, setDisplayTags] = useState([]);
 
     useEffect(() => {
@@ -41,7 +41,7 @@ const FilterTagsInput = (props) => {
                 return filter === deck;
             });
         });
-        await setAllTags(filteredTags)
+        //await setAllTags(filteredTags)
         return filteredTags
     }
 
@@ -60,43 +60,30 @@ const FilterTagsInput = (props) => {
     const getMatchingDecks = tag => {
         let tags;
         const match = [];
-        const filteredTags = []
         if (tag.add !== undefined) {
             tags = props.filteredTags.concat(tag.add)
         } else if (tag.delete !== undefined) {
-            tags = props.filteredTags.filter(function(value, index, arr){
+            tags = props.filteredTags.filter((value, index, arr) => {
                 return value !== tag.delete;
             });
         }
 
         if (tags.length === 0) return []
 
-        tags.forEach(tag => {
-            for (let i = 0; i < decks.length; i++) {
-                for (let j = 0; j < decks[i].tags.length; j++) {
-                    if (tag === decks[i].tags[j]) {
-                        match.push(decks[i])
-                    }
+        decks.forEach(deck => {
+            tags.forEach(tag => {
+                if (deck.tags.includes(tag)) {
+                    match.push(deck)
                 }
-            }
+            })
         })
-
-        for (let i = 0; i < match.length; i++) {
-            for (let j = 0; j < match[i].tags.length; j++) {
-                tags.forEach(v => {
-                    if (match[i].tags[j] === v) {
-                        filteredTags.push(match[i])
-                    }
-                })
-            }
-        }
-
-        const filteredDecks = filteredTags.filter((deck, index) => {
-            return index === filteredTags.findIndex(filter => {
+        console.log(match)
+        const filteredDecks = match.filter((deck, index) => {
+            return index === match.findIndex(filter => {
                 return filter === deck;
             });
         });
-
+        console.log(filteredDecks)
         if (filteredDecks.length === 0) {
             props.setFilteredDecks("There are no decks with this tag!");
             filteredDecks.push("There are no decks with this tag!")

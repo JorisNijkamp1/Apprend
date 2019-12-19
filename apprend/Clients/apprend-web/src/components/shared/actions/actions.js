@@ -96,7 +96,7 @@ export function setSpecificDeckDataAction(deck) {
     }
 }
 
-export function deleteTag(deckEdit) {
+export function deleteOldTag(deckEdit) {
     return {
         type: DECK_DELETE_TAG,
         payload: deckEdit

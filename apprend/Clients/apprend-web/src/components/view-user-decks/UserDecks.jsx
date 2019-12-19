@@ -451,7 +451,7 @@ function mapStateToProps(state) {
     return {
         userDecks: state.decks.userDecks,
         decks: state.decks.userDecks.decks,
-        isLoading: state.decks.isLoading,
+        isLoading: state.flashcards.isLoading,
         username: state.login.username,
         searchValue: state.search.searchValue,
         filteredDecks: state.decks.filteredDecks
