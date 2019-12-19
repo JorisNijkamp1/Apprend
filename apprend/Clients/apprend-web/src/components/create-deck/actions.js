@@ -35,13 +35,12 @@ export function clearTags(){
     }
 }
 
-export const createDeck = deck => {
+export const createDeck = (deck, setLoader) => {
     return async dispatch => {
         let givenDeck = deck
         const url = `${API_URL}/decks`
-        // try {
         await dispatch(setIsLoading(true))
-
+        setLoader(true)
         const response = await fetch(url, {
             credentials: 'include',
             method: 'POST',
@@ -49,27 +48,13 @@ export const createDeck = deck => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            // mode: 'cors'
-
         })
         await dispatch(setIsLoading(false))
+        const data = await response.json()
+        setLoader(false)
         if (response.status === 201){
-            const data = await response.json()
-            let madeDeck
-            if (data.decks){
-                madeDeck = data.decks[data.decks.length-1]
-            } else {
-                madeDeck = data
-            }
-            return data
+            return {message: data.message, data: data.data, success: true}
         }
-
-
-        // } catch (e) {
-        //     await dispatch(setIsLoading(false))
-
-        //     console.log(e)
-        // }
-
+        return {message: data.message}
     }
 }

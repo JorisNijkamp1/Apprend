@@ -29,7 +29,7 @@ describe('Editing a deck', () => {
 
         const data = await response.json()
 
-        const madeDeck = data.decks[0]
+        const madeDeck = data.data.decks[0]
 
         expect(typeof madeDeck._id).toBe('string')
         expect(madeDeck._id).toHaveLength(24)
@@ -49,12 +49,20 @@ describe('Editing a deck', () => {
         }
 
         const editBody = {
-            name: editExpectedResult.name,
-            description: editExpectedResult.description,
-            creatorId: editExpectedResult.creatorId
+            properties: [
+                {
+                    name: "name",
+                    value: editExpectedResult.name
+                },
+                {
+                    name: "description",
+                    value: editExpectedResult.description
+                }
+
+            ]
         }
 
-        const editResponse = await fetch(`${API_URL}/decks/${madeDeck._id}`, {
+        const editResponse = await fetch(`${API_URL}/users/${madeDeck.creatorId}/decks/${madeDeck._id}`, {
             method: 'PUT',
             credentials: 'include',
             body: JSON.stringify(editBody),
@@ -67,21 +75,24 @@ describe('Editing a deck', () => {
         const editedDeck = await editResponse.json()
 
         expect(editResponse.status).toEqual(editExpectedResult.status)
-        expect(editedDeck.name).toEqual(editExpectedResult.name)
-        expect(editedDeck.description).toEqual(editExpectedResult.description)
-        expect(editedDeck._id).toEqual(editExpectedResult.deckId)
+        expect(editedDeck.data.name).toEqual(editExpectedResult.name)
+        expect(editedDeck.data.description).toEqual(editExpectedResult.description)
+        expect(editedDeck.data._id).toEqual(editExpectedResult.deckId)
 
         const expectedEditUnknownDeck = {
             status: 404,
-            message: 'Deck not found'
+            message: 'Deck does not exist'
         }
         const editUnknownDeckBody = {
-            name: 'deckname',
-            description: 'description',
-            creatorId: madeDeck.creatorId
+            properties: [
+            {
+                name: 'name',
+                value: 'Nice description for a test'
+            }
+        ]
         }
 
-        const unknownDeckResponse = await fetch(`${API_URL}/decks/1`, {
+        const unknownDeckResponse = await fetch(`${API_URL}/users/Joris/decks/1`, {
             method: 'PUT',
             credentials: 'include',
             body: JSON.stringify(editUnknownDeckBody),
@@ -93,8 +104,8 @@ describe('Editing a deck', () => {
 
         const unknownDeck = await unknownDeckResponse.json()
 
-        // expect(unknownDeckResponse.status).toEqual(404)
-        expect(unknownDeck).toEqual(expectedEditUnknownDeck.message)
+        expect(unknownDeckResponse.status).toEqual(404)
+        expect(unknownDeck.message).toEqual(expectedEditUnknownDeck.message)
 
     })
 
@@ -102,22 +113,26 @@ describe('Editing a deck', () => {
 
         const findJorisDecks = await fetch(`${API_URL}/users/Joris/decks`)
         const jorisDecks = await findJorisDecks.json()
+        console.log(jorisDecks)
 
         const editExpectedResult = {
             name: 'New name for a deck',
             description: 'Awesome new description',
-            status: 500,
-            message: 'This deck doesnt belong to you'
+            status: 401,
+            message: 'You are not allowed to do that'
         }
 
         const editBody = {
-            name: editExpectedResult.name,
-            description: editExpectedResult.description,
-            creatorId: 'Joris'
+            properties: [
+                {
+                    name: "name",
+                    value: "I want to to steal this deck!"
+                }
+            ]
         }
 
-        const JorisDeck = jorisDecks.decks.decks[0]._id
-        const editResponse = await fetch(`${API_URL}/decks/${JorisDeck}`, {
+        const JorisDeck = jorisDecks.data.decks[0]._id.toString()
+        const editResponse = await fetch(`${API_URL}/users/Joris/decks/${JorisDeck}`, {
             method: 'PUT',
             credentials: 'include',
             body: JSON.stringify(editBody),
@@ -126,11 +141,10 @@ describe('Editing a deck', () => {
             }
 
         })
-
         const editedDeck = await editResponse.json()
 
         expect(editResponse.status).toEqual(401)
-        expect(editedDeck).toEqual(editExpectedResult.message)
+        expect(editedDeck.message).toEqual(editExpectedResult.message)
 
     })
 })
