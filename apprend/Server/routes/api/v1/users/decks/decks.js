@@ -60,7 +60,11 @@ decks.post('/:deckId', async (req, res) => {
                 res.cookie('username', req.session.id, {maxAge: (10 * 365 * 24 * 60 * 60 * 1000)})
             }
             const madeUser = await User.create(user)
-            res.status(201).json(madeUser)
+
+            res.status(201).json({
+                message: 'Deck successfully imported',
+                data: madeUser
+            })
         }
     } catch (e) {
         console.log(e)
