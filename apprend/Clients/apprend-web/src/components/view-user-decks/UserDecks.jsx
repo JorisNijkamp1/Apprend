@@ -397,24 +397,28 @@ const Deck = (props) => {
         if (props.filteredDecks.length > 0) {
             return props.filteredDecks.map((deck, index) =>
                 <Col xs={12} sm={6} lg={4} className="my-2">
-                    <Card index={deck.name + index} id={'card-' + index}>
-                        <Card.Body>
-                            {ShowCard(deck, deck.deckId, index)}
-                        </Card.Body>
-                        {isCreator ? userOptions(deck, index) : ''}
-                    </Card>
+                    <div className={"deck-effect"}>
+                        <Card index={deck.name + index} id={'card-' + index}>
+                            <Card.Body>
+                                {ShowCard(deck, deck.deckId, index)}
+                            </Card.Body>
+                            {isCreator ? userOptions(deck, index) : ''}
+                        </Card>
+                    </div>
                 </Col>
             )
         }
 
         return decks.map((deck, index) => (
             <Col xs={12} sm={6} lg={4} className="my-2">
-                <Card key={deck.name + index} id={'card-' + index}>
-                    <Card.Body>
-                        {ShowCard(deck, deck._id, index)}
-                    </Card.Body>
-                    {isCreator ? userOptions(deck, index) : ''}
-                </Card>
+                <div className={"deck-effect"}>
+                    <Card key={deck.name + index} id={'card-' + index}>
+                        <Card.Body>
+                            {ShowCard(deck, deck._id, index)}
+                        </Card.Body>
+                        {isCreator ? userOptions(deck, index) : ''}
+                    </Card>
+                </div>
             </Col>)
         )
     }
@@ -445,7 +449,6 @@ const Deck = (props) => {
         </>
     )
 }
-
 
 function mapStateToProps(state) {
     return {
