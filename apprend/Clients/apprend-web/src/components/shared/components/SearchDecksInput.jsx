@@ -40,15 +40,8 @@ const SearchDecksInput = (props) => {
     };
 
     const getMatchingResults = (value, decks) => {
-        const escapedValue = escapeRegexCharacters(value.trim());
-
-        if (escapedValue === '') {
-            return [];
-        }
-
-        const regex = new RegExp('^' + escapedValue, 'i');
-        decks = decks.filter(deck => regex.test(deck.name));
-        return (decks.length > 4) ? decks.slice(0, 4) : decks;
+        // console.log(decks)
+        return decks.foundDecks;
     };
 
     const escapeRegexCharacters = (str) => {
@@ -60,11 +53,14 @@ const SearchDecksInput = (props) => {
     };
 
     const renderSuggestion = (suggestion) => {
+        // console.log(suggestion);
+
         return (
-            <Link to={`/decks/${suggestion.deckId}`} className={'search-deck-suggestions-link'}>
-                <span style={{fontWeight: 600}}>{suggestion.name}</span>
-                <br/>
-                <i>{suggestion.totalFlashcards} flashcards</i>
+            <Link to={`/decks/${suggestion.deck._id}`} className={'search-deck-suggestions-link d-i'}>
+                <span>
+                    <span style={{fontWeight: 600}}>{suggestion.deck.name}</span>
+                    <span className={'float-right'}><i>{suggestion.deck.flashcards} flashcards</i></span>
+                </span>
             </Link>
         );
     };

@@ -537,8 +537,9 @@ export const getSearchSuggestions = (value) => {
         });
         if (response.status === 200) {
             const data = await response.json();
-            dispatch(setSearchSuggestions(data.decks))
-            return data.decks
+            dispatch(setSearchSuggestions(data.data));
+            console.log(data.data)
+            return data.data
         }
     }
 };

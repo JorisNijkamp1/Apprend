@@ -53,56 +53,54 @@ decks.get('/:username/tags', async (req, res) => {
 /*====================================
 | SEARCH FOR SOME DECKS
 */
+/*====================================
+| SEARCH FOR SOME DECKS
+*/
 decks.get('/', async (req, res) => {
     const searchQuery = req.query.deck;
-    let foundDecks;
+    let searchResult;
 
     if (searchQuery) {
-        foundDecks = await User.aggregate([
+        searchResult = await User.aggregate([
             {
-                "$match": {
-                    "decks": {
-                        "$elemMatch": {
-                            'name': {'$regex': searchQuery, '$options': 'i'}
+                $facet: {
+                    foundUsers: [
+                        {$match: {'_id': {'$regex': searchQuery, '$options': 'i'}}},
+                        {$project: {"_id": "$_id"}}
+                    ],
+                    foundDecks: [
+                        {$unwind: "$decks"},
+                        {$match: {'decks.name': {'$regex': searchQuery, '$options': 'i'}, "decks.private": false}},
+                        {
+                            $project: {
+                                "deck._id": "$decks._id",
+                                "deck.name": "$decks.name",
+                                "deck.description": "$decks.description",
+                                "deck.tags": "$decks.tags",
+                                "deck.creatorId": "$decks.creatorId",
+                                "deck.flashcards": "$decks.flashcards",
+                            }
                         }
-                    }
+                    ],
+                    foundTags: [
+                        {$unwind: "$decks"},
+                        {$match: {'decks.tags': {'$regex': searchQuery, '$options': 'i'}, "decks.private": false}},
+                        {$project: {"tags": "$decks.tags"}}
+                    ],
                 }
-            },
-            {'$unwind': '$decks'},
-            {
-                "$group": {
-                    "_id": "$_id",
-                    "decks": {"$push": "$decks"}
-                }
-            }
-        ]);
+            }]);
     }
 
-    let decks = [];
-    if (foundDecks) {
-        foundDecks.forEach((index, key) => {
-            foundDecks[key].decks.forEach((decksIndex, decksKey) => {
-                decks.push({
-                    deckId: foundDecks[key].decks[decksKey]._id,
-                    name: foundDecks[key].decks[decksKey].name,
-                    description: foundDecks[key].decks[decksKey].description,
-                    totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
-                    deckCreator: foundDecks[key].decks[decksKey].creatorId,
-                    private: foundDecks[key].decks[decksKey].private
-                });
-            });
-        });
-    }
-
-    //Filter decks
-    if (decks) decks = decks.filter(deck => deck.name.toLowerCase().includes(searchQuery.toLowerCase()) && deck.private === false);
-
-    //Sort decks on totalFlashcards
-    if (decks) decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
-
+    searchResult.map((results) => {
+        results.foundDecks.map((decks, key) => {
+            results.foundDecks[key].deck.flashcards = results.foundDecks[key].deck.flashcards.length;
+            return results;
+        })
+    });
 
     await res.json({
-        decks: decks,
+        message: 'Search results',
+        data: searchResult[0],
     })
 });
 

@@ -27,7 +27,6 @@ const HomepageUI = (props) => {
 
     const decksHomepage = () => {
         if (props.deckName) {
-            console.log(props.deckName)
             return props.deckName.map((deck, index) => (
                 <Col lg={{span: 4}} md={{span: 6}} key={deck.name + index}>
                     <Link to={`/decks/${deck._id}`} className={'deck-card-link'}>
