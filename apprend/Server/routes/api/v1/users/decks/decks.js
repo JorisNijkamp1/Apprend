@@ -24,7 +24,7 @@ decks.use('/:deckId/', async (req, res, next) => {
 })
 
 decks.get('/:deckId', async (req, res) => {
-    res.status(200).json({data: req.deck})
+    res.status(200).json({message: 'Users deck', data: req.deck})
 })
 
 decks.post('/:deckId', async (req, res) => {
@@ -74,6 +74,12 @@ decks.post('/:deckId', async (req, res) => {
 })
 
 decks.put('/:deckId', async (req, res) => {
+decks.get('/', async (req, res) => {
+    const decks = req.user.decks.filter(deck => (req.session.username === req.user._id) || deck.private === false)
+    res.status(200).json({message: 'All decks', data: {userId: req.user._id, decks: decks}})
+})
+
+decks.put('/:deckId', auth.user, async (req, res) => {
     try {
         const {properties} = req.body;
         if (!properties) return res.status(400).json({message: 'No data to edit with.'})
@@ -87,6 +93,29 @@ decks.put('/:deckId', async (req, res) => {
     } catch (e) {
         console.log(e)
         res.status(500).json({message: 'Sorry something went horribly wrong on our end...'})
+    }
+})
+
+decks.patch('/:deckId', auth.user, async (req, res) => {
+    try {
+        req.deck.toggleStatus()
+        req.user.markModified('decks')
+        await req.user.save()
+        res.status(201).json({message: `Deck set to ${req.deck.private ? 'private' : 'public'}` , data: req.deck})
+
+    } catch (e) {
+        console.log(e)
+        res.status(500).status({message: 'Something went wrong'})
+    }
+})
+
+decks.delete('/:deckId', auth.user, async (req, res) => {
+    try {
+        const result = await req.user.deleteDeck(req.params.deckId)
+        res.status(200).json({message: 'Delete succesfull!', data: result.decks})
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({message: 'Something went horribly wrong'})
     }
 })
 

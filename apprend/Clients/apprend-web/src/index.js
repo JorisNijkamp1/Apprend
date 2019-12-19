@@ -11,8 +11,8 @@ import * as serviceWorker from './serviceWorker';
 import ReactNotification from 'react-notifications-component';
 
 const logger = (store) => (next) => (action) => {
-    console.log(store);
-    console.log('ACTION:', action.type, action);
+    // console.log(store);
+    // console.log('ACTION:', action.type, action);
     let result = next(action);
     console.log('STATE AFTER ACTION:', action.type, store.getState());
     return result;
@@ -20,7 +20,7 @@ const logger = (store) => (next) => (action) => {
 
 const composeEnhancers = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()) || Redux.compose
 
-const middleware = [thunk];
+const middleware = [thunk, logger];
 // const middleware = [thunk]
 const store = Redux.createStore(
     allReducers,

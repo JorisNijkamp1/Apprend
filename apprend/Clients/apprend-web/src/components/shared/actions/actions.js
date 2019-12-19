@@ -112,9 +112,10 @@ export function setFilteredDecks(decks) {
 | Decks (Async)
 |----------------------------------------------------------------
  */
-export const getUserDecksAction = (username, skipLoader = false) => {
+export const getUserDecksAction = (username, setLoader,  skipLoader = false) => {
     return async dispatch => {
-        if (!skipLoader) await dispatch(setIsLoading(true));
+        console.log(username)
+        if (!skipLoader) setLoader(true)
         const url = `${API_URL}/users/${username}/decks`;
         const options = {
             method: 'GET',
@@ -126,12 +127,13 @@ export const getUserDecksAction = (username, skipLoader = false) => {
         };
         const response = await fetch(url, options);
         const data = await response.json();
-        if (data.success) {
-            if (skipLoader) setUserDecksAction(data.decks);
+        console.log(data)
+        if (response.status === 200) {
+            if (skipLoader) setUserDecksAction(data.data);
             else {
                 setTimeout(function () {
-                    dispatch(setUserDecksAction(data.decks));
-                    dispatch(setIsLoading(false))
+                    dispatch(setUserDecksAction(data.data));
+                    setLoader(false)
                 }, 1000);
             }
         } else {
@@ -139,16 +141,16 @@ export const getUserDecksAction = (username, skipLoader = false) => {
             else {
                 setTimeout(function () {
                     dispatch(setUserDecksAction('no-decks'));
-                    dispatch(setIsLoading(false))
+                    setLoader(false)
                 }, 1000);
             }
         }
     }
 };
 
-export const getDeckAction = (deckId) => {
+export const getDeckAction = (deckId, setLoader) => {
     return async dispatch => {
-        await dispatch(setIsLoading(true));
+        setLoader(true)
         const url = `${API_URL}/decks/${deckId}`;
         const options = {
             method: 'GET',
@@ -161,23 +163,23 @@ export const getDeckAction = (deckId) => {
         const response = await fetch(url, options);
         const data = await response.json();
         if (response.status === 200) {
-            dispatch(setDeckAction(data));
+            dispatch(setDeckAction(data.data));
 
             setTimeout(function () {
-                dispatch(setIsLoading(false))
-            }, 500);
+                setLoader(false)
+            }, 1000);
         } else {
             setTimeout(function () {
                 dispatch(setDeckAction('deck-not-found'));
-                dispatch(setIsLoading(false))
-            }, 500);
+                setLoader(false)
+            }, 1000);
         }
     }
 };
 
-export const deleteDeckFromUser = (deckId) => {
+export const deleteDeckFromUser = (deckId, user) => {
     return async dispatch => {
-        const url = `${API_URL}/decks/${deckId}`;
+        const url = `${API_URL}/users/${user}/decks/${deckId}`;
         const response = await fetch(url, {
             method: 'DELETE',
             credentials: 'include',
@@ -185,10 +187,14 @@ export const deleteDeckFromUser = (deckId) => {
                 'Content-Type': 'application/json'
             },
         });
+        const data = await response.json();
+
         if (response.status === 200) {
-            const data = await response.json();
-            dispatch(setUserDecksDecksAction(data))
+            data.success = true
+            dispatch(setUserDecksDecksAction(data.data))
         }
+
+        return data
     }
 };
 
@@ -267,12 +273,13 @@ export const toggleDeckStatus = (deckId, userId) => {
             credentials: 'include',
             mode: 'cors'
         });
-
+        let data = await response.json(); 
         if (response.status === 201) {
-            const data = await response.json();
-            dispatch(setSpecificDeckDataAction(data));
-            dispatch(setDeckAction(data))
+            dispatch(setSpecificDeckDataAction(data.data));
+            dispatch(setDeckAction(data.data))
+            data.isSuccess = true
         }
+        return {message: data.message, success: data.isSuccess ? true : false}
     }
 };
 

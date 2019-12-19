@@ -32,9 +32,6 @@ const CreateButtonComponent = (props) => {
                     type="submit"
                     id="create-deck-button"
                     disabled={props.deckName ? false : true}
-                    onClick={() => {
-                        Notification("You successfully created a deck", "success")
-                    }}
                 >
                     {props.deckName ? 'Create deck!' : 'Please fill in a deckname'}
                 </Button>

@@ -48,7 +48,7 @@ const UserDecks = (props) => {
     //Check if user is logged in
     useEffect(() => {
         props.isLoggedIn()
-        props.getDeck(deckId).then(result => setTimeout(() => setIsLoading(false), 1000))
+        props.getDeck(deckId, setIsLoading)
         props.clearTags()
     }, []);
 

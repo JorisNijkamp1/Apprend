@@ -173,7 +173,8 @@ decks.get('/home', async (req, res) => {
 
 decks.post('/', async (req, res) => {
     try {
-        if (!req.body.deckName || req.body.deckName.trim().length === 0) return res.status(400).json('Failed to provide a deck name')
+        if (!req.body.deckName || req.body.deckName.trim().length === 0) return res.status(400).json({message: 'Failed to provide a deck name'})
+        if (req.body.deckName.length > 50) return res.status(400).json({message: 'Deckname is too long, max 50 chars.'})
         let response;
         if (!req.session.username && !req.cookies.username) {
             req.session.username = req.session.id
@@ -185,7 +186,7 @@ decks.post('/', async (req, res) => {
                 tags: req.body.tags,
                 flashcards: [],
                 private: req.body.private,
-                columns: req.body.columns
+                columns: req.body.columns ? req.body.columns : ['Text', 'Text']
             }
             const user = {
                 _id: req.session.id,
@@ -212,29 +213,17 @@ decks.post('/', async (req, res) => {
             }
             if (player) response = await player.addDeck(deck)
             else {
-                res.status(401).json('Not a user')
+                res.status(401).json({message:'Not a user'})
                 return
             }
         }
-        res.status(201).json(response)
+        res.status(201).json({message: 'You succesfully created a deck' , data: response})
 
     } catch (e) {
         console.log(e)
-        res.status(500).json('Something went horribly wrong...Try again?')
+        res.status(500).json({message: 'Something went horribly wrong...Try again?'})
     }
 });
-
-decks.delete('/:deckId', async (req, res) => {
-    try {
-        const user = await User.findById(req.session.username ? req.session.username : req.cookies.username)
-        if (!user) return res.status(404).json('Not a user')
-        const result = await user.deleteDeck(req.params.deckId)
-        res.status(200).json(result.decks)
-    } catch (e) {
-        console.log(e)
-        res.status(500).json('Something went horribly wrong')
-    }
-})
 
 /*====================================
 | GET A SPECIFIC DECK
@@ -244,7 +233,7 @@ decks.get('/:deckId', async (req, res) => {
         const deckId = req.params.deckId;
 
         if (!deckId) {
-            return res.status(404).json('Cant work without a deck id')
+            return res.status(404).json({message: 'Cant work without a deck id'})
         }
         const userAndDeck = await User.findOne({
             'decks': {
@@ -259,20 +248,17 @@ decks.get('/:deckId', async (req, res) => {
                 }
             }
         })
-        if (!userAndDeck) return res.status(404).json('Does not exist')
-        if (!userAndDeck.decks) return res.status(404).json('Does not exist')
+        if (!userAndDeck) return res.status(404).json({message: 'Does not exist'})
+        if (!userAndDeck.decks) return res.status(404).json({message: 'Does not exist'})
 
         if (userAndDeck.decks[0].private) {
-            if (req.session.username !== userAndDeck._id) return res.status(401).json('User has made this deck private')
+            if (req.session.username !== userAndDeck._id) return res.status(401).json({message: 'User has made this deck private'})
         }
 
-        const user = await User.findById(userAndDeck.decks[0].creatorId)
-        if (user.email.length === 0) userAndDeck.decks[0].LOL = true
-
-        res.status(200).json(userAndDeck.decks[0])
+        return res.status(200).json({message: 'Found a deck', data: userAndDeck.decks[0]})
     } catch (e) {
         console.log(e)
-        res.status(500).json('oopsie')
+        return res.status(500).json({message: 'oopsie'})
     }
 
 });
