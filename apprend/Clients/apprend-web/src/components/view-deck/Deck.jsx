@@ -349,7 +349,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         isLoggedIn: () => dispatch(isLoggedIn()),
-        getDeck: (deckId) => dispatch(getDeckAction(deckId)),
+        getDeck: (deckId, setLoader) => dispatch(getDeckAction(deckId, setLoader)),
         importDeck: (deckId, creatorId) => dispatch(importDeckAction(deckId, creatorId)),
         toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),
         deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
