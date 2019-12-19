@@ -16,6 +16,7 @@ import {
     FLASHCARDS_SET_ISSAVING
 } from '../../../redux/actionTypes';
 import {setAnonymousUserAction, setLoginAction} from "../../login/actions";
+import { Notification } from '../components/Notification'
 
 /*
 |----------------------------------------------------------------
@@ -215,13 +216,24 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
     let tags = oldTags;
     if (newTags && newTags.length > 0) tags = oldTags.concat(newTags);
     return async dispatch => {
-        const url = `${API_URL}/decks/${deckId}`;
-        let body = {
-            name: deckName,
-            description: deckDescription,
-            creatorId: creatorId,
-            tags: tags
-        };
+        const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
+
+        const body = {
+            properties: [
+                {
+                    name: "name",
+                    value: deckName,
+                },
+                {
+                    name: "description",
+                    value: deckDescription
+                },
+                {
+                    name: "tags",
+                    value: tags
+                }
+            ]
+        }
         const options = {
             method: 'PUT',
             body: JSON.stringify(body),
@@ -233,10 +245,14 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
         };
         const response = await fetch(url, options);
         const data = await response.json();
+        console.log(data)
         if (response.status === 201) {
-            dispatch(setSpecificDeckDataAction(data));
-            dispatch(setDeckAction(data));
+            dispatch(setSpecificDeckDataAction(data.data));
+            dispatch(setDeckAction(data.data));
+            return {message: data.message, success: true}
         }
+        return {message: data.message ? data.message : 'There was an error', success: false}
+
     }
 };
 

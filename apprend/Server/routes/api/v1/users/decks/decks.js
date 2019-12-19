@@ -14,6 +14,7 @@ const decks = express.Router();
 const imagesFolder = './files/images'
 const flashcardsRoute = require('./flashcards/flashcards')
 const columnsRoute = require('./columns/columns')
+const auth = require('../../../../../authentication/authentication')
 
 decks.use('/:deckId/', async (req, res, next) => {
     req.deck = await req.user.decks.id(req.params.deckId)
@@ -24,6 +25,23 @@ decks.use('/:deckId/', async (req, res, next) => {
 
 decks.get('/:deckId', async (req, res) => {
     res.status(200).json({data: req.deck})
+})
+
+decks.put('/:deckId', async (req, res) => {
+    try {
+        const {properties} = req.body;
+        if (!properties) return res.status(400).json({message: 'No data to edit with.'})
+
+        await req.deck.editDeck(properties)
+        req.user.markModified('decks')
+        await req.user.save()
+
+        return res.status(201).json({message: "Edit was succesfull!", data: req.deck})
+
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({message: 'Sorry something went horribly wrong on our end...'})
+    }
 })
 
 decks.use('/:deckId/flashcards/', flashcardsRoute)
