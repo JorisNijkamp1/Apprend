@@ -26,11 +26,11 @@ const HomepageUI = (props) => {
         if (tags) {
             return tags.map((tag, index) => {
                     if (index <= 3) {
-                        return (<Col md={2}>
-                                <p className={'text-center'} style={{color: '#000'}}>
+                        return (
+                            <span className={'badge badge-light text-center'} style={{color: '#000', margin: '0 10px',}}>
                                     {tag}
-                                </p>
-                            </Col>
+                                </span>
+
                         )
                     } else {
                         return null
@@ -45,7 +45,7 @@ const HomepageUI = (props) => {
     const decksHomepage = () => {
         if (props.deckName) {
             return props.deckName.map((deck, index) => (
-                <Col className={"box"} lg={{span: 4}} md={{span: 6}} key={deck.name + index}>
+                <Col className={"my-md-3 my-4 my-lg-0"} lg={{span: 4}} md={{span: 6}} key={deck.name + index}>
                     <Link to={`/decks/${deck._id}`} className={'deck-card-link'}>
                         <div className={`card-animation`}>
                             <div className={"imgBx"}>
@@ -64,8 +64,8 @@ const HomepageUI = (props) => {
                                     <p className={'text-center description-cutoff'} style={{color: '#000'}}>
                                         {deck.description}
                                     </p>
-                                    <Row>
-                                        <b className={"tags-hit"}>Tags: </b>{deckTags(deck.tags)}
+                                    <Row className={"justify-content-center"}>
+                                        {deckTags(deck.tags)}
                                     </Row>
                                 </>
                             </div>
