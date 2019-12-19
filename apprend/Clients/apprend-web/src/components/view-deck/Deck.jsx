@@ -49,7 +49,7 @@ const UserDecks = (props) => {
     //Check if user is logged in
     useEffect(() => {
         props.isLoggedIn()
-        props.getDeck(deckId).then(result => setTimeout(() => setIsLoading(false), 1000))
+        props.getDeck(deckId, setIsLoading)
         props.clearTags()
     }, []);
 
@@ -345,7 +345,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         isLoggedIn: () => dispatch(isLoggedIn()),
-        getDeck: (deckId) => dispatch(getDeckAction(deckId)),
+        getDeck: (deckId, func) => dispatch(getDeckAction(deckId, func)),
         importDeck: (deck) => dispatch(importDeckAction(deck)),
         toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),
         deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
