@@ -28,7 +28,7 @@ import {addTag, clearTags, deleteTag} from '../create-deck/actions';
 import {deleteOldTag} from "../shared/actions/actions";
 
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
-import {FlashcardTable} from './subcomponents/FlashcardTable'
+import {FlashcardTable} from './subcomponents/flashcardTable/FlashcardTable'
 import DeckDescription from "./subcomponents/DeckDescription";
 import DeckName from './subcomponents/DeckName'
 import DeckTags from "./subcomponents/DeckTags";
@@ -108,7 +108,7 @@ const UserDecks = (props) => {
             else deck = result.data._id
             await props.isLoggedIn()
             history.push(`/decks/${deck}`)
-            props.getDeck(deck)
+            props.getDeck(deck, setIsLoading)
         }
         Notification(result.message, result.success ? 'success' : 'danger')
     }
@@ -122,8 +122,9 @@ const UserDecks = (props) => {
         Notification("A deck needs atleast 1 card to play!", "info");
     }
 
-    const deleteDeckHandler = () => {
-        props.deleteDeckFromUser(props.deck._id)
+    const deleteDeckHandler = async () => {
+        const result = await props.deleteDeckFromUser(props.deck._id, props.username)
+        Notification(result.message, result.succes ? 'success' : 'danger')
         history.push(`/${props.username}/decks`)
     }
 
@@ -323,7 +324,7 @@ const UserDecks = (props) => {
                     {deck}
                 </Row>
                 {/* <Row> */}
-                <FlashcardTable/>
+                <FlashcardTable />
                 {/* </Row> */}
                 {showDeleteConfirmationBox()}
                 {/* {showFlashcards()} */}
@@ -358,7 +359,7 @@ function mapDispatchToProps(dispatch) {
         getDeck: (deckId, setLoader) => dispatch(getDeckAction(deckId, setLoader)),
         importDeck: (deckId, creatorId) => dispatch(importDeckAction(deckId, creatorId)),
         toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),
-        deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
+        deleteDeckFromUser: (deckId, user) => dispatch(deleteDeckFromUser(deckId, user)),
         editDeck: (creatorId, _id, deckName, deckDescription, oldTags, newTags) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription, oldTags, newTags)),
         addTag: (tag) => dispatch(addTag(tag)),
         deleteOldTag: (tag) => dispatch(deleteOldTag(tag)),

@@ -2,9 +2,6 @@ const mongoose = require('mongoose');
 
 //Create schema
 const flashcardSchema = new mongoose.Schema({
-    _id: {
-        type: String,
-    },
     type: {
         type: String,
     },

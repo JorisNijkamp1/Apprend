@@ -31,7 +31,6 @@ const CreateDeckFormComponent = (props) => {
     const showDeckNameOrThis = (text) => deckName ? <b>'{deckName}'</b> : text
 
     const handleSwitch = (e) => {
-        console.log(status)
         setStatus(!status)
     }
 
@@ -42,7 +41,17 @@ const CreateDeckFormComponent = (props) => {
             description: e.target.description.value,
             private: status,
             tags: props.tags,
-            columns: [typeOne, typeTwo]
+            columns: [typeOne, typeTwo],
+            columns: [
+                {
+                    type: typeOne,
+                    name: ''
+                },
+                {
+                    type: typeTwo,
+                    name: ''
+                }
+            ]
         }
         const response = await props.createNewDeck(deck, setIsLoading)
         let deckId;

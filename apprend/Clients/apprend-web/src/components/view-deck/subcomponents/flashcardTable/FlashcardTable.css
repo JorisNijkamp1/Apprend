@@ -1,0 +1,17 @@
+th, td {
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid rgb(182, 175, 175);
+    min-width: 200px;
+    /* border-right: 1px solid black; */
+}
+
+tr {
+    overflow-x: 'auto';
+    white-space: nowrap;
+}
+
+table {
+    overflow-x: 'auto';
+    white-space: nowrap;
+}
