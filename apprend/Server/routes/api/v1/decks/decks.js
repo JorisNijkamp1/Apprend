@@ -10,37 +10,38 @@ require('../../../../database/models/user');
 const User = mongoose.model('User');
 
 decks.get('/tags', async (req, res) => {
-    const searchQuery = req.query.tag;
-    let foundDecks;
-    let decks = [];
-
-    if (searchQuery) {
-        foundDecks = await User.aggregate([{
-            $facet: {
-                foundTags: [
-                    {$unwind: "$decks"},
-                    {$match: { $or: [ {"decks.private": false}, {"decks.creatorId": req.session.username}], 'decks.tags': searchQuery}},
-                    {$project: {"decks": "$decks"}}
-                ],
-            }
-        }]);
-    } else {
-        await res.status(400).json({message: 'No query'})
+    try {
+        const searchQuery = req.query.tag;
+        let foundDecks;
+        let decks = [];
+    
+        if (searchQuery) {
+            foundDecks = await User.aggregate([{
+                $facet: {
+                    foundTags: [
+                        {$unwind: "$decks"},
+                        {$match: { $or: [ {"decks.private": false}, {"decks.creatorId": req.session.username}], 'decks.tags': searchQuery}},
+                        {$project: {"decks": "$decks"}}
+                    ],
+                }
+            }]);
+        } else {
+            await res.status(400).json({message: 'No query'})
+        }
+    
+        foundDecks[0].foundTags.forEach(deck => {
+            decks.push(deck);
+        })
+        if (decks.length > 0) {
+            return res.status(200).json({
+                message: 'All decks',
+                data: decks
+            })
+        }
     }
-
-    foundDecks[0].foundTags.forEach(deck => {
-        decks.push(deck);
-    })
-
-    if (decks.length > 0) {
-        await res.status(200).json({
-            message: 'All decks',
-            data: decks
-        })
-    } else {
-        await res.status(404).json({
-            message: 'No decks found'
-        })
+    catch (e) {
+        console.log(e)
+        return res.status(404).json({message: 'No decks found'})
     }
 });
 
