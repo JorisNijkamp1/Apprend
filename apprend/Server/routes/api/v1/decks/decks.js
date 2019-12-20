@@ -19,7 +19,7 @@ decks.get('/tags', async (req, res) => {
             $facet: {
                 foundTags: [
                     {$unwind: "$decks"},
-                    {$match: {'decks.tags': searchQuery, "decks.private": false}},
+                    {$match: { $or: [ {"decks.private": false}, {"decks.creatorId": req.session.username}], 'decks.tags': searchQuery}},
                     {$project: {"decks": "$decks"}}
                 ],
             }
