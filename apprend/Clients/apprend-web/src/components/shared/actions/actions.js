@@ -602,8 +602,8 @@ export const loadDecks = username => {
         return fetch(url, options)
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                return data.decks
+            if (data.message === 'All decks') {
+                return data.data
             } else {
                 console.log('User bestaat niet')
             }

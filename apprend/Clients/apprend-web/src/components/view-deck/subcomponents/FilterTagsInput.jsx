@@ -22,7 +22,6 @@ const escapeRegexCharacters = (str) => {
 const FilterTagsInput = (props) => {
     const [value, setValue] = useState('');
     const [decks, setDecks] = useState([]);
-    //const [allTags, setAllTags] = useState([]);
     const [displayTags, setDisplayTags] = useState([]);
 
     useEffect(() => {
@@ -41,7 +40,6 @@ const FilterTagsInput = (props) => {
                 return filter === deck;
             });
         });
-        //await setAllTags(filteredTags)
         return filteredTags
     }
 
@@ -59,7 +57,6 @@ const FilterTagsInput = (props) => {
 
     const getMatchingDecks = tag => {
         let tags;
-        const match = [];
         if (tag.add !== undefined) {
             tags = props.filteredTags.concat(tag.add)
         } else if (tag.delete !== undefined) {
@@ -70,20 +67,13 @@ const FilterTagsInput = (props) => {
 
         if (tags.length === 0) return []
 
+        const filteredDecks = [];
         decks.forEach(deck => {
-            tags.forEach(tag => {
-                if (deck.tags.includes(tag)) {
-                    match.push(deck)
-                }
-            })
+            if (arrayContainsArray(deck, tags) === true) {
+                filteredDecks.push(deck)
+            }
         })
-        console.log(match)
-        const filteredDecks = match.filter((deck, index) => {
-            return index === match.findIndex(filter => {
-                return filter === deck;
-            });
-        });
-        console.log(filteredDecks)
+
         if (filteredDecks.length === 0) {
             props.setFilteredDecks("There are no decks with this tag!");
             filteredDecks.push("There are no decks with this tag!")
@@ -93,6 +83,15 @@ const FilterTagsInput = (props) => {
             return (filteredDecks.length > 4) ? filteredDecks.slice(0, 4) : filteredDecks;
         }
     };
+
+    const arrayContainsArray = (superset, subset) => {
+        if (0 === subset.length) {
+            return false;
+        }
+        return subset.every(function (value) {
+            return (superset.tags.includes(value.toString()));
+        });
+    }
 
     const renderSuggestions = async value => {
         setValue(value);
@@ -188,8 +187,7 @@ const FilterTagsInput = (props) => {
 const mapStateToProps = state => {
     return {
         filteredDecks: state.decks.filteredDecks,
-        filteredTags: state.filter.filteredTags,
-        username: state.login.username
+        filteredTags: state.filter.filteredTags
     }
 };
 

@@ -333,7 +333,7 @@ const Deck = (props) => {
         </Row>
         <div className={'pt-3 pb-5'}>
             <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`}
-                             username={props.userDecks.user}/>
+                             username={props.userDecks.userId}/>
         </div>
         {showErrors()}
         <Row>
