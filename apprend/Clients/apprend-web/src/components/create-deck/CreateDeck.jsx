@@ -16,6 +16,7 @@ import { LoadingComponent } from '../shared/components/LoadingComponent';
 const CreateDeckFormComponent = (props) => {
 
     const [status, setStatus] = useState(false)
+    const [input, setInput] = useState('')
     const [deckName, setDeckName] = useState('')
     const [typeOne, setTypeOne] = useState('Text')
     const [typeTwo, setTypeTwo] = useState('Text')
@@ -67,17 +68,17 @@ const CreateDeckFormComponent = (props) => {
 
     const checkAdded = tagValue => {
         return props.tags.some(tag => {
-            return tag === tagValue.trim()
+            return tag === tagValue.trim().toLowerCase();
         });
     }
 
     const getTagValue = () => {
-        let tagValue = document.getElementById("tags").value;
-        document.getElementById("tags").value = "";
+        let tagValue = input;
+        setInput('');
         let match = false;
         if (props.tags.length !== 0) {
             if (checkAdded(tagValue)){
-                Notification("You already have that tag");
+                Notification("You already have that tag", "danger");
             } else {
                 match = true;
             }
@@ -86,14 +87,14 @@ const CreateDeckFormComponent = (props) => {
                     props.addTag(tagValue);
                     match = false;
                 } else {
-                    Notification("You can't add an empty tag");
+                    Notification("You can't add an empty tag", "danger");
                 }
             }
         } else {
             if (tagValue.trim() !== "") {
                 props.addTag(tagValue);
             } else {
-                Notification("You can't add an empty tag");
+                Notification("You can't add an empty tag", "danger");
             }
         }
     }
@@ -167,6 +168,8 @@ const CreateDeckFormComponent = (props) => {
                                     id="tags"
                                     placeholder="Your tags"
                                     className="text-center"
+                                    value={input}
+                                    onChange={e => setInput(e.target.value)}
                                 />
                                 <InputGroup.Append>
                                     <Button id="addTag" className={'bg-blue text-white hover-shadow'} onClick={() => getTagValue()}>Add tag</Button>

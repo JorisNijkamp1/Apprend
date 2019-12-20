@@ -13,7 +13,10 @@ import {
     FLASHCARDS_SET_ISLOADING,
     FLASHCARDS_DECKFLASHCARDS,
     FLASHCARDS_SET_ISSAVING,
-    SEARCH_SUGGESTIONS
+    SEARCH_SUGGESTIONS,
+    DELETE_FILTERED_TAG,
+    FILTER_SET_TAGS,
+    CLEAR_FILTERED_TAGS
 } from '../../../redux/actionTypes';
 import {setAnonymousUserAction, setLoginAction} from "../../login/actions";
 import { Notification } from '../components/Notification'
@@ -93,7 +96,7 @@ export function setSpecificDeckDataAction(deck) {
     }
 }
 
-export function deleteTag(deckEdit) {
+export function deleteOldTag(deckEdit) {
     return {
         type: DECK_DELETE_TAG,
         payload: deckEdit
@@ -556,6 +559,85 @@ export const getSearchSuggestions = (value) => {
             const data = await response.json();
             dispatch(setSearchSuggestions(data.decks))
             return data.decks
+        }
+    }
+};
+
+/*
+|----------------------------------------------------------------
+| Filter
+|----------------------------------------------------------------
+ */
+export function setFilteredTag(tag) {
+    return {
+        type: FILTER_SET_TAGS,
+        payload: tag
+    }
+}
+
+export function deleteFilteredTag(tag) {
+    return {
+        type: DELETE_FILTERED_TAG,
+        payload: tag
+    }
+}
+
+export function clearFilteredTags() {
+    return {
+        type: CLEAR_FILTERED_TAGS
+    }
+}
+
+export const loadDecks = username => {
+    return async dispatch => {
+        const url = `${API_URL}/users/${username}/decks`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        return fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'All decks') {
+                return data.data
+            } else {
+                console.log('User bestaat niet')
+            }
+        }).catch(err => {
+            console.log(err);
+            console.log("Er gaat iets fout met ophalen van de decks")
+        })
+    }
+};
+
+/*
+|----------------------------------------------------------------
+| Tag page
+|----------------------------------------------------------------
+ */
+
+export const getAllDecks = tag => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/tags?tag=${tag}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        const response = await fetch(url, options)
+        const data = await response.json()
+        if (response.status === 200) {
+            return data.data
+        } else {
+            console.log('No decks found')
+            return []
         }
     }
 };

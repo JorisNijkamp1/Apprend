@@ -333,7 +333,7 @@ const Deck = (props) => {
         </Row>
         <div className={'pt-3 pb-5'}>
             <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`}
-                             username={props.userDecks.user}/>
+                             username={props.userDecks.userId}/>
         </div>
         {showErrors()}
         <Row>
@@ -358,7 +358,7 @@ function mapStateToProps(state) {
     return {
         userDecks: state.decks.userDecks,
         decks: state.decks.userDecks.decks,
-        isLoading: state.decks.isLoading,
+        isLoading: state.flashcards.isLoading,
         username: state.login.username,
         searchValue: state.search.searchValue,
         filteredDecks: state.decks.filteredDecks

@@ -1,14 +1,10 @@
 import React, {useState} from "react";
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
-import Autosuggest from 'react-autosuggest';
-import {API_URL} from "../../../redux/urls";
 import {Link} from "react-router-dom";
-import {setSearchValue} from "../../shared/actions/actions";
-import Col from "react-bootstrap/Col";
-import InputGroup from "react-bootstrap/InputGroup";
-import Row from "react-bootstrap/Row";
-import {setFilteredDecks} from "../../shared/actions/actions";
+import {Col, InputGroup, Row, Button, Form} from "react-bootstrap";
+import {deleteFilteredTag, setFilteredTag, setFilteredDecks, clearFilteredTags, loadDecks} from '../../shared/actions/actions';
+import {Notification} from '../../shared/components/Notification';
+import { useEffect } from "react";
 
 /* ----------- */
 /*    Utils    */
@@ -22,120 +18,124 @@ const escapeRegexCharacters = (str) => {
 /* --------------- */
 /*    Component    */
 /* --------------- */
-const getSuggestionValue = (suggestion) => {
-    return suggestion.name;
-};
-
-function renderSuggestion(suggestion) {
-    if (suggestion.deckId) {
-        return (
-            <Link to={`/decks/${suggestion.deckId}`} className={'search-deck-suggestions-link'}>
-                <span style={{fontWeight: 600}}>{suggestion.name}</span>
-            </Link>
-        );
-    } else {
-        return (
-            <div className={'search-deck-suggestions-link'}>
-                <span style={{fontWeight: 600}}>There are no decks with this tag!</span>
-            </div>
-        );
-    }
-}
 
 const FilterTagsInput = (props) => {
     const [value, setValue] = useState('');
-    const [suggestions, setSuggestions] = useState([]);
-    let lastRequestId = null;
+    const [decks, setDecks] = useState([]);
+    const [displayTags, setDisplayTags] = useState([]);
 
-    const loadSuggestions = (value) => {
-        // Cancel the previous request
-        if (lastRequestId !== null) {
-            clearTimeout(lastRequestId);
-        }
+    useEffect(() => {
+        props.clearFilteredTags([]);
+    }, []);
 
-        // Request
-        lastRequestId = setTimeout(async () => {
-            const url = `${API_URL}/decks/${props.username}/tags?tag=${value}`;
-            let decks;
-
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                mode: 'cors'
-            });
-
-            if (response.status === 200) {
-                const data = await response.json();
-                decks = data.decks
-            } else {
-                console.log('Error: ' + response);
-                decks = []
-            }
-
-            setSuggestions(getMatchingLanguages(value, decks));
-        });
-    };
-
-    const onChange = (event, {newValue}) => {
-        if (newValue.length === 0) {
-            props.setFilteredDecks([]);
-        }
-        props.setSearchValue(newValue);
-        setValue(newValue);
-    };
-
-    const onSuggestionsFetchRequested = ({value}) => {
-        loadSuggestions(value);
-    };
-
-    const onSuggestionsClearRequested = () => {
-        setSuggestions([]);
-    };
-
-    const getMatchingLanguages = (value, decks) => {
-        const escapedValue = escapeRegexCharacters(value.trim());
-
-        if (escapedValue === '') {
-            return [];
-        }
-
-        const regex = new RegExp('^' + escapedValue, 'i');
-        const match = [];
-        for (let i = 0; i < decks.length; i++) {
-            for (let j = 0; j < decks[i].tags.length; j++) {
-                if (regex.test(decks[i].tags[j])) {
-                    match.push(decks[i])
-                }
-            }
-        }
-
-        const filteredMatch = match.filter((deck, index) => {
-            return index === match.findIndex(filter => {
+    const getAllTags = async decks => {
+        const tags = [];
+        decks.forEach(deck => {
+            deck.tags.forEach(tag => {
+                tags.push(tag);
+            })
+        })
+        const filteredTags = tags.filter((deck, index) => {
+            return index === tags.findIndex(filter => {
                 return filter === deck;
             });
         });
+        return filteredTags
+    }
 
-        if (filteredMatch.length === 0) {
+    const loadDecks = async () => {
+        let response = await props.loadDecks(props.username);
+        await setDecks(response.decks);
+        return response.decks
+    }
+
+    const checkAdded = tagValue => {
+        return props.filteredTags.some(tag => {
+            return tag === tagValue.trim().toLowerCase();
+        });
+    }
+
+    const getMatchingDecks = tag => {
+        let tags;
+        if (tag.add !== undefined) {
+            tags = props.filteredTags.concat(tag.add)
+        } else if (tag.delete !== undefined) {
+            tags = props.filteredTags.filter((value, index, arr) => {
+                return value !== tag.delete;
+            });
+        }
+
+        if (tags.length === 0) return []
+
+        const filteredDecks = [];
+        decks.forEach(deck => {
+            if (arrayContainsArray(deck, tags) === true) {
+                filteredDecks.push(deck)
+            }
+        })
+
+        if (filteredDecks.length === 0) {
             props.setFilteredDecks("There are no decks with this tag!");
-            filteredMatch.push("There are no decks with this tag!")
-            return filteredMatch
+            filteredDecks.push("There are no decks with this tag!")
+            return filteredDecks;
         } else {
-            props.setFilteredDecks(filteredMatch);
-            return (filteredMatch.length > 4) ? filteredMatch.slice(0, 4) : filteredMatch;
+            props.setFilteredDecks(filteredDecks);
+            return (filteredDecks.length > 4) ? filteredDecks.slice(0, 4) : filteredDecks;
         }
     };
 
-    const inputProps = {
-        placeholder: "Filter on tags",
-        value,
-        onChange: onChange,
-        className: 'form-control',
-        style: {width: '100%'},
-        id: "Filter"
-    };
+    const arrayContainsArray = (superset, subset) => {
+        if (0 === subset.length) {
+            return false;
+        }
+        return subset.every(function (value) {
+            return (superset.tags.includes(value.toString()));
+        });
+    }
+
+    const renderSuggestions = async value => {
+        setValue(value);
+        let suggestions = await loadDecks();
+        const regex = new RegExp('^' + value, 'i');
+        let tags = await getAllTags(suggestions);
+        const match = [];
+        tags.forEach(tag => {
+            if (regex.test(tag)) {
+                match.push(tag);
+            }
+        })
+        if (value.length !== 0) {
+            if (match.length !== 0) {
+                await setDisplayTags(match);
+            } else {
+                await setDisplayTags(["There are no decks with this tag!"]);
+            }
+        } else {
+            setDisplayTags([]);
+        }
+    }
+
+    const AddFilteredTag = () => {
+        const escapedValue = escapeRegexCharacters(value.trim().toLowerCase());
+        setValue('');
+        setDisplayTags([]);
+        if (escapedValue !== "") {
+            if (checkAdded(escapedValue)) {
+                Notification("You already have that tag filter", "danger");
+            } else {
+                props.setFilteredTag(value);
+                getMatchingDecks({add: value});
+            }
+        } else {
+            Notification("You can't add an empty tag filter", "danger");
+        }
+    }
+
+    const DeleteFilteredTag = tag => {
+        props.setFilteredDecks(decks);
+        props.deleteFilteredTag(tag);
+        getMatchingDecks({delete: tag});
+    }
 
     return (
         <>
@@ -143,18 +143,40 @@ const FilterTagsInput = (props) => {
                 <Col md={{span: 10, offset: 1}}>
                     <Row>
                         <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 3}}>
-                            <InputGroup className="mb-3">
-                                <Autosuggest
-                                    suggestions={suggestions}
-                                    onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                                    onSuggestionsClearRequested={onSuggestionsClearRequested}
-                                    getSuggestionValue={getSuggestionValue}
-                                    renderSuggestion={renderSuggestion}
-                                    inputProps={inputProps}
-                                    highlightFirstSuggestion={true}
+                            <InputGroup className="mb-3 pt-2">
+                                <Form.Control
+                                    placeholder={'Filter on tags'}
+                                    type={'text'}
+                                    className={'form-control'}
+                                    id={'Filter'}
+                                    value={value}
+                                    onChange={e => renderSuggestions(e.target.value)}
+                                    autocomplete='off'
                                 />
+                                <InputGroup.Append>
+                                    <Button className={'bg-blue text-white hover-shadow'} onClick={() => AddFilteredTag()}>
+                                        <span className={'ml-1'}>Add filter</span>
+                                    </Button>
+                                </InputGroup.Append>
+                                {displayTags.length > 0 ?
+                                    <InputGroup className="mb-3 filterList">
+                                        {displayTags.map(tag =>
+                                            <Link key={tag} to={`/tags/${tag}`} className={'search-suggestions-link filterTags'}>
+                                                <span style={{fontWeight: 600}}>{tag}</span>
+                                            </Link>
+                                        )}
+                                    </InputGroup>
+                                : ""}
                             </InputGroup>
                         </Col>
+                    </Row>
+                    <Row>
+                        <ul>
+                            {props.filteredTags.map((tag) => <li key={tag} className="listItem">
+                                {tag}
+                                <i id='deleteFilteredTag' className='fa fa-times tagButton' onClick={() => DeleteFilteredTag(tag)}/>
+                            </li>)}
+                        </ul>
                     </Row>
                 </Col>
             </Row>
@@ -162,21 +184,20 @@ const FilterTagsInput = (props) => {
     );
 };
 
-FilterTagsInput.propTypes = {
-    linkTo: PropTypes.string.isRequired,
-};
-
 const mapStateToProps = state => {
     return {
-        searchValue: state.search.searchValue,
-        filteredDecks: state.decks.filteredDecks
+        filteredDecks: state.decks.filteredDecks,
+        filteredTags: state.filter.filteredTags
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        setSearchValue: (searchValue) => dispatch(setSearchValue(searchValue)),
-        setFilteredDecks: (decks) => dispatch(setFilteredDecks(decks))
+        setFilteredDecks: (decks) => dispatch(setFilteredDecks(decks)),
+        setFilteredTag: (tags) => dispatch(setFilteredTag(tags)),
+        deleteFilteredTag: (tag) => dispatch(deleteFilteredTag(tag)),
+        clearFilteredTags: () => dispatch(clearFilteredTags()),
+        loadDecks: (username) => dispatch(loadDecks(username))
     }
 };
 
