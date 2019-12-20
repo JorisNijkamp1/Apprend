@@ -29,6 +29,7 @@ export const addColumn = (type, name,  creator, deck) => {
         if (response.status === 201){
             dispatch(setDeckAction(data.data))
         }
+        return data
     }
 }
 
@@ -44,10 +45,12 @@ export const deleteColumn = (index, creator, deck) => {
             }
         }
         const response = await fetch(url, options)
-        const data = await response.json()
+        let data = await response.json()
         if (response.status === 200){
             dispatch(setDeckAction(data.data))
+            data.success = true
         }
+        return data
     }
 }
 
@@ -63,10 +66,12 @@ export const editColumnName = (index, creator, deck, value) => {
             }
         } 
         const response = await fetch(url, options)
-        const data = await response.json()
+        let data = await response.json()
         if (response.status === 200){
             dispatch(set_column_name({index: index, value: data.data}))
+            data.success = true
         }
+        return data
     }
 }
 
@@ -89,11 +94,12 @@ export const addFlashcard = (creator, deck) => {
             }
         } 
         const response = await fetch(url, options)
-
+        const data = await response.json()
         if (response.status === 201){
-            const data = await response.json()
             dispatch(addFlashcardAction(data.data))
         }
+
+        return data
     }
 }
 
@@ -121,5 +127,35 @@ export const editFlashcard = (value, creator, deck, flashcard, index) => {
         if (response.status === 200){
             dispatch(editFlashcardColumn({index: index, value: data.data, _id: flashcard}))
         }
+
+        return data
+    }
+}
+
+function deleteFlashcardAction(id){
+    return {
+        type: 'DECKS_DELETE_FLASHCARD',
+        payload: id
+    }
+}
+
+export const deleteFlashcard = (flashcard, creator, deck) => {
+    return async dispatch => {
+        const url = `http://localhost:3001/api/v1/users/${creator}/decks/${deck}/flashcards/${flashcard}`
+        const options = {
+            method: 'DELETE',
+            credentials: 'include',
+            // body: JSON.stringify({column: {value: value}}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        } 
+        const response = await fetch(url, options)
+        let data = await response.json()
+        if (response.status === 200){
+            dispatch(deleteFlashcardAction(flashcard))
+            data.success = true
+        }
+        return data
     }
 }

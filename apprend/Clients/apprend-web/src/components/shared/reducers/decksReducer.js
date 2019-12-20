@@ -77,6 +77,10 @@ export default function decksReducer(state = initialState, action) {
                 draft['deck']['flashcards'][index]['columns'][action.payload.index].value = action.payload.value
                 break;
 
+            case 'DECKS_DELETE_FLASHCARD':
+                draft['deck']['flashcards'] = state['deck']['flashcards'].filter(fc => fc._id !== action.payload)
+                break;
+
             default:
                 return draft
         }

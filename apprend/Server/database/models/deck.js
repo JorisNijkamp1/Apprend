@@ -114,6 +114,10 @@ deckSchema.methods.addFlashcard = async function(columns){
     return this.flashcards[this.flashcards.length - 1]
 }
 
+deckSchema.methods.deleteFlashcard = async function(id){
+    this.flashcards = this.flashcards.filter(fc => fc._id.toString() !== id)
+}
+
 //Create model
 mongoose.model('Deck', deckSchema);
 
