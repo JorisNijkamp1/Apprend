@@ -30,7 +30,6 @@ const CreateDeckFormComponent = (props) => {
     const showDeckNameOrThis = (text) => deckName ? <b>'{deckName}'</b> : text
 
     const handleSwitch = (e) => {
-        console.log(status)
         setStatus(!status)
     }
 
@@ -44,12 +43,12 @@ const CreateDeckFormComponent = (props) => {
             columns: [typeOne, typeTwo],
             columns: [
                 {
-                    name: typeOne,
-                    value: ''
+                    type: typeOne,
+                    name: ''
                 },
                 {
-                    name: typeTwo,
-                    value: ''
+                    type: typeTwo,
+                    name: ''
                 }
             ]
         }
