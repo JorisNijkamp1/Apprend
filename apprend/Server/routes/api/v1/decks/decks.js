@@ -26,7 +26,7 @@ decks.get('/tags', async (req, res) => {
                 }
             }]);
         } else {
-            await res.status(400).json({message: 'No query'})
+            return res.status(400).json({message: 'No query'})
         }
     
         foundDecks[0].foundTags.forEach(deck => {
@@ -37,11 +37,15 @@ decks.get('/tags', async (req, res) => {
                 message: 'All decks',
                 data: decks
             })
+        } else {
+           return res.status(400).json({
+             message: 'No decks found'
+           })
         }
     }
     catch (e) {
         console.log(e)
-        return res.status(404).json({message: 'No decks found'})
+        return res.status(500).json({message: 'Something went horribly wrong'})
     }
 });
 
