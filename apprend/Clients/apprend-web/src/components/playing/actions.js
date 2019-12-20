@@ -6,8 +6,11 @@ import {
     SET_ACTIVE_CARD,
     RESET_STATE,
     SET_ISLOADING,
-    SET_GAME_ID
+    SET_GAME_ID,
+    SET_PLAYING_DECK,
+    PLAYING_ERROR_OCCURRED
 } from '../../redux/actionTypes';
+import {leitnerGetNewBox} from '../../util/leitner-system/leitnerSystem';
 
 export function setCardsAction(cards) {
     return {
@@ -57,10 +60,24 @@ export function setGameIdAction(gameId) {
     }
 }
 
-export const getDeck = (deckId) => {
+export function setPlayingDeck(deck) {
+    return {
+        type: SET_PLAYING_DECK,
+        payload: deck
+    }
+}
+
+export function errorOccurred(error) {
+    return {
+        type: PLAYING_ERROR_OCCURRED,
+        payload: error
+    }
+}
+
+export const getDeck = (creatorId, deckId) => {
     return async dispatch => {
         await dispatch(setLoadingAction(true));
-        const url = `${API_URL}/decks/${deckId}`;
+        const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
         const options = {
             method: 'GET',
             headers: {
@@ -70,19 +87,17 @@ export const getDeck = (deckId) => {
             mode: 'cors'
         };
 
-        return fetch(url, options)
-            .then(response => response.json())
-            .then(data => {
-                if (data._id === deckId) {
-                    setTimeout(function () {
-                        dispatch(setLoadingAction(false));
-                    }, 1000);
-                    return data;
-                }
-            }).catch((err => {
-                console.log('Er gaat iets goed fout!');
-                console.log(err);
-            }))
+        const response = await fetch(url, options);
+        const results = await response.json();
+
+        if (response.status === 200 && results.data._id === deckId) {
+            dispatch(setPlayingDeck(results.data));
+            dispatch(setLoadingAction(false));
+            return;
+        }
+
+        console.log(`(${response.status}) ${results.message}`);
+        dispatch(errorOccurred('Something went wrong, please try again...'));
     }
 };
 
@@ -167,54 +182,70 @@ export const getGameData = (deckId, gameId) => {
     }
 };
 
-export const updateDeckSession = (deckId, session) => {
+export const updateDeckSession = (deckId, creatorId, session) => {
     return async dispatch => {
-        const url = `${API_URL}/decks/${deckId}/session`;
+        const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
         const options = {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
             mode: 'cors',
             body: JSON.stringify({
-                'session': session
+                'properties': [
+                    {
+                        'name': 'session',
+                        'value': session
+                    }
+                ]
             })
         };
 
-        return fetch(url, options).then(response => {
-            return response.json();
-        }).then(results => {
-            if (results.success) return results.deck;
-        }).catch((err => {
-            console.log('Something went wrong...');
-            console.log(err);
-        }))
+        const response = await fetch(url, options);
+        const results = await response.json();
+
+        if (response.status === 201) {
+            return results.data;
+        }
+
+        console.log(`(${response.status}) ${results.message}`);
+        dispatch(errorOccurred('Something went wrong, please try again...'));
     }
 };
 
-export const moveFlashcardToBox = (deckId, flashcardId, answeredCorrect) => {
+export const moveFlashcardToBox = (deckId, deckCreator, flashcard, currentSession, answeredCorrectly) => {
     return async dispatch => {
-        const url = `${API_URL}/decks/${deckId}/flashcards/${flashcardId}/leitner`;
+        const url = `${API_URL}/users/${deckCreator}/decks/${deckId}/flashcards/${flashcard._id}`;
         const options = {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
             mode: 'cors',
             body: JSON.stringify({
-                'answeredCorrect': answeredCorrect
+                'properties': [
+                    {
+                        'name': 'box',
+                        'value': leitnerGetNewBox(flashcard.box, answeredCorrectly)
+                    },
+                    {
+                        'name': 'sessionPlayed',
+                        'value': currentSession
+                    }
+                ]
             })
         };
 
-        return fetch(url, options).then(response => {
-            return response.json();
-        }).then(results => {
-            if (results.success) return results.deck;
-        }).catch((err => {
-            console.log('Something went wrong...');
-            console.log(err);
-        }))
+        const response = await fetch(url, options);
+        const results = await response.json();
+
+        if (response.status === 201) {
+            return results.data;
+        }
+
+        console.log(`(${response.status}) ${results.message}`);
+        dispatch(errorOccurred('Something went wrong, please try again...'));
     }
 };

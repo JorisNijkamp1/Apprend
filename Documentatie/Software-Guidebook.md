@@ -234,7 +234,7 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 | POST   | /api/v1/decks                                            | Maakt een nieuw deck aan.                               |
 | POST	 | /api/v1/decks/:deckId                                    | Importeer een deck van een ander                        |
 | POST   | /api/v1/decks/:deckId/flashcards                         | Edit flashcards van een specifiek deck.                 |
-| PUT    | /api/v1/decks/:deckId/flashcards/:flashcardId/leitner    | Update box en sessionPlayed van een flashcard.          |
+| PUT    | /api/v1/decks/:deckId/flashcards/:flashcardId/leitnerSelectCards    | Update box en sessionPlayed van een flashcard.          |
 | PUT    | /api/v1/decks/:deckId/session                            | Update session van een deck.                            |
 | DELETE | /api/v1/decks/:deckId                                    | Verwijdert een specifiek deck.                          |
 | PATCH | /api/v1/decks/:deckId                                    | Zet een deck op public of private (toggle)                         |
