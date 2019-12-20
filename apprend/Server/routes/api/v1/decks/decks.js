@@ -50,8 +50,6 @@ decks.get('/tags', async (req, res) => {
 */
 decks.get('/', async (req, res) => {
     const searchQuery = req.query.deck;
-    console.log('hier')
-    console.log(searchQuery)
     let foundDecks;
 
     if (searchQuery) {
