@@ -178,10 +178,17 @@ const Deck = (props) => {
         )
     }
 
-    const showViewButton = (bool, deckId, index) => {
+    const showViewButton = (bool, deckId, index, isCreator) => {
         if (!bool) return (
             <Row>
-                <Col xs={{span: 6, offset: 3}}>
+                {isCreator ? <Col>
+                    <Link to={`/decks/${deckId}/play`}>
+                        <Button variant="outline-success" className={'w-100'} id={`card-`+index+'-play-link'}>
+                            Play Deck
+                        </Button>
+                    </Link>
+                </Col> : ''}
+                <Col>
                     <Link to={`/decks/${deckId}`}>
                         <Button variant="outline-primary" className={'w-100'} id={'card-' + index + '-link'}>View
                             deck</Button>
@@ -258,7 +265,7 @@ const Deck = (props) => {
                         </Row>
                     </Card.Title>
 
-                    {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, id, index)}
+                    {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, id, index, isCreator)}
                 </>
             )
         }
