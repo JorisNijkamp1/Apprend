@@ -118,8 +118,9 @@ const UserDecks = (props) => {
         Notification("A deck needs atleast 1 card to play!", "info");
     }
 
-    const deleteDeckHandler = () => {
-        props.deleteDeckFromUser(props.deck._id)
+    const deleteDeckHandler = async () => {
+        const result = await props.deleteDeckFromUser(props.deck._id, props.username)
+        Notification(result.message, result.succes ? 'success' : 'danger')
         history.push(`/${props.username}/decks`)
     }
 
@@ -352,7 +353,7 @@ function mapDispatchToProps(dispatch) {
         getDeck: (deckId, setLoader) => dispatch(getDeckAction(deckId, setLoader)),
         importDeck: (deckId, creatorId) => dispatch(importDeckAction(deckId, creatorId)),
         toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),
-        deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
+        deleteDeckFromUser: (deckId, user) => dispatch(deleteDeckFromUser(deckId, user)),
         editDeck: (creatorId, _id, deckName, deckDescription, oldTags, newTags) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription, oldTags, newTags)),
         addTag: (tag) => dispatch(addTag(tag)),
         deleteTag: (tag) => dispatch(deleteTag(tag)),
