@@ -33,14 +33,13 @@ decks.get('/tags', async (req, res) => {
     })
 
     if (decks.length > 0) {
-        await res.json({
-            message: 'Tag results',
-            data: decks,
+        await res.status(200).json({
+            message: 'All decks',
+            data: decks
         })
     } else {
-        await res.json({
-            message: 'No results',
-            data: 'No decks found',
+        await res.status(404).json({
+            message: 'No decks found'
         })
     }
 });

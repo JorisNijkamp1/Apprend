@@ -631,17 +631,12 @@ export const getAllDecks = tag => {
             credentials: 'include',
             mode: 'cors'
         };
-        return fetch(url, options)
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === 'Tag results') {
-                return data.data
-            } else {
-                console.log('No decks found')
-            }
-        }).catch(err => {
-            console.log(err);
-            console.log("Er gaat iets fout met ophalen van de decks")
-        })
+        const response = await fetch(url, options)
+        const data = await response.json()
+        if (response.status === 200) {
+            return data.data
+        } else {
+            console.log('No decks found')
+        }
     }
 };
