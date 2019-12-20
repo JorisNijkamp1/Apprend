@@ -104,7 +104,7 @@ const UserDecks = (props) => {
             else deck = result.data._id
             await props.isLoggedIn()
             history.push(`/decks/${deck}`)
-            props.getDeck(deck)
+            props.getDeck(deck, setIsLoading)
         }
         Notification(result.message, result.success ? 'success' : 'danger')
     }
