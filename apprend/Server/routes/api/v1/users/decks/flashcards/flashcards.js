@@ -21,11 +21,10 @@ flashcards.post('/', async (req, res) => {
         const copyColumnsFromDeck = req.deck.columns.map(column =>{
             return {type: column.type, value: '' }
         } )
-        console.log(copyColumnsFromDeck)
         const result = await req.deck.addFlashcard(copyColumnsFromDeck)
         req.user.markModified('decks')
         await req.user.save()
-        return res.status(201).json({message: 'You have created a new flascard', data: result})
+        return res.status(201).json({message: 'You have created a new flascard', data: result, success: true})
     } catch (err) {
         console.log(err)
         return res.status(500).json({message: 'Something went wrong'})
@@ -36,6 +35,19 @@ flashcards.use('/:flashcardId/', async (req, res, next) => {
     req.flashcard = await req.deck.flashcards.id(req.params.flashcardId)
     if (!req.flashcard) return res.status(404).json({message: 'Flashcard does not exist'})
     return next()
+})
+
+flashcards.delete('/:flashcardId', async (req, res) => {
+    try {
+        // await req.flashcard.findByIdAndDelete(req.params.flashcardId)
+        const result = await req.deck.deleteFlashcard(req.params.flashcardId)
+        req.user.markModified('decks')
+        await req.user.save()
+        res.status(200).json({message: 'Flashcard deleted', data: req.params.flashcardId, success: true})
+    } catch (err){
+        console.log(err)
+        return res.status(500).json({message: 'Something went wrong'})
+    }
 })
 
 flashcards.get('/:flashcardId', async (req, res) => {

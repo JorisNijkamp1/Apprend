@@ -4,8 +4,9 @@ import { Row, Col, Card, Button } from 'react-bootstrap'
 
 import './FlashcardTable.css'
 
-import { addColumn, deleteColumn, editColumnName, addFlashcard, editFlashcard } from './actions'
+import { addColumn, deleteColumn, editColumnName, addFlashcard, editFlashcard, deleteFlashcard } from './actions'
 import AddColumnButton from './sub-components/AddColumnButton'
+import { Notification } from '../../../shared/components/Notification'
 
 const FlashcardTableComponent = (props) => {
 
@@ -21,38 +22,68 @@ const FlashcardTableComponent = (props) => {
         }
     ]
 
-    const handleAddColumn = (e) => {
+    const handleAddColumn = async (e) => {
         const type = e.currentTarget.getAttribute('name')
         const name = e.target.value
-        console.log(type, name)
-        props.addColumn(type, name, props.deck.creatorId, props.deck._id)
+        const result = await props.addColumn(type, name, props.deck.creatorId, props.deck._id)
+        Notification(result.message, result.success ? 'success' : 'danger', 600)
     }
 
-    const handleDeleteColumn = (index) => {
-        props.deleteColumn(index, props.deck.creatorId, props.deck._id)
+    const handleDeleteColumn = async (index) => {
+        const result = await props.deleteColumn(index, props.deck.creatorId, props.deck._id)
+        Notification(result.message, result.success ? 'success' : 'danger', 600)
+    }
+
+    let timers = []
+    let values = []
+    if (props.deck && props.deck.flashcards){
+        if (props.deck.flashcards.length > 0) {
+            props.deck.flashcards.forEach((fc) => {
+                fc.columns.forEach(col => {
+                    timers[col._id] = ''
+                    values[col._id] = ''
+                })
+        })
+        if (props.deck.columns && props.deck.columns > 0) {
+            props.deck.columns.forEach(col => {
+                timers[col._id] = ''
+                values[col._id] = ''
+            })
+        }
+    } 
     }
 
     let timer
     let value
-    const handleEditColumnName = (e, index) => {
+    const handleEditColumnName = (e, index, columnId) => {
         e.preventDefault()
-        value = e.target.value
-        clearTimeout(timer)
-        timer = setTimeout(() => props.editColumnName(index, props.deck.creatorId, props.deck._id, value), 1000)
+        values[columnId] = e.target.value
+        clearTimeout(timers[columnId])
+        timers[columnId] = setTimeout( async () => {
+           const result = await props.editColumnName(index, props.deck.creatorId, props.deck._id, values[columnId])
+           Notification(result.message, result.success ? 'success' : 'danger', 500)
+        } , 1000)
     }
 
-    let timerFlashcard
-    let valueFlashcard
-    const handleEditFlashcardColumn = (e, flashcardId, indexColumn) => {
+    const handleEditFlashcardColumn = (e, flashcardId, indexColumn, columnId) => {
         e.preventDefault()
-        valueFlashcard = e.target.value
-        clearTimeout(timerFlashcard)
-        timerFlashcard = setTimeout(() => props.editFlashcard(valueFlashcard, props.deck.creatorId, props.deck._id, flashcardId, indexColumn), 1000)
+        values[columnId] = e.target.value
+        clearTimeout(timers[columnId])
+        timers[columnId] = setTimeout( async () => {
+            const result = await props.editFlashcard(values[columnId], props.deck.creatorId, props.deck._id, flashcardId, indexColumn)
+            Notification(result.message, result.success ? 'success' : 'danger', 500)
+        }, 1000)
         
     }
 
-    const handleAddFlashcard = () => {
-        props.addFlashcard(props.deck.creatorId, props.deck._id)
+    const handleDeleteFlashcard = async (flashcardId) => {
+        const result = await props.deleteFlashcard(flashcardId, props.deck.creatorId, props.deck._id )
+        Notification(result.message, result.success ? 'success' : 'danger', 1000)
+    }
+
+    const handleAddFlashcard = async () => {
+        const result = await props.addFlashcard(props.deck.creatorId, props.deck._id)
+        Notification(result.message, result.success ? 'success' : 'danger', 1000)
     }
 
     const AddColumnButtons = () => {
@@ -82,7 +113,7 @@ const FlashcardTableComponent = (props) => {
                     defaultValue={column.name} 
                     placeholder={column.name} 
                     className="form-control" 
-                    onInput={(e) => handleEditColumnName(e, index)}
+                    onInput={(e) => handleEditColumnName(e, index, column._id)}
                     />
             </td>
         ))
@@ -98,8 +129,8 @@ const FlashcardTableComponent = (props) => {
 
     const ShowFlashCards = (flashcards) => {
         return flashcards.map((flashcard, indexFlashcard) => (
-            <tr key={flashcard._id} className={indexFlashcard === 0 ? 'mt-3' : ''}>
-                <td>
+            <tr key={flashcard._id} className={indexFlashcard % 2 === 1 ? 'grey-bg' : ''}>
+                <td onClick={() => handleDeleteFlashcard(flashcard._id)}>
                     {indexFlashcard + 1}
                 </td>
                 {flashcard.columns.map((column, indexColumn) => {
@@ -109,7 +140,7 @@ const FlashcardTableComponent = (props) => {
                                 className="form-control"
                                 defaultValue={column.value}
                                 placeholder={column.value}
-                                onChange={(e) => handleEditFlashcardColumn(e, flashcard._id, indexColumn )}
+                                onChange={(e) => handleEditFlashcardColumn(e, flashcard._id, indexColumn, column._id )}
                                 />
                         </td>
                     )
@@ -160,6 +191,7 @@ const mapDispatchToProps = dispatch => {
         editColumnName: (index, creator, deck, value) => dispatch(editColumnName(index, creator, deck, value)),
         addFlashcard: (creator, deck) => dispatch(addFlashcard(creator, deck)),
         editFlashcard: (value, creator, deck, flashcard, indexFlashcard, indexColumn) => dispatch(editFlashcard(value, creator, deck, flashcard, indexFlashcard, indexColumn)),
+        deleteFlashcard: (flashcardId, creator, deck) => dispatch(deleteFlashcard(flashcardId, creator, deck)),
     }
 }
 

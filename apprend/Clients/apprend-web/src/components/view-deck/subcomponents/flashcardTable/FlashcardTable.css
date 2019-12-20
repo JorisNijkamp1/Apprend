@@ -15,3 +15,7 @@ table {
     overflow-x: 'auto';
     white-space: nowrap;
 }
+
+.grey-bg {
+    background-color: #EEEEEE;
+}
