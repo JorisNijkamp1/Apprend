@@ -637,6 +637,7 @@ export const getAllDecks = tag => {
             return data.data
         } else {
             console.log('No decks found')
+            return []
         }
     }
 };

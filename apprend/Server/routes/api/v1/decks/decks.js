@@ -25,7 +25,7 @@ decks.get('/tags', async (req, res) => {
             }
         }]);
     } else {
-        foundDecks = await User.find({})
+        await res.status(400).json({message: 'No query'})
     }
 
     foundDecks[0].foundTags.forEach(deck => {
