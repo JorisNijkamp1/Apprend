@@ -620,9 +620,9 @@ export const loadDecks = username => {
 |----------------------------------------------------------------
  */
 
-export const getAllDecks = () => {
+export const getAllDecks = tag => {
     return async dispatch => {
-        const url = `${API_URL}/decks/tags`;
+        const url = `${API_URL}/decks/tags?tag=${tag}`;
         const options = {
             method: 'GET',
             headers: {
@@ -634,10 +634,10 @@ export const getAllDecks = () => {
         return fetch(url, options)
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                return data.decks
+            if (data.message === 'Tag results') {
+                return data.data
             } else {
-                console.log('Geen decks gevonden')
+                console.log('No decks found')
             }
         }).catch(err => {
             console.log(err);

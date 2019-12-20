@@ -25,11 +25,10 @@ const TagOverview = (props) => {
 
     const getMatchingLanguages = decks => {
         const match = [];
-
         for (let i = 0; i < decks.length; i++) {
-            for (let j = 0; j < decks[i].tags.length; j++) {
-                if (decks[i].tags[j] === tag.trim().toLowerCase()) {
-                    match.push(decks[i])
+            for (let j = 0; j < decks[i].decks.tags.length; j++) {
+                if (decks[i].decks.tags[j] === tag.trim().toLowerCase()) {
+                    match.push(decks[i].decks)
                 }
             }
         }
@@ -43,7 +42,7 @@ const TagOverview = (props) => {
     };
 
     const fetchDecks = async () => {
-        let response = await props.getAllDecks();
+        let response = await props.getAllDecks(tag);
         return getMatchingLanguages(response);
     }
 
@@ -71,7 +70,6 @@ const TagOverview = (props) => {
     };
 
     const searchResults = () => {
-        console.log(decks)
         if (!props.isLoading) return decks.map((deck, index) => {
             return (
                 <Col lg={{span: 6}} md={{span: 6}} key={deck.deckId + '-' + index}>
@@ -140,7 +138,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setIsLoading: (bool) => dispatch(setSearchIsLoading(bool)),
-        getAllDecks: () => dispatch(getAllDecks())
+        getAllDecks: (tag) => dispatch(getAllDecks(tag))
     }
 };
 

@@ -10,24 +10,37 @@ require('../../../../database/models/user');
 const User = mongoose.model('User');
 
 decks.get('/tags', async (req, res) => {
-    let foundDecks = await User.find({});
+    const searchQuery = req.query.tag;
+    let foundDecks;
     let decks = [];
 
-    foundDecks.forEach(user => {
-        user.decks.forEach(deck => {
-            decks.push(deck);
-        });
-    });
-    
+    if (searchQuery) {
+        foundDecks = await User.aggregate([{
+            $facet: {
+                foundTags: [
+                    {$unwind: "$decks"},
+                    {$match: {'decks.tags': searchQuery, "decks.private": false}},
+                    {$project: {"decks": "$decks"}}
+                ],
+            }
+        }]);
+    } else {
+        foundDecks = await User.find({})
+    }
+
+    foundDecks[0].foundTags.forEach(deck => {
+        decks.push(deck);
+    })
+
     if (decks.length > 0) {
-        return res.json({
-            success: true,
-            decks: decks
+        await res.json({
+            message: 'Tag results',
+            data: decks,
         })
     } else {
-        return res.json({
-            success: false,
-            error: 'No decks found'
+        await res.json({
+            message: 'No results',
+            data: 'No decks found',
         })
     }
 });
@@ -37,6 +50,8 @@ decks.get('/tags', async (req, res) => {
 */
 decks.get('/', async (req, res) => {
     const searchQuery = req.query.deck;
+    console.log('hier')
+    console.log(searchQuery)
     let foundDecks;
 
     if (searchQuery) {
