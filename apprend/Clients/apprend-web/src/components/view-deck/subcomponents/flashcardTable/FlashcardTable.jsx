@@ -34,26 +34,43 @@ const FlashcardTableComponent = (props) => {
         Notification(result.message, result.success ? 'success' : 'danger', 600)
     }
 
+    let timers = []
+    let values = []
+    if (props.deck && props.deck.flashcards){
+        if (props.deck.flashcards.length > 0) {
+            props.deck.flashcards.forEach((fc) => {
+                fc.columns.forEach(col => {
+                    timers[col._id] = ''
+                    values[col._id] = ''
+                })
+        })
+        if (props.deck.columns && props.deck.columns > 0) {
+            props.deck.columns.forEach(col => {
+                timers[col._id] = ''
+                values[col._id] = ''
+            })
+        }
+    } 
+    }
+
     let timer
     let value
-    const handleEditColumnName = (e, index) => {
+    const handleEditColumnName = (e, index, columnId) => {
         e.preventDefault()
-        value = e.target.value
-        clearTimeout(timer)
-        timer = setTimeout( async () => {
-           const result = await props.editColumnName(index, props.deck.creatorId, props.deck._id, value)
+        values[columnId] = e.target.value
+        clearTimeout(timers[columnId])
+        timers[columnId] = setTimeout( async () => {
+           const result = await props.editColumnName(index, props.deck.creatorId, props.deck._id, values[columnId])
            Notification(result.message, result.success ? 'success' : 'danger', 500)
         } , 1000)
     }
 
-    let timerFlashcard
-    let valueFlashcard
-    const handleEditFlashcardColumn = (e, flashcardId, indexColumn) => {
+    const handleEditFlashcardColumn = (e, flashcardId, indexColumn, columnId) => {
         e.preventDefault()
-        valueFlashcard = e.target.value
-        clearTimeout(timerFlashcard)
-        timerFlashcard = setTimeout( async () => {
-            const result = await props.editFlashcard(valueFlashcard, props.deck.creatorId, props.deck._id, flashcardId, indexColumn)
+        values[columnId] = e.target.value
+        clearTimeout(timers[columnId])
+        timers[columnId] = setTimeout( async () => {
+            const result = await props.editFlashcard(values[columnId], props.deck.creatorId, props.deck._id, flashcardId, indexColumn)
             Notification(result.message, result.success ? 'success' : 'danger', 500)
         }, 1000)
         
@@ -96,7 +113,7 @@ const FlashcardTableComponent = (props) => {
                     defaultValue={column.name} 
                     placeholder={column.name} 
                     className="form-control" 
-                    onInput={(e) => handleEditColumnName(e, index)}
+                    onInput={(e) => handleEditColumnName(e, index, column._id)}
                     />
             </td>
         ))
@@ -123,7 +140,7 @@ const FlashcardTableComponent = (props) => {
                                 className="form-control"
                                 defaultValue={column.value}
                                 placeholder={column.value}
-                                onChange={(e) => handleEditFlashcardColumn(e, flashcard._id, indexColumn )}
+                                onChange={(e) => handleEditFlashcardColumn(e, flashcard._id, indexColumn, column._id )}
                                 />
                         </td>
                     )
