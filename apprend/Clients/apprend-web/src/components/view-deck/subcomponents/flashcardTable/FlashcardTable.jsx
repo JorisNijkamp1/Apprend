@@ -64,7 +64,7 @@ const FlashcardTableComponent = (props) => {
                     <Col xs={12} md={4}>
                         <AddColumnButton 
                             key={button.type + index} 
-                            name={button.type} value={'test'} 
+                            name={button.type} value={''} 
                             buttonType={button.type} 
                             onClick={handleAddColumn}/>
                     </Col>
@@ -76,9 +76,6 @@ const FlashcardTableComponent = (props) => {
     const showAllColumnNames = (columns) => {
 
         return columns.map((column, index) => (
-            // <div className="text-center" style={{'min-width': '400px'}}>{column}</div>
-            // <td style={{'min-width': '400px'}}>{column}</td>
-            // <Col xs={6} md={4} className="py-1" ><b>{column.value}</b></Col>
             <td key={column.type + index}>
                 <input 
                     name={column.name + '!' + index}
@@ -96,37 +93,6 @@ const FlashcardTableComponent = (props) => {
             <td key={column.type + index} onClick={() => handleDeleteColumn(index)}>
                 <strong>{column.type}</strong>
             </td>
-        ))
-    }
-
-    const showAllFlashcards = (flashcards) => {
-
-        const allColumns = (columns) => {
-            return columns.map(column => {
-                if (column.type === '1'){
-                    return (
-                        <Col className="py-3" xs={6} md={4}><input className="form-control" value={column.value} placeholder={column.value} /></Col>
-                    )
-                }  else if (column.type === '2' || column.type === '3') {
-                    return (
-                        <Col className="py-3" xs={6} md={4}><input type="file" /></Col>
-                    )
-                }
-            }
-            )
-        }
-        return flashcards.map((flashcard, index) => (
-            // <Row className="text-center flex-nowrap" style={{'overflow-x': 'auto'}}>
-            <Card className="my-1">
-
-                <Row className="flex-nowrap">
-                    <Col xs={1} className="py-3">
-                        {index+1}
-                    </Col>
-                {allColumns(flashcard.columns)}
-            </Row>
-            </Card>
-
         ))
     }
 
