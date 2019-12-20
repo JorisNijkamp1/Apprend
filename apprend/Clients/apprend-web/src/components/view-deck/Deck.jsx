@@ -27,7 +27,7 @@ import {Notification} from '../shared/components/Notification';
 import {addTag, clearTags} from '../create-deck/actions';
 import {deleteTag} from "../shared/actions/actions";
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
-import {FlashcardTable} from './subcomponents/FlashcardTable'
+import {FlashcardTable} from './subcomponents/flashcardTable/FlashcardTable'
 import DeckDescription from "./subcomponents/DeckDescription";
 import DeckName from './subcomponents/DeckName'
 import DeckTags from "./subcomponents/DeckTags";
@@ -317,7 +317,7 @@ const UserDecks = (props) => {
                     {deck}
                 </Row>
                 {/* <Row> */}
-                <FlashcardTable/>
+                <FlashcardTable />
                 {/* </Row> */}
                 {showDeleteConfirmationBox()}
                 {/* {showFlashcards()} */}

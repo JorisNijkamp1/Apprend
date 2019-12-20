@@ -6,12 +6,31 @@ const mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 require('../../../../../../database/models/deck');
 require('../../../../../../database/models/user');
+require('../../../../../../database/models/flashcard');
+
 const User = mongoose.model('User');
 const Deck = mongoose.model('Deck');
 const flashcards = express.Router();
 const columnsRoute = require('./columns/columns')
+const Flashcard = mongoose.model('Flashcard')
 
 const auth = require('../../../../../../authentication/authentication')
+
+flashcards.post('/', async (req, res) => {
+    try {
+        const copyColumnsFromDeck = req.deck.columns.map(column =>{
+            return {type: column.type, value: '' }
+        } )
+        console.log(copyColumnsFromDeck)
+        const result = await req.deck.addFlashcard(copyColumnsFromDeck)
+        req.user.markModified('decks')
+        await req.user.save()
+        return res.status(201).json({message: 'You have created a new flascard', data: result})
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({message: 'Something went wrong'})
+    }
+})
 
 flashcards.use('/:flashcardId/', async (req, res, next) => {
     req.flashcard = await req.deck.flashcards.id(req.params.flashcardId)

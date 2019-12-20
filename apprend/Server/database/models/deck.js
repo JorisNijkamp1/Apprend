@@ -39,7 +39,7 @@ const deckSchema = new mongoose.Schema({
         default: 0
     }, 
     columns: {
-        type: [String]
+        type: [{'type': {type: String}, name: {type: String} }]
     }
 });
 
@@ -85,10 +85,10 @@ deckSchema.methods.editFlashcardLeitner = async function (flashcardId, answeredC
     return this;
 };
 
-deckSchema.methods.addColumn = async function(name) {
-    this.columns.push(name)
+deckSchema.methods.addColumn = async function(column) {
+    this.columns.push({type: column.type, name: column.name})
     this.flashcards = this.flashcards.map(flashcard => {
-        flashcard.columns.push({type: name, value: ''})
+        flashcard.columns.push({type: column.type, value: ''})
         return flashcard
     })
 
@@ -107,6 +107,11 @@ deckSchema.methods.deleteColumn = async function(id) {
     })
 
     return this
+}
+
+deckSchema.methods.addFlashcard = async function(columns){
+    this.flashcards.push({columns: columns})
+    return this.flashcards[this.flashcards.length - 1]
 }
 
 //Create model
