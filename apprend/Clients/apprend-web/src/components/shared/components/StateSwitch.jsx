@@ -11,6 +11,7 @@ export default (props) => {
                     id="status-switch"
                     label={props.label}
                     name="status-deck"
+                    defaultChecked={props.state ? true : false}
                     onChange={props.handleSwitch}
                     />
                     <p className="small">{props.text}</p>

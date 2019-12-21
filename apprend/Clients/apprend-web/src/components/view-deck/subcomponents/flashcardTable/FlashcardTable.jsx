@@ -4,7 +4,7 @@ import { Row, Col, Card, Button } from 'react-bootstrap'
 
 import './FlashcardTable.css'
 
-import { addColumn, deleteColumn, editColumnName, addFlashcard, editFlashcard, deleteFlashcard } from './actions'
+import { addColumn, deleteColumn, editColumnName, addFlashcard, editFlashcard, deleteFlashcard, setQuickDeleteAction } from './actions'
 import AddColumnButton from './sub-components/AddColumnButton'
 import { Notification } from '../../../shared/components/Notification'
 import DeleteButton from './sub-components/DeleteButton'
@@ -13,7 +13,6 @@ import ConfirmationButtons from './sub-components/ConfirmationButtons'
 
 const FlashcardTableComponent = (props) => {
 
-    const [quickDelete, setQuickDelete] = useState(false)
     const [upForDelete, setUpForDelete] = useState()
 
     const buttons = [
@@ -29,7 +28,7 @@ const FlashcardTableComponent = (props) => {
     ]
 
     const handleDeleteSwitch = () => {
-        setQuickDelete(!quickDelete)
+        props.setQuickDelete(!props.quickDelete)
         setUpForDelete(undefined)
     }
 
@@ -98,7 +97,7 @@ const FlashcardTableComponent = (props) => {
     }
 
     const handleAllDeleteActions = (func, id) => {
-        if (quickDelete){
+        if (props.quickDelete){
             func()
         } else {
             setUpForDelete(id)
@@ -185,12 +184,13 @@ const FlashcardTableComponent = (props) => {
         <>
             <AddColumnButtons />
             <Button className="w-100 my-3" variant="outline-danger" onClick={handleAddFlashcard}>NIEUWE KAART</Button>
-            <div className="w-100 mb-5" style={{'overflowX': 'auto'}}>
             <StateSwitch 
+                state={props.quickDelete}
                 label="Enable quick delete?"
                 handleSwitch={handleDeleteSwitch}
-                text={quickDelete ? 'YOLO': 'im a pussy'}
+                text={props.quickDelete ? 'YOLO': 'im a pussy'}
                 />
+            <div className="w-100 mb-5" style={{'overflowX': 'auto'}}>
             <table className="my-5">
                 <tbody>
                 <tr>
@@ -220,7 +220,8 @@ const FlashcardTableComponent = (props) => {
 
 const mapStateToProps = state => {
     return {
-        deck: state.decks.deck
+        deck: state.decks.deck,
+        quickDelete: state.client.quickDelete
     }
 }
 
@@ -232,6 +233,7 @@ const mapDispatchToProps = dispatch => {
         addFlashcard: (creator, deck) => dispatch(addFlashcard(creator, deck)),
         editFlashcard: (value, creator, deck, flashcard, indexFlashcard, indexColumn) => dispatch(editFlashcard(value, creator, deck, flashcard, indexFlashcard, indexColumn)),
         deleteFlashcard: (flashcardId, creator, deck) => dispatch(deleteFlashcard(flashcardId, creator, deck)),
+        setQuickDelete: (bool) => dispatch(setQuickDeleteAction(bool)),
     }
 }
 

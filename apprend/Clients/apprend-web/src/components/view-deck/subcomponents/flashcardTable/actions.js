@@ -159,3 +159,11 @@ export const deleteFlashcard = (flashcard, creator, deck) => {
         return data
     }
 }
+
+export const setQuickDeleteAction = (bool) =>{
+    console.log('action wordt aangeroepen')
+    return {
+        type: 'DECKS_TOGGLE_QUICKDELETE',
+        payload: bool
+    }
+}
