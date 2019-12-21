@@ -174,8 +174,8 @@ const UserDecks = (props) => {
     }
 
     const showOptions = (icons) => {
-        return icons.map(icon => (
-            <Col xs={6} md={3}>
+        return icons.map((icon, index) => (
+            <Col xs={6} md={3} key={'key'+index}>
                 {icon}
             </Col>
         ))

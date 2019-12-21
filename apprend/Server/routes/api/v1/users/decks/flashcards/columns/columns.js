@@ -19,7 +19,7 @@ columns.use('/:columnId/', async (req, res, next) => {
     return next()
 })
 
-columns.patch('/:columnId', async (req, res) => {
+columns.patch('/:columnId', auth.user, async (req, res) => {
     try {
         const { columnId } = req.params
         const { column } = req.body

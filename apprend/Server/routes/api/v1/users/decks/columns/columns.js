@@ -19,7 +19,7 @@ columns.use('/:columnId/', async (req, res, next) => {
     return next()
 })
 
-columns.post('/', async (req, res) => {
+columns.post('/', auth.user, async (req, res) => {
     try {
         const { column  } = req.body
         const result = await req.deck.addColumn(column)
@@ -32,7 +32,7 @@ columns.post('/', async (req, res) => {
     }
 })
 
-columns.patch('/:columnId', async (req, res) => {
+columns.patch('/:columnId', auth.user, async (req, res) => {
     try {
         req.deck.columns[req.params.columnId].name = req.body.column.value
         req.user.markModified('decks')
@@ -44,7 +44,7 @@ columns.patch('/:columnId', async (req, res) => {
     }
 })
 
-columns.delete('/:columnId', async (req, res) => {
+columns.delete('/:columnId', auth.user, async (req, res) => {
     try {
         const result = await req.deck.deleteColumn(req.params.columnId)
         req.user.markModified('decks')
