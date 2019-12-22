@@ -167,7 +167,19 @@ const FlashcardTableComponent = (props) => {
         } else {
             Notification('Upload failed', 'danger', 1000)
         }
+    }
 
+    const handleAudioUpload = async (e, creator, deck, flashcard, column) => {
+        e.preventDefault()
+        let audio = new FormData()
+        audio.append('audio', e.target.files[0])
+        const upload = await props.uploadFile(audio, '/audio')
+        if (upload.success){
+            const result = await props.editFlashcard(upload.data,'path', creator, deck, flashcard, column)
+            Notification(result.message, result.success ? 'success' : 'danger', 1000)    
+        } else {
+            Notification('Upload failed', 'danger', 1000)
+        }
     }
 
     const ShowFlashCards = (flashcards) => {
@@ -201,7 +213,7 @@ const FlashcardTableComponent = (props) => {
                                                 onChange={(e) => handleImageUpload(e, props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
                                                 style={{'display': 'none'}}
                                                 type="file"
-                                                label="lol"
+                                                label="image"
                                                 id={'123'}
                                                 name="image"
                                             />  
@@ -218,19 +230,19 @@ const FlashcardTableComponent = (props) => {
                                 <Row className="align-content-center">
                                     <Col>
                                         {column.path ? 
-                                        <ColumImage image={`http://localhost:3001/api/v1/images/${column.path}`} />
+                                        <audio controls src={`http://localhost:3001/api/v1/audio/${column.path}`} alt="Audio" />
                                         : '' }
                                     </Col>
                                     <Col className="align-self-center">
                                         <label style={{'cursor': 'pointer'}} className={`btn ${column.path ? 'btn-warning':'btn-success'}`}>
                                             {column.path ? 'Change' : 'Upload'} 
                                             <input
-                                                onChange={(e) => handleImageUpload(e, props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
+                                                onChange={(e) => handleAudioUpload(e, props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
                                                 style={{'display': 'none'}}
                                                 type="file"
-                                                label="lol"
+                                                label="audio"
                                                 id={'123'}
-                                                name="image"
+                                                name="audio"
                                             />  
                                         </label>
                                     </Col>
@@ -324,7 +336,7 @@ const mapDispatchToProps = dispatch => {
         editFlashcard: (value, creator, deck, flashcard, indexFlashcard, indexColumn) => dispatch(editFlashcard(value, creator, deck, flashcard, indexFlashcard, indexColumn)),
         deleteFlashcard: (flashcardId, creator, deck) => dispatch(deleteFlashcard(flashcardId, creator, deck)),
         setQuickDelete: (bool) => dispatch(setQuickDeleteAction(bool)),
-        uploadFile: (form) => dispatch(uploadFile(form)),
+        uploadFile: (form, audio) => dispatch(uploadFile(form, audio)),
         setExpandTable: (bool) => dispatch(setExpandTable(bool)),
     }
 }

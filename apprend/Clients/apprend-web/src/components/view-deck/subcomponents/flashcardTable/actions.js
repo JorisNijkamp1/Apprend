@@ -167,16 +167,13 @@ export const setQuickDeleteAction = (bool) =>{
     }
 }
 
-export const uploadFile = (file) => {
+export const uploadFile = (file, audio) => {
     return async dispatch => {
-        const url = `http://localhost:3001/api/v1/upload`
+        const url = `http://localhost:3001/api/v1/upload${audio ? audio : ''}`
         const options = {
             method: 'POST',
             credentials: 'include',
             body: file,
-            // headers: {
-            //     'Content-Type': 'multipart/form-data; boundary=---------------ginolol'
-            // }
         }
 
         const result = await fetch(url, options)
