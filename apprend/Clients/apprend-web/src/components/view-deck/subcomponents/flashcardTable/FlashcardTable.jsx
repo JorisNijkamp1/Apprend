@@ -10,6 +10,7 @@ import { Notification } from '../../../shared/components/Notification'
 import DeleteButton from './sub-components/DeleteButton'
 import StateSwitch from '../../../shared/components/StateSwitch';
 import ConfirmationButtons from './sub-components/ConfirmationButtons'
+import ColumImage from './sub-components/ColumnImage'
 
 const FlashcardTableComponent = (props) => {
 
@@ -188,7 +189,9 @@ const FlashcardTableComponent = (props) => {
                     if (column.type === 'Image'){
                         return (
                             <td>
-                                <label className="btn btn-primary">
+                                <Row>
+                                    <Col>
+                                    <label className="btn btn-primary">
                                 Upload <input
                                 onChange={(e) => handleImageUpload(e, props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
                                     style={{'display': 'none'}}
@@ -198,10 +201,13 @@ const FlashcardTableComponent = (props) => {
                                     name="image"
                                     />  
                                 </label>
-                                {column.path ? 
-                                <img src={`http://localhost:3001/api/v1/images/${column.path}`} alt="image"></img>
+                                    </Col>
+                                    <Col>
+                                    {column.path ? 
+                                <ColumImage image={`http://localhost:3001/api/v1/images/${column.path}`} />
                                 : '' }
-                                {/* {column.path} */}
+                                    </Col>
+                                </Row>
                             </td>
                         )
                     } 
