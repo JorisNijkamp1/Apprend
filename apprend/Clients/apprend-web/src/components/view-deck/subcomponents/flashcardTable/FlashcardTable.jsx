@@ -156,29 +156,16 @@ const FlashcardTableComponent = (props) => {
         ))
     }
 
-    const handleImageUpload = async (e, creator, deck, flashcard, column) => {
+    const handleFileUpload = async (e, type, creator, deck, flashcard, column) => {
         e.preventDefault()
-        let x = new FormData()
-        x.append('image', e.target.files[0])   
-        const upload = await props.uploadFile(x)
-        if (upload.success){
-            const result = await props.editFlashcard(upload.data,'path', creator, deck, flashcard, column)
-            Notification(result.message, result.success ? 'success' : 'danger', 1000)
-        } else {
-            Notification('Upload failed', 'danger', 1000)
-        }
-    }
-
-    const handleAudioUpload = async (e, creator, deck, flashcard, column) => {
-        e.preventDefault()
-        let audio = new FormData()
-        audio.append('audio', e.target.files[0])
-        const upload = await props.uploadFile(audio, '/audio')
+        let file = new FormData()
+        file.append(type, e.target.files[0])
+        const upload = await props.uploadFile(file, type)
         if (upload.success){
             const result = await props.editFlashcard(upload.data,'path', creator, deck, flashcard, column)
             Notification(result.message, result.success ? 'success' : 'danger', 1000)    
         } else {
-            Notification('Upload failed', 'danger', 1000)
+            Notification(upload.message, 'danger', 1000)
         }
     }
 
@@ -210,7 +197,8 @@ const FlashcardTableComponent = (props) => {
                                         <label style={{'cursor': 'pointer'}} className={`btn ${column.path ? 'btn-warning':'btn-success'}`}>
                                             {column.path ? 'Change' : 'Upload'} 
                                             <input
-                                                onChange={(e) => handleImageUpload(e, props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
+                                                accept='image/*'
+                                                onChange={(e) => handleFileUpload(e, 'image', props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
                                                 style={{'display': 'none'}}
                                                 type="file"
                                                 label="image"
@@ -237,7 +225,8 @@ const FlashcardTableComponent = (props) => {
                                         <label style={{'cursor': 'pointer'}} className={`btn ${column.path ? 'btn-warning':'btn-success'}`}>
                                             {column.path ? 'Change' : 'Upload'} 
                                             <input
-                                                onChange={(e) => handleAudioUpload(e, props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
+                                                accept='audio/*'
+                                                onChange={(e) => handleFileUpload(e, 'audio', props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
                                                 style={{'display': 'none'}}
                                                 type="file"
                                                 label="audio"
