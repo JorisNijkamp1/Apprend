@@ -22,6 +22,7 @@ const initialState = {
 export default function decksReducer(state = initialState, action) {
     return produce(state, draft => {
         let index
+        let indexColumn
         switch (action.type) {
 
             case DECKS_SET_USER_DECKS:
@@ -74,7 +75,10 @@ export default function decksReducer(state = initialState, action) {
             case 'DECKS_EDIT_FLASHCARD_COLUMN':
                 index = draft['deck']['flashcards'].findIndex(fc => fc._id === action.payload._id)
                 if (index !== undefined)
-                draft['deck']['flashcards'][index]['columns'][action.payload.index].value = action.payload.value
+                indexColumn = draft['deck']['flashcards'][index]['columns'].findIndex(col => col._id === action.payload.index)
+                if (indexColumn !== undefined)
+                console.log(action.payload.value)
+                draft['deck']['flashcards'][index]['columns'][indexColumn][action.payload.prop] = action.payload.value
                 break;
 
             case 'DECKS_DELETE_FLASHCARD':

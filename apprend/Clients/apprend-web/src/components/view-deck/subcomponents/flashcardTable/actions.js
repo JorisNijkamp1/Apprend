@@ -110,22 +110,21 @@ function editFlashcardColumn(column){
     }
 }
 
-export const editFlashcard = (value, creator, deck, flashcard, index) => {
+export const editFlashcard = (value, prop, creator, deck, flashcard, column) => {
     return async dispatch => {
-        console.log(value, creator, deck, flashcard, index)
-        const url = `http://localhost:3001/api/v1/users/${creator}/decks/${deck}/flashcards/${flashcard}/columns/${index}`
+        const url = `http://localhost:3001/api/v1/users/${creator}/decks/${deck}/flashcards/${flashcard}/columns/${column}`
         const options = {
             method: 'PATCH',
             credentials: 'include',
-            body: JSON.stringify({column: {value: value}}),
+            body: JSON.stringify({change: {prop: prop, value: value}}),
             headers: {
                 'Content-Type': 'application/json'
             }
         } 
         const response = await fetch(url, options)
         const data = await response.json()
-        if (response.status === 200){
-            dispatch(editFlashcardColumn({index: index, value: data.data, _id: flashcard}))
+        if (response.status === 201){
+            dispatch(editFlashcardColumn({index: column,prop: prop, value: data.data, _id: flashcard}))
         }
 
         return data
@@ -165,5 +164,25 @@ export const setQuickDeleteAction = (bool) =>{
     return {
         type: 'DECKS_TOGGLE_QUICKDELETE',
         payload: bool
+    }
+}
+
+export const uploadFile = (file) => {
+    return async dispatch => {
+        const url = `http://localhost:3001/api/v1/upload`
+        const options = {
+            method: 'POST',
+            credentials: 'include',
+            body: file,
+            // headers: {
+            //     'Content-Type': 'multipart/form-data; boundary=---------------ginolol'
+            // }
+        }
+
+        const result = await fetch(url, options)
+
+        const data = await result.json()
+        console.log(data)
+        return data
     }
 }
