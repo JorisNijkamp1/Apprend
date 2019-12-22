@@ -8,7 +8,7 @@ export default (props) => {
             <Col className="text-center my-3">
                 <Form.Check
                     type="switch"
-                    id="status-switch"
+                    id={props.giveId}
                     label={props.label}
                     name="status-deck"
                     defaultChecked={props.state ? true : false}

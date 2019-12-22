@@ -186,3 +186,10 @@ export const uploadFile = (file) => {
         return data
     }
 }
+
+export function setExpandTable(bool){
+    return {
+        type: 'CLIENT_TOGGLE_EXPAND_TABLE',
+        payload: bool
+    }
+}

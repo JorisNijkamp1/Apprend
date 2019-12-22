@@ -18,6 +18,10 @@ table {
     white-space: nowrap;
 }
 
-.grey-bg {
+.tr:nth-child(even){
     background-color: #EEEEEE;
+}
+
+.tr:nth-child(1) {
+    border-top: 2px solid black
 }

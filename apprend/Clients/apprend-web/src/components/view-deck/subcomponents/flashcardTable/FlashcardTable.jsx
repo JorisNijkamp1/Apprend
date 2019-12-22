@@ -4,7 +4,7 @@ import { Row, Col, Card, Button, Form } from 'react-bootstrap'
 
 import './FlashcardTable.css'
 
-import { addColumn, deleteColumn, editColumnName, addFlashcard, editFlashcard, deleteFlashcard, setQuickDeleteAction, uploadFile } from './actions'
+import { addColumn, deleteColumn, editColumnName, addFlashcard, editFlashcard, deleteFlashcard, setQuickDeleteAction, uploadFile, setExpandTable } from './actions'
 import AddColumnButton from './sub-components/AddColumnButton'
 import { Notification } from '../../../shared/components/Notification'
 import DeleteButton from './sub-components/DeleteButton'
@@ -31,6 +31,10 @@ const FlashcardTableComponent = (props) => {
     const handleDeleteSwitch = () => {
         props.setQuickDelete(!props.quickDelete)
         setUpForDelete(undefined)
+    }
+
+    const handleExpandTable = () => {
+        props.setExpandTable(!props.expandTable)
     }
 
     const handleAddColumn = async (e) => {
@@ -126,7 +130,7 @@ const FlashcardTableComponent = (props) => {
     const showAllColumnNames = (columns) => {
 
         return columns.map((column, index) => (
-            <td key={column.type + index}>
+            <td key={column.type + column.name + index + '-type'}>
                 <input 
                     name={column.name + '!' + index}
                     defaultValue={column.name} 
@@ -140,7 +144,7 @@ const FlashcardTableComponent = (props) => {
 
     const showAllColumnTypes = (columns) => {
         return columns.map((column, index) => (
-            <td key={column.type + index}>
+            <td key={column.type + column.name + index + '-name'}>
                 <strong>{column.type}</strong>
                 {upForDelete !== index ? 
                 <DeleteButton
@@ -156,26 +160,21 @@ const FlashcardTableComponent = (props) => {
         e.preventDefault()
         let x = new FormData()
         x.append('image', e.target.files[0])   
-        console.log(x)
         const upload = await props.uploadFile(x)
         if (upload.success){
             const result = await props.editFlashcard(upload.data,'path', creator, deck, flashcard, column)
             Notification(result.message, result.success ? 'success' : 'danger', 1000)
+        } else {
+            Notification('Upload failed', 'danger', 1000)
         }
 
     }
 
     const ShowFlashCards = (flashcards) => {
-
-        const inputType = (type) => {
-            if (type === 'Text' ){
-                return 
-            }
-        }
         return flashcards.map((flashcard, indexFlashcard) => (
-            <tr key={flashcard._id} className={indexFlashcard % 2 === 1 ? 'grey-bg' : ''}>
+            <tr key={flashcard._id} className="tr">
                 <td>
-                    Card #{indexFlashcard + 1}
+                    <strong># {indexFlashcard + 1}</strong>
                     {upForDelete !== flashcard._id ? 
                     <DeleteButton
                         columnId={flashcard._id}
@@ -189,23 +188,51 @@ const FlashcardTableComponent = (props) => {
                     if (column.type === 'Image'){
                         return (
                             <td>
-                                <Row>
+                                <Row className="align-content-center">
                                     <Col>
-                                    <label className="btn btn-primary">
-                                Upload <input
-                                onChange={(e) => handleImageUpload(e, props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
-                                    style={{'display': 'none'}}
-                                    type="file"
-                                    label="lol"
-                                    id={'123'}
-                                    name="image"
-                                    />  
-                                </label>
+                                        {column.path ? 
+                                        <ColumImage image={`http://localhost:3001/api/v1/images/${column.path}`} />
+                                        : '' }
                                     </Col>
+                                    <Col className="align-self-center">
+                                        <label style={{'cursor': 'pointer'}} className={`btn ${column.path ? 'btn-warning':'btn-success'}`}>
+                                            {column.path ? 'Change' : 'Upload'} 
+                                            <input
+                                                onChange={(e) => handleImageUpload(e, props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
+                                                style={{'display': 'none'}}
+                                                type="file"
+                                                label="lol"
+                                                id={'123'}
+                                                name="image"
+                                            />  
+                                        </label>
+                                    </Col>
+                                </Row>
+                            </td>
+                        )
+                    } 
+
+                    if (column.type === 'Audio'){
+                        return (
+                            <td>
+                                <Row className="align-content-center">
                                     <Col>
-                                    {column.path ? 
-                                <ColumImage image={`http://localhost:3001/api/v1/images/${column.path}`} />
-                                : '' }
+                                        {column.path ? 
+                                        <ColumImage image={`http://localhost:3001/api/v1/images/${column.path}`} />
+                                        : '' }
+                                    </Col>
+                                    <Col className="align-self-center">
+                                        <label style={{'cursor': 'pointer'}} className={`btn ${column.path ? 'btn-warning':'btn-success'}`}>
+                                            {column.path ? 'Change' : 'Upload'} 
+                                            <input
+                                                onChange={(e) => handleImageUpload(e, props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
+                                                style={{'display': 'none'}}
+                                                type="file"
+                                                label="lol"
+                                                id={'123'}
+                                                name="image"
+                                            />  
+                                        </label>
                                     </Col>
                                 </Row>
                             </td>
@@ -226,88 +253,36 @@ const FlashcardTableComponent = (props) => {
         ))
     }
 
-    const showColumnContent = () => {
-        if (props.deck.columns && props.deck.columns.length > 0){
-            const showWarning = (bool) => {
-                if (bool){
-                    return (
-                        <Row className="text-center"> 
-                            <Col>
-                                <h4>In order to play this deck you need at least 2 columns</h4>
-                                <small>Please add at least 1 more column</small>
-                            </Col>
-                        </Row>
-                    )
-                }
-                return ''
-            }
-            return (
-                <>
-                {showWarning(props.deck.columns.length === 1)}
-                <table className="my-5">
-                <tbody>
-                <tr>
-                    <td>
-                        Type
-                    </td>
-                    {showAllColumnTypes(props.deck.columns)}
-                </tr>
-                <tr>
-                    <td>
-                        Name
-                    </td>
-                    {showAllColumnNames(props.deck.columns)}
-                </tr>
-                </tbody>
-            </table>
-            </>
-            )
-        } else {
-            return (
-                <Row className="text-center">
-                    <Col>
-                        <h2>This deck has no columns</h2>
-                        <small>Feel free to add some</small>
-                    </Col>
-                </Row>
-            )
-        }
-    }
-
-    const showFlashcardsContent = (bool) => {
-        if (!bool){
-            return (
-                <Row className="text-center my-5">
-                    <Col>
-                        <h4>This deck has no flashcards</h4>
-                        <small>Please create at least 1 flashcard</small>
-                    </Col>
-                </Row>
-            )
-        } else {
-            return (
-                <table className="mt-5">
-                    <tbody>
-                        {ShowFlashCards(props.deck.flashcards)}
-                    </tbody>
-                </table>
-            )
-        }
-    }
-
     return (
         <>
+            <div className="container">
             <AddColumnButtons />
             <Button className="w-100 my-3" variant="outline-danger" onClick={handleAddFlashcard}>NIEUWE KAART</Button>
-            <StateSwitch 
-                state={props.quickDelete}
-                label="Enable quick delete?"
-                handleSwitch={handleDeleteSwitch}
-                text={props.quickDelete ? 'YOLO': 'im a pussy'}
-                />
+            <Row>
+                <Col>
+                    <StateSwitch 
+                    giveId='expandTable'
+                    state={props.expandTable}
+                    label="Make table wider??"
+                    handleSwitch={handleExpandTable}
+                    text={props.expandTable ? 'man of culture': 'I prefer scrolling'}
+                    />
+                </Col>
+                <Col>
+                    <StateSwitch 
+                    giveId='quickDelete'
+                    state={props.quickDelete}
+                    label="Enable quick delete?"
+                    handleSwitch={handleDeleteSwitch}
+                    text={props.quickDelete ? 'YOLO': 'im a pussy'}
+                    />
+                </Col>
+            </Row>
+            </div>
+            <div className={props.expandTable ? 'container-fluid' : 'container' }>
             <div className="w-100 mb-5" style={{'overflowX': 'auto'}}>
             <table className="my-5">
-                <tbody>
+                <tbody style={{'position': 'sticky'}}>
                 <tr>
                     <td>
                         Type
@@ -320,10 +295,12 @@ const FlashcardTableComponent = (props) => {
                     </td>
                     {showAllColumnNames(props.deck.columns)}
                 </tr>
-                </tbody>                    <tbody>
+                </tbody>                    
+                <tbody>
                         {ShowFlashCards(props.deck.flashcards)}
                     </tbody>
                 </table>
+            </div>
             </div>
 
         </>
@@ -333,7 +310,8 @@ const FlashcardTableComponent = (props) => {
 const mapStateToProps = state => {
     return {
         deck: state.decks.deck,
-        quickDelete: state.client.quickDelete
+        quickDelete: state.client.quickDelete,
+        expandTable: state.client.expandTable,
     }
 }
 
@@ -347,6 +325,7 @@ const mapDispatchToProps = dispatch => {
         deleteFlashcard: (flashcardId, creator, deck) => dispatch(deleteFlashcard(flashcardId, creator, deck)),
         setQuickDelete: (bool) => dispatch(setQuickDeleteAction(bool)),
         uploadFile: (form) => dispatch(uploadFile(form)),
+        setExpandTable: (bool) => dispatch(setExpandTable(bool)),
     }
 }
 
