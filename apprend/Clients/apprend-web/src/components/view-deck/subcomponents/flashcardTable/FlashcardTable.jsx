@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Card, Button, Form } from 'react-bootstrap'
+import { Row, Col, Card, Button, Form, Fade } from 'react-bootstrap'
 
 import './FlashcardTable.css'
 
@@ -11,10 +11,12 @@ import DeleteButton from './sub-components/DeleteButton'
 import StateSwitch from '../../../shared/components/StateSwitch';
 import ConfirmationButtons from './sub-components/ConfirmationButtons'
 import ColumImage from './sub-components/ColumnImage'
+import FilterInput from './sub-components/FilterInput';
 
 const FlashcardTableComponent = (props) => {
 
     const [upForDelete, setUpForDelete] = useState()
+    const [filterFlashcard, setFilterFlashcard] = useState()
 
     const buttons = [
         {
@@ -169,6 +171,24 @@ const FlashcardTableComponent = (props) => {
         }
     }
 
+    const handleFilterFlashcards = (e) => {
+        console.log(e.target.value)
+        setFilterFlashcard(e.target.value)
+    }
+
+    const filterFlashcards = (flashcards,filter) => {
+        if (!filter) return flashcards
+        return flashcards.filter(flashcard => {
+            let yes = false
+            flashcard.columns.filter(col => {
+                if (col.type === 'Text'){
+                    if (col.value.toLowerCase().includes(filter.toLowerCase())) yes = true
+                }
+            })
+            return yes
+        })
+    }
+
     const ShowFlashCards = (flashcards) => {
         return flashcards.map((flashcard, indexFlashcard) => (
             <tr key={flashcard._id} className="tr">
@@ -188,13 +208,15 @@ const FlashcardTableComponent = (props) => {
                         return (
                             <td>
                                 <Row className="align-content-center">
+                                {column.path ? 
                                     <Col>
-                                        {column.path ? 
+ 
                                         <ColumImage image={`http://localhost:3001/api/v1/images/${column.path}`} />
-                                        : '' }
                                     </Col>
+                                    : '' }
+
                                     <Col className="align-self-center">
-                                        <label style={{'cursor': 'pointer'}} className={`btn ${column.path ? 'btn-warning':'btn-success'}`}>
+                                        <label style={{'cursor': 'pointer'}} className={`btn w-100 ${column.path ? 'btn-outline-danger':'btn-outline-dark'}`}>
                                             {column.path ? 'Change' : 'Upload'} 
                                             <input
                                                 accept='image/*'
@@ -215,14 +237,16 @@ const FlashcardTableComponent = (props) => {
                     if (column.type === 'Audio'){
                         return (
                             <td>
-                                <Row className="align-content-center">
+                                <Row className="align-content-center d-flex flex-nowrap">
+                                {column.path ? 
+
                                     <Col>
-                                        {column.path ? 
                                         <audio controls src={`http://localhost:3001/api/v1/audio/${column.path}`} alt="Audio" />
-                                        : '' }
+                                        
                                     </Col>
+                                    : '' }
                                     <Col className="align-self-center">
-                                        <label style={{'cursor': 'pointer'}} className={`btn ${column.path ? 'btn-warning':'btn-success'}`}>
+                                        <label style={{'cursor': 'pointer'}} className={`btn w-100 ${column.path ? 'btn-outline-danger':'btn-outline-dark'}`}>
                                             {column.path ? 'Change' : 'Upload'} 
                                             <input
                                                 accept='audio/*'
@@ -258,7 +282,13 @@ const FlashcardTableComponent = (props) => {
         <>
             <div className="container">
             <AddColumnButtons />
-            <Button className="w-100 my-3" variant="outline-danger" onClick={handleAddFlashcard}>NIEUWE KAART</Button>
+            {/* <Button className="w-100 my-3" variant="success" onClick={handleAddFlashcard}>Add new flashcard</Button> */}
+            <AddColumnButton
+                className="my-3"
+                variant="outline-success"
+                buttonType={'FLASHCARD'}
+                onClick={handleAddFlashcard}
+                />
             <Row>
                 <Col>
                     <StateSwitch 
@@ -279,6 +309,10 @@ const FlashcardTableComponent = (props) => {
                     />
                 </Col>
             </Row>
+            {`${filterFlashcard}`}
+            <FilterInput
+                func={handleFilterFlashcards}
+                />
             </div>
             <div className={props.expandTable ? 'container-fluid' : 'container' }>
             <div className="w-100 mb-5" style={{'overflowX': 'auto'}}>
@@ -298,10 +332,17 @@ const FlashcardTableComponent = (props) => {
                 </tr>
                 </tbody>                    
                 <tbody>
-                        {ShowFlashCards(props.deck.flashcards)}
+                        {ShowFlashCards(filterFlashcards(props.deck.flashcards, filterFlashcard))}
                     </tbody>
                 </table>
             </div>
+            </div>
+            <div className="container">
+            <AddColumnButton
+                variant="outline-success"
+                buttonType={'FLASHCARD'}
+                onClick={handleAddFlashcard}
+                />
             </div>
 
         </>
