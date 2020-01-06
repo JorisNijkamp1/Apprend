@@ -29,13 +29,13 @@ Zorg dat de laatste versies van [NodeJS](https://nodejs.org/) en [MongoDB](https
 Clone de **master** branch van de [Apprend-repository](https://github.com/HANICA-DWA/sep2019-project-kiwi/tree/master).
 
 ### Stap 2
-Voer de volgende commando's uit in de **apprend\Clients\apprend-web** folder:
+Voer het volgende commando uit in de **apprend\Clients\apprend-web** folder:
 ```
 > npm i
 ```
 
 ### Stap 3
-Voer de volgende commando's uit in de **apprend\Server** folder:
+Voer het volgende commando uit in de **apprend\Server** folder:
 ```
 > npm i
 ```
