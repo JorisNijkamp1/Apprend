@@ -38,7 +38,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test jest --runInBand",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "api": "react-scripts test jest --testPathPattern='apiTests'",
+    "e2e": "react-scripts test jest --runInBand --testPathPattern='e2eTests'",
+    "unit": "react-scripts test jest --testPathPattern='unitTests'"
   },
   "eslintConfig": {
     "extends": "react-app"
