@@ -8,7 +8,7 @@ const PlayingCard = (props) => {
     const [cardText, setCardText] = useState("Term");
     const handleClick = (event, status) => {
         event.preventDefault();
-        props.changeScore(props.id, status);
+        props.changeScore(props.activeCard, status);
         if (cardText === "Definition") {
             turnCard()
         }

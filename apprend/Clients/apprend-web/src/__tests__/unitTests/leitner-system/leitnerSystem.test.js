@@ -1,7 +1,7 @@
-import leitner, {
-    selectBox0Cards,
-    selectBox1Cards,
-    selectBox2Cards, selectBox3Cards,
+import leitnerSelectCards, {
+    _selectBox0Cards,
+    _selectBox1Cards,
+    _selectBox2Cards, _selectBox3Cards,
     shuffleCards
 } from '../../../util/leitner-system/leitnerSystem';
 import {X, W2, W3} from '../../../util/leitner-system/config';
@@ -113,7 +113,7 @@ describe('Leitner system unit-tests', () => {
 
     test('Selecting cards from box 0 should behave normally', () => {
         const expectedLength = X;
-        const result = selectBox0Cards(flashcards);
+        const result = _selectBox0Cards(flashcards);
 
         expect(Array.isArray(result)).toBeTruthy();
         expect(result.length).toBe(expectedLength);
@@ -121,7 +121,7 @@ describe('Leitner system unit-tests', () => {
 
     test('Selecting cards from box 1 should behave normally', () => {
         const expectedLength = 2;
-        const result = selectBox1Cards(flashcards);
+        const result = _selectBox1Cards(flashcards);
         const card1Exists = result.find(flashcard => flashcard._id === CARD_1);
         const card3Exists = result.find(flashcard => flashcard._id === CARD_3);
 
@@ -134,7 +134,7 @@ describe('Leitner system unit-tests', () => {
     test('Selecting cards from box 2 should behave normally with correct session', () => {
         const currentSession = W2 * 2;
         const expectedLength = 2;
-        const result = selectBox2Cards(flashcards, currentSession);
+        const result = _selectBox2Cards(flashcards, currentSession);
         const card7Exists = result.find(flashcard => flashcard._id === CARD_7);
 
         expect(Array.isArray(result)).toBeTruthy();
@@ -145,7 +145,7 @@ describe('Leitner system unit-tests', () => {
     test('Selecting cards from box 2 should behave normally with incorrect session', () => {
         const currentSession = W2 + 1;
         const expectedLength = 1;
-        const result = selectBox2Cards(flashcards, currentSession);
+        const result = _selectBox2Cards(flashcards, currentSession);
 
         expect(Array.isArray(result)).toBeTruthy();
         expect(result.length).toBe(expectedLength);
@@ -154,7 +154,7 @@ describe('Leitner system unit-tests', () => {
     test('Selecting cards from box 3 should behave normally with correct session', () => {
         const currentSession = W3 * 2;
         const expectedLength = 1;
-        const result = selectBox3Cards(flashcards, currentSession);
+        const result = _selectBox3Cards(flashcards, currentSession);
         const card5Exists = result.find(flashcard => flashcard._id === CARD_5);
 
         expect(Array.isArray(result)).toBeTruthy();
@@ -165,7 +165,7 @@ describe('Leitner system unit-tests', () => {
     test('Selecting cards from box 3 should behave normally with incorrect session', () => {
         const currentSession = W3 + 1;
         const expectedLength = 0;
-        const result = selectBox3Cards(flashcards, currentSession);
+        const result = _selectBox3Cards(flashcards, currentSession);
 
         expect(Array.isArray(result)).toBeTruthy();
         expect(result.length).toBe(expectedLength);
@@ -174,7 +174,7 @@ describe('Leitner system unit-tests', () => {
     test('Selecting cards should behave normally', () => {
         const currentSession = W3;
         const expectedLength = 13;
-        const result = leitner(flashcards, currentSession);
+        const result = leitnerSelectCards(flashcards, currentSession);
 
         expect(Array.isArray(result)).toBeTruthy();
         expect(result.length).toBe(expectedLength);
