@@ -69,7 +69,7 @@ userSchema.methods.deleteDeck = async function (deckId) {
 
 }
 
-userSchema.methods.importDeck = async function (deck, user) {
+userSchema.methods.importDeck = async function (deck) {
     delete deck.games;
     this.decks.push(deck)
     this.markModified('decks')

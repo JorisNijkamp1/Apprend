@@ -103,6 +103,8 @@ users.post('/email', async (req, res) => {
     }
 });
 
+const auth = require('../../../../authentication/authentication')
+
 users.use('/:userId*', async (req, res, next) => {
     if (req.params.userId) req.user = await User.findById(req.params.userId)
     if (!req.user) return res.status(400).json({message: 'User does not exist'})
@@ -272,51 +274,27 @@ users.delete('/:id', async (req, res) => {
     }
 });
 
-users.patch('/:userId/decks/:deckId', async (req, res) => {
-    try {
-        const {deckId, userId} = req.params
 
-        if (req.session.username !== userId) return res.status(401).json('Not your deck')
+// users.patch('/:userId/decks/:deckId', async (req, res) => {
+//     try {
+//         const { deckId, userId } = req.params
 
-        const user = await User.findById(userId)
-        const deck = await user.decks.id(deckId)
-        if (!deck) return res.status(404).json('No such deck exists')
+//         if (req.session.username !== userId) return res.status(401).json('Not your deck')
 
-        const result = deck.toggleStatus()
-        user.markModified('decks')
-        await user.save()
+//         const user = await User.findById(userId)
+//         const deck = await user.decks.id(deckId)
+//         if (!deck) return res.status(404).json('No such deck exists')
 
-        res.status(201).json(deck)
+//         const result = deck.toggleStatus()
+//         user.markModified('decks')
+//         await user.save()
 
-    } catch (e) {
-        console.log(e)
-        res.status(500).status('Something went wrong')
-    }
-})
-
-users.put('/:userId/decks/:deckId/flashcards/:flashcardId', async (req, res) => {
-    try {
-        console.log('CARD UPDATO')
-        const {userId, deckId, flashcardId} = req.params
-        if (req.session.username !== userId) return res.status(401).json({message: 'Not your deck to update'}) //wegwerken in middleware
-        const user = await User.findById(userId) //wegwerken in middleware
-        const deck = await user.decks.id(deckId) //wegwerken in middleware
-        if (!deck) return res.status(404).json({message: 'User doesnt have this deck'})
-        const flashcard = await deck.flashcards.id(flashcardId) //wegwerken in middleware
-        if (!flashcard) return res.status(404).json({message: 'User doesnt have this flashcard'})
-        const updatedFlashcard = await flashcard.editCard(99) //=subdocument methode
-        user.markModified('deck')
-        const result = await user.save()
-        res.status(201).json({
-            message: 'Lekker bezig pik', //optioneel
-            data: updatedFlashcard
-        })
-    } catch (e) {
-        console.log(e)
-        res.status(500).json('Something went horribly wrong...')
-    }
-
-})
+//         res.status(201).json(deck)
+//     } catch (e) {
+//         console.log(e)
+//         res.status(500).status('Something went wrong')
+//     }
+// })
 
 users.use('/:userId/decks/', decksRoute)
 

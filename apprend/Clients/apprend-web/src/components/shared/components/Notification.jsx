@@ -2,7 +2,7 @@ import React from 'react';
 import {Row} from 'react-bootstrap';
 import {store} from 'react-notifications-component';
 
-export const Notification = (title, color) => {
+export const Notification = (title, color, duration) => {
     if (!color) {
         color = "info";
     }
@@ -16,7 +16,7 @@ export const Notification = (title, color) => {
             animationIn: ["animated", "bounceIn"],
             animationOut: ["animated", "bounceOut"],
             dismiss: {
-                duration: 3000
+                duration: duration ? duration : 3000
             },
             width: 250
         })}

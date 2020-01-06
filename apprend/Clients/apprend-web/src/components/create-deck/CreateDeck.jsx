@@ -11,13 +11,16 @@ import { Footer } from '../shared/components/Footer';
 import { StatusButtons } from './subcomponents/StatusButtons'
 import { Notification } from '../shared/components/Notification';
 import TypeList from './subcomponents/TypeList'
+import { LoadingComponent } from '../shared/components/LoadingComponent';
 
 const CreateDeckFormComponent = (props) => {
 
     const [status, setStatus] = useState(false)
+    const [input, setInput] = useState('')
     const [deckName, setDeckName] = useState('')
     const [typeOne, setTypeOne] = useState('Text')
     const [typeTwo, setTypeTwo] = useState('Text')
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         props.changeDeckName('')
@@ -28,50 +31,54 @@ const CreateDeckFormComponent = (props) => {
     const showDeckNameOrThis = (text) => deckName ? <b>'{deckName}'</b> : text
 
     const handleSwitch = (e) => {
-        console.log(status)
         setStatus(!status)
     }
 
     const handleCreateDeck = async (e) => {
-        try {
-            e.preventDefault()
-            const deck = {
-                deckName: deckName,
-                description: e.target.description.value,
-                private: status,
-                tags: props.tags,
-                columns: [typeOne, typeTwo]
-            }
-            const response = await props.createNewDeck(deck)
-            let deckId;
-            if (response){
-                if (response.decks){
-                    deckId = response.decks[0]._id.toString()
-                } else {
-                    deckId = response._id.toString()
+        e.preventDefault()
+        const deck = {
+            deckName: deckName,
+            description: e.target.description.value,
+            private: status,
+            tags: props.tags,
+            columns: [typeOne, typeTwo],
+            columns: [
+                {
+                    type: typeOne,
+                    name: ''
+                },
+                {
+                    type: typeTwo,
+                    name: ''
                 }
-                history.push(`/decks/${deckId}/cards/`)
-            } else {
-                throw Error('Something went wrong')
-            }
-        } catch (e) {
-            console.log(e)
+            ]
         }
+        const response = await props.createNewDeck(deck, setIsLoading)
+        let deckId;
+        if (response.success){
+            if (response.data.decks){
+                deckId = response.data.decks[0]._id.toString()
+            } else {
+                deckId = response.data._id.toString()
+            }
+            history.push(`/decks/${deckId}/cards/`)
+        } 
+        Notification(response.message, response.success ? 'success' : 'danger')
     }
 
     const checkAdded = tagValue => {
         return props.tags.some(tag => {
-            return tag === tagValue.trim()
+            return tag === tagValue.trim().toLowerCase();
         });
     }
 
     const getTagValue = () => {
-        let tagValue = document.getElementById("tags").value;
-        document.getElementById("tags").value = "";
+        let tagValue = input;
+        setInput('');
         let match = false;
         if (props.tags.length !== 0) {
             if (checkAdded(tagValue)){
-                Notification("You already have that tag");
+                Notification("You already have that tag", "danger");
             } else {
                 match = true;
             }
@@ -80,22 +87,23 @@ const CreateDeckFormComponent = (props) => {
                     props.addTag(tagValue);
                     match = false;
                 } else {
-                    Notification("You can't add an empty tag");
+                    Notification("You can't add an empty tag", "danger");
                 }
             }
         } else {
             if (tagValue.trim() !== "") {
                 props.addTag(tagValue);
             } else {
-                Notification("You can't add an empty tag");
+                Notification("You can't add an empty tag", "danger");
             }
         }
     }
 
-    return (
-        <>
-            <NavigatieBar/>
-            <Container className={"pt-5 pb-5"}>
+    const showContent = () => {
+        if (isLoading) return <LoadingComponent loadingText={'Creating the deck for you'}/>
+        return (
+            <>
+
                 <PageTitle  title="Create your deck" />
 
                 <Form name="create-deck" onSubmit={(e) => handleCreateDeck(e)}>
@@ -160,6 +168,8 @@ const CreateDeckFormComponent = (props) => {
                                     id="tags"
                                     placeholder="Your tags"
                                     className="text-center"
+                                    value={input}
+                                    onChange={e => setInput(e.target.value)}
                                 />
                                 <InputGroup.Append>
                                     <Button id="addTag" className={'bg-blue text-white hover-shadow'} onClick={() => getTagValue()}>Add tag</Button>
@@ -190,7 +200,17 @@ const CreateDeckFormComponent = (props) => {
                         </Col>
                     </Row>
                 </Form>
-            </Container>
+
+        </>
+        )
+    }
+
+    return (
+        <>
+                    <NavigatieBar/>
+            <Container className={"pt-5 pb-5"}>
+        {showContent()}
+        </Container>
             <Footer />
         </>
     )
@@ -207,7 +227,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         changeDeckName: (name) => dispatch(changeDeckName(name)),
-        createNewDeck: (deck) => dispatch(createDeck(deck)),
+        createNewDeck: (deck, setLoader) => dispatch(createDeck(deck, setLoader)),
         addTag: (tag) => dispatch(addTag(tag)),
         deleteTag: (tag) => dispatch(deleteTag(tag))
     }

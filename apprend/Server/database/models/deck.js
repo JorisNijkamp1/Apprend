@@ -39,7 +39,7 @@ const deckSchema = new mongoose.Schema({
         default: 0
     }, 
     columns: {
-        type: [String]
+        type: [{'type': {type: String}, name: {type: String} }]
     }
 });
 
@@ -53,10 +53,42 @@ deckSchema.methods.toggleStatus = async function(){
     this.private = !this.private
 }
 
-deckSchema.methods.addColumn = async function(name) {
-    this.columns.push(name)
+deckSchema.methods.editFlashcardLeitner = async function (flashcardId, answeredCorrect, sessionPlayed) {
     this.flashcards = this.flashcards.map(flashcard => {
-        flashcard.columns.push({type: name, value: ''})
+        if (flashcard._id.toString() === flashcardId) {
+            if (answeredCorrect) {
+                switch (flashcard.box) {
+                    case 0:
+                        flashcard.box = 2;
+                        break;
+                    case 1:
+                        flashcard.box = 2;
+                        break;
+                    case 2:
+                        flashcard.box = 3;
+                        break;
+                    default:
+                        flashcard.box = 3;
+                        break;
+                }
+            }
+
+            if (!answeredCorrect) flashcard.box = 1;
+            flashcard.sessionPlayed = sessionPlayed;
+        }
+
+        return flashcard;
+    });
+
+    this.markModified('flashcards');
+    await this.save();
+    return this;
+};
+
+deckSchema.methods.addColumn = async function(column) {
+    this.columns.push({type: column.type, name: column.name})
+    this.flashcards = this.flashcards.map(flashcard => {
+        flashcard.columns.push({type: column.type, value: ''})
         return flashcard
     })
 
@@ -75,6 +107,15 @@ deckSchema.methods.deleteColumn = async function(id) {
     })
 
     return this
+}
+
+deckSchema.methods.addFlashcard = async function(columns){
+    this.flashcards.push({columns: columns})
+    return this.flashcards[this.flashcards.length - 1]
+}
+
+deckSchema.methods.deleteFlashcard = async function(id){
+    this.flashcards = this.flashcards.filter(fc => fc._id.toString() !== id)
 }
 
 //Create model
