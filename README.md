@@ -29,13 +29,13 @@ Zorg dat de laatste versies van [NodeJS](https://nodejs.org/) en [MongoDB](https
 Clone de **master** branch van de [Apprend-repository](https://github.com/HANICA-DWA/sep2019-project-kiwi/tree/master).
 
 ### Stap 2
-Voer het volgende commando uit in de **apprend\Clients\apprend-web** folder:
+Voer de volgende commando's uit in de **apprend\Clients\apprend-web** folder:
 ```
 > npm i
 ```
 
 ### Stap 3
-Voer het volgende commando uit in de **apprend\Server** folder:
+Voer de volgende commando's uit in de **apprend\Server** folder:
 ```
 > npm i
 ```
@@ -69,7 +69,7 @@ In **apprend\Server\app.js** staan twee regels code voor een verbinding met de d
 De eerste regel wordt gebruikt voor lokale ontwikkeling. De tweede regel code moet gebruikt worden voor op de deployment server.
 
 ### Stap 6
-Doe hetzelfde in **apprend\Server\seed.js**. 
+Doe hetzelfde als stap 5 in **apprend\Server\seed.js**. 
 Dit script kan gebruikt worden voor het invoeren van testdata in de database.
 
 ### Stap 7
