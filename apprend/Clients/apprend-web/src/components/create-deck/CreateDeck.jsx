@@ -42,16 +42,6 @@ const CreateDeckFormComponent = (props) => {
             private: status,
             tags: props.tags,
             columns: [typeOne, typeTwo],
-            columns: [
-                {
-                    type: typeOne,
-                    name: ''
-                },
-                {
-                    type: typeTwo,
-                    name: ''
-                }
-            ]
         }
         const response = await props.createNewDeck(deck, setIsLoading)
         let deckId;

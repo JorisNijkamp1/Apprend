@@ -24,6 +24,14 @@ const NavbarUI = (props) => {
         }
     };
 
+    const profile = () => {
+        if (!props.anonymousUser) {
+            return (
+                <Nav.Link as={Link} className="pl-30" to={'/profile/' + props.username}>My Profile</Nav.Link>
+            )
+        }
+    }
+
     const register = () => {
         if (props.anonymousUser) {
             return (
@@ -65,8 +73,7 @@ const NavbarUI = (props) => {
                 <>
                     <NavDropdown title={props.anonymousUser ? 'Welcome Guest' : 'Welcome ' + props.username}
                                  id="basic-nav-dropdown" className="text-white pl-30">
-                        <Nav.Link as={Link} className="pl-30" to={'/' + props.username + '/decks'}>My Decks</Nav.Link>
-                        <Nav.Link as={Link} className="pl-30" to={'/profile/' + props.username}>My Profile</Nav.Link>
+                        {profile()}
                         {login()}
                         {register()}
                         {logout()}
@@ -85,6 +92,8 @@ const NavbarUI = (props) => {
                     <Nav>
                         <Nav.Link as={Link} className="text-white pl-30" to="/decks/create">Create
                             Deck</Nav.Link>
+                        <Nav.Link as={Link} className="text-white pl-30" to={'/' + props.username + '/decks'}>My
+                            Decks</Nav.Link>
                         {loggedIn()}
                     </Nav>
                 </Navbar.Collapse>

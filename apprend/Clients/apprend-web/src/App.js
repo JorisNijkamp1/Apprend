@@ -17,6 +17,7 @@ import Search from './components/search-deck/Search';
 import {SearchUser} from './components/search-user/SearchUser';
 import {isLoggedIn} from './components/shared/actions/actions';
 import TagOverview from "./components/filter-tags/TagOverview";
+import {MyProfile} from "./components/my-profile/MyProfile";
 
 function App(props) {
     //Check if user is logged in
@@ -38,6 +39,9 @@ function App(props) {
                 </Route>
                 <Route path={'/login'}>
                     <LoginPage/>
+                </Route>
+                <Route path={'/profile/:userId'}>
+                    <MyProfile/>
                 </Route>
                 <Route path={'/decks/:deckId/play'}>
                     <PlayingDeck/>

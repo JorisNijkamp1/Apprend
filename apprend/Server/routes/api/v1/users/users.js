@@ -15,33 +15,7 @@ const decks = express.Router();
 const decksRoute = require('./decks/decks')
 // const imagesFolder = 'sep2019-project-kiwi/apprends/Server/files/images'
 const imagesFolder = './files/images'
-
-/*
-|---------------------------------------------
-| Get a user by its ID (username).
-|---------------------------------------------
- */
-users.get('/:id', async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-
-        if (user === undefined || user === null) {
-            return res.status(404).json({
-                'message': 'The user could not be found...'
-            });
-        }
-
-        return res.status(200).json({
-            'data': user,
-            'message': 'The user has been found!'
-        });
-    } catch (error) {
-        console.log(error.message);
-        return res.status(500).json({
-            'message': error.message
-        });
-    }
-});
+const auth = require('../../../../authentication/authentication');
 
 /*
 |---------------------------------------------
@@ -102,15 +76,39 @@ users.post('/email', async (req, res) => {
         });
     }
 });
-
-const auth = require('../../../../authentication/authentication')
+/*
+|---------------------------------------------
+| Middleware
+|---------------------------------------------
+ */
 
 users.use('/:userId*', async (req, res, next) => {
     if (req.params.userId) req.user = await User.findById(req.params.userId)
     if (!req.user) return res.status(400).json({message: 'User does not exist'})
     if (req.cookies && req.cookies.username && !req.session.username && req.user.email.length === 0) req.session.username = req.cookies.username
     return next()
-})
+});
+
+/*
+|---------------------------------------------
+| Get a user by its ID (username).
+|---------------------------------------------
+ */
+users.get('/:id', auth.user, async (req, res) => {
+    try {
+        req.user.password = 'password';
+        console.log(req.user)
+        return res.status(200).json({
+            'data': req.user,
+            'message': 'The user has been found!'
+        });
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            'message': error.message
+        });
+    }
+});
 
 users.get('/', async (req, res) => {
 
