@@ -129,29 +129,29 @@ users.get('/', async (req, res) => {
 /*====================================
 | GET ALL DECKS FROM A USER
 */
-users.get('/:username/decks', async (req, res) => {
-    await User.findOne({_id: req.params.username}, function (err, user) {
-        if (user) {
-            let allowedDecks = [...user.decks]
-            if (req.session.username !== user._id) {
-                allowedDecks = allowedDecks.filter(d => d.private === false)
-            }
-            return res.json({
-                success: true,
-                decks: {
-                    user: !(user.email && user.password) ? 'anonymous user' : user._id,
-                    userId: user._id,
-                    decks: allowedDecks
-                }
-            })
-        } else {
-            return res.json({
-                success: false,
-                error: 'User doesn\'t exist'
-            })
-        }
-    });
-});
+// users.get('/:username/decks', async (req, res) => {
+//     await User.findOne({_id: req.params.username}, function (err, user) {
+//         if (user) {
+//             let allowedDecks = [...user.decks]
+//             if (req.session.username !== user._id) {
+//                 allowedDecks = allowedDecks.filter(d => d.private === false)
+//             }
+//             return res.json({
+//                 success: true,
+//                 decks: {
+//                     user: !(user.email && user.password) ? 'anonymous user' : user._id,
+//                     userId: user._id,
+//                     decks: allowedDecks
+//                 }
+//             })
+//         } else {
+//             return res.json({
+//                 success: false,
+//                 error: 'User doesn\'t exist'
+//             })
+//         }
+//     });
+// });
 
 /*
 |---------------------------------------------
