@@ -73,7 +73,6 @@ decks.post('/:deckId', async (req, res) => {
     }
 })
 
-decks.put('/:deckId', async (req, res) => {
 decks.get('/', async (req, res) => {
     const decks = req.user.decks.filter(deck => (req.session.username === req.user._id) || deck.private === false)
     res.status(200).json({message: 'All decks', data: {userId: req.user._id, decks: decks}})

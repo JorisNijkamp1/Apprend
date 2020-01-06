@@ -1,7 +1,9 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import { Form, Col, InputGroup, Button, Card, Row } from 'react-bootstrap'
 
 export default props => {
+    console.log(props)
     if (props.state){
         return (
             <>
@@ -13,15 +15,15 @@ export default props => {
                     <Form.Label><b>Deck tags</b></Form.Label>
                     <Col sm={12}>
                         <ul id="tagList">
-                            {(props.deck.tags) ? props.deck.tags.map((tag) =>
+                            {(props.deckEdit.data.tags) ? props.deckEdit.data.tags.map((tag) =>
                             <li key={tag} className="listItem">
                                 {tag}
-                                <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>
+                                <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteOldTag(tag)}/>
                             </li>) : ""}
                             {props.tags.map((tag) =>
                             <li key={tag} className="listItem">
                                 {tag}
-                                <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>
+                                <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteNewTag(tag)}/>
                             </li>)}
                         </ul>
                     </Col>
@@ -30,6 +32,8 @@ export default props => {
                             id="tags"
                             placeholder="Add a tag"
                             className="text-center"
+                            value={props.value}
+                            onChange={e => props.setInput(e.target.value)}
                         />
                         <InputGroup.Append>
                             <Button className={'bg-blue text-white hover-shadow'} onClick={() => props.getTagValue()}>Add tag</Button>
@@ -42,13 +46,14 @@ export default props => {
             )
     } else {
         if (props.deck && props.deck.tags && props.deck.tags.length > 0) {
-
+            console.log('hoi')
             const allTags = props.deck.tags.map(tag => (
                 <>
                     <Col sm={6} md={3} className="text-center my-1">
                         <Card>
-                        <h6>{tag}</h6>
-
+                            <Link key={tag} to={`/tags/${tag}`} className={'search-deck-suggestions-link'}>
+                                <h6>{tag}</h6>
+                            </Link>
                         </Card>
                     </Col>
                 </>

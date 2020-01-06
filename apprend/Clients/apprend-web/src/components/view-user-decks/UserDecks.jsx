@@ -178,10 +178,17 @@ const Deck = (props) => {
         )
     }
 
-    const showViewButton = (bool, deckId, index) => {
+    const showViewButton = (bool, deckId, index, isCreator) => {
         if (!bool) return (
             <Row>
-                <Col xs={{span: 6, offset: 3}}>
+                {isCreator ? <Col>
+                    <Link to={`/decks/${deckId}/play`}>
+                        <Button variant="outline-success" className={'w-100'} id={`card-`+index+'-play-link'}>
+                            Play Deck
+                        </Button>
+                    </Link>
+                </Col> : ''}
+                <Col>
                     <Link to={`/decks/${deckId}`}>
                         <Button variant="outline-primary" className={'w-100'} id={'card-' + index + '-link'}>View
                             deck</Button>
@@ -258,7 +265,7 @@ const Deck = (props) => {
                         </Row>
                     </Card.Title>
 
-                    {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, id, index)}
+                    {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, id, index, isCreator)}
                 </>
             )
         }
@@ -333,7 +340,7 @@ const Deck = (props) => {
         </Row>
         <div className={'pt-3 pb-5'}>
             <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`}
-                             username={props.userDecks.user}/>
+                             username={props.userDecks.userId}/>
         </div>
         {showErrors()}
         <Row>
@@ -358,7 +365,7 @@ function mapStateToProps(state) {
     return {
         userDecks: state.decks.userDecks,
         decks: state.decks.userDecks.decks,
-        isLoading: state.decks.isLoading,
+        isLoading: state.flashcards.isLoading,
         username: state.login.username,
         searchValue: state.search.searchValue,
         filteredDecks: state.decks.filteredDecks
