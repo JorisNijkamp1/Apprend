@@ -1,3 +1,8 @@
+body {
+    min-height: 1600px;
+    /* background: linear-gradient(to right,#EEE, #FFF, #EEE) */
+}
+
 .App {
     text-align: center;
 }

@@ -174,8 +174,8 @@ const UserDecks = (props) => {
     }
 
     const showOptions = (icons) => {
-        return icons.map(icon => (
-            <Col xs={6} md={3}>
+        return icons.map((icon, index) => (
+            <Col xs={6} md={3} key={'key'+index}>
                 {icon}
             </Col>
         ))
@@ -324,7 +324,6 @@ const UserDecks = (props) => {
                     {deck}
                 </Row>
                 {/* <Row> */}
-                <FlashcardTable />
                 {/* </Row> */}
                 {showDeleteConfirmationBox()}
                 {/* {showFlashcards()} */}
@@ -332,12 +331,21 @@ const UserDecks = (props) => {
             </>
         )
     }
+
+    const showTable = (loading, expand) => {
+        if (!loading) return (
+            <div>
+                <FlashcardTable />
+            </div>
+        )
+    }
     return (
         <>
             <NavigatieBar/>
-            <Container>
-                {showContent()}
-            </Container>
+            <div className="container">
+            {showContent()}
+            </div>
+            {showTable(isLoading, props.expandTable)}
             <Footer/>
         </>
     )
@@ -349,7 +357,7 @@ function mapStateToProps(state) {
         deck: state.decks.deck,
         isLoading: state.decks.isLoading,
         tags: state.createDeck.tags,
-        deckEdit: state.decks.deckEdit
+        deckEdit: state.decks.deckEdit,
     }
 }
 

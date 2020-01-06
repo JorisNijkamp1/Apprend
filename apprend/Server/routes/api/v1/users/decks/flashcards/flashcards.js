@@ -16,7 +16,7 @@ const Flashcard = mongoose.model('Flashcard')
 
 const auth = require('../../../../../../authentication/authentication')
 
-flashcards.post('/', async (req, res) => {
+flashcards.post('/', auth.user, async (req, res) => {
     try {
         const copyColumnsFromDeck = req.deck.columns.map(column =>{
             return {type: column.type, value: '' }
@@ -37,7 +37,7 @@ flashcards.use('/:flashcardId/', async (req, res, next) => {
     return next()
 })
 
-flashcards.delete('/:flashcardId', async (req, res) => {
+flashcards.delete('/:flashcardId', auth.user, async (req, res) => {
     try {
         // await req.flashcard.findByIdAndDelete(req.params.flashcardId)
         const result = await req.deck.deleteFlashcard(req.params.flashcardId)
@@ -54,7 +54,7 @@ flashcards.get('/:flashcardId', async (req, res) => {
     return res.status(200).json({message: 'Ok', data: req.flashcard})
 })
 
-flashcards.patch('/:flashcardId', async (req, res) => {
+flashcards.patch('/:flashcardId', auth.user,  async (req, res) => {
     try {
         const { properties } = req.body
         if (!properties) return res.status(400).json({message: 'No properties to change!'})
