@@ -41,15 +41,27 @@ Voer de volgende commando's uit in de 'apprend\Server' folder:
 ```
 
 ### Stap 4
-Voer de correcte database gegevens in, in 'apprend\Server\config.js'.
+Voeg het bestand 'apprend\Server\config.js' toe. Deze moet de volgende code bevatten:
 ```
-USERNAME -> (De gebruikersnaam voor database-toegang.)
-PASSWORD -> (Het wachtwoord voor database-toegang.)
-HOST -> (De URL van de database server.)
-PORT -> (De poort waar de database op draait. Voor MongoDB is dit standaard '27017')
-DB -> (De naam van de database die gebruikt gaat worden.)
+// De gebruikersnaam voor database-toegang.
+const USERNAME = '';
 
-PASSWORD_SALT -> (Er kan eventueel ingesteld worden waar de wachtwoorden mee gesalt worden. Dit moet een getal zijn en is standaard 10.)
+// Het wachtwoord voor database-toegang.
+const PASSWORD = '';
+
+// De URL van de database server.
+const HOST = 'localhost';
+
+// De poort waar de database op draait. Voor MongoDB is dit standaard '27017'
+const PORT = '27017';
+
+// De naam van de database die gebruikt gaat worden.
+const DB = 'apprend';
+
+// Er kan eventueel ingesteld worden waar de wachtwoorden mee gesalt worden. Dit moet een getal zijn en is standaard 10.
+const PASSWORD_SALT = 10;
+
+module.exports = {USERNAME, PASSWORD, HOST, PORT, DB, PASSWORD_SALT};
 ```
 
 ### Stap 5
