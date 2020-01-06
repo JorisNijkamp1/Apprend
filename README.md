@@ -23,26 +23,27 @@ Helen Visser
 # Deployment
 
 ### Vereisten
-Zorg dat de laatste versies van [NodeJS](https://nodejs.org/) en [MongoDB](https://www.mongodb.com/) beschikbaar zijn op de deployment server.
+Zorg dat de laatste versies van [NodeJS](https://nodejs.org/) en [MongoDB](https://www.mongodb.com/) beschikbaar en gestart zijn op de deployment server.
 
-### Stap 1
+### Stap 1 - De repository clonen
 Clone de **master** branch van de [Apprend-repository](https://github.com/HANICA-DWA/sep2019-project-kiwi/tree/master).
 
-### Stap 2
+### Stap 2 - Installeer packages client
+Er zijn eigenlijk twee applicaties aanwezig in deze repository, een client en een server applicatie. Hiervoor moeten aparte packages worden geïnstalleerd. 
 Voer de volgende commando's uit in de **apprend\Clients\apprend-web** folder:
 ```
 > npm i
 ```
 
-### Stap 3
+### Stap 3 - Installeer packages server
 Voer de volgende commando's uit in de **apprend\Server** folder:
 ```
 > npm i
 ```
 
 ### Stap 4
-Voeg het bestand **apprend\Server\config.js** toe. Deze moet de volgende code bevatten:
-```
+Voeg het bestand **apprend\Server\config.js** toe. Deze moet de onderstaande code bevatten. Voer hier zelf jouw database-gegevens in of laat deze file met rust wanneer je het lokaal gaat installeren.
+```js
 // De gebruikersnaam voor database-toegang.
 const USERNAME = '';
 
@@ -65,8 +66,15 @@ module.exports = {USERNAME, PASSWORD, HOST, PORT, DB, PASSWORD_SALT};
 ```
 
 ### Stap 5
-In **apprend\Server\app.js** staan twee regels code voor een verbinding met de database. 
+In **apprend\Server\app.js** staan twee regels (regel 55, 56) code voor een verbinding met de database. 
 De eerste regel wordt gebruikt voor lokale ontwikkeling. De tweede regel code moet gebruikt worden voor op de deployment server.
+```js
+// Local
+mongoose.connect(`mongodb://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}:${srvConfig.PORT}/${srvConfig.DB}`, {
+
+// Deployment server
+// mongoose.connect(`mongodb+srv://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}/${srvConfig.DB}?retryWrites=true&w=majority`, {
+```
 
 ### Stap 6
 Doe hetzelfde als stap 5 in **apprend\Server\seed.js**. 
