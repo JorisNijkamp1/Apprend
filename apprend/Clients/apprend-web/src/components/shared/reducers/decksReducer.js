@@ -77,8 +77,10 @@ export default function decksReducer(state = initialState, action) {
                 if (index !== undefined)
                 indexColumn = draft['deck']['flashcards'][index]['columns'].findIndex(col => col._id === action.payload.index)
                 if (indexColumn !== undefined)
-                console.log(action.payload.value)
-                draft['deck']['flashcards'][index]['columns'][indexColumn][action.payload.prop] = action.payload.value
+                // draft['deck']['flashcards'][index]['columns'][indexColumn][action.payload.prop] = action.payload.value
+                action.payload.props.props.forEach(prop => {
+                    draft['deck']['flashcards'][index]['columns'][indexColumn][prop.prop] = prop.value
+                })
                 break;
 
             case 'DECKS_DELETE_FLASHCARD':

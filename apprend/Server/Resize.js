@@ -3,11 +3,12 @@ const uuidv4 = require('uuid/v4');
 const path = require('path');
 
 class Resize {
-  constructor(folder) {
+  constructor(folder, type) {
     this.folder = folder;
+    this.type = type
   }
   async save(buffer) {
-    const filename = Resize.filename();
+    const filename = Resize.filename(this.type);
     const filepath = this.filepath(filename);
 
     await sharp(buffer)
@@ -19,8 +20,8 @@ class Resize {
     
     return filename;
   }
-  static filename() {
-    return `${uuidv4()}.png`;
+  static filename(type) {
+    return `${uuidv4()}${type}`;
   }
   filepath(filename) {
     return path.resolve(`${this.folder}/${filename}`)

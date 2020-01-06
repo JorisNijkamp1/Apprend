@@ -10,8 +10,10 @@ import { Notification } from '../../../shared/components/Notification'
 import DeleteButton from './sub-components/DeleteButton'
 import StateSwitch from '../../../shared/components/StateSwitch';
 import ConfirmationButtons from './sub-components/ConfirmationButtons'
-import ColumImage from './sub-components/ColumnImage'
+import ColumnImage from './sub-components/ColumnImage'
 import FilterInput from './sub-components/FilterInput';
+import InputImageURL from './sub-components/InputImageURL';
+import ColumnAudio from './sub-components/ColumnAudio';
 
 const FlashcardTableComponent = (props) => {
 
@@ -81,13 +83,13 @@ const FlashcardTableComponent = (props) => {
         } , 1000)
     }
 
-    const handleEditFlashcardColumn = (e, flashcardId, indexColumn, columnId) => {
-        e.preventDefault()
-        values[columnId] = e.target.value
+    const handleEditFlashcardColumn = (p, creator, deckId, flashcardId, columnId, noNoti) => {
+        values[columnId] = p
         clearTimeout(timers[columnId])
         timers[columnId] = setTimeout( async () => {
-            const result = await props.editFlashcard(values[columnId],'value', props.deck.creatorId, props.deck._id, flashcardId, columnId)
-            Notification(result.message, result.success ? 'success' : 'danger', 500)
+            const result = await props.editFlashcard(values[columnId], creator, deckId, flashcardId, columnId)
+            if (!noNoti)
+                Notification(result.message, result.success ? 'success' : 'danger', 500)
         }, 1000)
         
     }
@@ -164,7 +166,7 @@ const FlashcardTableComponent = (props) => {
         file.append(type, e.target.files[0])
         const upload = await props.uploadFile(file, type)
         if (upload.success){
-            const result = await props.editFlashcard(upload.data,'path', creator, deck, flashcard, column)
+            const result = await props.editFlashcard({props: [{prop: 'path', value: upload.data}, {prop: 'source', value: 'upload'}]}, creator, deck, flashcard, column)
             Notification(result.message, result.success ? 'success' : 'danger', 1000)    
         } else {
             Notification(upload.message, 'danger', 1000)
@@ -172,20 +174,19 @@ const FlashcardTableComponent = (props) => {
     }
 
     const handleFilterFlashcards = (e) => {
-        console.log(e.target.value)
         setFilterFlashcard(e.target.value)
     }
 
     const filterFlashcards = (flashcards,filter) => {
         if (!filter) return flashcards
         return flashcards.filter(flashcard => {
-            let yes = false
-            flashcard.columns.filter(col => {
+            let bool = false
+            flashcard.columns.map(col => {
                 if (col.type === 'Text'){
-                    if (col.value.toLowerCase().includes(filter.toLowerCase())) yes = true
+                    if (col.value.toLowerCase().includes(filter.toLowerCase())) bool = true
                 }
             })
-            return yes
+            return bool
         })
     }
 
@@ -208,26 +209,17 @@ const FlashcardTableComponent = (props) => {
                         return (
                             <td>
                                 <Row className="align-content-center">
-                                {column.path ? 
                                     <Col>
- 
-                                        <ColumImage image={`http://localhost:3001/api/v1/images/${column.path}`} />
-                                    </Col>
-                                    : '' }
-
-                                    <Col className="align-self-center">
-                                        <label style={{'cursor': 'pointer'}} className={`btn w-100 ${column.path ? 'btn-outline-danger':'btn-outline-dark'}`}>
-                                            {column.path ? 'Change' : 'Upload'} 
-                                            <input
-                                                accept='image/*'
-                                                onChange={(e) => handleFileUpload(e, 'image', props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
-                                                style={{'display': 'none'}}
-                                                type="file"
-                                                label="image"
-                                                id={'123'}
-                                                name="image"
-                                            />  
-                                        </label>
+                                        <ColumnImage 
+                                            image={column.source === 'web' ? column.path : `http://localhost:3001/api/v1/images/${column.path}`}
+                                            column={column}
+                                            handler={handleFileUpload}
+                                            creatorId={props.deck.creatorId}
+                                            deckId={props.deck._id}
+                                            flashcardId={flashcard._id}
+                                            columnId={column._id}
+                                            handleLink={handleEditFlashcardColumn}
+                                            />
                                     </Col>
                                 </Row>
                             </td>
@@ -238,38 +230,48 @@ const FlashcardTableComponent = (props) => {
                         return (
                             <td>
                                 <Row className="align-content-center d-flex flex-nowrap">
-                                {column.path ? 
-
                                     <Col>
-                                        <audio controls src={`http://localhost:3001/api/v1/audio/${column.path}`} alt="Audio" />
+                                        <ColumnAudio 
+                                            handler={handleFileUpload}
+                                            creatorId={props.deck.creatorId}
+                                            deckId={props.deck._id}
+                                            flashcardId={flashcard._id}
+                                            column={column}
+                                            columnId={column._id}
+                                            />
+                                    </Col>
+                                {/* {column.path ? 
+
+                                    // <Col>
+                                    //     <audio controls src={`http://localhost:3001/api/v1/audio/${column.path}`} alt="Audio" />
                                         
-                                    </Col>
-                                    : '' }
-                                    <Col className="align-self-center">
-                                        <label style={{'cursor': 'pointer'}} className={`btn w-100 ${column.path ? 'btn-outline-danger':'btn-outline-dark'}`}>
-                                            {column.path ? 'Change' : 'Upload'} 
-                                            <input
-                                                accept='audio/*'
-                                                onChange={(e) => handleFileUpload(e, 'audio', props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
-                                                style={{'display': 'none'}}
-                                                type="file"
-                                                label="audio"
-                                                id={'123'}
-                                                name="audio"
-                                            />  
-                                        </label>
-                                    </Col>
+                                    // </Col>
+                                    // : '' }
+                                    // <Col className="align-self-center">
+                                    //     <label style={{'cursor': 'pointer'}} className={`btn w-100 ${column.path ? 'btn-outline-danger':'btn-outline-dark'}`}>
+                                    //         {column.path ? 'Change' : 'Upload'} 
+                                    //         <input
+                                    //             accept='audio/*'
+                                    //             onChange={(e) => handleFileUpload(e, 'audio', props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
+                                    //             style={{'display': 'none'}}
+                                    //             type="file"
+                                    //             label="audio"
+                                    //             id={'123'}
+                                    //             name="audio"
+                                    //         />  
+                                    //     </label>
+                                    // </Col> */}
                                 </Row>
                             </td>
                         )
                     } 
                     return (
                         <td key={column._id}>
-                            <input 
+                            <textarea 
                                 className="form-control"
                                 defaultValue={column.value}
                                 placeholder={column.value}
-                                onChange={(e) => handleEditFlashcardColumn(e, flashcard._id, indexColumn, column._id )}
+                                onChange={(e) => handleEditFlashcardColumn({props: [{prop: 'value', value: e.target.value}]}, props.deck.creatorId,props.deck._id, flashcard._id, column._id )}
                                 />
                         </td>
                     )
@@ -309,7 +311,6 @@ const FlashcardTableComponent = (props) => {
                     />
                 </Col>
             </Row>
-            {`${filterFlashcard}`}
             <FilterInput
                 func={handleFilterFlashcards}
                 />
@@ -363,7 +364,7 @@ const mapDispatchToProps = dispatch => {
         deleteColumn: (index, creator, deck) => dispatch(deleteColumn(index, creator, deck)),
         editColumnName: (index, creator, deck, value) => dispatch(editColumnName(index, creator, deck, value)),
         addFlashcard: (creator, deck) => dispatch(addFlashcard(creator, deck)),
-        editFlashcard: (value, creator, deck, flashcard, indexFlashcard, indexColumn) => dispatch(editFlashcard(value, creator, deck, flashcard, indexFlashcard, indexColumn)),
+        editFlashcard: (p, creator, deck, flashcard, indexFlashcard) => dispatch(editFlashcard(p, creator, deck, flashcard, indexFlashcard)),
         deleteFlashcard: (flashcardId, creator, deck) => dispatch(deleteFlashcard(flashcardId, creator, deck)),
         setQuickDelete: (bool) => dispatch(setQuickDeleteAction(bool)),
         uploadFile: (form, audio) => dispatch(uploadFile(form, audio)),

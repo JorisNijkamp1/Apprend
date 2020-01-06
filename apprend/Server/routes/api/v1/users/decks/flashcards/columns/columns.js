@@ -29,7 +29,9 @@ columns.use('/:columnId/', async (req, res, next) => {
 
 columns.patch('/:columnId', auth.user, async (req, res) => {
     try {
-        const result = await req.column.editColumn(req.body.change)
+        const result = await req.body.props.forEach(prop => {
+            req.column.editColumn(prop)
+        })
         req.user.markModified('decks')
         await req.user.save()
         return res.status(201).json({message: 'Changes saved' , data: result, success: true})

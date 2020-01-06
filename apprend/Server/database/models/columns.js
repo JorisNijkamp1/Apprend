@@ -10,6 +10,9 @@ const columnSchema = new mongoose.Schema({
     },
     path: {
         type: String
+    },
+    source: {
+        type: String
     }
 });
 

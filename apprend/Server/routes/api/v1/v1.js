@@ -26,22 +26,48 @@ v1.get('/audio/:pathParam', async (req, res) => {
     res.sendFile(`${req.params.pathParam}`, {root: path.join(__dirname, '../../../public/audio')})
 })
 
-v1.post('/upload/image', upload.single('image'), async (req, res) => {
+// v1.post('/upload/image', upload.single('image'), async (req, res) => {
+//     try {
+//         const imagePath = path.join(__dirname, '../../../public/images');
+//         const ext = path.extname(req.file.originalname)
+        
+//         const fileUpload = new Resize(imagePath, ext);
+//         if (!req.file) {
+//           return res.status(400).json({message: 'Please provide an image'});
+//         }
+//         const filename = await fileUpload.save(req.file.buffer);
+//         return res.status(200).json({ message: 'Image uploaded' ,data: filename, success: true });
+//     } catch (err) {
+//         console.log(err)
+//         return res.status(500).json({message: 'We couldn\'t catch your file'})
+//     }
+// })
+
+v1.post('/upload/*', fileUpload())
+
+v1.post('/upload/image', async (req, res) => {
     try {
-        const imagePath = path.join(__dirname, '../../../public/images');
-        const fileUpload = new Resize(imagePath);
-        if (!req.file) {
-          return res.status(400).json({message: 'Please provide an image'});
-        }
-        const filename = await fileUpload.save(req.file.buffer);
-        return res.status(200).json({ message: 'Image uploaded' ,data: filename, success: true });
-    } catch (err) {
+        if (!req.files || Object.keys(req.files).length === 0) {
+            return res.status(400).json({message: 'No files were uploaded'});
+          }
+        const fileName = crypto.randomBytes(20).toString('hex')
+          let sampleFile = req.files.image;
+
+          const accepted = ['.jpg', '.jpeg', '.png', '.svg', '.gif']
+          if (!accepted.includes(path.extname(sampleFile.name))) return res.status(400).json({message: 'Please throw a .mp3 towards us'})
+        
+          sampleFile.mv(`./public/images/${fileName + req.files.image.name}`, function(err) {
+            if (err){
+                console.log(err)
+                return res.status(500).json({message:'Something went wrong'});
+            }
+            res.status(201).json({message: 'File uploaded!', data: fileName + req.files.image.name, success: true})
+          })
+    } catch(err) {
         console.log(err)
         return res.status(500).json({message: 'We couldn\'t catch your file'})
     }
 })
-
-v1.post('/upload/audio', fileUpload())
 
 v1.post('/upload/audio', async (req, res) => {
     try {

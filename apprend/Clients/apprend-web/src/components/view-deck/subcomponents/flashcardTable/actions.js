@@ -110,13 +110,13 @@ function editFlashcardColumn(column){
     }
 }
 
-export const editFlashcard = (value, prop, creator, deck, flashcard, column) => {
+export const editFlashcard = (props, creator, deck, flashcard, column) => {
     return async dispatch => {
         const url = `http://localhost:3001/api/v1/users/${creator}/decks/${deck}/flashcards/${flashcard}/columns/${column}`
         const options = {
             method: 'PATCH',
             credentials: 'include',
-            body: JSON.stringify({change: {prop: prop, value: value}}),
+            body: JSON.stringify(props),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -124,7 +124,8 @@ export const editFlashcard = (value, prop, creator, deck, flashcard, column) => 
         const response = await fetch(url, options)
         const data = await response.json()
         if (response.status === 201){
-            dispatch(editFlashcardColumn({index: column,prop: prop, value: data.data, _id: flashcard}))
+            console.log(props)
+            dispatch(editFlashcardColumn({index: column, props: props, _id: flashcard}))
         }
 
         return data
