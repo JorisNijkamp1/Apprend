@@ -93,6 +93,7 @@ decks.get('/', async (req, res) => {
         });
     }
 
+
     //Filter decks
     if (decks) decks = decks.filter(deck => deck.name.toLowerCase().includes(searchQuery.toLowerCase()) && deck.private === false);
 
