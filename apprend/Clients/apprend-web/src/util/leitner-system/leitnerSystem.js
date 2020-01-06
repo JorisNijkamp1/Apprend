@@ -14,7 +14,7 @@ import {X, W2, W3} from './config';
 | Shuffle the values of an array.
 |--------------------------------------------------
  */
-export const shuffleCards = (array) => {
+export const shuffleCards = function (array) {
     let random, temp;
 
     for (let i = (array.length - 1); i > 0; i -= 1) {
@@ -30,11 +30,14 @@ export const shuffleCards = (array) => {
 
 /*
 |--------------------------------------------------
-| Select X cards from box 0.
+| Select X cards from box 0. This box will
+| eventually be empty because it serves as a
+| temporary box for cards that haven't been
+| played yet. Cards will never return to box 0.
 |--------------------------------------------------
  */
-export const selectBox0Cards = (cardsInDeck) => {
-    const box0Cards = cardsInDeck.filter(card => card.box === 0);
+export const _selectBox0Cards = function (allCardsInDeck) {
+    const box0Cards = allCardsInDeck.filter(card => card.box === 0);
     return shuffleCards(box0Cards).splice(0, X);
 };
 
@@ -43,8 +46,8 @@ export const selectBox0Cards = (cardsInDeck) => {
 | Select all cards from box 1.
 |--------------------------------------------------
  */
-export const selectBox1Cards = (cardsInDeck) => {
-    return cardsInDeck.filter(card => card.box === 1);
+export const _selectBox1Cards = function (allCardsInDeck) {
+    return allCardsInDeck.filter(card => card.box === 1);
 };
 
 /*
@@ -53,38 +56,48 @@ export const selectBox1Cards = (cardsInDeck) => {
 | played W2 sessions back.
 |--------------------------------------------------
  */
-export const selectBox2Cards = (cardsInDeck, currentSessionNumber) => {
-    return cardsInDeck.filter(card => {
+export const _selectBox2Cards = function (allCardsInDeck, currentSessionNumber) {
+    return allCardsInDeck.filter(card => {
         return card.box === 2 && (currentSessionNumber - W2) >= card.sessionPlayed;
     });
 };
 
 /*
 |--------------------------------------------------
-| Select all cards from box 2 that have been
+| Select all cards from box 3 that have been
 | played W3 sessions back.
 |--------------------------------------------------
  */
-export const selectBox3Cards = (cardsInDeck, currentSessionNumber) => {
-    return cardsInDeck.filter(card => {
+export const _selectBox3Cards = function (allCardsInDeck, currentSessionNumber) {
+    return allCardsInDeck.filter(card => {
         return card.box === 3 && (currentSessionNumber - W3) >= card.sessionPlayed;
     });
 };
 
 /*
 |--------------------------------------------------
-| Create a selection of cards based on the
-| Leitner system.
+| Get the new box number for a flashcard by
+| providing its old box number and if it was
+| answered correctly.
 |--------------------------------------------------
  */
-const leitner = (cardsInDeck, currentSessionNumber) => {
-    const selectedBox0Cards = selectBox0Cards(cardsInDeck);
-    const selectedBox1Cards = selectBox1Cards(cardsInDeck);
-    const selectedBox2Cards = selectBox2Cards(cardsInDeck, currentSessionNumber);
-    const selectedBox3Cards = selectBox3Cards(cardsInDeck, currentSessionNumber);
+export const leitnerGetNewBox = function (currentFlashcardBox, answeredCorrectly) {
+    if (answeredCorrectly && currentFlashcardBox === 2) return 3;
+    if (answeredCorrectly) return 2;
+    return 1;
+};
+
+/*
+|--------------------------------------------------
+| Create a selection of cards.
+|--------------------------------------------------
+ */
+export const leitnerSelectCards = function (allCardsInDeck, currentSessionNumber) {
+    const selectedBox0Cards = _selectBox0Cards(allCardsInDeck);
+    const selectedBox1Cards = _selectBox1Cards(allCardsInDeck);
+    const selectedBox2Cards = _selectBox2Cards(allCardsInDeck, currentSessionNumber);
+    const selectedBox3Cards = _selectBox3Cards(allCardsInDeck, currentSessionNumber);
     const selection = [...selectedBox0Cards, ...selectedBox1Cards, ...selectedBox2Cards, ...selectedBox3Cards];
 
     return shuffleCards(selection);
 };
-
-export default leitner;
