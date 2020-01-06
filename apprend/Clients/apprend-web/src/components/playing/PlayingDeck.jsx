@@ -23,6 +23,7 @@ import {
 import Loader from 'react-loaders';
 import 'loaders.css/src/animations/square-spin.scss';
 import {leitnerSelectCards} from '../../util/leitner-system/leitnerSystem';
+import {isLoggedIn} from '../shared/actions/actions';
 
 const ginoTestFunc = (user, deck, card, body) => {
     return async dispatch => {
@@ -48,30 +49,29 @@ const PlayingComponent = (props) => {
     const [currentSession, setCurrentSession] = useState();
     let loader;
 
-    useEffect(() => {
+    useEffect(async () => {
         props.doResetStateAction();
-
-        if (props.deck === null) {
-            props.doGetDeck(props.username, deckId);
-        } else {
-            let allCards = leitnerSelectCards(props.deck.flashcards, currentSession);
-            let session = props.deck.session + 1;
+        props.isLoggedIn();
+        props.doGetDeck(props.username, deckId).then(response => {
+            console.log(response);
+            let session = response.session + 1;
+            let allCards = leitnerSelectCards(response.flashcards, session);
             let counter = 0;
 
             while (allCards.length === 0) {
                 counter++;
                 session++;
-                allCards = leitnerSelectCards(props.deck.flashcards, currentSession);
+                allCards = leitnerSelectCards(response.flashcards, session);
 
                 if (counter > 500) break;
             }
 
             props.doSetGame(deckId, allCards);
             props.doSetActiveCardAction(allCards[0]);
-            props.doUpdateDeckSession(deckId, props.username, session);
+            props.doUpdateDeckSession(deckId, session);
             props.doSetCards(allCards);
             setCurrentSession(session);
-        }
+        });
     }, []);
 
     const changeScore = (flashcard, status) => {
@@ -199,6 +199,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        isLoggedIn: () => dispatch(isLoggedIn()),
         doSetCorrectCardsAction: (cards) => dispatch(setCorrectCardsAction(cards)),
         doSetWrongCardsAction: (cards) => dispatch(setWrongCardsAction(cards)),
         doSetActiveCardAction: (card) => dispatch(setActiveCardAction(card)),

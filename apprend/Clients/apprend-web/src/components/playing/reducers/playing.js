@@ -32,7 +32,7 @@ export default function playingReducer(state = initialState, action) {
         case SET_ACTIVE_CARD:
             return {...state, activeCard: action.payload};
         case RESET_STATE:
-            return initialState;
+            return {...initialState};
         case SET_ISLOADING:
             return {...state, isLoading: action.payload};
         case SET_GAME_ID:

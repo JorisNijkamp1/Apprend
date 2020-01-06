@@ -87,17 +87,21 @@ export const getDeck = (creatorId, deckId) => {
             mode: 'cors'
         };
 
-        const response = await fetch(url, options);
-        const results = await response.json();
-
-        if (response.status === 200 && results.data._id === deckId) {
-            dispatch(setPlayingDeck(results.data));
-            dispatch(setLoadingAction(false));
-            return;
-        }
-
-        console.log(`(${response.status}) ${results.message}`);
-        dispatch(errorOccurred('Something went wrong, please try again...'));
+        return fetch(url, options);
+        // return fetch(url, options)
+        //     .then(response => response.json())
+        //     .then(results => {
+        //         if (results.data._id === deckId) {
+        //             setTimeout(function () {
+        //                 dispatch(setLoadingAction(false));
+        //             }, 1000);
+        //
+        //             return results.data;
+        //         }
+        //     }).catch((err => {
+        //         console.log(err.message);
+        //         dispatch(errorOccurred('Something went wrong, please try again...'));
+        //     }))
     }
 };
 
