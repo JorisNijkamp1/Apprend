@@ -54,7 +54,7 @@ v1.post('/upload/image', async (req, res) => {
           let sampleFile = req.files.image;
 
           const accepted = ['.jpg', '.jpeg', '.png', '.svg', '.gif']
-          if (!accepted.includes(path.extname(sampleFile.name))) return res.status(400).json({message: 'Please throw a .mp3 towards us'})
+          if (!accepted.includes(path.extname(sampleFile.name).toLowerCase())) return res.status(400).json({message: 'Please throw a .mp3 towards us'})
         
           sampleFile.mv(`./public/images/${fileName + req.files.image.name}`, function(err) {
             if (err){
@@ -76,7 +76,7 @@ v1.post('/upload/audio', async (req, res) => {
           }
         const fileName = crypto.randomBytes(20).toString('hex')
           let sampleFile = req.files.audio;
-          if (path.extname(sampleFile.name) !== '.mp3') return res.status(400).json({message: 'Please throw a .mp3 towards us'})
+          if (path.extname(sampleFile.name).toLowerCase() !== '.mp3') return res.status(400).json({message: 'Please throw a .mp3 towards us'})
         
           sampleFile.mv(`./public/audio/${fileName + req.files.audio.name}`, function(err) {
             if (err){
