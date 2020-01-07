@@ -351,10 +351,16 @@ progress[value]::-webkit-progress-value {
 
 .search-deck-suggestions-link {
     color: #000;
+    display: block;
+    padding: 7px 10px;
 }
 
 .search-deck-suggestions-link:hover {
     text-decoration: none;
+}
+
+.react-autosuggest__suggestion {
+     padding: unset;
 }
 
 .custom-control-label:before, .custom-control-label:after {
