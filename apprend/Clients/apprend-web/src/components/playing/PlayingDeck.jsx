@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import * as ReactRedux from 'react-redux';
 import {Redirect, useHistory} from 'react-router';
+import {Notification} from '../shared/components/Notification';
 import {NavLink, useParams} from 'react-router-dom';
 import {NavigatieBar} from '../shared/components/NavigatieBar';
 import {Footer} from '../shared/components/Footer';
@@ -12,7 +13,7 @@ import {
     updateGame,
     getGameData,
     updateDeckSession,
-    moveFlashcardToBox
+    moveFlashcardToBox, errorOccurred
 } from './actions';
 import {
     setCorrectCardsAction,
@@ -49,29 +50,9 @@ const PlayingComponent = (props) => {
     const [currentSession, setCurrentSession] = useState();
     let loader;
 
-    useEffect(async () => {
+    useEffect(() => {
         props.doResetStateAction();
         props.isLoggedIn();
-        props.doGetDeck(props.username, deckId).then(response => {
-            console.log(response);
-            let session = response.session + 1;
-            let allCards = leitnerSelectCards(response.flashcards, session);
-            let counter = 0;
-
-            while (allCards.length === 0) {
-                counter++;
-                session++;
-                allCards = leitnerSelectCards(response.flashcards, session);
-
-                if (counter > 500) break;
-            }
-
-            props.doSetGame(deckId, allCards);
-            props.doSetActiveCardAction(allCards[0]);
-            props.doUpdateDeckSession(deckId, session);
-            props.doSetCards(allCards);
-            setCurrentSession(session);
-        });
     }, []);
 
     const changeScore = (flashcard, status) => {
@@ -128,6 +109,52 @@ const PlayingComponent = (props) => {
         props.doUpdateGame(deckId, props.gameId, currentCard, nextCard, status);
     };
 
+    const setupGame = () => {
+        props.doGetDeck(props.username, deckId).then(response => {
+            if (response.status === 404) {
+                throw new Error('This deck does not exist.');
+            } else if (response.status !== 200) {
+                throw new Error('Something went wrong, please try again later!');
+            } else {
+                return response.json();
+            }
+        }).then(results => {
+            if (results.data.flashcards.length < 1) {
+                props.doErrorOccurred('A deck needs to contain at least 1 card to play!');
+                return;
+            }
+
+            let session = results.session + 1;
+            let allCards = leitnerSelectCards(results.flashcards, session);
+            let counter = 0;
+
+            while (allCards.length === 0) {
+                counter++;
+                session++;
+                allCards = leitnerSelectCards(results.flashcards, session);
+
+                if (counter > 500) break;
+            }
+
+            props.doSetGame(deckId, allCards);
+            props.doSetActiveCardAction(allCards[0]);
+            props.doUpdateDeckSession(deckId, session);
+            props.doSetCards(allCards);
+            setCurrentSession(session);
+        }).catch(error => {
+            props.doErrorOccurred(error.message);
+        });
+    };
+
+    if (props.error !== null) {
+        Notification(props.error, 'danger');
+        return <Redirect to={'/'}/>;
+    }
+
+    if (props.username !== null) {
+        setupGame();
+    }
+
     if (props.isLoading) {
         loader = (
             <Container>
@@ -174,7 +201,7 @@ const PlayingComponent = (props) => {
         )
     }
 
-    return (props.error !== null) ? <Redirect to={"/"} /> : (
+    return (props.error !== null) ? <Redirect to={'/'}/> : (
         <>
             <NavigatieBar/>
             {loader}
@@ -211,6 +238,7 @@ const mapDispatchToProps = dispatch => {
         doMoveFlashcardToBox: (deckId, deckCreator, flashcard, currentSession, answeredCorrect) => dispatch(moveFlashcardToBox(deckId, deckCreator, flashcard, currentSession, answeredCorrect)),
         doUpdateDeckSession: (deckId, creatorId, currentSession) => dispatch(updateDeckSession(deckId, creatorId, currentSession)),
         doSetCards: (cards) => dispatch(setCardsAction(cards)),
+        doErrorOccurred: (errorMessage) => dispatch(errorOccurred(errorMessage)),
         ginoTest: (userId, deckId, flashcardId) => dispatch(ginoTestFunc(userId, deckId, flashcardId)),
     }
 };
