@@ -267,11 +267,13 @@ const UserDecks = (props) => {
                                     </Col>
                                     <Col xs={12} md={4}>
                                         {props.username === props.deck.creatorId && props.deck.originalDeck ?
-                                        <Button href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link transparent'}>
+                                        <Button href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link transparent'} id={'original'}>
                                             Original deck
                                         </Button> : ''}
                                     </Col>
-                                    <Col xs={12} md={4}>
+                                </Row>
+                                <Row className={'mt-3'}>
+                                    <Col>
                                         {props.deck.imported ? props.deck.imported.length > 0 ? Importlist() : '' : ''}
                                     </Col>
                                 </Row>

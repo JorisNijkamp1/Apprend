@@ -4,17 +4,15 @@ import {Button, Col} from 'react-bootstrap';
 export default props => {
     if (props.state) {
         if (props.importedDecks.length > 0) {
-            const allDecks = props.importedDecks.map(deck => (
-                <Col key={deck._id}>
-                    <Button href={`/decks/${deck.deckId}`} className={'search-deck-suggestions-link transparent mt-1'}>
-                        {deck.deckName} from: {deck.user ? deck.user.length === 32 ? 'Anon' : deck.user : ''}
-                    </Button>
-                </Col>
+            const allDecks = props.importedDecks.map((deck, index) => (
+                <Button href={`/decks/${deck.deckId}`} className={'search-deck-suggestions-link transparent mt-3 mr-3 ml-3'} id={'import-' + index}>
+                    {deck.deckName} from: {deck.user ? deck.user.length === 32 ? 'Anon' : deck.user : ''}
+                </Button>
             ))
     
             return (
                 <>
-                    <Button className={'search-deck-suggestions-link transparent'} onClick={props.func}>
+                    <Button className={'search-deck-suggestions-link transparent'} onClick={props.func} id={'importList'}>
                         Hide imported decks
                     </Button>
                     <Col>
@@ -24,6 +22,8 @@ export default props => {
             )
         }
     } else {
-        return <Button className={'search-deck-suggestions-link transparent'} onClick={props.func}>Show imported decks</Button>
+        return <Button className={'search-deck-suggestions-link transparent'} onClick={props.func} id={'importList'}>
+            Show imported decks
+        </Button>
     }
 }
