@@ -19,15 +19,20 @@ const SearchDecksInput = (props) => {
     let lastRequestId = null;
 
     const onSuggestionsFetchRequested = ({value}) => {
+        // console.log('onSuggestionsFetchRequested');
         loadSuggestions(value);
     };
 
     const loadSuggestions = (value) => {
+        // console.log('loadSuggestions');
+
         // Cancel the previous request
         if (lastRequestId !== null)
             clearTimeout(lastRequestId);
 
-        props.getSearchSuggestions(value).then((data) => setSuggestions(getMatchingResults(value, data)));
+        props.getSearchSuggestions(value).then((data) => {
+            setSuggestions(data)
+        });
     };
 
     const onChange = (event, {newValue}) => {
@@ -39,30 +44,33 @@ const SearchDecksInput = (props) => {
         setSuggestions([]);
     };
 
-    const getMatchingResults = (value, decks) => {
-        // console.log(decks)
-        return decks.foundDecks;
-    };
-
-    const escapeRegexCharacters = (str) => {
-        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    };
-
-    const getSuggestionValue = (suggestion) => {
-        return suggestion.name;
-    };
-
     const renderSuggestion = (suggestion) => {
-        // console.log(suggestion);
+        console.log(suggestion);
 
-        return (
-            <Link to={`/decks/${suggestion.deck._id}`} className={'search-deck-suggestions-link d-i'}>
-                <span>
-                    <span style={{fontWeight: 600}}>{suggestion.deck.name}</span>
-                    <span className={'float-right'}><i>{suggestion.deck.flashcards} flashcards</i></span>
-                </span>
-            </Link>
-        );
+        let result;
+        if (suggestion.type === "deck") {
+            result = (
+                <Link to={`/decks/${suggestion.deck._id}`} className={'search-deck-suggestions-link d-i'}>
+                    <span>
+                        <span style={{fontWeight: 600}}>{suggestion.deck.name}</span>
+                        <span className={'float-right'}><i>{suggestion.deck.flashcards} flashcards</i></span>
+                    </span>
+                </Link>
+            )
+        }
+
+        if (suggestion.type === "user") {
+            result = (
+                <Link to={`/${suggestion._id}/decks`} className={'search-deck-suggestions-link d-i'}>
+                    <span>
+                        <span style={{fontWeight: 600}}>{suggestion._id}</span>
+                        <span className={'float-right'}><i>(user)</i></span>
+                    </span>
+                </Link>
+            )
+        }
+
+        return result;
     };
 
     let history = useHistory()
@@ -91,7 +99,6 @@ const SearchDecksInput = (props) => {
                                         suggestions={suggestions}
                                         onSuggestionsFetchRequested={onSuggestionsFetchRequested}
                                         onSuggestionsClearRequested={onSuggestionsClearRequested}
-                                        getSuggestionValue={getSuggestionValue}
                                         renderSuggestion={renderSuggestion}
                                         inputProps={inputProps}
                                         highlightFirstSuggestion={false}

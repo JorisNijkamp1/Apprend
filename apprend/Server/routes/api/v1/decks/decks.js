@@ -53,9 +53,6 @@ decks.get('/:username/tags', async (req, res) => {
 /*====================================
 | SEARCH FOR SOME DECKS
 */
-/*====================================
-| SEARCH FOR SOME DECKS
-*/
 decks.get('/', async (req, res) => {
     const searchQuery = req.query.deck;
     let searchResult;
@@ -66,7 +63,13 @@ decks.get('/', async (req, res) => {
                 $facet: {
                     foundUsers: [
                         {$match: {'_id': {'$regex': searchQuery, '$options': 'i'}}},
-                        {$project: {"_id": "$_id", "type": "user"}}
+                        {
+                            $project: {
+                                "_id": "$_id",
+                                "type": "user",
+                                "email": "$email"
+                            }
+                        }
                     ],
                     foundDecks: [
                         {$unwind: "$decks"},
@@ -94,21 +97,23 @@ decks.get('/', async (req, res) => {
 
     let finalResults = [];
     searchResult.map((results) => {
+
+        console.log(results)
+
         results.foundDecks.map((decks, key) => {
             results.foundDecks[key].deck.flashcards = results.foundDecks[key].deck.flashcards.length;
-            finalResults = [ ...results.foundUsers, ...results.foundDecks, ...results.foundTags ]
+            finalResults = [...results.foundUsers, ...results.foundDecks, ...results.foundTags]
             return results;
         })
     });
 
-    // console.log(searchResult[0])
-
-    console.log(finalResults)
+    // console.log(searchResult[0]);
+    console.log(typeof finalResults);
 
     await res.json({
         message: 'Search results',
-        data: searchResult[0],
-        // data: finalResults,
+        // data: searchResult[0],
+        data: finalResults,
     })
 });
 
