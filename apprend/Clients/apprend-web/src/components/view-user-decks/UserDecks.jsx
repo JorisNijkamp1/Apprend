@@ -213,7 +213,6 @@ const Deck = (props) => {
                                       defaultValue={deck.name}
                                       id={`input-name-${index}`}
                                       onChange={(e) => {
-
                                           editProperty(e, 'name')
                                       }}
                         />

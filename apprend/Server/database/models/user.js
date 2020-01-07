@@ -101,6 +101,19 @@ userSchema.methods.convertDecks = async function (oldUsername, oldDecks) {
     await this.save();
 };
 
+userSchema.methods.editUserEmail = async function (email) {
+    this.email = email;
+    this.markModified('decks');
+    await this.save();
+    return this
+}
+userSchema.methods.editUserPassword = async function (password) {
+    this.password = password;
+    this.markModified('decks');
+    await this.save();
+    return this
+}
+
 //Create model
 mongoose.model('User', userSchema);
 

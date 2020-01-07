@@ -272,6 +272,28 @@ users.delete('/:id', async (req, res) => {
     }
 });
 
+/*
+|---------------------------------------------
+| Update user username and password
+|---------------------------------------------
+ */
+
+users.patch('/:username', auth.user, async (req, res) => {
+    try {
+        let email, password
+        if (req.body.email) {
+            email = await req.user.editUserEmail(req.body.email);
+        }
+        if (req.body.password) {
+            password = await req.user.editUserPassword(bcrypt.hashSync(req.body.password, config.PASSWORD_SALT));
+        }
+        return res.status(200).json({message: 'Changes saved', data: email ? email : password})
+
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({message: 'something went wrong'})
+    }
+});
 
 // users.patch('/:userId/decks/:deckId', async (req, res) => {
 //     try {

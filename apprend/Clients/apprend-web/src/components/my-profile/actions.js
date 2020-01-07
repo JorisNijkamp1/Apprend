@@ -29,3 +29,29 @@ export const getUser = function (user) {
         }
     };
 };
+
+export const setAccountDetailsAction = function (username, email, password) {
+    return async dispatch => {
+        const url = `${API_URL}/users/${username}`;
+        const options = {
+            method: 'PATCH',
+            credentials: 'include',
+            body: JSON.stringify({
+                    _id: username,
+                    email: email,
+                    password: password
+                }
+            ),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const response = await fetch(url, options);
+        if (response.status === 200) {
+            let data = await response.json();
+            await dispatch(setUser(data.data));
+        } else {
+            console.log("error")
+        }
+    }
+};
