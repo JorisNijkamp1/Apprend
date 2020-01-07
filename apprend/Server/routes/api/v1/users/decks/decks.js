@@ -29,11 +29,15 @@ decks.get('/:deckId', async (req, res) => {
 
 decks.post('/:deckId', async (req, res) => {
     try {
+        await req.deck.updateImported()
+        await req.user.markModified('decks')
+        await req.user.save()
         const username = req.session.username;
         const importToUser = await User.findById(username);
         const newDeck = {...req.deck._doc};
         delete newDeck.games;
         delete newDeck._id;
+        delete newDeck.imported;
 
         if (username) {
             if (importToUser._id === req.user._id) {
@@ -41,6 +45,9 @@ decks.post('/:deckId', async (req, res) => {
             } else {
                 newDeck.creatorId = importToUser._id
                 const result = await importToUser.addDeck(newDeck);
+                await result.updateOriginalDeck(req.deck._id);
+                await importToUser.markModified('decks')
+                await importToUser.save()
                 res.status(201).json({
                     message: 'Deck successfully imported',
                     data: result
@@ -49,6 +56,7 @@ decks.post('/:deckId', async (req, res) => {
         } else {
             req.session.username = req.session.id
             newDeck.creatorId = req.session.id
+            newDeck.originalDeck = req.deck._id
 
             const user = {
                 _id: req.session.id,

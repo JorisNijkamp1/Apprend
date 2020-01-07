@@ -288,7 +288,6 @@ export const toggleDeckStatus = (deckId, userId) => {
 
 export const importDeckAction = (deckId, creatorId) => {
     return async dispatch => {
-        console.log(creatorId)
         const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
         const options = {
             credentials: 'include',

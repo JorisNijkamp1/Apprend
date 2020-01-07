@@ -1,19 +1,15 @@
 import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
 import {NavigatieBar} from "../shared/components/NavigatieBar";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import {Link, useParams} from "react-router-dom";
-import {Footer} from "../shared/components/Footer"
+import {Container, Row, Col} from "react-bootstrap";
+import {useParams} from "react-router-dom";
+import {Footer} from "../shared/components/Footer";
 import {getDeckAction, getDeckEditAction} from "../shared/actions/actions";
 import Card from "react-bootstrap/Card";
-import 'loaders.css/src/animations/square-spin.scss'
+import 'loaders.css/src/animations/square-spin.scss';
 import Loader from "react-loaders";
-import {useHistory} from 'react-router'
-import {withRouter} from 'react-router-dom'
-import {InputGroup, Button} from 'react-bootstrap'
+import {useHistory} from 'react-router';
+import {withRouter} from 'react-router-dom';
 import {isLoggedIn} from "../shared/actions/actions";
 import {importDeckAction} from "../shared/actions/actions";
 import PlayButton from "./subcomponents/PlayButton";
@@ -21,7 +17,7 @@ import EditButton from "./subcomponents/EditButton";
 import ToggleStatusButton from "./subcomponents/ToggleStatusButton";
 import DeleteButton from "./subcomponents/DeleteButton";
 import ImportButton from "./subcomponents/ImportButton";
-import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../shared/actions/actions'
+import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../shared/actions/actions';
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
 import {Notification} from '../shared/components/Notification';
 import {addTag, clearTags, deleteTag} from '../create-deck/actions';
@@ -61,18 +57,10 @@ const UserDecks = (props) => {
         });
     }
 
-    // const deckData = {
-    //     // deckName: (!deckNameEdited && props.deckEdit.name) ? props.deck.name : deckName,
-    //     // deckDescription: (!deckDescriptionEdited && props.deck.description) ? props.deck.description : deckDescription,
-    //     oldDeckTags: props.deckEdit.data.tags
-    // }
-
     const getTagValue = () => {
         let tagValue = input;
         setInput('');
         let match = false;
-        console.log(props.deckEdit)
-        console.log(props.deckEdit.data.tags)
         if (props.tags.length !== 0 || props.deckEdit.data.tags.length !== 0) {
             if (checkAdded(tagValue)) {
                 Notification("You already have that tag", "danger");
@@ -254,6 +242,20 @@ const UserDecks = (props) => {
                                     </Col>
                                     <Col xs={12} md={4}>
                                         <b>Total flashcards: </b>{totalFlashcards}
+                                    </Col>
+                                </Row>
+                                <Row className={'mt-2'}>
+                                    <Col xs={12} md={4}>
+                                        <b>Imported: </b>{props.deck.imported.length}<b> times</b>
+                                    </Col>
+                                    <Col xs={12} md={4}>
+                                        {props.deck.originalDeck ?
+                                        <a href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link'}>
+                                            <b>Original deck</b>
+                                        </a> : ''}
+                                    </Col>
+                                    <Col xs={12} md={4}>
+                                        <b>People who imported this deck: </b>{props.deck.imported}<b> times</b>
                                     </Col>
                                 </Row>
                             </Card.Subtitle>
