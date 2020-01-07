@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
 import {NavigatieBar} from "../shared/components/NavigatieBar";
-import {Container, Row, Col} from "react-bootstrap";
+import {Container, Row, Col, Button} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import {Footer} from "../shared/components/Footer";
 import {getDeckAction, getDeckEditAction} from "../shared/actions/actions";
@@ -26,9 +26,10 @@ import {deleteOldTag} from "../shared/actions/actions";
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
 import {FlashcardTable} from './subcomponents/flashcardTable/FlashcardTable'
 import DeckDescription from "./subcomponents/DeckDescription";
-import DeckName from './subcomponents/DeckName'
+import DeckName from './subcomponents/DeckName';
 import DeckTags from "./subcomponents/DeckTags";
 import {LoadingComponent} from "../shared/components/LoadingComponent";
+import ImportList from './subcomponents/ImportList'
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
@@ -40,6 +41,7 @@ const UserDecks = (props) => {
     const [deleteStatus, setdeleteStatus] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [input, setInput] = useState('')
+    const [listStatus, setListStatus] = useState(false)
 
     const history = useHistory()
 
@@ -204,6 +206,20 @@ const UserDecks = (props) => {
         )
     }
 
+    const toggleListStatusHandler = () => {
+        setListStatus(!listStatus)
+    }
+    
+    const Importlist = () => {
+        if (props.username === props.deck.creatorId) {
+            return <ImportList
+                state={listStatus}
+                importedDecks={props.deck.imported}
+                func={toggleListStatusHandler}
+            />
+        }
+    }
+
     let loader, deck, error, flashcardsComp;
     if (props.isLoading) {
         loader = (
@@ -244,18 +260,19 @@ const UserDecks = (props) => {
                                         <b>Total flashcards: </b>{totalFlashcards}
                                     </Col>
                                 </Row>
-                                <Row className={'mt-2'}>
+                                <Row className={'mt-3'}>
                                     <Col xs={12} md={4}>
-                                        <b>Imported: </b>{props.deck.imported.length}<b> times</b>
+                                        <b>Imported: </b>{props.deck.imported ? props.deck.imported.length : 0}
+                                        {props.deck.imported ? props.deck.imported.length === 1 ? <b> time</b> : <b> times</b> : <b> times</b>}
                                     </Col>
                                     <Col xs={12} md={4}>
-                                        {props.deck.originalDeck ?
-                                        <a href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link'}>
-                                            <b>Original deck</b>
-                                        </a> : ''}
+                                        {props.username === props.deck.creatorId && props.deck.originalDeck ?
+                                        <Button href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link transparent'}>
+                                            Original deck
+                                        </Button> : ''}
                                     </Col>
                                     <Col xs={12} md={4}>
-                                        <b>People who imported this deck: </b>{props.deck.imported}<b> times</b>
+                                        {props.deck.imported ? props.deck.imported.length > 0 ? Importlist() : '' : ''}
                                     </Col>
                                 </Row>
                             </Card.Subtitle>
