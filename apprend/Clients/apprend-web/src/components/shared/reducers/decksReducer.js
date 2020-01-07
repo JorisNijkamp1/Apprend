@@ -21,6 +21,7 @@ const initialState = {
 
 export default function decksReducer(state = initialState, action) {
     return produce(state, draft => {
+        let index
         switch (action.type) {
 
             case DECKS_SET_USER_DECKS:
@@ -48,19 +49,38 @@ export default function decksReducer(state = initialState, action) {
 
             // Kijken of ik een specifieke deck kan updaten
             case 'DECKS_SET_SPECIFIC_DECK':
-                const index = draft['userDecks']['decks'].findIndex(d => d._id === action.payload._id)
+                index = draft['userDecks']['decks'].findIndex(d => d._id === action.payload._id)
                 draft['userDecks']['decks'][index] = action.payload
                 break;
 
             case DECK_DELETE_TAG:
-                let filtered = state.deckEdit.tags.filter(function(value, index, arr){
+                let filtered = state.deckEdit.data.tags.filter(function(value, index, arr){
                     return value !== action.payload;
                 });
-                draft['deckEdit'].tags = filtered
+                draft['deckEdit'].data.tags = filtered
                 break;
             case DECK_FILTERED_DECKS:
                 draft['filteredDecks'] = action.payload
                 break;
+
+            case 'SET_COLUMN_NAME':
+                draft['deck']['columns'][action.payload.index].name = action.payload.value
+                break;
+            
+            case 'DECK_ADD_FLASHCARD':
+                draft['deck']['flashcards'].push(action.payload)
+                break;
+
+            case 'DECKS_EDIT_FLASHCARD_COLUMN':
+                index = draft['deck']['flashcards'].findIndex(fc => fc._id === action.payload._id)
+                if (index !== undefined)
+                draft['deck']['flashcards'][index]['columns'][action.payload.index].value = action.payload.value
+                break;
+
+            case 'DECKS_DELETE_FLASHCARD':
+                draft['deck']['flashcards'] = state['deck']['flashcards'].filter(fc => fc._id !== action.payload)
+                break;
+
             default:
                 return draft
         }

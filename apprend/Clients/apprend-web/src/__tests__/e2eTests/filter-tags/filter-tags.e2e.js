@@ -119,5 +119,13 @@ describe(`Filter`, () => {
     test(`Filter on tag`, async () => {
         await page.type(`input[id="Filter"]`, `qwertyuiop`, {delay: 15});
     });
+
+    test(`Go to tag overview page`, async () => {
+        await page.goto(`http://localhost:3000/tags/test`);
+    });
+
+    test(`Click on a deck`, async () => {
+        await page.waitFor(`ul[id="tagList"]`);
+    });
 })
 

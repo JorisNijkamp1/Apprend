@@ -52,7 +52,7 @@ describe('Importing a deck', () => {
         }
 
         let testUser = await User.findById(username)
-        const result = await testUser.importDeck(testDeck, username)
+        const result = await testUser.addDeck(testDeck)
 
         testUser = await User.findById(username)
 

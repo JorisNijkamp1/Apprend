@@ -25,8 +25,20 @@ columns.post('/', async (req, res) => {
         const result = await req.deck.addColumn(column)
         req.user.markModified('decks')
         await req.user.save()
-        res.status(201).json({message: column, data: result})
+        res.status(201).json({message: 'Column added', data: req.deck, success: true})
     } catch (err) {
+        console.log(err)
+        return res.status(500).json({message: 'Something went wrong'})
+    }
+})
+
+columns.patch('/:columnId', async (req, res) => {
+    try {
+        req.deck.columns[req.params.columnId].name = req.body.column.value
+        req.user.markModified('decks')
+        await req.user.save()
+        return res.status(200).json({message: 'Saved', data: req.deck.columns[req.params.columnId].name})
+    } catch (err){
         console.log(err)
         return res.status(500).json({message: 'Something went wrong'})
     }
@@ -37,7 +49,7 @@ columns.delete('/:columnId', async (req, res) => {
         const result = await req.deck.deleteColumn(req.params.columnId)
         req.user.markModified('decks')
         await req.user.save()
-        res.status(200).json({message: 'Delete ok', data: result})
+        res.status(200).json({message: 'Delete ok', data: req.deck})
     } catch (err) {
         console.log(err)
         return res.status(500).json({message: 'Something went wrong'})

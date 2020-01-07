@@ -23,7 +23,7 @@ describe('Setting decks to a new shared status', () => {
 
         const data = await response.json()
 
-        madeDeck = data.decks[0]
+        madeDeck = data.data.decks[0]
 
     })
 
@@ -45,8 +45,8 @@ describe('Setting decks to a new shared status', () => {
 
         const editResult = await editResponse.json()
 
-        expect(editResult.private).toEqual(editExpectedResult.private)
-        expect(editResult.name).toEqual(editExpectedResult.deckName)
+        expect(editResult.data.private).toEqual(editExpectedResult.private)
+        expect(editResult.data.name).toEqual(editExpectedResult.deckName)
 
     })
 
@@ -68,8 +68,8 @@ describe('Setting decks to a new shared status', () => {
 
         const editResult = await editResponse.json()
 
-        expect(editResult.private).toEqual(editExpectedResult.private)
-        expect(editResult.name).toEqual(editExpectedResult.deckName)
+        expect(editResult.data.private).toEqual(editExpectedResult.private)
+        expect(editResult.data.name).toEqual(editExpectedResult.deckName)
     })
 
     test('Toggle a deck that doesnt exist', async () => {
@@ -91,12 +91,21 @@ describe('Setting decks to a new shared status', () => {
     })
 
     test('Toggle a deck that doesnt belong to you', async () => {
+
+        /*
+            In order to pass this test, you need a user matching 'user' and that user needs at least one deck
+        */
+
+        const user = 'Joris'
+
+        const findAnUserAndDecks = await fetch(`http://localhost:3001/api/v1/users/${user}/decks`)
+        const data = await findAnUserAndDecks.json()
     
         const editExpectedResult = {
             status: 401
         }
 
-        const editResponse = await fetch(`http://localhost:3001/api/v1/users/Joris/decks/1`, {
+        const editResponse = await fetch(`http://localhost:3001/api/v1/users/${user}/decks/${data.data.decks[0]._id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

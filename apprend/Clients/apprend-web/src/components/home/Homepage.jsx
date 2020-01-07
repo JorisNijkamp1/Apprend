@@ -4,15 +4,12 @@ import {NavigatieBar} from '../shared/components/NavigatieBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
 import {Footer} from '../shared/components/Footer'
 import {getHomepageDecks} from './actions';
 import {Link} from 'react-router-dom';
 import {isLoggedIn} from '../shared/actions/actions'
 import SearchDecksInput from "../shared/components/SearchDecksInput";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-solid-svg-icons";
-import { LoadingComponent } from '../shared/components/LoadingComponent'
+import {LoadingComponent} from '../shared/components/LoadingComponent'
 
 const HomepageUI = (props) => {
 
@@ -25,30 +22,54 @@ const HomepageUI = (props) => {
 
     }, []);
 
+    const deckTags = (tags) => {
+        if (tags) {
+            return tags.map((tag, index) => {
+                    if (index <= 3) {
+                        return (
+                            <span className={'badge badge-light text-center'} style={{color: '#000', margin: '0 10px',}}>
+                                    {tag}
+                                </span>
+
+                        )
+                    } else {
+                        return null
+                    }
+                }
+            )
+        } else {
+            return null
+        }
+    }
+
     const decksHomepage = () => {
         if (props.deckName) {
             return props.deckName.map((deck, index) => (
-                <Col lg={{span: 4}} md={{span: 6}} key={deck.name + index}>
+                <Col className={"my-md-3 my-4 my-lg-0"} lg={{span: 4}} md={{span: 6}} key={deck.name + index}>
                     <Link to={`/decks/${deck._id}`} className={'deck-card-link'}>
-                        <Card className={'hover-shadow mb-4'}>
-                            <Card.Header className={'bg-blue text-white text-center'}><h2>{deck.name}</h2>
-                            </Card.Header>
-                            <Card.Body>
-                                <p className={'text-center'} style={{color: '#000'}}>
-                                    {deck.description}
-                                </p>
+                        <div className={`card-animation`}>
+                            <div className={"imgBx"}>
+                                <h2>{deck.name}</h2>
                                 <strong>
                                     <Link id="creator" to={`/${deck.creatorId}/decks`}>
-                                        <FontAwesomeIcon icon={faUser}
-                                                         size={'1x'}
-                                                         title={`Search`}
-                                                         color={'#f00'}
-                                        />
-                                    <span style={{marginLeft: 5, color: '#000'}}>{deck.creatorId}</span>
+                                        <span style={{marginLeft: 5, color: '#fff'}}>Made by {deck.creatorId}</span>
                                     </Link>
                                 </strong>
-                            </Card.Body>
-                        </Card>
+                                <div className={"amount-flashcards"}>
+                                    {deck.flashcards.length}
+                                </div>
+                            </div>
+                            <div className={"details"}>
+                                <>
+                                    <p className={'text-center description-cutoff'} style={{color: '#000'}}>
+                                        {deck.description}
+                                    </p>
+                                    <Row className={"justify-content-center"}>
+                                        {deckTags(deck.tags)}
+                                    </Row>
+                                </>
+                            </div>
+                        </div>
                     </Link>
                 </Col>
             ));
@@ -56,21 +77,21 @@ const HomepageUI = (props) => {
     };
 
     const showContent = () => {
-        if (isLoading){
-            return <LoadingComponent giveClass="my-5" loadingText="Loading some decks..." />
-        } else if (props.deckName && props.deckName.length > 0){
+        if (isLoading) {
+            return <LoadingComponent giveClass="my-5" loadingText="Loading some decks..."/>
+        } else if (props.deckName && props.deckName.length > 0) {
             return (
                 <>
-                <Row className={'mt-7'}>
-                    <Col className=" text-center">
-                        <h1>Random decks for you!</h1>
-                        <p>Here are some decks from users you could play</p>
-                    </Col>
-                </Row>
+                    <Row className={'mt-7'}>
+                        <Col className=" text-center">
+                            <h1>Random decks for you!</h1>
+                            <p>Here are some decks from users you could play</p>
+                        </Col>
+                    </Row>
 
-                <Row className={'mt-5'}>
-                    {decksHomepage()}
-                </Row>
+                    <Row className={'mt-5'}>
+                        {decksHomepage()}
+                    </Row>
                 </>
             )
         } else {
@@ -98,7 +119,7 @@ const HomepageUI = (props) => {
                     </g>
                 </svg>
             </div>
-            <Container>
+            <Container className={"pb-5"}>
                 <Row className={"mt-4"}>
                     <Col lg={{span: 8, offset: 2}}>
                         <div className="mx-auto text-white pt-5">
