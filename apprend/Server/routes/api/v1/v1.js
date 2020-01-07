@@ -51,6 +51,10 @@ v1.post('/upload/image', async (req, res) => {
             return res.status(400).json({message: 'No files were uploaded'});
           }
         const fileName = crypto.randomBytes(20).toString('hex')
+
+        // Check if file is < ~ 10MB
+        if (req.files.image.size > 100000000) return res.status(400).json({message: 'File too large'})
+
           let sampleFile = req.files.image;
 
           const accepted = ['.jpg', '.jpeg', '.png', '.svg', '.gif']
@@ -75,16 +79,20 @@ v1.post('/upload/audio', async (req, res) => {
             return res.status(400).json({message: 'No files were uploaded'});
           }
         const fileName = crypto.randomBytes(20).toString('hex')
-          let sampleFile = req.files.audio;
-          if (path.extname(sampleFile.name).toLowerCase() !== '.mp3') return res.status(400).json({message: 'Please throw a .mp3 towards us'})
+
+        // Check if file is < ~ 10MB
+        if (req.files.audio.size > 10000000) return res.status(400).json({message: 'File too large'})
+
+        let sampleFile = req.files.audio;
+        if (path.extname(sampleFile.name).toLowerCase() !== '.mp3') return res.status(400).json({message: 'Please throw a .mp3 towards us'})
         
-          sampleFile.mv(`./public/audio/${fileName + req.files.audio.name}`, function(err) {
-            if (err){
-                console.log(err)
-                return res.status(500).json({message:'Something went wrong'});
-            }
-            res.status(201).json({message: 'File uploaded!', data: fileName + req.files.audio.name, success: true})
-          })
+        sampleFile.mv(`./public/audio/${fileName + req.files.audio.name}`, function(err) {
+        if (err){
+            console.log(err)
+        return res.status(500).json({message:'Something went wrong'});
+        }
+        res.status(201).json({message: 'File uploaded!', data: fileName + req.files.audio.name, success: true})
+        })
     } catch(err) {
         console.log(err)
         return res.status(500).json({message: 'We couldn\'t catch your file'})
