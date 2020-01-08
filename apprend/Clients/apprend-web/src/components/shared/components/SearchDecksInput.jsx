@@ -73,15 +73,14 @@ const SearchDecksInput = (props) => {
 
     const loadSuggestions = (value) => {
         // Cancel the previous request
-        if (lastRequestId !== null)
-            clearTimeout(lastRequestId);
+        if (lastRequestId !== null) clearTimeout(lastRequestId);
 
         props.getSearchSuggestions(value)
             .then((data) => {
                 return data.filter(section => section.results.length > 0);
             })
-            .then((result) => {
-                setSuggestions(result)
+            .then((results) => {
+                setSuggestions(results)
             })
     };
 

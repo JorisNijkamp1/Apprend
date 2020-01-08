@@ -14,7 +14,7 @@ decks.get('/tags', async (req, res) => {
         const searchQuery = req.query.tag;
         let foundDecks;
         let decks = [];
-    
+
         if (searchQuery) {
             foundDecks = await User.aggregate([{
                 $facet: {
@@ -28,7 +28,7 @@ decks.get('/tags', async (req, res) => {
         } else {
             return res.status(400).json({message: 'No query'})
         }
-    
+
         foundDecks[0].foundTags.forEach(deck => {
             decks.push(deck);
         })
@@ -84,11 +84,12 @@ decks.get('/', async (req, res) => {
                         }
                     }
                 ],
-                foundTags: [
-                    {$unwind: "$decks"},
-                    {$match: {'decks.tags': {'$regex': searchQuery, '$options': 'i'}, "decks.private": false}},
-                    {$project: {"tags": "$decks.tags", "type": "tag"}}
-                ],
+                // TAGS TEMPORARY DISABLED
+                // foundTags: [
+                //     {$unwind: "$decks"},
+                //     {$match: {'decks.tags': {'$regex': searchQuery, '$options': 'i'}, "decks.private": false}},
+                //     {$project: {"tags": "$decks.tags", "type": "tag"}}
+                // ],
             }
         }
     ]);
@@ -102,27 +103,29 @@ decks.get('/', async (req, res) => {
             title: 'Decks',
             results: []
         },
-        {
-            title: 'Tags',
-            results: []
-        }
+        // TAGS TEMPORARY DISABLED
+        // {
+        //     title: 'Tags',
+        //     results: []
+        // }
     ];
 
     for (var key in searchResult[0]) {
         if (searchResult[0].hasOwnProperty(key)) {
             searchResult[0][key].forEach(result => {
-                if (result.type === 'user' && result.email && finalResults[0].results.length < 3) finalResults[0].results.push({
+                if (result.type === 'user' && result.email) finalResults[0].results.push({
                     name: result._id,
                     type: result.type
                 });
-                if (result.type === 'deck' && finalResults[1].results.length < 3) finalResults[1].results.push({
+                if (result.type === 'deck') finalResults[1].results.push({
                     ...result.deck,
                     type: result.type
                 });
-                if (result.type === 'tag' && finalResults[2].results.length < 3) finalResults[2].results.push({
-                    name: result.tags,
-                    type: result.type
-                });
+                // TAGS TEMPORARY DISABLED
+                // if (result.type === 'tag') finalResults[2].results.push({
+                //     name: result.tags,
+                //     type: result.type
+                // });
             })
         }
     }
