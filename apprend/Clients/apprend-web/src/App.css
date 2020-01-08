@@ -636,3 +636,7 @@ progress[value]::-webkit-progress-value {
     background: #f5f6fa;
     border: 0;
 }
+
+.di-f{
+    display: flex;
+}

@@ -57,14 +57,8 @@ const SearchResults = (props) => {
         )
     };
 
-    const searchTitle = (searchValue) => {
-        if (searchValue) return (
-            <h1 className={'text-center w-100'}>Results for <b><i>{searchValue}</i></b></h1>
-        )
-    };
-
     const noResultsFound = () => {
-        if (!props.isLoading && results.length === 0) return (
+        if (!props.isLoading) return (
             <h3 className={'text-center w-100'}>
                 No {typeResults} found... 😭
             </h3>
@@ -99,6 +93,8 @@ const SearchResults = (props) => {
                     </section>
                 )
             )
+        }else if (results.length > 0 && results[1].results.length === 0 && typeResults === 'decks') {
+            return noResultsFound()
         }
     };
 
@@ -157,11 +153,10 @@ const SearchResults = (props) => {
             <>
                 <div className="row">
                     {filterMenu()}
-                    <div className="col-md-8">
-                        <p className="search-results-count">About {(results.length > 0) ? (results[0].results.length + results[1].results.length) : 0} results</p>
+                    <div className="col-md-8 justify-content-center di-f">
+                        <p className="search-results-count">About {(results.length > 0) ? (results[0].results.length + results[1].results.length) : 0} results  for {searchValue}</p>
                         {userResults()}
                         {deckResults()}
-                        {noResultsFound()}
                     </div>
                 </div>
             </>
