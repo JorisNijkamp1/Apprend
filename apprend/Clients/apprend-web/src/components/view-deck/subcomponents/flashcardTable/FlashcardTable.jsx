@@ -284,7 +284,6 @@ const FlashcardTableComponent = (props) => {
                     </Col>
                 </Row>
                 <AddColumnButtons />
-                {/* <Button className="w-100 my-3" variant="success" onClick={handleAddFlashcard}>Add new flashcard</Button> */}
                 <AddColumnButton
                     className="my-3"
                     variant="outline-success"

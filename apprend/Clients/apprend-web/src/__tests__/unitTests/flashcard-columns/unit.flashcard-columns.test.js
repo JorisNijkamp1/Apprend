@@ -7,10 +7,12 @@ const mongoose = require('mongoose')
 const U = require('../../../../../../Server/database/models/user')
 const User = mongoose.model('User', U)
 
-describe('Adding, editing and deleting deck columns', () => {
+describe('Editing columns of a flashcard', () => {
 
     let testUser
     let deck
+    let flashcard
+    let column
     let testDeck
     const username = 'testAccount'
 
@@ -39,6 +41,8 @@ describe('Adding, editing and deleting deck columns', () => {
         testUser = await User.findById(username)
         const result = await testUser.addDeck(testDeck)
         deck = await testUser.decks.id(testUser.decks[0]._id)
+        flashcard = await deck.flashcards.id(deck.flashcards[0]._id)
+        column = await flashcard.columns.id(flashcard.columns[0]._id)
     })
 
     afterEach( async () => {
@@ -49,35 +53,18 @@ describe('Adding, editing and deleting deck columns', () => {
         await mongoose.disconnect()
     })
 
-    test('Adding a new column to a deck', async () => {
+    test('Edit the value of a Text column', async () => {
+        const editValue = 'New description' 
         const expectedResult = {
-            columnAmount: 3,
+            value: editValue,
             type: 'Text',
-            name: 'Nice name'
         }
 
-        const deck = await testUser.decks.id(testUser.decks[0]._id)
-        const result = await  deck.addColumn({type: 'Text', name: 'Nice name'})
+        const result = await  column.editColumn({prop: 'value', value: editValue})
         testUser.markModified('decks')
         await testUser.save()
 
         testUser = await User.findById(username)
-
-        expect(testUser.decks[0].columns.length).toEqual(expectedResult.columnAmount)
-        expect(testUser.decks[0].columns[2].type).toEqual(expectedResult.type)
-        expect(testUser.decks[0].columns[2].name).toEqual(expectedResult.name)
-        expect(testUser.decks[0].flashcards[0].columns.length).toEqual(expectedResult.columnAmount)
-    })
-
-    test('Deleting a column', async () => {
-        const expectedResult = {
-            columnAmount: 1,
-        } 
-        const result = await deck.deleteColumn(0)
-        testUser.markModified('decks')
-        await testUser.save()
-        testUser = await User.findById(username)
-        expect(testUser.decks[0].columns.length).toEqual(expectedResult.columnAmount)
-        expect(testUser.decks[0].flashcards[0].columns.length).toEqual(expectedResult.columnAmount)
+        expect(testUser.decks[0].flashcards[0].columns[0].value).toEqual(expectedResult.value)
     })
 })
