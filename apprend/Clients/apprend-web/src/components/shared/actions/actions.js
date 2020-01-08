@@ -171,11 +171,13 @@ export const getDeckAction = (deckId, setLoader) => {
             setTimeout(function () {
                 setLoader(false)
             }, 1000);
+            return data.data
         } else {
             setTimeout(function () {
-                dispatch(setDeckAction('deck-not-found'));
+                dispatch(setDeckAction('Deck was not found'));
                 setLoader(false)
             }, 1000);
+            return 'Deck was not found'
         }
     }
 };

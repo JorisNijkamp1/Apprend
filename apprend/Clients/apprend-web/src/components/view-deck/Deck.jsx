@@ -4,24 +4,29 @@ import {NavigatieBar} from "../shared/components/NavigatieBar";
 import {Container, Row, Col, Button} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import {Footer} from "../shared/components/Footer";
-import {getDeckAction, getDeckEditAction} from "../shared/actions/actions";
+import {
+    getDeckAction,
+    getDeckEditAction,
+    isLoggedIn,
+    importDeckAction,
+    deleteDeckFromUser,
+    toggleDeckStatus,
+    setDeckEditedAction,
+    deleteOldTag
+} from "../shared/actions/actions";
 import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss';
 import Loader from "react-loaders";
 import {useHistory} from 'react-router';
 import {withRouter} from 'react-router-dom';
-import {isLoggedIn} from "../shared/actions/actions";
-import {importDeckAction} from "../shared/actions/actions";
 import PlayButton from "./subcomponents/PlayButton";
 import EditButton from "./subcomponents/EditButton";
 import ToggleStatusButton from "./subcomponents/ToggleStatusButton";
 import DeleteButton from "./subcomponents/DeleteButton";
 import ImportButton from "./subcomponents/ImportButton";
-import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../shared/actions/actions';
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
 import {Notification} from '../shared/components/Notification';
 import {addTag, clearTags, deleteTag} from '../create-deck/actions';
-import {deleteOldTag} from "../shared/actions/actions";
 
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
 import {FlashcardTable} from './subcomponents/flashcardTable/FlashcardTable'
@@ -48,7 +53,12 @@ const UserDecks = (props) => {
     //Check if user is logged in
     useEffect(() => {
         props.isLoggedIn()
-        props.getDeck(deckId, setIsLoading)
+        props.getDeck(deckId, setIsLoading).then(response => {
+            if (response === 'Deck was not found') {
+                Notification(response, 'danger')
+                history.push('/')
+            }
+        })
         props.clearTags()
     }, []);
 
@@ -209,7 +219,7 @@ const UserDecks = (props) => {
     const toggleListStatusHandler = () => {
         setListStatus(!listStatus)
     }
-    
+
     const Importlist = () => {
         if (props.username === props.deck.creatorId) {
             return <ImportList
@@ -229,7 +239,7 @@ const UserDecks = (props) => {
             </Row>
         )
     } else if (props.deck) {
-        if (props.deck.toString() === 'deck-not-found') {
+        if (props.deck.toString() === 'Deck was not found') {
             error = (
                 <Row className="mx-auto align-items-center flex-column py-5">
                     <h2>Deck not found... ☹️</h2>
@@ -241,7 +251,7 @@ const UserDecks = (props) => {
         if (props.deck.flashcards) {
             totalFlashcards = props.deck.flashcards.length
         }
-        if (props.deck.toString() !== 'deck-not-found') {
+        if (props.deck.toString() !== 'Deck was not found') {
             const datum = new Date(props.deck.creationDate).toLocaleDateString()
             deck = (
                 <>

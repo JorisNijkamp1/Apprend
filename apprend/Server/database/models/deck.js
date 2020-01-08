@@ -42,7 +42,7 @@ const deckSchema = new mongoose.Schema({
         type: [{'type': {type: String}, name: {type: String} }]
     },
     imported: {
-        type: [{'user': {type: String}, 'deckId': {type: String}, 'deckName': {type: String} }]
+        type: [{'user': {type: String}, 'deckId': {type: String}, 'importDate': {type: Date, default: Date.now} }]
     },
     originalDeck: {
         type: String
@@ -125,7 +125,7 @@ deckSchema.methods.deleteFlashcard = async function(id){
 }
 
 deckSchema.methods.updateImported = async function(deck){
-    this.imported.push({user: deck.creatorId, deckId: deck._id, deckName: deck.name})
+    this.imported.push({user: deck.creatorId, deckId: deck._id})
 }
 
 deckSchema.methods.updateOriginalDeck = async function(id){
