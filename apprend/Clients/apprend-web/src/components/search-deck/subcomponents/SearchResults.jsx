@@ -93,7 +93,7 @@ const SearchResults = (props) => {
                     </section>
                 )
             )
-        }else if (results.length > 0 && results[1].results.length === 0 && typeResults === 'decks') {
+        } else if (results.length > 0 && results[1].results.length === 0 && typeResults === 'decks') {
             return noResultsFound()
         }
     };
@@ -151,13 +151,12 @@ const SearchResults = (props) => {
     const searchResults = () => {
         return (
             <>
-                <div className="row">
-                    {filterMenu()}
-                    <div className="col-md-8">
-                        <p className="search-results-count">About {(results.length > 0) ? (results[0].results.length + results[1].results.length) : 0} results  for {searchValue}</p>
-                        {userResults()}
-                        {deckResults()}
-                    </div>
+                {filterMenu()}
+                <div className="col-md-8">
+                    <p className="search-results-count">About {(results.length > 0) ? (results[0].results.length + results[1].results.length) : 0} results
+                        for {searchValue}</p>
+                    {userResults()}
+                    {deckResults()}
                 </div>
             </>
         )
