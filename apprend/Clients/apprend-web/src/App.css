@@ -640,3 +640,36 @@ progress[value]::-webkit-progress-value {
 .di-f{
     display: flex;
 }
+
+
+.privacy-pop-up {
+    width: 100%;
+    height: auto;
+    background-color: #efefef;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    box-sizing: border-box;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.25);
+}
+
+.privacy-pop-up-inner {
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.privacy-accept-button {
+    padding: 5px 15px;
+    border-radius: 4px;
+    display: inline-block;
+    color: #ffffff;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.transparent {
+    background-color: transparent;
+}

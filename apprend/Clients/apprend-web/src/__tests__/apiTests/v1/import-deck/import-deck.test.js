@@ -28,7 +28,7 @@ describe('import decks from another user', () => {
 
         const data = await response.json()
 
-        const madeDeck = data.decks[0]
+        const madeDeck = data.data.decks[0]
         account = madeDeck.creatorId;
         expect(typeof madeDeck._id).toBe('string')
         expect(madeDeck._id).toHaveLength(24)
@@ -43,7 +43,7 @@ describe('import decks from another user', () => {
     test('Put import endpoint', async () => {
         const findJorisDecks = await fetch(`${API_URL}/users/Joris/decks`)
         const jorisDecks = await findJorisDecks.json()
-        const JorisDeck = jorisDecks.decks.decks[0]._id
+        const JorisDeck = jorisDecks.data.decks[0]._id
 
         const expectedResult = {
             message: 'Deck successfully imported',

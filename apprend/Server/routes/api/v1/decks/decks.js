@@ -228,7 +228,7 @@ decks.post('/', async (req, res) => {
                 tags: req.body.tags,
                 flashcards: [],
                 private: req.body.private,
-                columns: req.body.columns ? req.body.columns : ['Text', 'Text']
+                columns: req.body.columns ? req.body.columns : [{type: 'Text', name: ''}]
             }
             const user = {
                 _id: req.session.id,
