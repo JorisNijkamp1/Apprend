@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 import { Form, Col, InputGroup, Button, Card, Row } from 'react-bootstrap'
 
 export default props => {
-    console.log(props)
     if (props.state){
         return (
             <>
@@ -46,7 +45,6 @@ export default props => {
             )
     } else {
         if (props.deck && props.deck.tags && props.deck.tags.length > 0) {
-            console.log('hoi')
             const allTags = props.deck.tags.map(tag => (
                 <>
                     <Col sm={6} md={3} className="text-center my-1">

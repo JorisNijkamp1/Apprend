@@ -46,7 +46,7 @@ const HomepageUI = (props) => {
         if (props.deckName) {
             return props.deckName.map((deck, index) => (
                 <Col className={"my-md-3 my-4 my-lg-0"} lg={{span: 4}} md={{span: 6}} key={deck.name + index}>
-                    <Link to={`/decks/${deck._id}`} className={'deck-card-link'}>
+                    <Link to={`/decks/${deck._id}`} className={'deck-card-link'} id={'card-' + index}>
                         <div className={`card-animation`}>
                             <div className={"imgBx"}>
                                 <h2>{deck.name}</h2>
