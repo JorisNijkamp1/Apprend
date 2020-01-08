@@ -87,20 +87,31 @@ const MyProfileUI = (props) => {
                     </Row>
                     <Row>
                         <Col className={'d-flex justify-content-center'}>
+                            <Button
+                                disabled={false}
+                                type={'submit'}
+                                variant="outline-warning"
+                                className={'mr-2'}
+                                onClick={() => {
+                                    setEditAccountDetails(false);
+                                    setEditPassword(false);
+                                }}
+                            >Cancel</Button>
                             {(maySubmitEmail(editEmail) || props.emailExists) ?
                                 <Button
                                     disabled={false}
                                     type={'submit'}
                                     variant="outline-primary"
-                                    className={''}
+                                    className={'ml-2'}
                                 >Confirm</Button> :
                                 <Button
                                     disabled={true}
                                     type={'submit'}
                                     variant="outline-primary"
-                                    className={''}
+                                    className={'ml-2'}
                                 >Confirm</Button>
                             }
+
                         </Col>
                     </Row>
                 </Form>
@@ -140,6 +151,16 @@ const MyProfileUI = (props) => {
                     </Row>
                     <Row>
                         <Col className={'d-flex justify-content-center'}>
+                            <Button
+                                disabled={false}
+                                type={'submit'}
+                                variant="outline-warning"
+                                className={'mr-2'}
+                                onClick={() => {
+                                    setEditAccountDetails(false);
+                                    setEditPassword(false);
+                                }}
+                            >Cancel</Button>
                             {(maySubmitPassword(editPassword, editRepeatPassword)) ?
                                 <Button
                                     disabled={false}
@@ -182,21 +203,31 @@ const MyProfileUI = (props) => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col className={'justify-content-center di-f'}>
                             <Button
                                 variant="outline-success"
-                                className={'pull-right'}
+                                className={'pull-right mr-3'}
                                 onClick={() => {
                                     setEditAccountDetails(true)
-                                }}>Edit account deatils</Button>
-                        </Col>
-                        <Col>
+                                }}>Edit account details</Button>
                             <Button
                                 variant="outline-primary"
-                                className={''}
+                                className={'ml-2'}
                                 onClick={() => {
                                     setEditPassword(true)
                                 }}>Change password</Button>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={{span: 4, offset: 4}} className={'mt-4'}>
+                            <Button
+                                variant={'outline-danger'}
+                                className={'w-100'}
+                                onClick={() => {
+
+                                }}>
+                                Delete account
+                            </Button>
                         </Col>
                     </Row>
                 </>

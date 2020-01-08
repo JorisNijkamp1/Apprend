@@ -518,3 +518,7 @@ progress[value]::-webkit-progress-value {
     text-overflow: ellipsis;
     align-items: center;
 }
+
+.di-f{
+    display: flex;
+}
