@@ -97,7 +97,7 @@ users.use('/:userId*', async (req, res, next) => {
 users.get('/:id', auth.user, async (req, res) => {
     try {
         req.user.password = 'password';
-        console.log(req.user)
+        // console.log(req.user)
         return res.status(200).json({
             'data': req.user,
             'message': 'The user has been found!'
@@ -256,7 +256,7 @@ users.delete('/:id', async (req, res) => {
             req.session.destroy();
             return res.status(200).json({
                 'data': true,
-                'message': 'The user has been deleted!'
+                'message': 'Your user has been deleted!'
             });
         }).catch(error => {
             console.log(error.message);
@@ -294,6 +294,7 @@ users.patch('/:username', auth.user, async (req, res) => {
         return res.status(500).json({message: 'something went wrong'})
     }
 });
+
 
 // users.patch('/:userId/decks/:deckId', async (req, res) => {
 //     try {

@@ -1,5 +1,6 @@
 import {API_URL} from '../../redux/urls';
 import {SET_USER} from "../../redux/actionTypes";
+import {setUserDecksDecksAction} from "../shared/actions/actions";
 
 export function setUser(user) {
     return {
@@ -52,6 +53,26 @@ export const setAccountDetailsAction = function (username, email, password) {
             await dispatch(setUser(data.data));
         } else {
             console.log("error")
+        }
+    }
+};
+
+export const deleteUserAction = (username) => {
+    return async dispatch => {
+        const url = `${API_URL}/users/${username}`;
+        const response = await fetch(url, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        const data = await response.json();
+
+        if (response.status === 200) {
+            return data.message
+        } else {
+            console.log('error')
         }
     }
 };

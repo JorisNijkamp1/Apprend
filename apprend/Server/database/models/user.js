@@ -114,6 +114,10 @@ userSchema.methods.editUserPassword = async function (password) {
     return this
 }
 
+userSchema.methods.deleteAccount = async function () {
+
+};
+
 //Create model
 mongoose.model('User', userSchema);
 

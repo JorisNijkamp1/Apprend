@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {NavigatieBar} from "../shared/components/NavigatieBar";
-import {Col, Container, Form, FormControl, FormGroup, FormText} from "react-bootstrap";
+import {Card, Col, Container, Form, FormControl, FormGroup, FormText} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {FormLabel} from "react-bootstrap/FormLabel";
 import {getUser} from "./actions";
 import {useParams} from "react-router";
 import Button from "react-bootstrap/Button";
-import {setAccountDetailsAction} from "./actions";
+import {setAccountDetailsAction, deleteUserAction} from "./actions";
 import {
     emailValid,
     passwordValid,
@@ -16,15 +16,21 @@ import {
 } from "../../util/form-validation/validationRules";
 import {checkEmailExists} from "../register/actions";
 import {Notification} from '../shared/components/Notification';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {logoutAction} from "../shared/actions/actions";
+import {useHistory} from 'react-router'
 
 const MyProfileUI = (props) => {
     const {userId} = useParams();
-
+    const history = useHistory();
     const [editAccountDetails, setEditAccountDetails] = useState(false);
     const [editEmail, setEditEmail] = useState('');
 
     const [editPassword, setEditPassword] = useState('');
     const [editRepeatPassword, setEditRepeatPassword] = useState('');
+
+    const [confirm, setConfirm] = useState(false);
 
     useEffect(() => {
         props.getUserInfo(userId)
@@ -35,8 +41,41 @@ const MyProfileUI = (props) => {
         props.setAccountDetails(props.user._id, editEmail, editPassword);
         setEditAccountDetails(false);
         setEditPassword(false);
-        Notification('Changes saved', 'success')
+        Notification('Changes saved', 'success'
+        )
+    };
+
+    const deleteUser = async () => {
+        const response = await props.deleteUser(userId);
+        props.logout();
+        Notification(response, "success");
+        history.push('/');
     }
+
+    const confirmationBox = () => {
+        if (confirm) {
+            return (
+                <Row>
+                    <Col md={{span: 2, offset: 5}} className="text-center mt-4" xs={8}>
+                        Are you sure?
+                        <Col className="text-green">
+                            <FontAwesomeIcon icon={faCheck} name={'check'} id={"green"}
+                                             onClick={() => {
+                                                 deleteUser()
+                                             }}/>
+                        </Col>
+                        <Col className="text-red">
+                            <FontAwesomeIcon icon={faTimes} name={'times'} id={"red"}
+                                             onClick={() => {
+                                                 setConfirm(false);
+                                             }}/>
+                        </Col>
+                    </Col>
+
+                </Row>
+            )
+        }
+    };
 
     const maySubmitEmail = function (email) {
         return emailValid(email);
@@ -224,12 +263,13 @@ const MyProfileUI = (props) => {
                                 variant={'outline-danger'}
                                 className={'w-100'}
                                 onClick={() => {
-
+                                    setConfirm(true);
                                 }}>
                                 Delete account
                             </Button>
                         </Col>
                     </Row>
+                    {confirmationBox()}
                 </>
             )
         }
@@ -262,6 +302,8 @@ const mapDispatchToProps = dispatch => {
         getUserInfo: (user) => dispatch(getUser(user)),
         setAccountDetails: (username, email, password) => dispatch(setAccountDetailsAction(username, email, password)),
         doCheckEmailExists: (email) => dispatch(checkEmailExists(email)),
+        deleteUser: (username) => dispatch(deleteUserAction(username)),
+        logout: () => dispatch(logoutAction()),
     }
 }
 
