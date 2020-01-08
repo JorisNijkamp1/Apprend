@@ -153,7 +153,7 @@ const SearchResults = (props) => {
             <>
                 <div className="row">
                     {filterMenu()}
-                    <div className="col-md-8 justify-content-center di-f">
+                    <div className="col-md-8">
                         <p className="search-results-count">About {(results.length > 0) ? (results[0].results.length + results[1].results.length) : 0} results  for {searchValue}</p>
                         {userResults()}
                         {deckResults()}
