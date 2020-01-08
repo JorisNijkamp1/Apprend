@@ -1,38 +1,40 @@
 import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
 import {NavigatieBar} from "../shared/components/NavigatieBar";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import {Link, useParams} from "react-router-dom";
-import {Footer} from "../shared/components/Footer"
-import {getDeckAction, getDeckEditAction} from "../shared/actions/actions";
+import {Container, Row, Col, Button} from "react-bootstrap";
+import {useParams} from "react-router-dom";
+import {Footer} from "../shared/components/Footer";
+import {
+    getDeckAction,
+    getDeckEditAction,
+    isLoggedIn,
+    importDeckAction,
+    deleteDeckFromUser,
+    toggleDeckStatus,
+    setDeckEditedAction,
+    deleteOldTag
+} from "../shared/actions/actions";
 import Card from "react-bootstrap/Card";
-import 'loaders.css/src/animations/square-spin.scss'
+import 'loaders.css/src/animations/square-spin.scss';
 import Loader from "react-loaders";
-import {useHistory} from 'react-router'
-import {withRouter} from 'react-router-dom'
-import {InputGroup, Button} from 'react-bootstrap'
-import {isLoggedIn} from "../shared/actions/actions";
-import {importDeckAction} from "../shared/actions/actions";
+import {useHistory} from 'react-router';
+import {withRouter} from 'react-router-dom';
 import PlayButton from "./subcomponents/PlayButton";
 import EditButton from "./subcomponents/EditButton";
 import ToggleStatusButton from "./subcomponents/ToggleStatusButton";
 import DeleteButton from "./subcomponents/DeleteButton";
 import ImportButton from "./subcomponents/ImportButton";
-import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../shared/actions/actions'
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
 import {Notification} from '../shared/components/Notification';
 import {addTag, clearTags, deleteTag} from '../create-deck/actions';
-import {deleteOldTag} from "../shared/actions/actions";
 
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
 import {FlashcardTable} from './subcomponents/flashcardTable/FlashcardTable'
 import DeckDescription from "./subcomponents/DeckDescription";
-import DeckName from './subcomponents/DeckName'
+import DeckName from './subcomponents/DeckName';
 import DeckTags from "./subcomponents/DeckTags";
 import {LoadingComponent} from "../shared/components/LoadingComponent";
+import ImportList from './subcomponents/ImportList'
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
@@ -44,13 +46,19 @@ const UserDecks = (props) => {
     const [deleteStatus, setdeleteStatus] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [input, setInput] = useState('')
+    const [listStatus, setListStatus] = useState(false)
 
     const history = useHistory()
 
     //Check if user is logged in
     useEffect(() => {
         props.isLoggedIn()
-        props.getDeck(deckId, setIsLoading)
+        props.getDeck(deckId, setIsLoading).then(response => {
+            if (response === 'Deck was not found') {
+                Notification(response, 'danger')
+                history.push('/')
+            }
+        })
         props.clearTags()
     }, []);
 
@@ -61,18 +69,10 @@ const UserDecks = (props) => {
         });
     }
 
-    // const deckData = {
-    //     // deckName: (!deckNameEdited && props.deckEdit.name) ? props.deck.name : deckName,
-    //     // deckDescription: (!deckDescriptionEdited && props.deck.description) ? props.deck.description : deckDescription,
-    //     oldDeckTags: props.deckEdit.data.tags
-    // }
-
     const getTagValue = () => {
         let tagValue = input;
         setInput('');
         let match = false;
-        console.log(props.deckEdit)
-        console.log(props.deckEdit.data.tags)
         if (props.tags.length !== 0 || props.deckEdit.data.tags.length !== 0) {
             if (checkAdded(tagValue)) {
                 Notification("You already have that tag", "danger");
@@ -216,6 +216,20 @@ const UserDecks = (props) => {
         )
     }
 
+    const toggleListStatusHandler = () => {
+        setListStatus(!listStatus)
+    }
+
+    const Importlist = () => {
+        if (props.username === props.deck.creatorId) {
+            return <ImportList
+                state={listStatus}
+                importedDecks={props.deck.imported}
+                func={toggleListStatusHandler}
+            />
+        }
+    }
+
     let loader, deck, error, flashcardsComp;
     if (props.isLoading) {
         loader = (
@@ -225,7 +239,7 @@ const UserDecks = (props) => {
             </Row>
         )
     } else if (props.deck) {
-        if (props.deck.toString() === 'deck-not-found') {
+        if (props.deck.toString() === 'Deck was not found') {
             error = (
                 <Row className="mx-auto align-items-center flex-column py-5">
                     <h2>Deck not found... ☹️</h2>
@@ -237,7 +251,7 @@ const UserDecks = (props) => {
         if (props.deck.flashcards) {
             totalFlashcards = props.deck.flashcards.length
         }
-        if (props.deck.toString() !== 'deck-not-found') {
+        if (props.deck.toString() !== 'Deck was not found') {
             const datum = new Date(props.deck.creationDate).toLocaleDateString()
             deck = (
                 <>
@@ -254,6 +268,23 @@ const UserDecks = (props) => {
                                     </Col>
                                     <Col xs={12} md={4}>
                                         <b>Total flashcards: </b>{totalFlashcards}
+                                    </Col>
+                                </Row>
+                                <Row className={'mt-3'}>
+                                    <Col xs={12} md={4}>
+                                        <b>Imported: </b>{props.deck.imported ? props.deck.imported.length : 0}
+                                        {props.deck.imported ? props.deck.imported.length === 1 ? <b> time</b> : <b> times</b> : <b> times</b>}
+                                    </Col>
+                                    <Col xs={12} md={4}>
+                                        {props.username === props.deck.creatorId && props.deck.originalDeck ?
+                                        <Button href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link transparent'} id={'original'}>
+                                            Original deck
+                                        </Button> : ''}
+                                    </Col>
+                                </Row>
+                                <Row className={'mt-3'}>
+                                    <Col>
+                                        {props.deck.imported ? props.deck.imported.length > 0 ? Importlist() : '' : ''}
                                     </Col>
                                 </Row>
                             </Card.Subtitle>

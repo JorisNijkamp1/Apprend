@@ -513,3 +513,7 @@ progress[value]::-webkit-progress-value {
     text-overflow: ellipsis;
     align-items: center;
 }
+
+.transparent {
+    background-color: transparent;
+}
