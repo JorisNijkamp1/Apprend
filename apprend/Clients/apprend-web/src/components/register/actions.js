@@ -33,7 +33,6 @@ export const errorOccurred = function (error) {
 export const registerNewUser = function (username, email, password) {
     return async dispatch => {
         const url = `${API_URL}/users`;
-
         const options = {
             method: 'POST',
             headers: {
@@ -48,31 +47,24 @@ export const registerNewUser = function (username, email, password) {
             })
         };
 
-        fetch(url, options).then(response => {
-            return response.json();
-        }).then(results => {
-            if (results.success) {
-                dispatch(setRegisterSuccess(true));
-                dispatch(setAnonymousUserAction(false));
-                dispatch(setLoginAction(results.user._id));
-            } else {
-                if (results.error !== undefined) {
-                    dispatch(errorOccurred(results.error));
-                } else {
-                    dispatch(errorOccurred('Something went wrong, please try again.'));
-                }
-            }
-        }).catch(error => {
-            dispatch(errorOccurred('Something went wrong, please try again.'));
-            console.log(error);
-        });
+        const response = await fetch(url, options);
+        const results = await response.json();
+
+        if (response.status === 201) {
+            dispatch(setRegisterSuccess(true));
+            dispatch(setAnonymousUserAction(false));
+            dispatch(setLoginAction(results.data._id));
+            return;
+        }
+
+        console.log(`(${response.status}) ${results.message}`);
+        dispatch(errorOccurred('Something went wrong, please try again...'));
     }
 };
 
 export const checkUsernameExists = function (userId) {
     return async dispatch => {
         const url = `${API_URL}/users/${userId}/_id`;
-
         const options = {
             method: 'GET',
             headers: {
@@ -82,25 +74,27 @@ export const checkUsernameExists = function (userId) {
             mode: 'cors'
         };
 
-        fetch(url, options).then(response => {
-            return response.json();
-        }).then(results => {
-            if (results.success) {
-                dispatch(setUsernameExists(true));
-            } else {
-                dispatch(setUsernameExists(false));
-            }
-        }).catch(error => {
-            dispatch(errorOccurred('We could not verify your username, please try again.'));
-            console.log(error);
-        });
+        const response = await fetch(url, options);
+        const results = await response.json();
+
+        if (response.status === 404) {
+            dispatch(setUsernameExists(false));
+            return;
+        }
+
+        if (response.status === 200) {
+            dispatch(setUsernameExists(true));
+            return;
+        }
+
+        console.log(`(${response.status}) ${results.message}`);
+        dispatch(errorOccurred('Something went wrong, please try again...'));
     };
 };
 
 export const checkEmailExists = function (email) {
     return async dispatch => {
         const url = `${API_URL}/users/email`;
-
         const options = {
             method: 'POST',
             headers: {
@@ -113,21 +107,20 @@ export const checkEmailExists = function (email) {
             })
         };
 
-        fetch(url, options).then(response => {
-            if (response.status !== 200) {
-                console.log(response.status);
-            }
+        const response = await fetch(url, options);
+        const results = await response.json();
 
-            return response.json();
-        }).then(results => {
-            if (results.success) {
-                dispatch(setEmailExists(true));
-            } else {
-                dispatch(setEmailExists(false));
-            }
-        }).catch(error => {
-            dispatch(errorOccurred('We could not verify your E-mail, please try again.'));
-            console.log(error);
-        });
+        if (response.status === 404) {
+            dispatch(setEmailExists(false));
+            return;
+        }
+
+        if (response.status === 200) {
+            dispatch(setEmailExists(true));
+            return;
+        }
+
+        console.log(`(${response.status}) ${results.message}`);
+        dispatch(errorOccurred('Something went wrong, please try again...'));
     };
 };

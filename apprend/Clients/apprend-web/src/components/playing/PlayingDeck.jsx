@@ -1,6 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as ReactRedux from 'react-redux';
-import {useHistory} from 'react-router';
+import {Redirect, useHistory} from 'react-router';
+import {Notification} from '../shared/components/Notification';
 import {NavLink, useParams} from 'react-router-dom';
 import {NavigatieBar} from '../shared/components/NavigatieBar';
 import {Footer} from '../shared/components/Footer';
@@ -11,7 +12,8 @@ import {
     setGame,
     updateGame,
     getGameData,
-    updateDeckSession, moveFlashcardToBox
+    updateDeckSession,
+    moveFlashcardToBox, errorOccurred
 } from './actions';
 import {
     setCorrectCardsAction,
@@ -21,55 +23,39 @@ import {
 } from './actions';
 import Loader from 'react-loaders';
 import 'loaders.css/src/animations/square-spin.scss';
-import leitner from '../../util/leitner-system/leitnerSystem';
+import {leitnerSelectCards} from '../../util/leitner-system/leitnerSystem';
+import {isLoggedIn} from '../shared/actions/actions';
 
 const ginoTestFunc = (user, deck, card, body) => {
-        return async dispatch => {
-            console.log('IK BEN GINO AAN HET TESTEN')
-            const response = await fetch(`http://localhost:3001/api/v1/users/${user}/decks/${deck}/flashcards/${card}`, {
-                method: 'PUT',
-                body: JSON.stringify(body),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include'
-            })
+    return async dispatch => {
+        console.log('IK BEN GINO AAN HET TESTEN')
+        const response = await fetch(`http://localhost:3001/api/v1/users/${user}/decks/${deck}/flashcards/${card}`, {
+            method: 'PUT',
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        })
 
-            if (response) {
+        if (response) {
 
-            }
         }
+    }
 }
 
 const PlayingComponent = (props) => {
     const history = useHistory();
     const {deckId} = useParams();
+    const [currentSession, setCurrentSession] = useState();
     let loader;
 
     useEffect(() => {
         props.doResetStateAction();
-        props.doGetDeck(deckId).then(response => {
-            let currentSession = response.session + 1;
-            let allCards = leitner(response.flashcards, currentSession);
-            let counter = 0;
-
-            while (allCards.length === 0) {
-                counter++;
-
-                currentSession++;
-                allCards = leitner(response.flashcards, currentSession);
-
-                if (counter > 500) break;
-            }
-
-            props.doSetGame(deckId, allCards);
-            props.doSetActiveCardAction(allCards[0]);
-            props.doUpdateDeckSession(deckId, currentSession);
-            props.doSetCards(allCards);
-        });
+        props.isLoggedIn();
     }, []);
 
-    const changeScore = (id, status) => {
+    const changeScore = (flashcard, status) => {
         const STATUS_CORRECT = 'correct';
         const STATUS_WRONG = 'wrong';
 
@@ -79,19 +65,19 @@ const PlayingComponent = (props) => {
         let nCardsAnswered = props.correctCards.length + props.wrongCards.length;
 
         if (status === STATUS_CORRECT) {
-            props.doSetCorrectCardsAction(id);
+            props.doSetCorrectCardsAction(flashcard._id);
 
             if (!cardAlreadyAnsweredWrong) {
-                props.doMoveFlashcardToBox(deckId, id, true);
+                props.doMoveFlashcardToBox(deckId, props.username, flashcard, currentSession, true);
             }
 
             nCardsAnswered++;
 
         } else if (status === STATUS_WRONG) {
-            props.doSetWrongCardsAction(id);
+            props.doSetWrongCardsAction(flashcard._id);
 
             if (!cardAlreadyAnsweredWrong) {
-                props.doMoveFlashcardToBox(deckId, id, false);
+                props.doMoveFlashcardToBox(deckId, props.username, flashcard, currentSession, false);
 
                 const newCards = [...props.cards];
                 newCards.push(currentCard);
@@ -111,9 +97,6 @@ const PlayingComponent = (props) => {
 
         let nextCard = props.cards[nCardsAnswered];
 
-        console.log('nCardsAnswered: ', nCardsAnswered);
-        console.log('nCardsInDeck: ', nCardsInDeck);
-
         // Only activated when the last card is wrong for the first time.
         // Needed because pushing a new card into the deck is async.
         if (nextCard === undefined &&
@@ -125,6 +108,52 @@ const PlayingComponent = (props) => {
         props.doSetActiveCardAction(nextCard);
         props.doUpdateGame(deckId, props.gameId, currentCard, nextCard, status);
     };
+
+    const setupGame = () => {
+        props.doGetDeck(props.username, deckId).then(response => {
+            if (response.status === 404) {
+                throw new Error('This deck does not exist.');
+            } else if (response.status !== 200) {
+                throw new Error('Something went wrong, please try again later!');
+            } else {
+                return response.json();
+            }
+        }).then(results => {
+            if (results.data.flashcards.length < 1) {
+                props.doErrorOccurred('A deck needs to contain at least 1 card to play!');
+                return;
+            }
+
+            let session = results.session + 1;
+            let allCards = leitnerSelectCards(results.flashcards, session);
+            let counter = 0;
+
+            while (allCards.length === 0) {
+                counter++;
+                session++;
+                allCards = leitnerSelectCards(results.flashcards, session);
+
+                if (counter > 500) break;
+            }
+
+            props.doSetGame(deckId, allCards);
+            props.doSetActiveCardAction(allCards[0]);
+            props.doUpdateDeckSession(deckId, session);
+            props.doSetCards(allCards);
+            setCurrentSession(session);
+        }).catch(error => {
+            props.doErrorOccurred(error.message);
+        });
+    };
+
+    if (props.error !== null) {
+        Notification(props.error, 'danger');
+        return <Redirect to={'/'}/>;
+    }
+
+    if (props.username !== null) {
+        setupGame();
+    }
 
     if (props.isLoading) {
         loader = (
@@ -141,8 +170,8 @@ const PlayingComponent = (props) => {
                 <NavLink to={`/decks/${deckId}`} className="btn btn-blue">
                     Back
                 </NavLink>
-                <Button onClick={() =>             props.ginoTest(props.username, deckId, props.activeCard._id, {data: 'hallo'})
-}>
+                <Button onClick={() => props.ginoTest(props.username, deckId, props.activeCard._id, {data: 'hallo'})
+                }>
                     KLIK MIJ
                 </Button>
                 <Col className={'text-center'}>
@@ -151,7 +180,9 @@ const PlayingComponent = (props) => {
                 <Col className={'text-center'}>
                     <b>Card {props.correctCards.length + props.wrongCards.length + 1} out of {props.cards.length}</b>
                 </Col>
-                <PlayingCard changeScore={changeScore} id={props.activeCard._id} front={props.activeCard.question}
+                <PlayingCard changeScore={changeScore}
+                             activeCard={props.activeCard}
+                             front={props.activeCard.question}
                              back={props.activeCard.answer}/>
                 <Row className={'justify-content-between'}>
                     <Col lg={{span: 4}} className={'text-center'}>
@@ -170,7 +201,7 @@ const PlayingComponent = (props) => {
         )
     }
 
-    return (
+    return (props.error !== null) ? <Redirect to={'/'}/> : (
         <>
             <NavigatieBar/>
             {loader}
@@ -181,29 +212,33 @@ const PlayingComponent = (props) => {
 
 const mapStateToProps = state => {
     return {
+        username: state.login.username,
+        deck: state.playing.deck,
+        error: state.playing.error,
         cards: state.playing.cards,
         correctCards: state.playing.correctCards,
         wrongCards: state.playing.wrongCards,
         activeCard: state.playing.activeCard,
         isLoading: state.playing.isLoading,
-        gameId: state.playing.gameId,
-        username: state.login.username,
+        gameId: state.playing.gameId
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        isLoggedIn: () => dispatch(isLoggedIn()),
         doSetCorrectCardsAction: (cards) => dispatch(setCorrectCardsAction(cards)),
         doSetWrongCardsAction: (cards) => dispatch(setWrongCardsAction(cards)),
         doSetActiveCardAction: (card) => dispatch(setActiveCardAction(card)),
-        doGetDeck: (deckId) => dispatch(getDeck(deckId)),
+        doGetDeck: (creatorId, deckId) => dispatch(getDeck(creatorId, deckId)),
         doSetGame: (deckId, flashcards) => dispatch(setGame(deckId, flashcards)),
         doUpdateGame: (deckId, gameId, oldCard, newCard, status) => dispatch(updateGame(deckId, gameId, oldCard, newCard, status)),
         doGetGameData: (deckId, gameId) => dispatch(getGameData(deckId, gameId)),
         doResetStateAction: () => dispatch(resetStateAction()),
-        doMoveFlashcardToBox: (deckId, flashcardId, answeredCorrect) => dispatch(moveFlashcardToBox(deckId, flashcardId, answeredCorrect)),
-        doUpdateDeckSession: (deckId, currentSession) => dispatch(updateDeckSession(deckId, currentSession)),
+        doMoveFlashcardToBox: (deckId, deckCreator, flashcard, currentSession, answeredCorrect) => dispatch(moveFlashcardToBox(deckId, deckCreator, flashcard, currentSession, answeredCorrect)),
+        doUpdateDeckSession: (deckId, creatorId, currentSession) => dispatch(updateDeckSession(deckId, creatorId, currentSession)),
         doSetCards: (cards) => dispatch(setCardsAction(cards)),
+        doErrorOccurred: (errorMessage) => dispatch(errorOccurred(errorMessage)),
         ginoTest: (userId, deckId, flashcardId) => dispatch(ginoTestFunc(userId, deckId, flashcardId)),
     }
 };

@@ -50,10 +50,11 @@ describe('Users API tests', function () {
         };
 
         const response = await fetch(url, options);
-        const data = await response.json();
+        const results = await response.json();
+        const isArray = Array.isArray(results);
 
-        const result = Array.isArray(data.users);
-        expect(result).toBeTruthy();
+        expect(response.status).toBe(200);
+        expect(isArray).toBeTruthy();
     });
 
     test('Get specific user by ID', async function () {
@@ -69,12 +70,12 @@ describe('Users API tests', function () {
         };
 
         const response = await fetch(url, options);
-        const data = await response.json();
+        const results = await response.json();
 
-        expect(data.success).not.toBeUndefined();
-        expect(data.success).toBeTruthy();
-        expect(data.user).not.toBeUndefined();
-        expect(data.user._id).toBe(username);
+        expect(response.status).toBe(200);
+        expect(results.message).toBeDefined();
+        expect(results.data).toBeDefined();
+        expect(results.data._id).toBe(username);
     });
 
     test('Fail to get specific user by ID', async function () {
@@ -92,9 +93,8 @@ describe('Users API tests', function () {
         const response = await fetch(url, options);
         const data = await response.json();
 
-        expect(data.success).not.toBeUndefined();
-        expect(data.success).toBeFalsy();
-        expect(data.error).not.toBeUndefined();
+        expect(response.status).toBe(404);
+        expect(data.message).toBeDefined();
     });
 
     test('Get only specific user ID by ID', async function () {
@@ -110,13 +110,11 @@ describe('Users API tests', function () {
         };
 
         const response = await fetch(url, options);
-        const data = await response.json();
+        const results = await response.json();
 
-        const successExists = data.success !== undefined;
-
-        expect(successExists).not.toBeUndefined();
-        expect(data.success).toBeTruthy();
-        expect(data._id).toBe(username);
+        expect(response.status).toBe(200);
+        expect(results.message).toBeDefined();
+        expect(results.data).toBe(username);
     });
 
     test('Fail to get only specific user ID by ID', async function () {
@@ -132,11 +130,10 @@ describe('Users API tests', function () {
         };
 
         const response = await fetch(url, options);
-        const data = await response.json();
+        const results = await response.json();
 
-        expect(data.success).not.toBeUndefined();
-        expect(data.success).toBeFalsy();
-        expect(data.error).not.toBeUndefined();
+        expect(response.status).toBe(404);
+        expect(results.message).toBeDefined();
     });
 
     test('Register new user', async function () {
@@ -170,66 +167,16 @@ describe('Users API tests', function () {
         const registered = await fetch(registerUrl, registerOptions);
         const registeredData = await registered.json();
 
-        const successExists = registeredData.success !== undefined;
-        const success = registeredData.success;
 
         expect(registered.status).toBe(201);
-        expect(successExists).not.toBeUndefined();
-        expect(success).toBeTruthy();
-        expect(registeredData.user).not.toBeUndefined();
-        expect(registeredData.user._id).toBe(username);
+        expect(registeredData.message).not.toBeUndefined();
+        expect(registeredData.data._id).toBe(username);
 
         const deleted = await fetch(deleteUserUrl, deleteUserOptions);
         const deletedData = await deleted.json();
 
         expect(deleted.status).toBe(200);
-        expect(deletedData.success).not.toBeUndefined();
-        expect(deletedData.success).toBeTruthy();
-    });
-
-    test('Register new user', async function () {
-        const username = 'TestPerson';
-        const registerUrl = `${API_URL}/users`;
-        const deleteUserUrl = `${API_URL}/users/${username}`;
-
-        const registerOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            mode: 'cors',
-            body: JSON.stringify({
-                'username': username,
-                'email': 'dwhd2oidnui28hdu@gmail.com',
-                'password': 'Wachtwoord'
-            })
-        };
-
-        const deleteUserOptions = {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            mode: 'cors'
-        };
-
-        const registered = await fetch(registerUrl, registerOptions);
-        const registeredData = await registered.json();
-
-        expect(registered.status).toBe(201);
-        expect(registeredData.success).not.toBeUndefined();
-        expect(registeredData.success).toBeTruthy();
-        expect(registeredData.user).not.toBeUndefined();
-        expect(registeredData.user._id).toBe(username);
-
-        const deleted = await fetch(deleteUserUrl, deleteUserOptions);
-        const deletedData = await deleted.json();
-
-        expect(deleted.status).toBe(200);
-        expect(deletedData.success).not.toBeUndefined();
-        expect(deletedData.success).toBeTruthy();
+        expect(deletedData.message).toBeDefined();
     });
 
     test('Register new user with duplicate username', async function () {
@@ -253,9 +200,7 @@ describe('Users API tests', function () {
         const registeredDuplicateUsernameData = await registeredDuplicateUsername.json();
 
         expect(registeredDuplicateUsername.status).toBe(409);
-        expect(registeredDuplicateUsernameData.success).not.toBeUndefined();
-        expect(registeredDuplicateUsernameData.error).not.toBeUndefined();
-        expect(registeredDuplicateUsernameData.success).toBeFalsy();
+        expect(registeredDuplicateUsernameData.message).toBeDefined();
     });
 
     test('Register new user with duplicate email', async function () {
@@ -280,9 +225,7 @@ describe('Users API tests', function () {
         const registeredDuplicateEmailData = await registeredDuplicateEmail.json();
 
         expect(registeredDuplicateEmail.status).toBe(409);
-        expect(registeredDuplicateEmailData.success).not.toBeUndefined();
-        expect(registeredDuplicateEmailData.error).not.toBeUndefined();
-        expect(registeredDuplicateEmailData.success).toBeFalsy();
+        expect(registeredDuplicateEmailData.message).toBeDefined();
     });
 
     test('Register new user with missing post data', async function () {
@@ -300,8 +243,6 @@ describe('Users API tests', function () {
         const registeredData = await registered.json();
 
         expect(registered.status).toBe(400);
-        expect(registeredData.success).not.toBeUndefined();
-        expect(registeredData.error).not.toBeUndefined();
-        expect(registeredData.success).toBeFalsy();
+        expect(registeredData.message).toBeDefined();
     });
 });

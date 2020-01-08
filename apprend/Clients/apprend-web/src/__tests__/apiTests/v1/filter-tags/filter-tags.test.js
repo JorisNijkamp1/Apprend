@@ -1,8 +1,9 @@
 import {API_URL} from '../../../../redux/urls';
 
 describe('Filter API tests', function () {
-    test('Not able to filter because this user doesn\'t have any decks', async () => {
-        const response = await fetch(`${API_URL}/users/Jantje/decks`, {
+    test('Fail to get all decks belonging to a specific user', async () => {
+        const name = 'Jantje';
+        const response = await fetch(`${API_URL}/users/${name}/decks`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -13,5 +14,22 @@ describe('Filter API tests', function () {
 
         const result = await response.json();
         expect(result.message).toEqual('User does not exist');
+    });
+
+    test('Get all decks belonging to a specific user', async () => {
+        const name = 'Joris';
+        const response = await fetch(`${API_URL}/users/${name}/decks`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        });
+
+        const result = await response.json();
+        expect(result.message).toEqual('All decks');
+        expect(result.data.userId).toEqual(name);
+        expect(result.data.decks.length).toEqual(3);
     });
 });

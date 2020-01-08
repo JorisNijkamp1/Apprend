@@ -518,3 +518,37 @@ progress[value]::-webkit-progress-value {
     text-overflow: ellipsis;
     align-items: center;
 }
+
+.privacy-pop-up {
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.privacy-pop-up-inner {
+    background-color: #ffffff;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 40px;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.privacy-accept-button {
+    padding: 5px 15px;
+    border-radius: 4px;
+    display: inline-block;
+    color: #ffffff;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.transparent {
+    background-color: transparent;
+}
