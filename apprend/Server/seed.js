@@ -35,7 +35,17 @@ async function seedUsers() {
                     // "creatorId": ,
                     // "lastPlayedDate": ,
                     "status": "isEdited",
-                    "flashcards": []
+                    "flashcards": [],
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ]
                 },
                 {
                     "name": "Filipino to Dutch words",
@@ -44,7 +54,17 @@ async function seedUsers() {
                     // "creatorId": ,
                     // "lastPlayedDate": ,
                     "status": "isEdited",
-                    "flashcards": []
+                    "flashcards": [], 
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ]
                 },
                 {
                     "_id": "5ddfadab612b09570c6f3a33",
@@ -54,21 +74,49 @@ async function seedUsers() {
                     // "creatorId": ,
                     // "lastPlayedDate": ,
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Kissa",
                             "answer": "Kat",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Koira",
                             "answer": "Hond",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         }
                     ],
@@ -89,29 +137,66 @@ async function seedUsers() {
                     "description": "My english verbs",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende",
                             "type": "Text only",
                             "question": "Eating",
                             "answer": "Eten",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                     ]
@@ -121,45 +206,100 @@ async function seedUsers() {
                     "description": "Lorem ipsum dolar sint description deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Eating",
                             "answer": "Eten",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende4",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende5",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                     ]
@@ -169,21 +309,49 @@ async function seedUsers() {
                     "description": "Dolar English deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                     ]
@@ -193,13 +361,32 @@ async function seedUsers() {
                     "description": "Special deck for learning Spanish",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         }
                     ]
@@ -209,69 +396,151 @@ async function seedUsers() {
                     "description": "Type of Dolphins",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Eating",
                             "answer": "Eten",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Walking",
+                            "answer": "Lopen",
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
+                            "sessionPlayed": 0,
+                            "box": 0
+                        },
+                        {
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen",
+                            "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
+                            "box": 0
+                        },
+                        {
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende1",
+                            "type": "Text only",
+                            "question": "Running",
+                            "answer": "Rennen",
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
+                            "sessionPlayed": 0,
+                            "box": 0
+                        },
+                        {
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
-                            "box": 0
-                        },
-                        {
-                            "_id": "Apprende2",
-                            "type": "Text only",
-                            "question": "Running",
-                            "answer": "Rennen",
-                            "sessionPlayed": 0,
-                            "box": 0
-                        },
-                        {
-                            "_id": "Apprende1",
-                            "type": "Text only",
-                            "question": "Walking",
-                            "answer": "Lopen",
-                            "sessionPlayed": 0,
-                            "box": 0
-                        },
-                        {
-                            "_id": "Apprende2",
-                            "type": "Text only",
-                            "question": "Running",
-                            "answer": "Rennen",
-                            "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                     ]
@@ -281,21 +550,49 @@ async function seedUsers() {
                     "description": "Weekend fun",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                     ]
@@ -305,29 +602,66 @@ async function seedUsers() {
                     "description": "My lovely SouthPark Seasons",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Eating",
                             "answer": "Eten",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                     ]
@@ -337,29 +671,66 @@ async function seedUsers() {
                     "description": "Learning Dutch and French",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Eating",
                             "answer": "Eten",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                     ]
@@ -369,21 +740,49 @@ async function seedUsers() {
                     "description": "For Trump fans",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Twitter",
                             "answer": "Love",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                     ]
@@ -393,13 +792,32 @@ async function seedUsers() {
                     "description": "Special deck for learning French",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         }
                     ]
@@ -409,69 +827,151 @@ async function seedUsers() {
                     "description": "Lorem ilar sint description deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende0",
                             "type": "Text only",
                             "question": "Eating",
                             "answer": "Eten",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                     ]
@@ -481,21 +981,49 @@ async function seedUsers() {
                     "description": "Dolar English deck",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "Walking",
                             "answer": "Lopen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "Running",
                             "answer": "Rennen",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         },
                     ]
@@ -505,29 +1033,66 @@ async function seedUsers() {
                     "description": "Lekker nice Japans",
                     "creatorId": "Aaron",
                     "status": "isEdited",
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "name": ""
+                        },
+                        {
+                            "type": "Text",
+                            "name": ""
+                        }
+                    ],
                     "flashcards": [
                         {
-                            "_id": "Apprende1",
                             "type": "Text only",
                             "question": "犬",
                             "answer": "Hond",
                             "sessionPlayed": 0,
-                            "box": 0
+                            "box": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ]
                         },
                         {
-                            "_id": "Apprende2",
                             "type": "Text only",
                             "question": "猫",
                             "answer": "Kat",
                             "sessionPlayed": 0,
-                            "box": 0
+                            "box": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ]
                         },
                         {
-                            "_id": "Apprende3",
                             "type": "Text only",
                             "question": "家",
                             "answer": "Huis",
                             "sessionPlayed": 0,
+                            "columns": [
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                },
+                                {
+                                    "type": "Text",
+                                    "value": ""
+                                }
+                            ],
                             "box": 0
                         }
                     ]

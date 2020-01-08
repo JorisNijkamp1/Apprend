@@ -29,7 +29,7 @@ const getMatchingLanguages = (value, decks) => {
 };
 
 
-describe('creating a deck for a new anonymous user', () => {
+describe('filter tests', () => {
     const deck = [
         {
             "_id": "5ddfadab612b09570c6f3a33",

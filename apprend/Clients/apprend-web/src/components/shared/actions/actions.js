@@ -2,7 +2,6 @@ import {API_URL} from '../../../redux/urls';
 import {
     SEARCH_SET_IS_LOADING,
     SEARCH_SET_SEARCH_VALUE,
-    CREATEDECK_SET_ISLOADING,
     DECKS_ADD_DECK, DECKS_SET_DECK,
     DECKS_SET_DECK_DATA,
     DECKS_SET_ISLOADING,
@@ -13,9 +12,14 @@ import {
     DECK_FILTERED_DECKS,
     FLASHCARDS_SET_ISLOADING,
     FLASHCARDS_DECKFLASHCARDS,
-    FLASHCARDS_SET_ISSAVING
+    FLASHCARDS_SET_ISSAVING,
+    SEARCH_SUGGESTIONS,
+    DELETE_FILTERED_TAG,
+    FILTER_SET_TAGS,
+    CLEAR_FILTERED_TAGS
 } from '../../../redux/actionTypes';
 import {setAnonymousUserAction, setLoginAction} from "../../login/actions";
+import { Notification } from '../components/Notification'
 
 /*
 |----------------------------------------------------------------
@@ -92,7 +96,7 @@ export function setSpecificDeckDataAction(deck) {
     }
 }
 
-export function deleteTag(deckEdit) {
+export function deleteOldTag(deckEdit) {
     return {
         type: DECK_DELETE_TAG,
         payload: deckEdit
@@ -111,9 +115,10 @@ export function setFilteredDecks(decks) {
 | Decks (Async)
 |----------------------------------------------------------------
  */
-export const getUserDecksAction = (username, skipLoader = false) => {
+export const getUserDecksAction = (username, setLoader,  skipLoader = false) => {
     return async dispatch => {
-        if (!skipLoader) await dispatch(setIsLoading(true));
+        console.log(username)
+        if (!skipLoader) setLoader(true)
         const url = `${API_URL}/users/${username}/decks`;
         const options = {
             method: 'GET',
@@ -125,12 +130,13 @@ export const getUserDecksAction = (username, skipLoader = false) => {
         };
         const response = await fetch(url, options);
         const data = await response.json();
-        if (data.success) {
-            if (skipLoader) setUserDecksAction(data.decks);
+        console.log(data)
+        if (response.status === 200) {
+            if (skipLoader) setUserDecksAction(data.data);
             else {
                 setTimeout(function () {
-                    dispatch(setUserDecksAction(data.decks));
-                    dispatch(setIsLoading(false))
+                    dispatch(setUserDecksAction(data.data));
+                    setLoader(false)
                 }, 1000);
             }
         } else {
@@ -138,16 +144,16 @@ export const getUserDecksAction = (username, skipLoader = false) => {
             else {
                 setTimeout(function () {
                     dispatch(setUserDecksAction('no-decks'));
-                    dispatch(setIsLoading(false))
+                    setLoader(false)
                 }, 1000);
             }
         }
     }
 };
 
-export const getDeckAction = (deckId) => {
+export const getDeckAction = (deckId, setLoader) => {
     return async dispatch => {
-        await dispatch(setIsLoading(true));
+        setLoader(true)
         const url = `${API_URL}/decks/${deckId}`;
         const options = {
             method: 'GET',
@@ -160,23 +166,23 @@ export const getDeckAction = (deckId) => {
         const response = await fetch(url, options);
         const data = await response.json();
         if (response.status === 200) {
-            dispatch(setDeckAction(data));
+            dispatch(setDeckAction(data.data));
 
             setTimeout(function () {
-                dispatch(setIsLoading(false))
-            }, 500);
+                setLoader(false)
+            }, 1000);
         } else {
             setTimeout(function () {
                 dispatch(setDeckAction('deck-not-found'));
-                dispatch(setIsLoading(false))
-            }, 500);
+                setLoader(false)
+            }, 1000);
         }
     }
 };
 
-export const deleteDeckFromUser = (deckId) => {
+export const deleteDeckFromUser = (deckId, user) => {
     return async dispatch => {
-        const url = `${API_URL}/decks/${deckId}`;
+        const url = `${API_URL}/users/${user}/decks/${deckId}`;
         const response = await fetch(url, {
             method: 'DELETE',
             credentials: 'include',
@@ -184,10 +190,14 @@ export const deleteDeckFromUser = (deckId) => {
                 'Content-Type': 'application/json'
             },
         });
+        const data = await response.json();
+
         if (response.status === 200) {
-            const data = await response.json();
-            dispatch(setUserDecksDecksAction(data))
+            data.success = true
+            dispatch(setUserDecksDecksAction(data.data))
         }
+
+        return data
     }
 };
 
@@ -215,13 +225,24 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
     let tags = oldTags;
     if (newTags && newTags.length > 0) tags = oldTags.concat(newTags);
     return async dispatch => {
-        const url = `${API_URL}/decks/${deckId}`;
-        let body = {
-            name: deckName,
-            description: deckDescription,
-            creatorId: creatorId,
-            tags: tags
-        };
+        const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
+
+        const body = {
+            properties: [
+                {
+                    name: "name",
+                    value: deckName,
+                },
+                {
+                    name: "description",
+                    value: deckDescription
+                },
+                {
+                    name: "tags",
+                    value: tags
+                }
+            ]
+        }
         const options = {
             method: 'PUT',
             body: JSON.stringify(body),
@@ -233,10 +254,14 @@ export const setDeckEditedAction = (creatorId, deckId, deckName, deckDescription
         };
         const response = await fetch(url, options);
         const data = await response.json();
+        console.log(data)
         if (response.status === 201) {
-            dispatch(setSpecificDeckDataAction(data));
-            dispatch(setDeckAction(data));
+            dispatch(setSpecificDeckDataAction(data.data));
+            dispatch(setDeckAction(data.data));
+            return {message: data.message, success: true}
         }
+        return {message: data.message ? data.message : 'There was an error', success: false}
+
     }
 };
 
@@ -251,18 +276,20 @@ export const toggleDeckStatus = (deckId, userId) => {
             credentials: 'include',
             mode: 'cors'
         });
-
+        let data = await response.json(); 
         if (response.status === 201) {
-            const data = await response.json();
-            dispatch(setSpecificDeckDataAction(data));
-            dispatch(setDeckAction(data))
+            dispatch(setSpecificDeckDataAction(data.data));
+            dispatch(setDeckAction(data.data))
+            data.isSuccess = true
         }
+        return {message: data.message, success: data.isSuccess ? true : false}
     }
 };
 
-export const importDeckAction = deckId => {
+export const importDeckAction = (deckId, creatorId) => {
     return async dispatch => {
-        const url = `${API_URL}/decks/${deckId}`;
+        console.log(creatorId)
+        const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
         const options = {
             credentials: 'include',
             method: 'POST',
@@ -274,7 +301,16 @@ export const importDeckAction = deckId => {
         const response = await fetch(url, options);
         const data = await response.json();
         if (response.status === 201) {
-            return data
+            return {
+                data: data.data,
+                success: true,
+                message: data.message
+            }
+        } else {
+            return {
+                message: data.message,
+                success: false,
+            }
         }
     }
 };
@@ -404,7 +440,7 @@ export const editDeckFlashcardsAction = (deckId, flashcards) => {
 
 /*
 |----------------------------------------------------------------
-| isLoggedIn (Async)
+| Login (Async)
 |----------------------------------------------------------------
  */
 export const isLoggedIn = () => {
@@ -489,5 +525,119 @@ export const logoutAction = () => {
         const data = await response.json();
         dispatch(setLoginAction(data.username))
         dispatch(setAnonymousUserAction(true))
+    }
+};
+
+/*
+|----------------------------------------------------------------
+| Auto-suggest search input
+|----------------------------------------------------------------
+ */
+export function setSearchSuggestions(suggestions) {
+    return {
+        type: SEARCH_SUGGESTIONS,
+        payload: suggestions
+    }
+}
+
+/*
+|----------------------------------------------------------------
+| Auto-suggest search input (Async)
+|----------------------------------------------------------------
+ */
+export const getSearchSuggestions = (value) => {
+    return async dispatch => {
+        const url = `${API_URL}/decks?deck=${value}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        if (response.status === 200) {
+            const data = await response.json();
+            dispatch(setSearchSuggestions(data.decks))
+            return data.decks
+        }
+    }
+};
+
+/*
+|----------------------------------------------------------------
+| Filter
+|----------------------------------------------------------------
+ */
+export function setFilteredTag(tag) {
+    return {
+        type: FILTER_SET_TAGS,
+        payload: tag
+    }
+}
+
+export function deleteFilteredTag(tag) {
+    return {
+        type: DELETE_FILTERED_TAG,
+        payload: tag
+    }
+}
+
+export function clearFilteredTags() {
+    return {
+        type: CLEAR_FILTERED_TAGS
+    }
+}
+
+export const loadDecks = username => {
+    return async dispatch => {
+        const url = `${API_URL}/users/${username}/decks`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        return fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'All decks') {
+                return data.data
+            } else {
+                console.log('User bestaat niet')
+            }
+        }).catch(err => {
+            console.log(err);
+            console.log("Er gaat iets fout met ophalen van de decks")
+        })
+    }
+};
+
+/*
+|----------------------------------------------------------------
+| Tag page
+|----------------------------------------------------------------
+ */
+
+export const getAllDecks = tag => {
+    return async dispatch => {
+        const url = `${API_URL}/decks/tags?tag=${tag}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+        const response = await fetch(url, options)
+        const data = await response.json()
+        if (response.status === 200) {
+            return data.data
+        } else {
+            console.log('No decks found')
+            return []
+        }
     }
 };

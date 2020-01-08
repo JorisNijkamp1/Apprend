@@ -3,20 +3,21 @@ import * as ReactRedux from "react-redux"
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav"
 import Container from "react-bootstrap/Container";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from 'react-router-dom';
 import NavDropdown from "react-bootstrap/NavDropdown";
 import {logoutAction} from "../../shared/actions/actions";
 import {Notification} from "./Notification";
 
 const NavbarUI = (props) => {
-
+    const history = useHistory();
     const logout = () => {
         if (!props.anonymousUser) {
             return (
                 <>
                     <NavDropdown.Divider/>
                     <NavDropdown.Item id={"logout-btn"} onClick={() => {
-                        props.logout()
+                        props.logout();
+                        history.push('/');
                         Notification("You successfully logged out!", "success")
                     }}>Logout</NavDropdown.Item>
                 </>
@@ -66,6 +67,7 @@ const NavbarUI = (props) => {
                     <NavDropdown title={props.anonymousUser ? 'Welcome Guest' : 'Welcome ' + props.username}
                                  id="basic-nav-dropdown" className="text-white pl-30">
                         <Nav.Link as={Link} className="pl-30" to={'/' + props.username + '/decks'}>My Decks</Nav.Link>
+                        <Nav.Link as={Link} className="pl-30" to={'/profile/' + props.username}>My Profile</Nav.Link>
                         {login()}
                         {register()}
                         {logout()}

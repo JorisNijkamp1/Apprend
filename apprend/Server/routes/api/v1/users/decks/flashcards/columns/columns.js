@@ -22,15 +22,15 @@ columns.use('/:columnId/', async (req, res, next) => {
 columns.patch('/:columnId', async (req, res) => {
     try {
         const { columnId } = req.params
-        const { payload } = req.body
+        const { column } = req.body
         const data = {
             index: columnId,
-            value: payload
+            value: column.value
         }
         const result = await req.flashcard.editColumn(data)
         req.user.markModified('decks')
         await req.user.save()
-        return res.status(201).json({message: columnId + ' ' + payload , data: result})
+        return res.status(201).json({message: 'Changes saved' , data: result, success: true})
     } catch (err) {
         console.log(err)
         return res.status(500).json({message: 'Something went wrong'})

@@ -2,9 +2,6 @@ const mongoose = require('mongoose');
 
 //Create schema
 const flashcardSchema = new mongoose.Schema({
-    _id: {
-        type: String,
-    },
     type: {
         type: String,
     },
@@ -34,9 +31,13 @@ const flashcardSchema = new mongoose.Schema({
     }
 });
 
-flashcardSchema.methods.editCard = async function(data){
-    this[data.property] = data.value
-    return this[data.property]
+flashcardSchema.methods.editCard = async function(properties){
+    let changes = []
+    properties.forEach(property => {
+        this[property.name] = property.value
+        changes.push(property)
+    })
+    return changes
 }
 
 flashcardSchema.methods.editColumn = async function(data){

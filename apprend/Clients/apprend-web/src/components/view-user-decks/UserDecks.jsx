@@ -12,10 +12,8 @@ import {
     setDeckEditedAction
 } from '../shared/actions/actions';
 import Card from 'react-bootstrap/Card';
-import Loader from 'react-loaders'
 import 'loaders.css/src/animations/square-spin.scss'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTrash, faCheck, faTimes, faEdit, faLockOpen, faLock} from '@fortawesome/free-solid-svg-icons';
+import {faTrash, faEdit} from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import {isLoggedIn} from '../shared/actions/actions';
 import {deleteDeckFromUser, toggleDeckStatus} from '../shared/actions/actions'
@@ -23,50 +21,29 @@ import {Form} from 'react-bootstrap';
 import FilterTagsInput from '../view-deck/subcomponents/FilterTagsInput';
 import {setFilteredDecks} from '../shared/actions/actions';
 import {Link} from 'react-router-dom'
+import { Notification } from '../shared/components/Notification';
+import { LoadingComponent } from '../shared/components/LoadingComponent';
+import ConfirmationBoxHOC from './sub-components/ConfirmationBoxHOC'
+import StatusIcon from './sub-components/StatusIcon'
+import IconHOC from './sub-components/IconHOC'
+import FlashcardAmount from './sub-components/FlashcardAmount'
 
 const Deck = (props) => {
     const {username} = useParams();
     const isCreator = (props.username === props.userDecks.userId);
 
     const [decks, setDecks] = useState()
-    const params = useParams()
-
-    let {deckId} = useParams()
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        props.getUserDecks(username)
+        props.getUserDecks(username, setIsLoading)
         props.setFilteredDecks([])
     }, []);
 
-    const confirmationBoxHOC = (message, deck, funct, stateFunct, property, index) => {
-        return (
-            <Card.Footer>
-                <Row>
-                    <Col className="text-left" xs={8}>
-                        {message}
-                    </Col>
-                    <Col xs={2} className="text-center text-green">
-                        <FontAwesomeIcon icon={faCheck} name={deck._id}
-                                         id={`confirm-icon-button-${index}`}
-                                         onClick={(event) => {
-                                             funct(event)
-                                         }}
-                        />
-                    </Col>
-                    <Col xs={2} className="text-center text-red">
-                        <FontAwesomeIcon icon={faTimes} name={deck._id} id={`cancel-icon-button-${index}`}
-                                         onClick={(event) => {
-                                             stateFunct(event, property)
-                                         }}/>
-                    </Col>
-                </Row>
-            </Card.Footer>
-        )
-    }
-
-    const handleDeleteDeck = event => {
+    const handleDeleteDeck = async event => {
         const deckId = event.currentTarget.getAttribute('name')
-        props.deleteDeckFromUser(deckId)
+        const result = await props.deleteDeckFromUser(deckId, username)
+        Notification(result.message, 'success')
     };
 
     const handleEditDeck = event => {
@@ -134,19 +111,6 @@ const Deck = (props) => {
         setDecks({...updatedDecks})
     }
 
-    const toggleDeckStatus = (event) => {
-
-    }
-
-    /* Lijst met alle opties die de eigenaar ziet
-
-        icon: FontAwesome icon die je importeert
-        title: >String< decknaam als je op de icon hovert
-        funct: functie die je aanroept als je op de icon drukt
-        statePropertyName: de propertyname die je aanpast wanneer je op de icon klikt
-
-    */
-
     const allIcons = [
         {
             icon: faTrash,
@@ -172,53 +136,27 @@ const Deck = (props) => {
 
     }
 
-    const StatusIcon = (hoc, deck) => {
-        let icon
-        if (deck.private) {
-            icon = {
-                icon: faLock,
-                title: 'Set this deck to public',
-                ownTitle: true,
-                funct: handleToggleDeckStatus,
-                classColor: 'text-red',
-            }
-        } else {
-            icon = {
-                icon: faLockOpen,
-                title: 'Set this deck to private',
-                ownTitle: true,
-                funct: handleToggleDeckStatus,
-                classColor: 'text-green',
-            }
-        }
-        return (
-            hoc(icon, deck, 0)
-        )
-    }
-
-    const showAllIcons = (icons, deck, index) => {
-        return icons.map(icon => {
-            return iconHOC(icon, deck, index)
-        })
-    }
-
     const userOptions = (deck, index) => {
 
-        // Laat alle confirmationBoxes onder elkaar zien
+        const showAllIcons = (icons, deck, index) => {
+            return icons.map(icon => {
+                return IconHOC(icon, deck, index)
+            })
+        }
+
         const allConfirmationBoxes = (decks) => {
             let boxes = []
 
             if (decks) {
                 if (decks[deck._id]) {
                     if (decks[deck._id].deleteState) {
-                        boxes.push(confirmationBoxHOC('Confirm delete?', deck, handleDeleteDeck, toggleLocalStateProperty, 'deleteState', index))
+                        boxes.push(ConfirmationBoxHOC('Confirm delete?', deck, handleDeleteDeck, toggleLocalStateProperty, 'deleteState', index))
                     }
                     if (decks[deck._id].editState) {
-                        boxes.push(confirmationBoxHOC('Confirm edit?', deck, handleEditDeck, toggleLocalStateProperty, 'editState', index))
+                        boxes.push(ConfirmationBoxHOC('Confirm edit?', deck, handleEditDeck, toggleLocalStateProperty, 'editState', index))
                     }
                 }
             }
-
             return boxes
         }
 
@@ -232,7 +170,7 @@ const Deck = (props) => {
                     </Row>
                     <Row>
                         {showAllIcons(allIcons, deck, index)}
-                        {StatusIcon(iconHOC, deck)}
+                        {StatusIcon(IconHOC, deck, handleToggleDeckStatus)}
                     </Row>
                 </Card.Footer>
                 {allConfirmationBoxes(decks)}
@@ -240,42 +178,17 @@ const Deck = (props) => {
         )
     }
 
-    const iconHOC = (icon, deck, index) => {
-        return (
-            <Col xs={2}>
-            <span className={'float-right'} name={deck._id}
-                  onClick={(event) => {
-                      icon.funct(event, icon.statePropertyName)
-                  }}>
-                <FontAwesomeIcon icon={icon.icon}
-                                 className={`trash-icon ${icon.classColor}`}
-                                 size={`1x`}
-                                 title={icon.ownTitle ? icon.title : `${icon.title} ${deck.name}`}
-                                 id={`${icon.title.toLowerCase().replace(/\s/g, '')}-icon-button-${index}`}
-                />
-            </span>
-            </Col>
-        )
-    }
-
-    const FlashcardAmount = (deck) => {
-        let flashcards;
-        if (deck.totalFlashcards === undefined) {
-            flashcards = deck.flashcards.length;
-        } else if (deck.flashcards === undefined) {
-            flashcards = deck.totalFlashcards;
-        }
-        return (
-            <Card.Subtitle className="mb-2 text-muted text-center">
-                ({flashcards} {(flashcards > 1 || flashcards === 0) ? 'flashcards' : 'flashcard'})
-            </Card.Subtitle>
-        )
-    }
-
-    const showViewButton = (bool, deckId, index) => {
+    const showViewButton = (bool, deckId, index, isCreator) => {
         if (!bool) return (
             <Row>
-                <Col xs={{span: 6, offset: 3}}>
+                {isCreator ? <Col>
+                    <Link to={`/decks/${deckId}/play`}>
+                        <Button variant="outline-success" className={'w-100'} id={`card-`+index+'-play-link'}>
+                            Play Deck
+                        </Button>
+                    </Link>
+                </Col> : ''}
+                <Col>
                     <Link to={`/decks/${deckId}`}>
                         <Button variant="outline-primary" className={'w-100'} id={'card-' + index + '-link'}>View
                             deck</Button>
@@ -352,19 +265,10 @@ const Deck = (props) => {
                         </Row>
                     </Card.Title>
 
-                    {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, id, index)}
+                    {showViewButton(decks ? decks[deck._id] ? decks[deck._id].editState : false : false, id, index, isCreator)}
                 </>
             )
         }
-    }
-
-    const LoaderComponent = () => {
-        return (
-            <Row className="mx-auto align-items-center flex-column py-5">
-                <Loader type="square-spin" active={true} color={'#758BFE'}/>
-                <h2>Loading decks...</h2>
-            </Row>
-        )
     }
 
     const showErrors = () => {
@@ -384,9 +288,7 @@ const Deck = (props) => {
         return (errors.map(error => error))
     }
 
-    const ShowDecks = (loading, decks) => {
-        if (loading) return <LoaderComponent/>
-
+    const ShowDecks = (decks) => {
         if (!decks) return ''
         if (typeof (props.filteredDecks) === 'string') {
             return <Row className="mx-auto align-items-center flex-column py-5">
@@ -397,25 +299,54 @@ const Deck = (props) => {
         if (props.filteredDecks.length > 0) {
             return props.filteredDecks.map((deck, index) =>
                 <Col xs={12} sm={6} lg={4} className="my-2">
-                    <Card index={deck.name + index} id={'card-' + index}>
-                        <Card.Body>
-                            {ShowCard(deck, deck.deckId, index)}
-                        </Card.Body>
-                        {isCreator ? userOptions(deck, index) : ''}
-                    </Card>
+                    <div className={"deck-effect"}>
+                        <Card index={deck.name + index} id={'card-' + index}>
+                            <Card.Body>
+                                {ShowCard(deck, deck.deckId, index)}
+                            </Card.Body>
+                            {isCreator ? userOptions(deck, index) : ''}
+                        </Card>
+                    </div>
                 </Col>
             )
         }
 
         return decks.map((deck, index) => (
             <Col xs={12} sm={6} lg={4} className="my-2">
-                <Card key={deck.name + index} id={'card-' + index}>
-                    <Card.Body>
-                        {ShowCard(deck, deck._id, index)}
-                    </Card.Body>
-                    {isCreator ? userOptions(deck, index) : ''}
-                </Card>
+                <div className={"deck-effect"}>
+                    <Card key={deck.name + index} id={'card-' + index}>
+                        <Card.Body>
+                            {ShowCard(deck, deck._id, index)}
+                        </Card.Body>
+                        {isCreator ? userOptions(deck, index) : ''}
+                    </Card>
+                </div>
             </Col>)
+        )
+    }
+
+    const showContent = () => {
+        if (isLoading) return <LoadingComponent loadingText="Fetching all decks" />
+        return (
+            <>
+            <Row>
+            <Col lg={{span: 8, offset: 2}}>
+                <div className="mx-auto text-green pt-5">
+                    <h1 className="display-5 text-center">
+                        {username.length !== 32 ? `Decks of ${username}` : 'Decks of anonymous'}
+                    </h1>
+                </div>
+            </Col>
+        </Row>
+        <div className={'pt-3 pb-5'}>
+            <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`}
+                             username={props.userDecks.userId}/>
+        </div>
+        {showErrors()}
+        <Row>
+            {ShowDecks(props.decks)}
+        </Row>
+        </>
         )
     }
 
@@ -423,35 +354,18 @@ const Deck = (props) => {
         <>
             <NavigatieBar/>
             <Container>
-                <Row>
-                    <Col lg={{span: 8, offset: 2}}>
-                        <div className="mx-auto text-green pt-5">
-                            <h1 className="display-5 text-center">
-                                {props.userDecks.user ? `Decks of ${props.userDecks.user}` : ''}
-                            </h1>
-                        </div>
-                    </Col>
-                </Row>
-                <div className={'pt-3 pb-5'}>
-                    <FilterTagsInput id="filter" linkTo={`/search?q=${props.searchValue}`}
-                                     username={props.userDecks.user}/>
-                </div>
-                {showErrors()}
-                <Row>
-                    {ShowDecks(props.isLoading, props.decks)}
-                </Row>
+                {showContent()}
             </Container>
             <Footer/>
         </>
     )
 }
 
-
 function mapStateToProps(state) {
     return {
         userDecks: state.decks.userDecks,
         decks: state.decks.userDecks.decks,
-        isLoading: state.decks.isLoading,
+        isLoading: state.flashcards.isLoading,
         username: state.login.username,
         searchValue: state.search.searchValue,
         filteredDecks: state.decks.filteredDecks
@@ -461,8 +375,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         isLoggedIn: () => dispatch(isLoggedIn()),
-        getUserDecks: (username) => dispatch(getUserDecksAction(username)),
-        deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
+        getUserDecks: (username, func) => dispatch(getUserDecksAction(username, func)),
+        deleteDeckFromUser: (deckId, user) => dispatch(deleteDeckFromUser(deckId, user)),
         setDeckEditedAction: (creatorId, _id, deckName, deckDescription, oldTags, newTags) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription, oldTags, newTags)),
         getDecksEdit: (deckId) => dispatch(getDeckEditAction(deckId)),
         toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),

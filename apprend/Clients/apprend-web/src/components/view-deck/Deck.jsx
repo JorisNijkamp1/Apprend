@@ -11,9 +11,9 @@ import {getDeckAction, getDeckEditAction} from "../shared/actions/actions";
 import Card from "react-bootstrap/Card";
 import 'loaders.css/src/animations/square-spin.scss'
 import Loader from "react-loaders";
-import { useHistory } from 'react-router'
+import {useHistory} from 'react-router'
 import {withRouter} from 'react-router-dom'
-import { InputGroup, Button } from 'react-bootstrap'
+import {InputGroup, Button} from 'react-bootstrap'
 import {isLoggedIn} from "../shared/actions/actions";
 import {importDeckAction} from "../shared/actions/actions";
 import PlayButton from "./subcomponents/PlayButton";
@@ -23,12 +23,16 @@ import DeleteButton from "./subcomponents/DeleteButton";
 import ImportButton from "./subcomponents/ImportButton";
 import {deleteDeckFromUser, toggleDeckStatus, setDeckEditedAction} from '../shared/actions/actions'
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
-import { Notification } from '../shared/components/Notification';
-import { addTag, clearTags } from '../create-deck/actions';
-import { deleteTag } from "../shared/actions/actions";
+import {Notification} from '../shared/components/Notification';
+import {addTag, clearTags, deleteTag} from '../create-deck/actions';
+import {deleteOldTag} from "../shared/actions/actions";
 
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
-import { FlashcardTable } from './subcomponents/FlashcardTable'
+import {FlashcardTable} from './subcomponents/flashcardTable/FlashcardTable'
+import DeckDescription from "./subcomponents/DeckDescription";
+import DeckName from './subcomponents/DeckName'
+import DeckTags from "./subcomponents/DeckTags";
+import {LoadingComponent} from "../shared/components/LoadingComponent";
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
@@ -38,35 +42,39 @@ const UserDecks = (props) => {
     const [editDescription, seteditDescription] = useState()
     const [editState, seteditState] = useState()
     const [deleteStatus, setdeleteStatus] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [input, setInput] = useState('')
 
     const history = useHistory()
 
     //Check if user is logged in
     useEffect(() => {
         props.isLoggedIn()
-        props.getDeck(deckId)
+        props.getDeck(deckId, setIsLoading)
         props.clearTags()
     }, []);
 
     const checkAdded = (tagValue) => {
-        let tags = deckData.oldDeckTags.concat(props.tags)
+        let tags = props.deckEdit.data.tags.concat(props.tags)
         return tags.some(tag => {
-            return tag === tagValue.trim()
+            return tag === tagValue.trim().toLowerCase();
         });
     }
 
-    const deckData = {
-        // deckName: (!deckNameEdited && props.deckEdit.name) ? props.deck.name : deckName,
-        // deckDescription: (!deckDescriptionEdited && props.deck.description) ? props.deck.description : deckDescription,
-        oldDeckTags: props.deckEdit.tags
-    }
+    // const deckData = {
+    //     // deckName: (!deckNameEdited && props.deckEdit.name) ? props.deck.name : deckName,
+    //     // deckDescription: (!deckDescriptionEdited && props.deck.description) ? props.deck.description : deckDescription,
+    //     oldDeckTags: props.deckEdit.data.tags
+    // }
 
     const getTagValue = () => {
-        let tagValue = document.getElementById("tags").value;
-        document.getElementById("tags").value = "";
+        let tagValue = input;
+        setInput('');
         let match = false;
-        if (props.tags.length !== 0 || deckData.oldDeckTags.length !== 0) {
-            if (checkAdded(tagValue)){
+        console.log(props.deckEdit)
+        console.log(props.deckEdit.data.tags)
+        if (props.tags.length !== 0 || props.deckEdit.data.tags.length !== 0) {
+            if (checkAdded(tagValue)) {
                 Notification("You already have that tag", "danger");
             } else {
                 match = true;
@@ -93,15 +101,16 @@ const UserDecks = (props) => {
     }
 
     const handleImportButton = async () => {
-        const result = await props.importDeck(props.deck._id)
-        if (!result) return
-        let deck
-        if (!props.username) deck = result.decks[0]._id
-        else deck = result._id
-        await props.isLoggedIn()
-
-        history.push(`/decks/${deck}`)
-        props.getDeck(deck)
+        const result = await props.importDeck(props.deck._id, props.deck.creatorId);
+        let deck;
+        if (result.success) {
+            if (!props.username) deck = result.data.decks[0]._id
+            else deck = result.data._id
+            await props.isLoggedIn()
+            history.push(`/decks/${deck}`)
+            props.getDeck(deck, setIsLoading)
+        }
+        Notification(result.message, result.success ? 'success' : 'danger')
     }
 
     // Toggles public/private status of a deck
@@ -113,15 +122,17 @@ const UserDecks = (props) => {
         Notification("A deck needs atleast 1 card to play!", "info");
     }
 
-    const deleteDeckHandler = () => {
-        props.deleteDeckFromUser(props.deck._id)
+    const deleteDeckHandler = async () => {
+        const result = await props.deleteDeckFromUser(props.deck._id, props.username)
+        Notification(result.message, result.succes ? 'success' : 'danger')
         history.push(`/${props.username}/decks`)
     }
 
-    const editDeckHandler = () => {
-        props.editDeck(props.deck.creatorId, props.deck._id, editName ? editName : props.deck.name, editDescription ? editDescription : props.deck.description, deckData.oldDeckTags, props.tags )
+    const editDeckHandler = async () => {
+        const result = await props.editDeck(props.deck.creatorId, props.deck._id, editName ? editName : props.deck.name, editDescription ? editDescription : props.deck.description, props.deckEdit.data.tags, props.tags)
         toggleEditStateHandler()
         props.clearTags()
+        Notification(result.message, result.success ? 'success' : 'danger')
     }
 
     const toggleDeleteStatusHandler = () => {
@@ -129,19 +140,17 @@ const UserDecks = (props) => {
     }
 
 
-
-    const toggleEditStateHandler = () => {
+    const toggleEditStateHandler = async () => {
         if (editState !== true) {
-            props.getDecksEdit(deckId)
+            await props.getDecksEdit(deckId)
         }
         setEditName('')
         seteditState(!editState)
-
     }
 
     const setStateHandler = (e, func) => {
         let value
-        if (e){
+        if (e) {
             value = e.currentTarget.value
         }
         func(value)
@@ -149,17 +158,17 @@ const UserDecks = (props) => {
 
     const findAllOptions = (isCreator) => {
         let icons = []
-        if (isCreator){
+        if (isCreator) {
             if (props.deck.flashcards.length > 0) {
                 icons.push(<PlayButton func={playDeckHandler}/>)
             } else {
                 icons.push(<PlayButton func={showNotification}/>)
             }
-            icons.push(<EditButton func={toggleEditStateHandler} />)
-            icons.push(<ToggleStatusButton func={toggleDeckStatusHandler}  isPrivate={props.deck.private}/>)
-            icons.push(<DeleteButton func={toggleDeleteStatusHandler} />)
+            icons.push(<EditButton func={toggleEditStateHandler}/>)
+            icons.push(<ToggleStatusButton func={toggleDeckStatusHandler} isPrivate={props.deck.private}/>)
+            icons.push(<DeleteButton func={toggleDeleteStatusHandler}/>)
         } else {
-            icons.push(<ImportButton func={handleImportButton} />)
+            icons.push(<ImportButton func={handleImportButton}/>)
         }
         return icons
     }
@@ -174,26 +183,26 @@ const UserDecks = (props) => {
 
     const showDeleteConfirmationBox = () => {
         const boxes = []
-        if (deleteStatus){
+        if (deleteStatus) {
             boxes.push(<ConfirmationBox
-                            message="Confirm delete?"
-                            boxClass="py-2"
-                            colClass="my-3"
-                            func={deleteDeckHandler}
-                            cancelFunc={toggleDeleteStatusHandler} />)
+                message="Confirm delete?"
+                boxClass="py-2"
+                colClass="my-3"
+                func={deleteDeckHandler}
+                cancelFunc={toggleDeleteStatusHandler}/>)
         }
         return boxes
     }
 
     const showEditConfirmationBox = () => {
         const boxes = []
-        if (editState){
+        if (editState) {
             boxes.push(<ConfirmationBox
-                            message="Confirm edit?"
-                            boxClass="py-2"
-                            colClass="my-3"
-                            func={editDeckHandler}
-                            cancelFunc={toggleEditStateHandler} />)
+                message="Confirm edit?"
+                boxClass="py-2"
+                colClass="my-3"
+                func={editDeckHandler}
+                cancelFunc={toggleEditStateHandler}/>)
         }
         return boxes
     }
@@ -201,9 +210,9 @@ const UserDecks = (props) => {
 
     const showFlashcards = () => {
         return (
-        <Row className="my-5">
-            <FlashcardsOverview />
-        </Row>
+            <Row className="my-5">
+                <FlashcardsOverview/>
+            </Row>
         )
     }
 
@@ -228,29 +237,30 @@ const UserDecks = (props) => {
         if (props.deck.flashcards) {
             totalFlashcards = props.deck.flashcards.length
         }
-        if (props.deck.toString() !== 'deck-not-found'){
+        if (props.deck.toString() !== 'deck-not-found') {
             const datum = new Date(props.deck.creationDate).toLocaleDateString()
             deck = (
                 <>
-                <Card style={{width: '100%'}} bg={'light'} className={'my-5 text-center'}>
-                    <Card.Body>
-                        <Card.Subtitle>
-                            <Row>
-                                <Col xs={12} md={4}>
-                                    <b>Created on: </b>{datum ? datum : '' }
-                                </Col>
-                                <Col xs={12} md={4}>
-                                    <b>Created by: </b>{props.deck.creatorId ? props.deck.creatorId.length === 32 ? 'Anon' : props.deck.creatorId : ''}
-                                </Col>
-                                <Col xs={12} md={4}>
-                                    <b>Total flashcards: </b>{totalFlashcards}
-                                </Col>
-                            </Row>
-                        </Card.Subtitle>
+                    <Card style={{width: '100%'}} bg={'light'} className={'my-5 text-center'}>
+                        <Card.Body>
+                            <Card.Subtitle>
+                                <Row>
+                                    <Col xs={12} md={4}>
+                                        <b>Created on: </b>{datum ? datum : ''}
+                                    </Col>
+                                    <Col xs={12} md={4}>
+                                        <b>Created
+                                            by: </b>{props.deck.creatorId ? props.deck.creatorId.length === 32 ? 'Anon' : props.deck.creatorId : ''}
+                                    </Col>
+                                    <Col xs={12} md={4}>
+                                        <b>Total flashcards: </b>{totalFlashcards}
+                                    </Col>
+                                </Row>
+                            </Card.Subtitle>
 
-                    </Card.Body>
-                </Card>
-                {showOptions(findAllOptions(isCreator))}
+                        </Card.Body>
+                    </Card>
+                    {showOptions(findAllOptions(isCreator))}
                 </>
             )
 
@@ -262,138 +272,48 @@ const UserDecks = (props) => {
         }
     }
 
-
     const Deckname = () => {
-        if (editState)
-        return (
-            <>
-                <Form.Group controlId="formBasicEmail" className={"text-center"}>
-                    <Form.Label column={true}>
-                            <strong>Edit {props.deck.name}</strong>
-                    </Form.Label>
-                    <Form.Control type="text"
-                                  name={props.deck._id}
-                                  placeholder={props.deck.name}
-                                  defaultValue={props.deck.name}
-                                  id={`input-name`}
-                                  onChange={(e) => {
-                                    setStateHandler(e, setEditName)
-                                  }}
-                    />
-                </Form.Group>
-            </>
-        )
-
-        else return (
-            <h1 className="display-5 text-green ">
-                {props.deck.name}
-            </h1>
-        )
+        return <DeckName
+            state={editState}
+            deck={props.deck}
+            handler={setStateHandler}
+            func={setEditName}
+        />
     }
 
     const Deckdescription = () => {
-        if (editState)
-        return (
-            <>
-                <Form.Group controlId="formBasicEmail" className={"text-center"}>
-                    <Form.Label column={true}>
-                            <strong>Edit description</strong>
-                    </Form.Label>
-                    <Form.Control type="text"
-                                  name={props.deck._id}
-                                  placeholder={props.deck.description}
-                                  defaultValue={props.deck.description}
-                                  id={`input-description`}
-                                  onChange={(e) => {
-                                    setStateHandler(e, seteditDescription)
-                                  }}
+        return <DeckDescription
+            state={editState}
+            deck={props.deck}
+            handler={setStateHandler}
+            func={seteditDescription}
+        />
+    }
+
+    const Decktags = () => {
+        return <DeckTags 
+                    state={editState}
+                    deck={props.deck}
+                    deckEdit={props.deckEdit}
+                    getTagValue={getTagValue}
+                    deleteOldTag={props.deleteOldTag}
+                    tags={props.tags}
+                    value={input}
+                    setInput={setInput}
+                    deleteNewTag={props.deleteNewTag}
                     />
-                </Form.Group>
-            </>
-        )
-
-        else return (
-            <h4 className="display-5 text-black ">
-                {props.deck.description}
-            </h4>
-        )
     }
 
-    const DeckTags = () => {
-        let tags
-        if (props.deck && props.deck.tags && props.deck.tags.length > 0) {
-
-            const allTags = props.deck.tags.map(tag => (
-                <>
-                    <Col sm={6} md={3} className="text-center my-1">
-                        <Card>
-                        <h6>{tag}</h6>
-
-                        </Card>
-                    </Col>
-                </>
-            ))
-
-            tags = (
-                <Row>
-                    {allTags}
-                </Row>
-            )
-        }
-
-        if (editState)
+    const showContent = () => {
+        if (isLoading) return <LoadingComponent loadingText="Loading deck for you"/>
         return (
             <>
-            <Form onSubmit={e => {
-                    e.preventDefault()
-                    getTagValue()
-                }}>
-                <Form.Group>
-                    <Form.Label><b>Deck tags</b></Form.Label>
-                    <Col sm={12}>
-                        <ul id="tagList">
-                            {(props.deckEdit.tags) ? props.deckEdit.tags.map((tag) =>
-                            <li key={tag} className="listItem">
-                                {tag}
-                                <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>
-                            </li>) : ""}
-                            {props.tags.map((tag) =>
-                            <li key={tag} className="listItem">
-                                {tag}
-                                <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteTag(tag)}/>
-                            </li>)}
-                        </ul>
-                    </Col>
-                    <InputGroup className="mb-3 pt-2">
-                        <Form.Control
-                            id="tags"
-                            placeholder="Add a tag"
-                            className="text-center"
-                        />
-                        <InputGroup.Append>
-                            <Button className={'bg-blue text-white hover-shadow'} onClick={() => getTagValue()}>Add tag</Button>
-                        </InputGroup.Append>
-                    </InputGroup>
-
-                </Form.Group>
-                </Form>
-            </>
-        )
-        else return (
-            tags
-        )
-    }
-
-    return (
-        <>
-            <NavigatieBar/>
-            <Container>
                 <Row>
                     <Col lg={{span: 8, offset: 2}}>
                         <div className="mx-auto text-center pt-5">
                             {Deckname()}
                             {Deckdescription()}
-                            {DeckTags()}
+                            {Decktags()}
                         </div>
                     </Col>
                 </Row>
@@ -404,16 +324,24 @@ const UserDecks = (props) => {
                     {deck}
                 </Row>
                 {/* <Row> */}
-                    <FlashcardTable />
+                <FlashcardTable />
                 {/* </Row> */}
                 {showDeleteConfirmationBox()}
                 {/* {showFlashcards()} */}
                 {/* {flashcardsComp} */}
+            </>
+        )
+    }
+    return (
+        <>
+            <NavigatieBar/>
+            <Container>
+                {showContent()}
             </Container>
             <Footer/>
         </>
     )
-};
+}
 
 function mapStateToProps(state) {
     return {
@@ -428,15 +356,16 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         isLoggedIn: () => dispatch(isLoggedIn()),
-        getDeck: (deckId) => dispatch(getDeckAction(deckId)),
-        importDeck: (deck) => dispatch(importDeckAction(deck)),
+        getDeck: (deckId, setLoader) => dispatch(getDeckAction(deckId, setLoader)),
+        importDeck: (deckId, creatorId) => dispatch(importDeckAction(deckId, creatorId)),
         toggleStatus: (deckId, userId) => dispatch(toggleDeckStatus(deckId, userId)),
-        deleteDeckFromUser: (deckId) => dispatch(deleteDeckFromUser(deckId)),
+        deleteDeckFromUser: (deckId, user) => dispatch(deleteDeckFromUser(deckId, user)),
         editDeck: (creatorId, _id, deckName, deckDescription, oldTags, newTags) => dispatch(setDeckEditedAction(creatorId, _id, deckName, deckDescription, oldTags, newTags)),
         addTag: (tag) => dispatch(addTag(tag)),
-        deleteTag: (tag) => dispatch(deleteTag(tag)),
+        deleteOldTag: (tag) => dispatch(deleteOldTag(tag)),
         clearTags: () => dispatch(clearTags()),
         getDecksEdit: (deckId) => dispatch(getDeckEditAction(deckId)),
+        deleteNewTag: (tag) => dispatch(deleteTag(tag))
     }
 }
 

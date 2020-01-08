@@ -11,8 +11,8 @@ import * as serviceWorker from './serviceWorker';
 import ReactNotification from 'react-notifications-component';
 
 const logger = (store) => (next) => (action) => {
-    console.log(store);
-    console.log('ACTION:', action.type, action);
+    // console.log(store);
+    // console.log('ACTION:', action.type, action);
     let result = next(action);
     console.log('STATE AFTER ACTION:', action.type, store.getState());
     return result;

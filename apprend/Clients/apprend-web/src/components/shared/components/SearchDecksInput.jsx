@@ -2,9 +2,8 @@ import React, {useState} from "react";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
-import {API_URL} from "../../../redux/urls";
 import {Link} from "react-router-dom";
-import {setSearchValue} from "../actions/actions";
+import {getSearchSuggestions, setSearchValue} from "../actions/actions";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -14,79 +13,21 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import {useHistory} from "react-router-dom";
 
-const getMatchingLanguages = (value, decks) => {
-    const escapedValue = escapeRegexCharacters(value.trim());
-
-    if (escapedValue === '') {
-        return [];
-    }
-
-    const regex = new RegExp('^' + escapedValue, 'i');
-    decks = decks.filter(deck => regex.test(deck.name));
-    return (decks.length > 4) ? decks.slice(0, 4) : decks;
-};
-
-/* ----------- */
-/*    Utils    */
-/* ----------- */
-
-// https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
-const escapeRegexCharacters = (str) => {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-};
-
-/* --------------- */
-/*    Component    */
-/* --------------- */
-const getSuggestionValue = (suggestion) => {
-    return suggestion.name;
-};
-
-function renderSuggestion(suggestion) {
-    return (
-        <Link to={`/decks/${suggestion.deckId}`} className={'search-deck-suggestions-link'}>
-            <span style={{fontWeight: 600}}>{suggestion.name}</span>
-            <br/>
-            <i>{suggestion.totalFlashcards} flashcards</i>
-        </Link>
-    );
-}
-
 const SearchDecksInput = (props) => {
     const [value, setValue] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     let lastRequestId = null;
 
+    const onSuggestionsFetchRequested = ({value}) => {
+        loadSuggestions(value);
+    };
+
     const loadSuggestions = (value) => {
         // Cancel the previous request
-        if (lastRequestId !== null) {
+        if (lastRequestId !== null)
             clearTimeout(lastRequestId);
-        }
 
-        // Request
-        lastRequestId = setTimeout(async () => {
-
-            const url = `${API_URL}/decks?deck=${value}`;
-            let decks;
-
-            const response = await fetch(url, {
-                credentials: 'include',
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-
-            if (response.status === 200) {
-                const data = await response.json();
-                decks = data.decks
-            } else {
-                console.log('Error: ' + response);
-                decks = []
-            }
-
-            setSuggestions(getMatchingLanguages(value, decks));
-        });
+        props.getSearchSuggestions(value).then((data) => setSuggestions(getMatchingResults(value, data)));
     };
 
     const onChange = (event, {newValue}) => {
@@ -94,12 +35,38 @@ const SearchDecksInput = (props) => {
         setValue(newValue);
     };
 
-    const onSuggestionsFetchRequested = ({value}) => {
-        loadSuggestions(value);
-    };
-
     const onSuggestionsClearRequested = () => {
         setSuggestions([]);
+    };
+
+    const getMatchingResults = (value, decks) => {
+        const escapedValue = escapeRegexCharacters(value.trim());
+
+        if (escapedValue === '') {
+            return [];
+        }
+
+        const regex = new RegExp('^' + escapedValue, 'i');
+        decks = decks.filter(deck => regex.test(deck.name));
+        return (decks.length > 4) ? decks.slice(0, 4) : decks;
+    };
+
+    const escapeRegexCharacters = (str) => {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    };
+
+    const getSuggestionValue = (suggestion) => {
+        return suggestion.name;
+    };
+
+    const renderSuggestion = (suggestion) => {
+        return (
+            <Link to={`/decks/${suggestion.deckId}`} className={'search-deck-suggestions-link'}>
+                <span style={{fontWeight: 600}}>{suggestion.name}</span>
+                <br/>
+                <i>{suggestion.totalFlashcards} flashcards</i>
+            </Link>
+        );
     };
 
     let history = useHistory()
@@ -164,12 +131,14 @@ SearchDecksInput.propTypes = {
 const mapStateToProps = state => {
     return {
         searchValue: state.search.searchValue,
+        searchSuggestions: state.search.searchSuggestions
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         setSearchValue: (searchValue) => dispatch(setSearchValue(searchValue)),
+        getSearchSuggestions: (searchValue) => dispatch(getSearchSuggestions(searchValue)),
     }
 };
 
