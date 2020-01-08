@@ -1,15 +1,10 @@
 import React, {useEffect, useState} from "react";
 import * as ReactRedux from 'react-redux'
-import {Link} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-solid-svg-icons";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import {API_URL} from "../../../redux/urls";
 import {setIsLoading, setSearchValue} from "../../shared/actions/actions";
 import Loader from "react-loaders";
-import Button from "react-bootstrap/Button";
 
 const SearchResults = (props) => {
     const [results, setResults] = useState([]);
@@ -59,7 +54,7 @@ const SearchResults = (props) => {
 
     const noResultsFound = () => {
         if (!props.isLoading) return (
-            <h3 className={'text-center w-100'}>
+            <h3 className={'text-center w-100 pt-5'}>
                 No {typeResults} found... 😭
             </h3>
         )
@@ -69,7 +64,7 @@ const SearchResults = (props) => {
         if (results.length > 0 && results[1].results.length > 0 && typeResults === 'decks') {
             return results[1].results.map((deck) => (
                     <section className="search-result-item">
-                        <a className="image-link" href="#">
+                        <a className="image-link" href={`/decks/${deck._id}`}>
                             <img className="image"
                                  src={`https://via.placeholder.com/200/00B5FB/FFFFFF?text=${deck.flashcards} cards`}/>
                         </a>
@@ -80,12 +75,12 @@ const SearchResults = (props) => {
                                         <a href={`/decks/${deck._id}`}>{deck.name}</a>
                                     </h4>
                                     <p className="info">{deck.flashcards} flashcards</p>
-                                    {/*<p className="description w-100">*/}
-                                    {/*    {deck.description}*/}
-                                    {/*</p>*/}
-                                    <p className="description w-100" style={{height: 40}}>
-                                        User account created on: 2019-10-12
+                                    <p className="description w-100">
+                                        {deck.description}
                                     </p>
+                                    {/*<p className="description w-100" style={{height: 40}}>*/}
+                                    {/*    User account created on: 2019-10-12*/}
+                                    {/*</p>*/}
                                     <a className="btn btn-primary btn-info btn-sm" href={`/decks/${deck._id}`}>View deck</a>
                                 </div>
                             </div>
@@ -102,26 +97,28 @@ const SearchResults = (props) => {
         if (results.length > 0 && results[0].results.length > 0 && typeResults === 'users') {
             return results[0].results.map((user) => (
                     <section className="search-result-item">
-                        <a className="image-link" href="#">
+                        <a className="image-link" href={`/${user.name}/decks`}>
                             <img className="image" src={`https://api.adorable.io/avatars/200/${user.name}`}/>
                         </a>
                         <div className="search-result-item-body">
                             <div className="row">
                                 <div className="col-sm-12">
                                     <h4 className="search-result-item-heading ">
-                                        <a href="#">{user.name}</a>
+                                        <a href={`/${user.name}/decks`}>{user.name}</a>
                                     </h4>
                                     <p className="info">4 decks</p>
                                     <p className="description w-100" style={{height: 40}}>
                                         User account created on: 2019-10-12
                                     </p>
-                                    <a className="btn btn-primary btn-info btn-sm" href="#">View profile</a>
+                                    <a className="btn btn-primary btn-info btn-sm" href={`/${user.name}/decks`}>View profile</a>
                                 </div>
                             </div>
                         </div>
                     </section>
                 )
             )
+        } else if (results.length > 0 && results[0].results.length === 0 && typeResults === 'users') {
+            return noResultsFound()
         }
     };
 

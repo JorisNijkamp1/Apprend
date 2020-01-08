@@ -64,6 +64,7 @@ const SearchDecksInput = (props) => {
 
     const onChange = (event, {newValue, method}) => {
         setValue(newValue);
+        props.setSearchValue(newValue)
     };
 
     const onSuggestionsFetchRequested = ({value}) => {

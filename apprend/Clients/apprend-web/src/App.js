@@ -14,7 +14,6 @@ import * as ReactRedux from 'react-redux';
 import 'react-notifications-component/dist/theme.css'
 import 'animate.css/animate.css'
 import Search from './components/search-deck/Search';
-import {SearchUser} from './components/search-user/SearchUser';
 import {isLoggedIn} from './components/shared/actions/actions';
 import TagOverview from "./components/filter-tags/TagOverview";
 
@@ -53,9 +52,6 @@ function App(props) {
                 </Route>
                 <Route path={'/search'}>
                     <Search/>
-                </Route>
-                <Route path={'/users'}>
-                    <SearchUser/>
                 </Route>
                 <Route exact path={"/tags/:tag"}>
                     <TagOverview/>
