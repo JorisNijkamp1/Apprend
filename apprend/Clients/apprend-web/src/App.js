@@ -16,6 +16,8 @@ import 'animate.css/animate.css'
 import Search from './components/search-deck/Search';
 import {SearchUser} from './components/search-user/SearchUser';
 import {isLoggedIn} from './components/shared/actions/actions';
+import Privacy from './components/privacy/Privacy';
+import PrivacyPopUp from './components/privacy-pop-up/PrivacyPopUp';
 import TagOverview from "./components/filter-tags/TagOverview";
 import {MyProfile} from "./components/my-profile/MyProfile";
 
@@ -29,39 +31,53 @@ function App(props) {
         <div>
             <Switch>
                 <Route exact path={'/'}>
+                    <PrivacyPopUp/>
                     <Homepage/>
                 </Route>
+                <Route path={'/privacy'}>
+                    <Privacy/>
+                </Route>
                 <Route path="/decks/create">
+                    <PrivacyPopUp/>
                     <CreateDeck/>
                 </Route>
                 <Route path={'/register'}>
+                    <PrivacyPopUp/>
                     <RegisterPage/>
                 </Route>
                 <Route path={'/login'}>
+                    <PrivacyPopUp/>
                     <LoginPage/>
                 </Route>
                 <Route path={'/profile/:userId'}>
                     <MyProfile/>
                 </Route>
                 <Route path={'/decks/:deckId/play'}>
+                    <PrivacyPopUp/>
                     <PlayingDeck/>
                 </Route>
                 <Route path={'/decks/:deckId/score'}>
+                    <PrivacyPopUp/>
                     <PlayingScore/>
                 </Route>
                 <Route path={'/decks/:deckId'}>
+                    <PrivacyPopUp/>
                     <Deck/>
                 </Route>
                 <Route exact path={'/:username/decks'}>
+                    <PrivacyPopUp/>
                     <UserDecks/>
                 </Route>
                 <Route path={'/search'}>
+                    <PrivacyPopUp/>
                     <Search/>
                 </Route>
                 <Route path={'/users'}>
+                    <PrivacyPopUp/>
                     <SearchUser/>
                 </Route>
-                <Route exact path={"/tags/:tag"}>
+                <Route exact path={'/tags/:tag'}>
+                    <PrivacyPopUp/>
                     <TagOverview/>
                 </Route>
                 <Route>

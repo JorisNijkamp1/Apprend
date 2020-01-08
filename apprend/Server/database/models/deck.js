@@ -40,6 +40,12 @@ const deckSchema = new mongoose.Schema({
     }, 
     columns: {
         type: [{'type': {type: String}, name: {type: String} }]
+    },
+    imported: {
+        type: [{'user': {type: String}, 'deckId': {type: String}, 'importDate': {type: Date, default: Date.now} }]
+    },
+    originalDeck: {
+        type: String
     }
 });
 
@@ -116,6 +122,14 @@ deckSchema.methods.addFlashcard = async function(columns){
 
 deckSchema.methods.deleteFlashcard = async function(id){
     this.flashcards = this.flashcards.filter(fc => fc._id.toString() !== id)
+}
+
+deckSchema.methods.updateImported = async function(deck){
+    this.imported.push({user: deck.creatorId, deckId: deck._id})
+}
+
+deckSchema.methods.updateOriginalDeck = async function(id){
+    this.originalDeck = id
 }
 
 //Create model
