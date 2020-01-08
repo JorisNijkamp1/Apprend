@@ -97,11 +97,11 @@ deckSchema.methods.addColumn = async function(column) {
 
 deckSchema.methods.deleteColumn = async function(id) {
     this.columns = this.columns.filter((column, index) => {
-        return index.toString() !== id
+        return index.toString() !== id.toString()
     })
     this.flashcards = this.flashcards.map(flashcard => {
         flashcard.columns = flashcard.columns.filter((column, index) => {
-            return index.toString() !== id
+            return index.toString() !== id.toString()
         })
         return flashcard
     })
