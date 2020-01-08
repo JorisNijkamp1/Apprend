@@ -1,7 +1,4 @@
-# Wie heb je om hulp gevraagd?
-Ik heb de onderzoeken zelfstandig uitgevoerd. Wel heb ik dus, zoals hierboven beschreven hulp gezocht bij collega's.
-
-Ik heb een paar vragen gesteld aan mijn collega's:
+**Interview collega's**
 
 **Vraag**: Waarom gebruiken jullie Sass?
 **Antwoord**: ze hebben verteld dat ze het handig manier vinden op sites te stylen. Het maakt de styling bestanden overzichtelijk en makkelijk te beheren, dit is een groot voordeel, omdat andere dus gemakkelijk met andermans werk aan de slag kunnen.
@@ -14,7 +11,6 @@ Ook hebben ze verteld dat je met het gebruik van mixins heel veel tijd kan bespa
 **Antwoord**: het is even wennen om al je classes te nesten in id's. Dit zijn niet altijd id's maar kunnen ook classes in classes zijn.
 De scss bestanden moeten gecompileerd worden naar css bestanden. Dit kost elke keer een seconde ongeveer. 
 
-# Tot welke inzichten ben je gekomen?
 Bij het gebruik van sass zijn een aantal grote voordelen:
 
  - Je kan variabelen aanmaken voor bijvoorbeeld hexadecimale getallen.
