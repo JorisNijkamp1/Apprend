@@ -34,6 +34,7 @@ const Search = (props) => {
                             <input className={'form-control'}
                                    placeholder={'Search'}
                                    onChange={(e) => setSearchValue(e.target.value)}/>
+                                   <small>Press <b>enter</b> for all results.</small>
                         </form>
                     </Col>
                 </Row>

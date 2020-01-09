@@ -13,7 +13,7 @@ import {PlayingScore} from './components/playing/subcomponents/PlayingScore';
 import * as ReactRedux from 'react-redux';
 import 'react-notifications-component/dist/theme.css'
 import 'animate.css/animate.css'
-import Search from './components/search-deck/Search';
+import Search from './components/search/Search';
 import {isLoggedIn} from './components/shared/actions/actions';
 import TagOverview from './components/filter-tags/TagOverview';
 import Privacy from './components/privacy/Privacy';

@@ -22,7 +22,7 @@ const SearchInput = (props) => {
 
     function renderSuggestion(suggestion) {
         if (suggestion.type === "deck") return (
-            <Link to={`/decks/${suggestion._id}`} className={'search-deck-suggestions-link'}>
+            <Link to={`/decks/${suggestion._id}`} className={'search-suggestions-link'}>
                     <span>
                         <span>{suggestion.name}</span>
                         <span className={'float-right'}><i>{suggestion.flashcards} flashcards</i></span>
@@ -30,14 +30,14 @@ const SearchInput = (props) => {
             </Link>
         );
         if (suggestion.type === "user") return (
-            <Link to={`/${suggestion.name}/decks`} className={'search-deck-suggestions-link w-100'}>
+            <Link to={`/${suggestion.name}/decks`} className={'search-suggestions-link w-100'}>
                     <span>
                         {suggestion.name}
                     </span>
             </Link>
         );
         // if (suggestion.type === "tag") return (
-        //     <Link to={`/tags/${suggestion.name}`} className={'search-deck-suggestions-link w-100'}>
+        //     <Link to={`/tags/${suggestion.name}`} className={'search-suggestions-link w-100'}>
         //             <span>
         //                 {suggestion.name}
         //             </span>
@@ -118,7 +118,7 @@ const SearchInput = (props) => {
 
     return (
         <>
-            <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search-deck'}>
+            <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search'}>
                 <div className={'row'}>
                     <div className={props.navBar ? '' : 'col-md-10 offset-md-1'}>
                         <div className={props.navBar ? '' : 'row'}>

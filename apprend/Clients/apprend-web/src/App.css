@@ -273,6 +273,7 @@ progress[value]::-webkit-progress-value {
 .search-suggestions-link {
     display: inherit;
     color: unset;
+    padding: 7px 10px;
 }
 
 .search-suggestions-link:hover {
