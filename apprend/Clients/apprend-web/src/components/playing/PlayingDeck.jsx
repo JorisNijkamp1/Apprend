@@ -3,7 +3,7 @@ import * as ReactRedux from 'react-redux';
 import {Redirect, useHistory} from 'react-router';
 import {Notification} from '../shared/components/Notification';
 import {NavLink, useParams} from 'react-router-dom';
-import {NavigatieBar} from '../shared/components/NavigatieBar';
+import {NavBar} from '../shared/components/NavBar';
 import {Footer} from '../shared/components/Footer';
 import {Container, Row, Col, Button} from 'react-bootstrap';
 import PlayingCard from './subcomponents/PlayingCard';
@@ -203,7 +203,7 @@ const PlayingComponent = (props) => {
 
     return (props.error !== null) ? <Redirect to={'/'}/> : (
         <>
-            <NavigatieBar/>
+            <NavBar/>
             {loader}
             <Footer/>
         </>

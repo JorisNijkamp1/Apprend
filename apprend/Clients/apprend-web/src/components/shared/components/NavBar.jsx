@@ -111,4 +111,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export const NavigatieBar = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(NavbarUI);
+export const NavBar = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(NavbarUI);

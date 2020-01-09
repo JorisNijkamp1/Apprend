@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import * as ReactRedux from 'react-redux'
-import {NavigatieBar} from '../shared/components/NavigatieBar';
+import {NavBar} from '../shared/components/NavBar';
 import Container from 'react-bootstrap/Container';
 import {isLoggedIn} from "../shared/actions/actions";
 import SearchResults from "./subcomponents/SearchResults";
@@ -14,7 +14,7 @@ const Search = (props) => {
 
     return (
         <>
-            <NavigatieBar/>
+            <NavBar/>
             <Container>
                 <SearchResults/>
             </Container>

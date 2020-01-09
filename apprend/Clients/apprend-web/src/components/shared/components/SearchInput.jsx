@@ -76,17 +76,11 @@ const SearchInput = (props) => {
         // Cancel the previous request
         if (lastRequestId !== null) clearTimeout(lastRequestId);
 
-        props.getSearchSuggestions(value)
+        props.getSearchSuggestions(value, true)
             .then((data) => {
                 return data.filter(section => section.results.length > 0);
             })
             .then((results) => {
-
-                // //if (results[0].results.length > 3) {
-                //     let newArray = results[0].results.filter((res, index) => index < 3);
-                //     console.log(newArray)
-                // //}
-
                 setSuggestions(results)
             })
     };
@@ -109,9 +103,31 @@ const SearchInput = (props) => {
         style: {width: '100%'}
     };
 
+    const searchButton = () => {
+        if (!props.navBar) {
+            return (
+                <div className={props.navBar ? 'pl-30' : 'col-lg-2 col-md-2 col-2'}>
+                    <InputGroup.Append>
+                        <Link to={props.linkTo}>
+                            <Button className={'bg-blue text-white hover-shadow'}>
+                                <FontAwesomeIcon icon={faSearch}
+                                                 className={'trash-icon'}
+                                                 size={'1x'}
+                                                 title={`Search`}
+                                />
+                                <span className={'ml-1'}>Search</span>
+                            </Button>
+                        </Link>
+                    </InputGroup.Append>
+                </div>
+            )
+        }
+    }
+
     return (
         <>
-            <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search-deck'} className={props.navBar ? 'extra-class-navbar' : ''}>
+            <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search-deck'}
+                  className={props.navBar ? 'extra-class-navbar' : ''}>
                 <div className={props.navBar ? '' : 'row'}>
                     <div className={props.navBar ? '' : 'col-md-10 offset-md-1'}>
                         <Row>
@@ -131,27 +147,13 @@ const SearchInput = (props) => {
                                 </InputGroup>
                                 {/*</Col>*/}
                             </div>
-                            <div className={props.navBar ? 'pl-30' : 'col-lg-2 col-md-2 col-2'}>
-                                <InputGroup.Append>
-                                    <Link to={props.linkTo}>
-                                        <Button className={'bg-blue text-white hover-shadow'}>
-                                            <FontAwesomeIcon icon={faSearch}
-                                                             className={'trash-icon'}
-                                                             size={'1x'}
-                                                             title={`Search`}
-                                            />
-                                            <span className={'ml-1'}>Search</span>
-                                        </Button>
-                                    </Link>
-                                </InputGroup.Append>
-                            </div>
+                            {searchButton()}
                         </Row>
                     </div>
                 </div>
             </Form>
         </>
     );
-
 };
 
 SearchInput.propTypes = {
@@ -168,7 +170,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setSearchValue: (searchValue) => dispatch(setSearchValue(searchValue)),
-        getSearchSuggestions: (searchValue) => dispatch(getSearchSuggestions(searchValue)),
+        getSearchSuggestions: (searchValue, autoSuggest) => dispatch(getSearchSuggestions(searchValue, autoSuggest)),
     }
 };
 

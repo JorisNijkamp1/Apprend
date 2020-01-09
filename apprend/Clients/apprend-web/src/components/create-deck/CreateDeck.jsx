@@ -6,7 +6,7 @@ import { PageTitle } from '../shared/components/PageTitle'
 import { createDeck } from './actions'
 import { CreateButton } from './subcomponents/CreateButton';
 import { useHistory } from 'react-router'
-import { NavigatieBar } from '../shared/components/NavigatieBar';
+import { NavBar } from '../shared/components/NavBar';
 import { Footer } from '../shared/components/Footer';
 import { StatusButtons } from './subcomponents/StatusButtons'
 import { Notification } from '../shared/components/Notification';
@@ -62,7 +62,7 @@ const CreateDeckFormComponent = (props) => {
                 deckId = response.data._id.toString()
             }
             history.push(`/decks/${deckId}/cards/`)
-        } 
+        }
         Notification(response.message, response.success ? 'success' : 'danger')
     }
 
@@ -207,7 +207,7 @@ const CreateDeckFormComponent = (props) => {
 
     return (
         <>
-                    <NavigatieBar/>
+                    <NavBar/>
             <Container className={"pt-5 pb-5"}>
         {showContent()}
         </Container>

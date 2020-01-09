@@ -278,7 +278,7 @@ export const toggleDeckStatus = (deckId, userId) => {
             credentials: 'include',
             mode: 'cors'
         });
-        let data = await response.json(); 
+        let data = await response.json();
         if (response.status === 201) {
             dispatch(setSpecificDeckDataAction(data.data));
             dispatch(setDeckAction(data.data))
@@ -546,9 +546,9 @@ export function setSearchSuggestions(suggestions) {
 | Auto-suggest search input (Async)
 |----------------------------------------------------------------
  */
-export const getSearchSuggestions = (value) => {
+export const getSearchSuggestions = (value, autoSuggest) => {
     return async dispatch => {
-        const url = `${API_URL}/decks?deck=${value}`;
+        const url = `${API_URL}/decks?deck=${value}&autosuggest=${autoSuggest}`;
         const response = await fetch(url, {
             method: 'GET',
             credentials: 'include',

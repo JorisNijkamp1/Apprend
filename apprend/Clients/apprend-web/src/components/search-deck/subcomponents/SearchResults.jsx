@@ -2,8 +2,7 @@ import React, {useEffect, useState} from "react";
 import * as ReactRedux from 'react-redux'
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import {API_URL} from "../../../redux/urls";
-import {setIsLoading, setSearchValue} from "../../shared/actions/actions";
+import {getSearchSuggestions, setIsLoading, setSearchValue} from "../../shared/actions/actions";
 
 const SearchResults = (props) => {
     const [results, setResults] = useState([]);
@@ -12,32 +11,11 @@ const SearchResults = (props) => {
     let searchValue = (urlParams.get('q') === 'null') ? '' : urlParams.get('q');
 
     useEffect(() => {
-        fetchDecks(searchValue)
+        props.getSearchSuggestions(searchValue, false)
             .then(data => {
-                setResults(data.results);
-                return setTimeout(() => {
-                }, 1000)
+                setResults(data);
             })
     }, []);
-
-    async function fetchDecks(value) {
-        const url = `${API_URL}/decks?deck=${value}`;
-
-        const response = await fetch(url, {
-            credentials: 'include',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
-
-        if (response.status === 200) {
-            return await response.json()
-        } else {
-            console.log('Error: ' + response);
-            return []
-        }
-    }
 
     const noResultsFound = () => {
         if (!props.isLoading) return (
@@ -134,19 +112,19 @@ const SearchResults = (props) => {
         </Col>
     );
 
-    const searchResults = () => {
-        return (
-            <>
-                {filterMenu()}
-                <div className="col-md-8">
-                    <p className="search-results-count">About {(results.length > 0) ? (results[0].results.length + results[1].results.length) : 0} results
-                        for {searchValue}</p>
-                    {userResults()}
-                    {deckResults()}
-                </div>
-            </>
-        )
-    };
+    const searchResults = () => (
+        <>
+            {filterMenu()}
+            <div className="col-md-8">
+                <p className="search-results-count">
+                    About {(results.length > 0) ? (results[0].results.length + results[1].results.length) : 0} results
+                    for {searchValue}
+                </p>
+                {userResults()}
+                {deckResults()}
+            </div>
+        </>
+    );
 
     return (
         <>
@@ -161,12 +139,14 @@ const mapStateToProps = state => {
     return {
         isLoading: state.search.isLoading,
         searchValue: state.search.searchValue,
+        searchSuggestions: state.search.searchSuggestions
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         setSearchValue: (searchValue) => dispatch(setSearchValue(searchValue)),
+        getSearchSuggestions: (searchValue, autoSuggest) => dispatch(getSearchSuggestions(searchValue, autoSuggest)),
         setIsLoading: (bool) => dispatch(setIsLoading(bool))
     }
 };

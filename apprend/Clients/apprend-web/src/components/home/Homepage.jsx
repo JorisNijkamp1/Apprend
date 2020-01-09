@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import * as ReactRedux from 'react-redux'
-import {NavigatieBar} from '../shared/components/NavigatieBar';
+import {NavBar} from '../shared/components/NavBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -107,7 +107,7 @@ const HomepageUI = (props) => {
 
     return (
         <>
-            <NavigatieBar/>
+            <NavBar/>
             <div className={"half-circle"}>
                 <svg className="wave" preserveAspectRatio="none" viewBox="0 0 1440 95"
                      xmlns="http://www.w3.org/2000/svg">

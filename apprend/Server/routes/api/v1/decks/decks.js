@@ -58,6 +58,7 @@ decks.get('/tags', async (req, res) => {
 */
 decks.get('/', async (req, res) => {
     const searchQuery = req.query.deck;
+    const autoSuggest = req.query.autosuggest;
     if (!searchQuery) return res.status(400);
 
     let searchResult = await User.aggregate([
@@ -144,6 +145,12 @@ decks.get('/', async (req, res) => {
 
     // Sort decks on total flashcards
     finalResults[1].results.sort((a, b) => parseFloat(b.flashcards) - parseFloat(a.flashcards));
+
+    // Filter results for AutoSuggest
+    if (autoSuggest == 'true') {
+        if (finalResults[0].results.length > 3) finalResults[0].results.splice(3, finalResults[0].results.length - 3);
+        if (finalResults[1].results.length > 3) finalResults[1].results.splice(3, finalResults[1].results.length - 3);
+    }
 
     await res.json({
         message: 'Search results',
