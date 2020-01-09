@@ -13,10 +13,10 @@ const flashcardSchema = new mongoose.Schema({
         type: String,
     },
     box: {
-        type: Number
+        type: Number, default: 0
     },
     sessionPlayed: {
-        type: Number
+        type: Number, default: 0
     },
     columns: {
         type: [

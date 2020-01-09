@@ -5,7 +5,7 @@ import {Notification} from '../shared/components/Notification';
 import {NavLink, useParams} from 'react-router-dom';
 import {NavBar} from '../shared/components/NavBar';
 import {Footer} from '../shared/components/Footer';
-import {Container, Row, Col, Button} from 'react-bootstrap';
+import {Container, Row, Col, Button, Card} from 'react-bootstrap';
 import PlayingCard from './subcomponents/PlayingCard';
 import {
     getDeck,
@@ -13,7 +13,7 @@ import {
     updateGame,
     getGameData,
     updateDeckSession,
-    moveFlashcardToBox, errorOccurred
+    moveFlashcardToBox, errorOccurred, setPlayingDeck
 } from './actions';
 import {
     setCorrectCardsAction,
@@ -25,29 +25,19 @@ import Loader from 'react-loaders';
 import 'loaders.css/src/animations/square-spin.scss';
 import {leitnerSelectCards} from '../../util/leitner-system/leitnerSystem';
 import {isLoggedIn} from '../shared/actions/actions';
-
-const ginoTestFunc = (user, deck, card, body) => {
-    return async dispatch => {
-        console.log('IK BEN GINO AAN HET TESTEN')
-        const response = await fetch(`http://localhost:3001/api/v1/users/${user}/decks/${deck}/flashcards/${card}`, {
-            method: 'PUT',
-            body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include'
-        })
-
-        if (response) {
-
-        }
-    }
-}
+import { setIsLoading } from '../create-deck/actions';
+import { LoadingComponent } from '../shared/components/LoadingComponent';
+import ColumnSelector from './subcomponents/ColumnSelector';
 
 const PlayingComponent = (props) => {
     const history = useHistory();
     const {deckId} = useParams();
     const [currentSession, setCurrentSession] = useState();
+    const [setgame, Setsetgame] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [columns, setColumns] = useState({front: 0, back: 1})
+    const [columnsChosen, setColumnsChosen] = useState(false)
+
     let loader;
 
     useEffect(() => {
@@ -89,7 +79,7 @@ const PlayingComponent = (props) => {
         }
 
         if (nCardsAnswered === nCardsInDeck) {
-            props.doUpdateGame(deckId, props.gameId, currentCard, [], status);
+            // props.doUpdateGame(deckId, props.gameId, currentCard, [], status);
             props.doSetActiveCardAction('');
             history.push(`/decks/${deckId}/score`);
             return;
@@ -106,7 +96,7 @@ const PlayingComponent = (props) => {
         }
 
         props.doSetActiveCardAction(nextCard);
-        props.doUpdateGame(deckId, props.gameId, currentCard, nextCard, status);
+        // props.doUpdateGame(deckId, props.gameId, currentCard, nextCard, status);
     };
 
     const setupGame = () => {
@@ -124,56 +114,75 @@ const PlayingComponent = (props) => {
                 return;
             }
 
-            let session = results.session + 1;
-            let allCards = leitnerSelectCards(results.flashcards, session);
+            let session = results.data.session + 1;
+            console.log(results.data.flashcards)
+            let allCards = leitnerSelectCards(results.data.flashcards, session);
             let counter = 0;
 
             while (allCards.length === 0) {
                 counter++;
                 session++;
-                allCards = leitnerSelectCards(results.flashcards, session);
+                allCards = leitnerSelectCards(results.data.flashcards, session);
 
                 if (counter > 500) break;
             }
-
+            props.doSetPlayingDeck(results.data)
             props.doSetGame(deckId, allCards);
             props.doSetActiveCardAction(allCards[0]);
-            props.doUpdateDeckSession(deckId, session);
+            props.doUpdateDeckSession(deckId, props.username, session);
+            console.log(allCards)
             props.doSetCards(allCards);
             setCurrentSession(session);
+            setIsLoading(false)
         }).catch(error => {
             props.doErrorOccurred(error.message);
         });
     };
+
+    const handleColumnSelector = (index, side) => {
+        let sides = columns
+        if (side === 'front'){
+            if (columns.back === index) sides.back = ''
+        } else if (side === 'back'){
+            if (columns.front === index) sides.front = ''
+        }
+        setColumns({...sides, [side]: index})
+    }
+
+    const handleSetColumns = () => {
+        setColumnsChosen(true)
+    }
 
     if (props.error !== null) {
         Notification(props.error, 'danger');
         return <Redirect to={'/'}/>;
     }
 
+
     if (props.username !== null) {
-        setupGame();
+        if (!setgame){
+            Setsetgame(true)
+            setupGame();
+        }
     }
 
-    if (props.isLoading) {
+    if (isLoading) {
         loader = (
-            <Container>
-                <Row className="mx-auto align-items-center flex-column py-5">
-                    <Loader type="square-spin" active={true} color={'#758BFE'}/>
-                    <h2>Loading cards...</h2>
-                </Row>
-            </Container>
+            <LoadingComponent  loadingText="Loading cards..."/>
         )
+
+        
     } else {
+        if (!columnsChosen){
+            loader = (
+                <ColumnSelector deck={props.deck} func={handleColumnSelector} funcSetColumns={handleSetColumns} columns={columns}/>
+            )
+        } else 
         loader = (
             <Container>
                 <NavLink to={`/decks/${deckId}`} className="btn btn-blue">
                     Back
                 </NavLink>
-                <Button onClick={() => props.ginoTest(props.username, deckId, props.activeCard._id, {data: 'hallo'})
-                }>
-                    KLIK MIJ
-                </Button>
                 <Col className={'text-center'}>
                     <progress value={props.correctCards.length + props.wrongCards.length + 1} max={props.cards.length}/>
                 </Col>
@@ -182,8 +191,11 @@ const PlayingComponent = (props) => {
                 </Col>
                 <PlayingCard changeScore={changeScore}
                              activeCard={props.activeCard}
-                             front={props.activeCard.question}
-                             back={props.activeCard.answer}/>
+                            //  front={props.activeCard.columns}
+                            //  back={props.activeCard.answer}
+                            front={props.activeCard.columns[columns.front]}
+                            back={props.activeCard.columns[columns.back]}
+                             />
                 <Row className={'justify-content-between'}>
                     <Col lg={{span: 4}} className={'text-center'}>
                         Correct cards: {props.correctCards.length}
@@ -239,7 +251,7 @@ const mapDispatchToProps = dispatch => {
         doUpdateDeckSession: (deckId, creatorId, currentSession) => dispatch(updateDeckSession(deckId, creatorId, currentSession)),
         doSetCards: (cards) => dispatch(setCardsAction(cards)),
         doErrorOccurred: (errorMessage) => dispatch(errorOccurred(errorMessage)),
-        ginoTest: (userId, deckId, flashcardId) => dispatch(ginoTestFunc(userId, deckId, flashcardId)),
+        doSetPlayingDeck: (payload) => dispatch(setPlayingDeck(payload)),
     }
 };
 

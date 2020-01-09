@@ -26,7 +26,7 @@ app.use(cors({
     optionsSuccessStatus: 200,
     credentials: true
 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '10mb'}));
 app.use(cookieParser());
 app.use(session({
     saveUninitialized: true,
