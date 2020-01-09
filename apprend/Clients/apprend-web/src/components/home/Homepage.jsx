@@ -8,7 +8,7 @@ import {Footer} from '../shared/components/Footer'
 import {getHomepageDecks} from './actions';
 import {Link} from 'react-router-dom';
 import {isLoggedIn} from '../shared/actions/actions'
-import SearchDecksInput from "../shared/components/SearchDecksInput";
+import SearchDecksInput from "../shared/components/SearchInput";
 import {LoadingComponent} from '../shared/components/LoadingComponent'
 
 const HomepageUI = (props) => {

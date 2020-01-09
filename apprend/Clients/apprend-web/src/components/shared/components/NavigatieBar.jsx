@@ -7,6 +7,7 @@ import {Link, useHistory} from 'react-router-dom';
 import NavDropdown from "react-bootstrap/NavDropdown";
 import {logoutAction} from "../../shared/actions/actions";
 import {Notification} from "./Notification";
+import SearchDecksInput from "./SearchInput";
 
 const NavbarUI = (props) => {
     const history = useHistory();
@@ -81,6 +82,7 @@ const NavbarUI = (props) => {
         <Navbar className={"bg-nav"} expand="lg">
             <Container>
                 <Navbar.Brand as={Link} className={"text-white"} to="/"><h1>Apprend</h1></Navbar.Brand>
+                <SearchDecksInput linkTo={`/search?q=${props.searchValue}`} navBar={true}/>
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse className={"justify-content-end"} id="basic-navbar-nav">
                     <Nav>

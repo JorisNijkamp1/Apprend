@@ -20,7 +20,12 @@ decks.get('/tags', async (req, res) => {
                 $facet: {
                     foundTags: [
                         {$unwind: "$decks"},
-                        {$match: { $or: [ {"decks.private": false}, {"decks.creatorId": req.session.username}], 'decks.tags': searchQuery}},
+                        {
+                            $match: {
+                                $or: [{"decks.private": false}, {"decks.creatorId": req.session.username}],
+                                'decks.tags': searchQuery
+                            }
+                        },
                         {$project: {"decks": "$decks"}}
                     ],
                 }
@@ -38,12 +43,11 @@ decks.get('/tags', async (req, res) => {
                 data: decks
             })
         } else {
-           return res.status(400).json({
-             message: 'No decks found'
-           })
+            return res.status(400).json({
+                message: 'No decks found'
+            })
         }
-    }
-    catch (e) {
+    } catch (e) {
         console.log(e)
         return res.status(500).json({message: 'Something went horribly wrong'})
     }
@@ -65,7 +69,8 @@ decks.get('/', async (req, res) => {
                         $project: {
                             "_id": "$_id",
                             "type": "user",
-                            "email": "$email"
+                            "email": "$email",
+                            "signupDate": "$signupDate"
                         }
                     }
                 ],
@@ -115,7 +120,8 @@ decks.get('/', async (req, res) => {
             searchResult[0][key].forEach(result => {
                 if (result.type === 'user' && result.email) finalResults[0].results.push({
                     name: result._id,
-                    type: result.type
+                    type: result.type,
+                    signupDate: result.signupDate
                 });
                 if (result.type === 'deck') finalResults[1].results.push({
                     ...result.deck,
@@ -138,9 +144,6 @@ decks.get('/', async (req, res) => {
 
     // Sort decks on total flashcards
     finalResults[1].results.sort((a, b) => parseFloat(b.flashcards) - parseFloat(a.flashcards));
-
-    // console.log('=========FINAL RESULTS=========')
-    // console.log(finalResults[1])
 
     await res.json({
         message: 'Search results',
@@ -255,11 +258,11 @@ decks.post('/', async (req, res) => {
             }
             if (player) response = await player.addDeck(deck)
             else {
-                res.status(401).json({message:'Not a user'})
+                res.status(401).json({message: 'Not a user'})
                 return
             }
         }
-        res.status(201).json({message: 'You succesfully created a deck' , data: response})
+        res.status(201).json({message: 'You succesfully created a deck', data: response})
 
     } catch (e) {
         console.log(e)

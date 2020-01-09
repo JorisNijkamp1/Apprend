@@ -13,7 +13,7 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import {useHistory} from "react-router-dom";
 
-const SearchDecksInput = (props) => {
+const SearchInput = (props) => {
     const [value, setValue] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     let lastRequestId = null;
@@ -43,13 +43,13 @@ const SearchDecksInput = (props) => {
                     </span>
             </Link>
         );
-        if (suggestion.type === "tag") return (
-            <Link to={`/tags/${suggestion.name}`} className={'search-deck-suggestions-link w-100'}>
-                    <span>
-                        {suggestion.name}
-                    </span>
-            </Link>
-        );
+        // if (suggestion.type === "tag") return (
+        //     <Link to={`/tags/${suggestion.name}`} className={'search-deck-suggestions-link w-100'}>
+        //             <span>
+        //                 {suggestion.name}
+        //             </span>
+        //     </Link>
+        // );
     }
 
     function renderSectionTitle(section) {
@@ -81,6 +81,12 @@ const SearchDecksInput = (props) => {
                 return data.filter(section => section.results.length > 0);
             })
             .then((results) => {
+
+                // //if (results[0].results.length > 3) {
+                //     let newArray = results[0].results.filter((res, index) => index < 3);
+                //     console.log(newArray)
+                // //}
+
                 setSuggestions(results)
             })
     };
@@ -110,7 +116,7 @@ const SearchDecksInput = (props) => {
                     <Col md={{span: 10, offset: 1}}>
                         <Row>
                             <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>
-                                <InputGroup className="mb-3">
+                                <InputGroup className={`mb-3 ${props.navBar ? 'navbar-class' : ''}`}>
                                     <Autosuggest
                                         multiSection={true}
                                         suggestions={suggestions}
@@ -146,7 +152,7 @@ const SearchDecksInput = (props) => {
 
 };
 
-SearchDecksInput.propTypes = {
+SearchInput.propTypes = {
     linkTo: PropTypes.string.isRequired,
 };
 
@@ -164,4 +170,4 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchDecksInput);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchInput);
