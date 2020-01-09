@@ -15,12 +15,12 @@ export default props => {
                     <Col sm={12}>
                         <ul id="tagList">
                             {(props.deckEdit.data.tags) ? props.deckEdit.data.tags.map((tag) =>
-                            <li key={tag} className="listItem">
+                            <li key={tag} className="listItem" key={`li1=${tag}`}>
                                 {tag}
                                 <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteOldTag(tag)}/>
                             </li>) : ""}
                             {props.tags.map((tag) =>
-                            <li key={tag} className="listItem">
+                            <li key={tag} className="listItem" key={`li2-${tag}`}>
                                 {tag}
                                 <i id='deleteTag' className='fa fa-times tagButton' onClick={() => props.deleteNewTag(tag)}/>
                             </li>)}
@@ -47,7 +47,7 @@ export default props => {
         if (props.deck && props.deck.tags && props.deck.tags.length > 0) {
             const allTags = props.deck.tags.map(tag => (
                 <>
-                    <Col sm={6} md={3} className="text-center my-1">
+                    <Col sm={6} md={3} className="text-center my-1" key={`col-${tag}`}>
                         <Card>
                             <Link key={tag} to={`/tags/${tag}`} className={'search-deck-suggestions-link'}>
                                 <h6>{tag}</h6>

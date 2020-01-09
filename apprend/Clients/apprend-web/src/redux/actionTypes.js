@@ -52,3 +52,6 @@ export const SEARCH_SET_IS_LOADING = 'SEARCH_SET_IS_LOADING';
 export const FILTER_SET_TAGS = 'FILTER_SET_TAGS';
 export const DELETE_FILTERED_TAG = 'DELETE_FILTERED_TAG';
 export const CLEAR_FILTERED_TAGS = 'CLEAR_FILTERED_TAGS';
+
+// user info
+export const SET_USER = 'SET_USER';

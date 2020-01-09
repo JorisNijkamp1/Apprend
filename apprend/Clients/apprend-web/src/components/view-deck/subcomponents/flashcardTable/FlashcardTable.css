@@ -1,9 +1,9 @@
 th, td {
     margin: 0;
-    padding: 1rem;
-    border: 1px solid rgb(182, 175, 175);
+    padding: 0.75rem;
+    border-right: 1px solid purple;
     min-width: 200px;
-    /* border-right: 1px solid black; */
+    max-width: 500px;
 }
 
 tr {
@@ -16,6 +16,18 @@ table {
     white-space: nowrap;
 }
 
-.grey-bg {
+.tr:nth-child(even){
     background-color: #EEEEEE;
+}
+
+.tr:nth-child(1) {
+    border-top: 2px solid black
+}
+
+tr > td:nth-child(1) {
+    min-width: 100px;
+}
+
+.tr:hover {
+    background-color: blanchedalmond
 }
