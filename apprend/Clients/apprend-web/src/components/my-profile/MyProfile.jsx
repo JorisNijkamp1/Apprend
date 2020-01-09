@@ -134,7 +134,7 @@ const MyProfileUI = (props) => {
                                     setEditPassword(false);
                                 }}
                             >Cancel</Button>
-                            {(props.emailExists) ?
+                            {(props.emailExists || !editEmail) ?
                                 <Button
                                     disabled={true}
                                     type={'submit'}
