@@ -643,7 +643,6 @@ progress[value]::-webkit-progress-value {
     display: flex;
 }
 
-
 .privacy-pop-up {
     width: 100%;
     height: auto;
@@ -680,11 +679,6 @@ progress[value]::-webkit-progress-value {
     flex-direction: row-reverse !important;
 }
 
-.extra-class-navbar {
-    /*width: 55%;*/
-    /*padding-top: 10px;*/
-}
-
 .pt-15 {
     padding-top: 15px;
 }
@@ -693,10 +687,6 @@ progress[value]::-webkit-progress-value {
     .extra-class-navbar {
         display: none;
     }
-}
-
-.w-70 {
-    /*width: 70%;*/
 }
 
 #react-autowhatever-1 {
