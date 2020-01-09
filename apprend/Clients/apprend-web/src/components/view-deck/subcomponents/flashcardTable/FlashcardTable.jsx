@@ -116,7 +116,7 @@ const FlashcardTableComponent = (props) => {
     const AddColumnButtons = () => {
         return (
             <>
-                <Row className="justifty-content-center justify-content-md-end mt-5">
+                <Row className="justifty-content-center justify-content-md-end">
 
                 {buttons.map((button, index) => (
                     <Col xs={12} md={4} key={button.type + index + 'col'}>
@@ -238,29 +238,9 @@ const FlashcardTableComponent = (props) => {
                                             flashcardId={flashcard._id}
                                             column={column}
                                             columnId={column._id}
+                                            handleLink={handleEditFlashcardColumn}
                                             />
                                     </Col>
-                                {/* {column.path ? 
-
-                                    // <Col>
-                                    //     <audio controls src={`http://localhost:3001/api/v1/audio/${column.path}`} alt="Audio" />
-                                        
-                                    // </Col>
-                                    // : '' }
-                                    // <Col className="align-self-center">
-                                    //     <label style={{'cursor': 'pointer'}} className={`btn w-100 ${column.path ? 'btn-outline-danger':'btn-outline-dark'}`}>
-                                    //         {column.path ? 'Change' : 'Upload'} 
-                                    //         <input
-                                    //             accept='audio/*'
-                                    //             onChange={(e) => handleFileUpload(e, 'audio', props.deck.creatorId, props.deck._id, flashcard._id, column._id)}
-                                    //             style={{'display': 'none'}}
-                                    //             type="file"
-                                    //             label="audio"
-                                    //             id={'123'}
-                                    //             name="audio"
-                                    //         />  
-                                    //     </label>
-                                    // </Col> */}
                                 </Row>
                             </td>
                         )
@@ -283,37 +263,37 @@ const FlashcardTableComponent = (props) => {
     return (
         <>
             <div className="container">
-            <AddColumnButtons />
-            {/* <Button className="w-100 my-3" variant="success" onClick={handleAddFlashcard}>Add new flashcard</Button> */}
-            <AddColumnButton
-                className="my-3"
-                variant="outline-success"
-                buttonType={'FLASHCARD'}
-                onClick={handleAddFlashcard}
-                />
-            <Row>
-                <Col>
-                    <StateSwitch 
-                    giveId='expandTable'
-                    state={props.expandTable}
-                    label="Make table wider??"
-                    handleSwitch={handleExpandTable}
-                    text={props.expandTable ? 'man of culture': 'I prefer scrolling'}
+                <Row className="my-4">
+                    <Col>
+                        <StateSwitch 
+                        giveId='expandTable'
+                        state={props.expandTable}
+                        label="Make table wider??"
+                        handleSwitch={handleExpandTable}
+                        text={props.expandTable ? 'Yes': 'No'}
+                        />
+                    </Col>
+                    <Col>
+                        <StateSwitch 
+                        giveId='quickDelete'
+                        state={props.quickDelete}
+                        label="Enable quick delete?"
+                        handleSwitch={handleDeleteSwitch}
+                        text={props.quickDelete ? 'Yes': 'No'}
+                        />
+                    </Col>
+                </Row>
+                <AddColumnButtons />
+                <AddColumnButton
+                    className="my-3"
+                    variant="outline-success"
+                    buttonType={'FLASHCARD'}
+                    onClick={handleAddFlashcard}
                     />
-                </Col>
-                <Col>
-                    <StateSwitch 
-                    giveId='quickDelete'
-                    state={props.quickDelete}
-                    label="Enable quick delete?"
-                    handleSwitch={handleDeleteSwitch}
-                    text={props.quickDelete ? 'YOLO': 'im a pussy'}
+
+                <FilterInput
+                    func={handleFilterFlashcards}
                     />
-                </Col>
-            </Row>
-            <FilterInput
-                func={handleFilterFlashcards}
-                />
             </div>
             <div className={props.expandTable ? 'container-fluid' : 'container' }>
             <div className="w-100 mb-5" style={{'overflowX': 'auto'}}>

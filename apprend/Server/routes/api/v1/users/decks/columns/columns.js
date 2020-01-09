@@ -45,7 +45,6 @@ columns.patch('/:columnId', auth.user, async (req, res) => {
 })
 
 columns.delete('/:columnId', auth.user, async (req, res) => {
-    console.log(req.params.columnId)
     try {
         const result = await req.deck.deleteColumn(req.params.columnId)
         req.user.markModified('decks')
