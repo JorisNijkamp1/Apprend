@@ -25,9 +25,16 @@ describe(`Playing`, () => {
   	expect(title).toBe(`Apprend | Flashcard learning platform`)
   })
 
+  test(`Click cookie`, async () => {
+    const cookie = await page.$(`[id="cookie"]`)
+    expect(cookie).toBeDefined()
+    await cookie.click()
+  })
+
   test(`Fill username`, async () => {
     await page.type(`input#loginUsernameInput`, `Aaron`, {delay: 15});
   })
+  
   test(`Fill in password`, async () => {
     await page.type(`input#loginPasswordInput`, `ica`, {delay: 15});
   })

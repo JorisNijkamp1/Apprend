@@ -4,12 +4,6 @@ jest.setTimeout(12000)
 
 describe(`Toggle the share status of a deck`, () => {
     let browser, page;
-    let deckNameBeforeEdit
-    let descriptionBeforeEdit
-
-    const typeInName = ' + testName'
-    const typeInDescription = ' + testDesc'
-
 
     beforeAll(async () => {
         browser = await puppeteer.launch({
@@ -24,20 +18,18 @@ describe(`Toggle the share status of a deck`, () => {
         await browser.close()
     });
 
-    test(`Load home`, async () => {
-        await page.goto(`http://localhost:3000/`);
-        await page.waitFor(`title`);
-        const theTitle = await page.title();
-        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
-    });
-
-    test(`Go to login`, async () => {
+    test(`Load the loginpage`, async () => {
         await page.goto(`http://localhost:3000/login`)
-
         const loginButton = await page.$(`form[name="login"] button`)
         expect(loginButton).toBeDefined()
         const theTitle = await page.title();
         expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
+    })
+
+    test(`Click cookie`, async () => {
+        const cookie = await page.$(`[id="cookie"]`)
+        expect(cookie).toBeDefined()
+        await cookie.click()
     })
 
     test(`Fill username`, async () => {

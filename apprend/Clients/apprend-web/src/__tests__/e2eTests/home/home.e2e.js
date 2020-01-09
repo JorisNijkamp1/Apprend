@@ -25,6 +25,12 @@ describe(`Home`, () => {
         expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     })
 
+    test(`Click cookie`, async () => {
+        const cookie = await page.$(`[id="cookie"]`)
+        expect(cookie).toBeDefined()
+        await cookie.click()
+    })
+
     test(`Go to create deck`, async () => {
         await page.goto(`http://localhost:3000/decks/create`)
     })

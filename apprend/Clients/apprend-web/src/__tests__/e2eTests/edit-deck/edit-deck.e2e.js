@@ -31,6 +31,12 @@ describe(`Edit a deck e2e`, () => {
         expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     });
 
+    test(`Click cookie`, async () => {
+        const cookie = await page.$(`[id="cookie"]`)
+        expect(cookie).toBeDefined()
+        await cookie.click()
+    })
+
     test(`Go to login`, async () => {
         await page.goto(`http://localhost:3000/login`)
 

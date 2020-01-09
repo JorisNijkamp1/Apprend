@@ -1,8 +1,10 @@
-import leitnerSelectCards, {
+import {
     _selectBox0Cards,
     _selectBox1Cards,
-    _selectBox2Cards, _selectBox3Cards,
-    shuffleCards
+    _selectBox2Cards,
+    _selectBox3Cards,
+    shuffleCards,
+    leitnerSelectCards
 } from '../../../util/leitner-system/leitnerSystem';
 import {X, W2, W3} from '../../../util/leitner-system/config';
 

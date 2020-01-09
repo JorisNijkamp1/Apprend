@@ -8,7 +8,7 @@ describe(`Home`, () => {
     beforeAll(async () => {
         browser = await puppeteer.launch({
             headless: false,
-            slowMo: 500,
+            slowMo: 250,
             args: [`--window-size=800,800`, `--window-position=0,0`]
         })
         page = await browser.newPage()
@@ -19,19 +19,22 @@ describe(`Home`, () => {
     })
 
     test(`Load home`, async () => {
-        await page.goto(`http://localhost:3000/`);
+        await page.goto(`http://localhost:3000/login`);
         await page.waitFor(`title`);
         const theTitle = await page.title();
         expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     })
 
-    test(`Go to login`, async () => {
-        await page.goto(`http://localhost:3000/login`)
+    test(`Click cookie`, async () => {
+        const cookie = await page.$(`[id="cookie"]`)
+        expect(cookie).toBeDefined()
+        await cookie.click()
     })
 
     test(`Fill username`, async () => {
         await page.type(`input#loginUsernameInput`, `Joris`, {delay: 15});
     })
+
     test(`Fill in password`, async () => {
         await page.type(`input#loginPasswordInput`, `han`, {delay: 15});
     })
@@ -43,16 +46,11 @@ describe(`Home`, () => {
     })
 
     test(`Load a specific deck to import`, async () => {
-        await page.goto(`http://localhost:3000/decks/5df0e36134838b2e18b6bbcc`);
-        await page.waitFor(`title`);
-        const theTitle = await page.title();
-        expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
+        await page.goto(`http://localhost:3000/decks/5ddfadab612b09570c6f3a33`);
     })
-
 
     test(`Fill in search`, async () => {
         await page.type(`input#formFilterFlashcards`, `Run`, {delay: 15});
     })
-
 })
 

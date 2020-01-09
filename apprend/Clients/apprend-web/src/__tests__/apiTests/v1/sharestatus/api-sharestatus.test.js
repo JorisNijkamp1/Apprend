@@ -12,7 +12,7 @@ describe('Setting decks to a new shared status', () => {
             description: 'TestDescription',
         }
 
-        const response = await fetch('http://localhost:3001/api/v1/decks', {
+        const response = await fetch(`${API_URL}/decks`, {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify(testDeck),
@@ -34,7 +34,7 @@ describe('Setting decks to a new shared status', () => {
             deckName: 'TestName'
         }
 
-        const editResponse = await fetch(`http://localhost:3001/api/v1/users/${madeDeck.creatorId}/decks/${madeDeck._id}`, {
+        const editResponse = await fetch(`${API_URL}/users/${madeDeck.creatorId}/decks/${madeDeck._id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
@@ -57,7 +57,7 @@ describe('Setting decks to a new shared status', () => {
             deckName: 'TestName'
         }
 
-        const editResponse = await fetch(`http://localhost:3001/api/v1/users/${madeDeck.creatorId}/decks/${madeDeck._id}`, {
+        const editResponse = await fetch(`${API_URL}/users/${madeDeck.creatorId}/decks/${madeDeck._id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
@@ -78,7 +78,7 @@ describe('Setting decks to a new shared status', () => {
             status: 404
         }
 
-        const editResponse = await fetch(`http://localhost:3001/api/v1/users/${madeDeck.creatorId}/decks/1`, {
+        const editResponse = await fetch(`${API_URL}/users/${madeDeck.creatorId}/decks/1`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
@@ -98,14 +98,14 @@ describe('Setting decks to a new shared status', () => {
 
         const user = 'Joris'
 
-        const findAnUserAndDecks = await fetch(`http://localhost:3001/api/v1/users/${user}/decks`)
+        const findAnUserAndDecks = await fetch(`${API_URL}/users/${user}/decks`)
         const data = await findAnUserAndDecks.json()
     
         const editExpectedResult = {
             status: 401
         }
 
-        const editResponse = await fetch(`http://localhost:3001/api/v1/users/${user}/decks/${data.data.decks[0]._id}`, {
+        const editResponse = await fetch(`${API_URL}/users/${user}/decks/${data.data.decks[0]._id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
