@@ -121,17 +121,17 @@ const SearchInput = (props) => {
         value,
         onChange: onChange,
         className: 'form-control',
-        style: {width: '100%'}
+        style: {width: props.navBar ? '275px' : '100%'}
     };
 
     return (
         <>
             <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search-deck'}>
                 <div className={'row'}>
-                    <div className={'col-md-10 offset-md-1'}>
-                        <Row>
-                            <div className={'col-lg-6 col-md-8 col-8 offset-lg-2 offset-md-1'}>
-                                <InputGroup>
+                    <div className={props.navBar ? '' : 'col-md-10 offset-md-1'}>
+                        <div className={props.navBar ? '' : 'row'}>
+                            <div className={props.navBar ? '' : 'col-lg-6 col-md-8 col-8 offset-lg-2 offset-md-1'}>
+                                <InputGroup className={'pl-45'}>
                                     <Autosuggest
                                         multiSection={true}
                                         suggestions={suggestions}
@@ -145,7 +145,7 @@ const SearchInput = (props) => {
                                 </InputGroup>
                             </div>
                             {searchButton()}
-                        </Row>
+                        </div>
                     </div>
                 </div>
             </Form>

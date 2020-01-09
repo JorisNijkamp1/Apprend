@@ -685,7 +685,7 @@ progress[value]::-webkit-progress-value {
     /*padding-top: 10px;*/
 }
 
-.pt-15{
+.pt-15 {
     padding-top: 15px;
 }
 
@@ -697,4 +697,12 @@ progress[value]::-webkit-progress-value {
 
 .w-70 {
     /*width: 70%;*/
+}
+
+#react-autowhatever-1 {
+    z-index: 9;
+}
+
+.pl-45 {
+    padding-left: 45px;
 }
