@@ -54,7 +54,7 @@ async function seedUsers() {
                     // "creatorId": ,
                     // "lastPlayedDate": ,
                     "status": "isEdited",
-                    "flashcards": [], 
+                    "flashcards": [],
                     "columns": [
                         {
                             "type": "Text",
@@ -1098,6 +1098,48 @@ async function seedUsers() {
                     ]
                 }
             ]
+        },
+        {
+            "_id": "EenAardigIemand21",
+            "email": "iemand21d@gmail.com",
+            "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
+            "decks": []
+        },
+        {
+            "_id": "EekhornHunter18",
+            "email": "hunter21@notendop.com",
+            "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
+            "decks": []
+        },
+        {
+            "_id": "adriaantje",
+            "email": "adriaantje@hotmail.com",
+            "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
+            "decks": []
+        },
+        {
+            "_id": "europa_lover18",
+            "email": "imnottrump@hotmail.com",
+            "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
+            "decks": []
+        },
+        {
+            "_id": "John",
+            "email": "johndoesnt@hotmail.com",
+            "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
+            "decks": []
+        },
+        {
+            "_id": "shoe-destroyer22",
+            "email": "shoes12@hotmail.com",
+            "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
+            "decks": []
+        },
+        {
+            "_id": "nicelyGuy12",
+            "email": "nicelyGuy12@hotmail.com",
+            "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
+            "decks": []
         },
     ])
 }

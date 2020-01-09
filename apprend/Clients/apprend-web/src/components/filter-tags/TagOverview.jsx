@@ -6,7 +6,7 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {Col, Card, Row, Container} from "react-bootstrap";
 import {setSearchIsLoading, getAllDecks} from "../shared/actions/actions";
 import Loader from "react-loaders";
-import {NavigatieBar} from '../shared/components/NavigatieBar';
+import {NavBar} from '../shared/components/NavBar';
 
 const TagOverview = (props) => {
     const [decks, setDecks] = useState([]);
@@ -114,7 +114,7 @@ const TagOverview = (props) => {
 
     return (
         <>
-            <NavigatieBar/>
+            <NavBar/>
             <Container>
                 <Row className={'mt-5'}>
                     {searchTitle()}

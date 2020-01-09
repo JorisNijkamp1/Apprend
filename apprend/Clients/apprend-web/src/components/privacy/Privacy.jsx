@@ -1,4 +1,4 @@
-import {NavigatieBar} from '../shared/components/NavigatieBar';
+import {NavBar} from '../shared/components/NavBar';
 import React from 'react';
 import {Footer} from '../shared/components/Footer';
 import * as ReactRedux from 'react-redux';
@@ -7,7 +7,7 @@ import {Container} from 'react-bootstrap';
 
 const PrivacyUI = (props) => {
     return <>
-        <NavigatieBar/>
+        <NavBar/>
         <Container className={'pt-5 pb-5'}>
             <Row>
                 <p><b>Privacy Policy for ApprendLearning</b>

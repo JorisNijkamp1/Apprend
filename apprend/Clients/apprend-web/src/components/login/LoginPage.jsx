@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import {NavigatieBar} from "../shared/components/NavigatieBar";
+import {NavBar} from "../shared/components/NavBar";
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {Footer} from "../shared/components/Footer";
@@ -26,7 +26,7 @@ const LoginPageUI = (props) => {
 
     return (
         <>
-            <NavigatieBar/>
+            <NavBar/>
             <Container className={"pt-5 pb-5"}>
                 <Row>
                     <Col xs={{'span': 10, 'offset': 1}} md={{'span': 6, 'offset': 3}}>
