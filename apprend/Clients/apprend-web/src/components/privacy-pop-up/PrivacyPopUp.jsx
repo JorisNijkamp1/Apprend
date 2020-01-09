@@ -35,7 +35,7 @@ const PrivacyPopUpUI = (props) => {
                         hesitate to contact us.
                     </p>
                     <a href="/privacy">Read more</a>
-                    <div className="btn-green privacy-accept-button" onClick={acceptPrivacyPopUp}>Accept</div>
+                    <div className="btn-green privacy-accept-button" id="cookie" onClick={acceptPrivacyPopUp}>Accept</div>
                 </div>
             </Row>
         </Container>

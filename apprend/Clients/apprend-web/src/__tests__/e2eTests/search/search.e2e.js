@@ -25,6 +25,12 @@ describe(`Search for some decks`, () => {
         expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     });
 
+    test(`Click cookie`, async () => {
+        const cookie = await page.$(`[id="cookie"]`)
+        expect(cookie).toBeDefined()
+        await cookie.click()
+    })
+
     test(`Search for a deck`, async () => {
         await page.waitFor(`#auto-suggest-search`);
         await page.type(`div.react-autosuggest__container > input`, `English`, {delay: 15});

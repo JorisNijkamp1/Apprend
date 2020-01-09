@@ -2,33 +2,17 @@
 import {API_URL} from "../../../../redux/urls";
 
 describe('Get flashcards from a deck', () => {
+    const deckId = "5ddfadab612b09570c6f3a33"
     const expectedResult = {
         "success": true,
         "deck": {
-            "name": "Finnish to Dutch prefixes",
-            "flashcards": [
-                {
-                    "_id": "Apprende0",
-                    "type": "Text only",
-                    "question": "Kissa",
-                    "answer": "Kat",
-                    "sessionPlayed": 0,
-                    "box": 0
-                },
-                {
-                    "_id": "Apprende1",
-                    "type": "Text only",
-                    "question": "Koira",
-                    "answer": "Hond",
-                    "sessionPlayed": 0,
-                    "box": 0
-                }
-            ]
+            "deckId": deckId,
+            "name": "Finnish to Dutch prefixes"
         }
     };
 
     test('Get deck endpoint', async () => {
-        const response = await fetch(`${API_URL}/decks/5ddfadab612b09570c6f3a33/flashcards`, {
+        const response = await fetch(`${API_URL}/decks/${deckId}/flashcards`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -37,36 +21,54 @@ describe('Get flashcards from a deck', () => {
             mode: 'cors'
         });
         const result = await response.json();
-
         expect(result.success).toBe(expectedResult.success)
         expect(result.name).toBe(expectedResult.deck.name)
-        expect(result.flashcards).toStrictEqual(expectedResult.deck.flashcards)
+        expect(result.deckId).toBe(expectedResult.deck.deckId)
+        expect(result.flashcards).toHaveLength(2)
     });
 
-    test('Edit deck endpoint', async () => {     
+    test('Edit deck endpoint', async () => {
         const data = {
             "flashcards": [
                 {
-                    "id": "Apprende0",
                     "type": "Text only",
-                    "term": "Kissa",
-                    "definition": "Kat",
+                    "question": "Wie",
+                    "answer": "Wat",
                     "sessionPlayed": 0,
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "value": ""
+                        },
+                        {
+                            "type": "Text",
+                            "value": ""
+                        }
+                    ],
                     "box": 0
                 },
                 {
-                    "id": "Apprende1",
                     "type": "Text only",
-                    "term": "Koira",
-                    "definition": "Hond",
+                    "question": "Wat",
+                    "answer": "Wie",
                     "sessionPlayed": 0,
+                    "columns": [
+                        {
+                            "type": "Text",
+                            "value": ""
+                        },
+                        {
+                            "type": "Text",
+                            "value": ""
+                        }
+                    ],
                     "box": 0
                 }
             ],
             "test": true
         }
 
-        const response = await fetch(`${API_URL}/decks/5ddfadab612b09570c6f3a33/flashcards`, {
+        const response = await fetch(`${API_URL}/decks/${deckId}/flashcards`, {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -79,6 +81,6 @@ describe('Get flashcards from a deck', () => {
 
         expect(result.success).toBe(expectedResult.success)
         expect(result.deck.name).toBe(expectedResult.deck.name)
-        expect(result.deck.flashcards).toStrictEqual(expectedResult.deck.flashcards)
+        expect(result.deck.flashcards).toHaveLength(2)
     });
 })

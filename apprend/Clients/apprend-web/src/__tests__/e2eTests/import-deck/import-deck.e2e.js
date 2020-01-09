@@ -25,6 +25,12 @@ describe(`Import deck`, () => {
         expect(theTitle).toBe(`Apprend | Flashcard learning platform`)
     })
 
+    test(`Click cookie`, async () => {
+        const cookie = await page.$(`[id="cookie"]`)
+        expect(cookie).toBeDefined()
+        await cookie.click()
+    })
+
     test(`Click on the first deck`, async () => {
         await page.waitFor(`#card-0-link`)
         const goToDeck = await page.$(`#card-0-link`)
@@ -42,9 +48,16 @@ describe(`Import deck`, () => {
         await page.goto(`http://localhost:3000/login`)
     })
 
+    test(`Click cookie`, async () => {
+        const cookie = await page.$(`[id="cookie"]`)
+        expect(cookie).toBeDefined()
+        await cookie.click()
+    })
+
     test(`Fill username`, async () => {
         await page.type(`input#loginUsernameInput`, `Aaron`, {delay: 15})
     })
+    
     test(`Fill in password`, async () => {
         await page.type(`input#loginPasswordInput`, `ica`, {delay: 15})
     })
@@ -56,6 +69,8 @@ describe(`Import deck`, () => {
     })
 
     test(`Load decks from Aaron`, async () => {
+        await page.waitFor(`title`)
+        await page.title()
         await page.goto(`http://localhost:3000/Aaron/decks`)
     })
 

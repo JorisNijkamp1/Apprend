@@ -65,6 +65,12 @@ describe('Register page', function () {
         expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
     });
 
+    test(`Click cookie`, async () => {
+        const cookie = await page.$(`[id="cookie"]`)
+        expect(cookie).toBeDefined()
+        await cookie.click()
+    })
+
     test('Can not register due to existing username and E-mail', async () => {
         const username = 'TestE2e';
         const email = 'e2eoeojeienfieh@gmail.com';

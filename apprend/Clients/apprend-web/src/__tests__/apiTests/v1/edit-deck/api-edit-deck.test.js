@@ -113,7 +113,6 @@ describe('Editing a deck', () => {
 
         const findJorisDecks = await fetch(`${API_URL}/users/Joris/decks`)
         const jorisDecks = await findJorisDecks.json()
-        console.log(jorisDecks)
 
         const editExpectedResult = {
             name: 'New name for a deck',
