@@ -1,7 +1,7 @@
 import React from "react";
 import * as ReactRedux from "react-redux";
 import {NavLink, useParams} from "react-router-dom";
-import {NavigatieBar} from "../../shared/components/NavigatieBar";
+import {NavBar} from "../../shared/components/NavBar";
 import {Footer} from "../../shared/components/Footer";
 import {PageTitle} from "../../shared/components/PageTitle";
 import {Container, Row, Card} from "react-bootstrap";
@@ -10,7 +10,7 @@ const ScoreComponent = (props) => {
     const {deckId} = useParams();
     return (
     <>
-    <NavigatieBar/>
+    <NavBar/>
     <Container>
         <PageTitle title="Your score"/>
         <Row className={"justify-content-between"}>

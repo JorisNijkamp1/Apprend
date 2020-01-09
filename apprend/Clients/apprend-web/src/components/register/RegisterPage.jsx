@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel, FormText, Row} from 'react-bootstrap';
 import {checkEmailExists, registerNewUser} from './actions';
 import {PageTitle} from '../shared/components/PageTitle';
-import {NavigatieBar} from '../shared/components/NavigatieBar';
+import {NavBar} from '../shared/components/NavBar';
 import {Footer} from '../shared/components/Footer';
 import {checkUsernameExists} from './actions';
 import {
@@ -48,7 +48,7 @@ export const RegisterPageComponent = props => {
 
     return (
         <>
-            <NavigatieBar/>
+            <NavBar/>
             <Container>
                 <Row>
                     <Col xs={{'span': 12}} md={{'span': 6, 'offset': 3}}>

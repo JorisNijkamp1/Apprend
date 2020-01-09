@@ -14,13 +14,18 @@ decks.get('/tags', async (req, res) => {
         const searchQuery = req.query.tag;
         let foundDecks;
         let decks = [];
-    
+
         if (searchQuery) {
             foundDecks = await User.aggregate([{
                 $facet: {
                     foundTags: [
                         {$unwind: "$decks"},
-                        {$match: { $or: [ {"decks.private": false}, {"decks.creatorId": req.session.username}], 'decks.tags': searchQuery}},
+                        {
+                            $match: {
+                                $or: [{"decks.private": false}, {"decks.creatorId": req.session.username}],
+                                'decks.tags': searchQuery
+                            }
+                        },
                         {$project: {"decks": "$decks"}}
                     ],
                 }
@@ -28,7 +33,7 @@ decks.get('/tags', async (req, res) => {
         } else {
             return res.status(400).json({message: 'No query'})
         }
-    
+
         foundDecks[0].foundTags.forEach(deck => {
             decks.push(deck);
         })
@@ -38,12 +43,11 @@ decks.get('/tags', async (req, res) => {
                 data: decks
             })
         } else {
-           return res.status(400).json({
-             message: 'No decks found'
-           })
+            return res.status(400).json({
+                message: 'No decks found'
+            })
         }
-    }
-    catch (e) {
+    } catch (e) {
         console.log(e)
         return res.status(500).json({message: 'Something went horribly wrong'})
     }
@@ -54,54 +58,103 @@ decks.get('/tags', async (req, res) => {
 */
 decks.get('/', async (req, res) => {
     const searchQuery = req.query.deck;
-    let foundDecks;
+    const autoSuggest = req.query.autosuggest;
+    if (!searchQuery) return res.status(400);
 
-    if (searchQuery) {
-        foundDecks = await User.aggregate([
-            {
-                "$match": {
-                    "decks": {
-                        "$elemMatch": {
-                            'name': {'$regex': searchQuery, '$options': 'i'}
+    let searchResult = await User.aggregate([
+        {
+            $facet: {
+                foundUsers: [
+                    {$match: {'_id': {'$regex': searchQuery, '$options': 'i'}}},
+                    {
+                        $project: {
+                            "_id": "$_id",
+                            "type": "user",
+                            "email": "$email",
+                            "signupDate": "$signupDate"
                         }
                     }
-                }
-            },
-            {'$unwind': '$decks'},
-            {
-                "$group": {
-                    "_id": "$_id",
-                    "decks": {"$push": "$decks"}
-                }
+                ],
+                foundDecks: [
+                    {$unwind: "$decks"},
+                    {$match: {'decks.name': {'$regex': searchQuery, '$options': 'i'}, "decks.private": false}},
+                    {
+                        $project: {
+                            "type": "deck",
+                            "deck._id": "$decks._id",
+                            "deck.name": "$decks.name",
+                            "deck.description": "$decks.description",
+                            "deck.tags": "$decks.tags",
+                            "deck.creatorId": "$decks.creatorId",
+                            "deck.flashcards": "$decks.flashcards",
+                        }
+                    }
+                ],
+                // TAGS TEMPORARY DISABLED
+                // foundTags: [
+                //     {$unwind: "$decks"},
+                //     {$match: {'decks.tags': {'$regex': searchQuery, '$options': 'i'}, "decks.private": false}},
+                //     {$project: {"tags": "$decks.tags", "type": "tag"}}
+                // ],
             }
-        ]);
-    }
+        }
+    ]);
 
-    let decks = [];
-    if (foundDecks) {
-        foundDecks.forEach((index, key) => {
-            foundDecks[key].decks.forEach((decksIndex, decksKey) => {
-                decks.push({
-                    deckId: foundDecks[key].decks[decksKey]._id,
-                    name: foundDecks[key].decks[decksKey].name,
-                    description: foundDecks[key].decks[decksKey].description,
-                    totalFlashcards: foundDecks[key].decks[decksKey].flashcards.length,
-                    deckCreator: foundDecks[key].decks[decksKey].creatorId,
-                    private: foundDecks[key].decks[decksKey].private
+    let finalResults = [
+        {
+            title: 'Users',
+            results: []
+        },
+        {
+            title: 'Decks',
+            results: []
+        },
+        // TAGS TEMPORARY DISABLED
+        // {
+        //     title: 'Tags',
+        //     results: []
+        // }
+    ];
+
+    for (var key in searchResult[0]) {
+        if (searchResult[0].hasOwnProperty(key)) {
+            searchResult[0][key].forEach(result => {
+                if (result.type === 'user' && result.email) finalResults[0].results.push({
+                    name: result._id,
+                    type: result.type,
+                    signupDate: result.signupDate
                 });
-            });
-        });
+                if (result.type === 'deck') finalResults[1].results.push({
+                    ...result.deck,
+                    type: result.type
+                });
+                // TAGS TEMPORARY DISABLED
+                // if (result.type === 'tag') finalResults[2].results.push({
+                //     name: result.tags,
+                //     type: result.type
+                // });
+            })
+        }
     }
 
-    //Filter decks
-    if (decks) decks = decks.filter(deck => deck.name.toLowerCase().includes(searchQuery.toLowerCase()) && deck.private === false);
+    // Change flashcards to total flashcards number
+    finalResults[1].results.map((decks, key) => {
+        finalResults[1].results[key].flashcards = finalResults[1].results[key].flashcards.length;
+        return finalResults;
+    });
 
-    //Sort decks on totalFlashcards
-    if (decks) decks = decks.sort((a, b) => b.totalFlashcards - a.totalFlashcards);
+    // Sort decks on total flashcards
+    finalResults[1].results.sort((a, b) => parseFloat(b.flashcards) - parseFloat(a.flashcards));
 
+    // Filter results for AutoSuggest
+    if (autoSuggest == 'true') {
+        if (finalResults[0].results.length > 3) finalResults[0].results.splice(3, finalResults[0].results.length - 3);
+        if (finalResults[1].results.length > 3) finalResults[1].results.splice(3, finalResults[1].results.length - 3);
+    }
 
     await res.json({
-        decks: decks,
+        message: 'Search results',
+        results: finalResults,
     })
 });
 
@@ -212,11 +265,11 @@ decks.post('/', async (req, res) => {
             }
             if (player) response = await player.addDeck(deck)
             else {
-                res.status(401).json({message:'Not a user'})
+                res.status(401).json({message: 'Not a user'})
                 return
             }
         }
-        res.status(201).json({message: 'You succesfully created a deck' , data: response})
+        res.status(201).json({message: 'You succesfully created a deck', data: response})
 
     } catch (e) {
         console.log(e)

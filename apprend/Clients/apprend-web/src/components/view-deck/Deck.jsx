@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
-import {NavigatieBar} from "../shared/components/NavigatieBar";
+import {NavBar} from "../shared/components/NavBar";
 import {Container, Row, Col, Button} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import {Footer} from "../shared/components/Footer";
@@ -322,7 +322,7 @@ const UserDecks = (props) => {
     }
 
     const Decktags = () => {
-        return <DeckTags 
+        return <DeckTags
                     state={editState}
                     deck={props.deck}
                     deckEdit={props.deckEdit}
@@ -365,7 +365,7 @@ const UserDecks = (props) => {
     }
     return (
         <>
-            <NavigatieBar/>
+            <NavBar/>
             <Container>
                 {showContent()}
             </Container>
