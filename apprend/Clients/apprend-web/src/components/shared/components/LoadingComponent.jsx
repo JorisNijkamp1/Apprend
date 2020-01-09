@@ -9,7 +9,7 @@ export const LoadingComponent = (props) => {
 
     return (
         <Row className={`mx-auto align-items-center flex-column py-5 ${props.giveClass}`}>
-            <Loader type="square-spin" active={true} color={props.loadingColor ? props.loadingColor : '#758BFE'}/>
+            <Loader type="square-spin" active={true} color={props.loadingColor ? props.loadingColor : '#712E9A'}/>
             <h2>{props.loadingText}</h2>
             {/* <Link to={'/'}>
             <Button variant="outline-dark">
@@ -19,4 +19,4 @@ export const LoadingComponent = (props) => {
 
         </Row>
     )
-} 
+}

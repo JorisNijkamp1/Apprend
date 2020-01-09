@@ -7,8 +7,10 @@ import {Link, useHistory} from 'react-router-dom';
 import NavDropdown from "react-bootstrap/NavDropdown";
 import {logoutAction} from "../../shared/actions/actions";
 import {Notification} from "./Notification";
+import SearchDecksInput from "./SearchInput";
 
 const NavbarUI = (props) => {
+
     const history = useHistory();
     const logout = () => {
         if (!props.anonymousUser) {
@@ -24,6 +26,14 @@ const NavbarUI = (props) => {
             )
         }
     };
+
+    const profile = () => {
+        if (!props.anonymousUser) {
+            return (
+                <Nav.Link as={Link} className="pl-30" to={'/profile/' + props.username}>My Profile</Nav.Link>
+            )
+        }
+    }
 
     const register = () => {
         if (props.anonymousUser) {
@@ -64,15 +74,26 @@ const NavbarUI = (props) => {
         } else {
             return (
                 <>
+                    <Nav.Link as={Link} className="text-white pl-30" to={'/' + props.username + '/decks'}>My
+                        Decks</Nav.Link>
                     <NavDropdown title={props.anonymousUser ? 'Welcome Guest' : 'Welcome ' + props.username}
                                  id="basic-nav-dropdown" className="text-white pl-30">
-                        <Nav.Link as={Link} className="pl-30" to={'/' + props.username + '/decks'}>My Decks</Nav.Link>
-                        <Nav.Link as={Link} className="pl-30" to={'/profile/' + props.username}>My Profile</Nav.Link>
+                        {profile()}
                         {login()}
                         {register()}
                         {logout()}
                     </NavDropdown>
                 </>
+            )
+        }
+    };
+
+    const searchInput = () => {
+        if (window.location.pathname !== '/' && window.location.pathname !== '/search') {
+            return (
+                <SearchDecksInput className={'pull-right'}
+                                  linkTo={`/search?q=${props.searchValue}`}
+                                  navBar={true}/>
             )
         }
     }
@@ -81,10 +102,12 @@ const NavbarUI = (props) => {
         <Navbar className={"bg-nav"} expand="lg">
             <Container>
                 <Navbar.Brand as={Link} className={"text-white"} to="/"><h1>Apprend</h1></Navbar.Brand>
+
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse className={"justify-content-end"} id="basic-navbar-nav">
                     <Nav>
-                        <Nav.Link as={Link} className="text-white pl-30" to="/decks/create">Create
+                        {searchInput()}
+                        <Nav.Link as={Link} className="pull-right text-white pl-30" to="/decks/create">Create
                             Deck</Nav.Link>
                         {loggedIn()}
                     </Nav>
@@ -92,12 +115,13 @@ const NavbarUI = (props) => {
             </Container>
         </Navbar>
     )
-}
+};
 
 function mapStateToProps(state) {
     return {
         username: state.login.username,
-        anonymousUser: state.login.anonymousUser
+        anonymousUser: state.login.anonymousUser,
+        searchValue: state.search.searchValue
     }
 }
 
@@ -107,4 +131,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export const NavigatieBar = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(NavbarUI);
+export const NavBar = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(NavbarUI);

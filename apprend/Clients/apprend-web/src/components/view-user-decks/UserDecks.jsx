@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import * as ReactRedux from 'react-redux'
-import {NavigatieBar} from '../shared/components/NavigatieBar';
+import {NavBar} from '../shared/components/NavBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -213,7 +213,6 @@ const Deck = (props) => {
                                       defaultValue={deck.name}
                                       id={`input-name-${index}`}
                                       onChange={(e) => {
-
                                           editProperty(e, 'name')
                                       }}
                         />
@@ -326,7 +325,7 @@ const Deck = (props) => {
     }
 
     const showContent = () => {
-        if (isLoading) return <LoadingComponent loadingText="Fetching all decks" />
+        if (isLoading) return <LoadingComponent loadingText="Loading all decks" />
         return (
             <>
             <Row>
@@ -352,7 +351,7 @@ const Deck = (props) => {
 
     return (
         <>
-            <NavigatieBar/>
+            <NavBar/>
             <Container>
                 {showContent()}
             </Container>

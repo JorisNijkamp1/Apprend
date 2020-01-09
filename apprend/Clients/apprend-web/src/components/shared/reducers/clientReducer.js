@@ -5,6 +5,7 @@ const initialState = {
     decksHome: [],
     quickDelete: false,
     expandTable: false,
+    user: []
 }
 
 export default function clientReducer(state = initialState, action) {
@@ -20,8 +21,12 @@ export default function clientReducer(state = initialState, action) {
             case 'CLIENT_TOGGLE_EXPAND_TABLE':
                 draft['expandTable'] = action.payload
                 break;
+            case 'SET_USER':
+                draft['user'] = action.payload
+                break;
+
             default:
                 return draft
         }
-    }) 
+    })
 }

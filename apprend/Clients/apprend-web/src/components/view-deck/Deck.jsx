@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
-import {NavigatieBar} from "../shared/components/NavigatieBar";
+import {NavBar} from "../shared/components/NavBar";
 import {Container, Row, Col, Button} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import {Footer} from "../shared/components/Footer";
@@ -27,7 +27,6 @@ import ImportButton from "./subcomponents/ImportButton";
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
 import {Notification} from '../shared/components/Notification';
 import {addTag, clearTags, deleteTag} from '../create-deck/actions';
-
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
 import {FlashcardTable} from './subcomponents/flashcardTable/FlashcardTable'
 import DeckDescription from "./subcomponents/DeckDescription";
@@ -322,7 +321,7 @@ const UserDecks = (props) => {
     }
 
     const Decktags = () => {
-        return <DeckTags 
+        return <DeckTags
                     state={editState}
                     deck={props.deck}
                     deckEdit={props.deckEdit}

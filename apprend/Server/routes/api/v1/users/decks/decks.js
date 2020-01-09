@@ -112,7 +112,7 @@ decks.patch('/:deckId', auth.user, async (req, res) => {
         req.deck.toggleStatus()
         req.user.markModified('decks')
         await req.user.save()
-        res.status(201).json({message: `Deck set to ${req.deck.private ? 'private' : 'public'}` , data: req.deck})
+        res.status(201).json({message: `Deck set to ${req.deck.private ? 'private' : 'public'}`, data: req.deck})
 
     } catch (e) {
         console.log(e)
@@ -133,4 +133,4 @@ decks.delete('/:deckId', auth.user, async (req, res) => {
 decks.use('/:deckId/flashcards/', flashcardsRoute)
 decks.use('/:deckId/columns/', columnsRoute)
 
-module.exports = decks
+module.exports = decks;
