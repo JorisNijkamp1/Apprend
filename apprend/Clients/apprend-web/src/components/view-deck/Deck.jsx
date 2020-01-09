@@ -27,7 +27,6 @@ import ImportButton from "./subcomponents/ImportButton";
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
 import {Notification} from '../shared/components/Notification';
 import {addTag, clearTags, deleteTag} from '../create-deck/actions';
-
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
 import {FlashcardTable} from './subcomponents/flashcardTable/FlashcardTable'
 import DeckDescription from "./subcomponents/DeckDescription";
@@ -376,7 +375,6 @@ const UserDecks = (props) => {
             <Container>
                 {showContent()}
             </Container>
-            <NavigatieBar/>
             <div className="container">
             {showContent()}
             </div>

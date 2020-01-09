@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {NavigatieBar} from "../shared/components/NavigatieBar";
 import {Card, Col, Container, Form, FormControl, FormGroup, FormText} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {FormLabel} from "react-bootstrap/FormLabel";
 import {getUser} from "./actions";
 import {useParams} from "react-router";
+import {NavBar} from "../shared/components/NavBar";
 import Button from "react-bootstrap/Button";
 import {setAccountDetailsAction, deleteUserAction} from "./actions";
 import {
@@ -107,15 +107,13 @@ const MyProfileUI = (props) => {
                                 </Form.Label>
                             </Col>
                             <Col md={{'span': 12}}>
-                                <Form.Control type="text"
+                                <Form.Control type="email"
                                               name={userId}
-                                              placeholder={'Email'}
-                                              defaultValue={props.user.email}
+                                              placeholder={'Enter your new email!'}
                                               onChange={(e) => setEditEmail(e.target.value)}
                                               onBlur={() => {
                                                   props.doCheckEmailExists(editEmail)
                                               }}
-                                              isValid={emailValid(editEmail)}
                                               isInvalid={props.emailExists}
                                 />
                                 {(props.emailExists) ? <FormText className="text-muted" id={'emailExistsWarning'}>
@@ -136,15 +134,15 @@ const MyProfileUI = (props) => {
                                     setEditPassword(false);
                                 }}
                             >Cancel</Button>
-                            {(maySubmitEmail(editEmail) || props.emailExists) ?
+                            {(props.emailExists) ?
                                 <Button
-                                    disabled={false}
+                                    disabled={true}
                                     type={'submit'}
                                     variant="outline-primary"
                                     className={'ml-2'}
                                 >Confirm</Button> :
                                 <Button
-                                    disabled={true}
+                                    disabled={false}
                                     type={'submit'}
                                     variant="outline-primary"
                                     className={'ml-2'}
@@ -277,7 +275,7 @@ const MyProfileUI = (props) => {
 
     return (
         <>
-            <NavigatieBar/>
+            <NavBar/>
             <Container className={"pt-5 pb-5"}>
                 <Row>
                     <Form.Label className="text-center" column sm="12">

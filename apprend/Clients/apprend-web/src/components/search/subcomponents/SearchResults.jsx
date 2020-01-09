@@ -62,7 +62,6 @@ const SearchResults = (props) => {
     const userResults = () => {
         if (results.length > 0 && results[0].results.length > 0 && typeResults === 'users') {
             return results[0].results.map((user) => {
-                console.log(user)
                     const event = new Date(user.signupDate);
                     const options = {year: 'numeric', month: 'long', day: 'numeric'};
                     return (
