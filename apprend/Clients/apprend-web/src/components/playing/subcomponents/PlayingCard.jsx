@@ -2,25 +2,46 @@ import React, {useState} from "react";
 import {Container, Row, Col, Button, Card} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCreativeCommonsSa} from "@fortawesome/free-brands-svg-icons";
+import { faSync } from "@fortawesome/free-solid-svg-icons";
 
 
 const PlayingCard = (props) => {
     const [cardText, setCardText] = useState("Term");
+    const [side, setSide] = useState(false)
+
     const handleClick = (event, status) => {
         event.preventDefault();
         props.changeScore(props.activeCard, status);
         if (cardText === "Definition") {
             turnCard()
         }
+        setSide(false)
     }
 
     const turnCard = () => {
-        let element = document.getElementById("card");
-        element.classList.toggle("flipped");
-        if (cardText === "Term") {
-            setCardText("Definition")
-        } else if (cardText === "Definition") {
-            setCardText("Term")
+        // let element = document.getElementById("card");
+        // element.classList.toggle("flipped");
+        // if (cardText === "Term") {
+        //     setCardText("Definition")
+        // } else if (cardText === "Definition") {
+        //     setCardText("Term")
+        // }
+        setSide(!side)
+        
+    }
+
+    const showCorrectColumnType = (col) => {
+        console.log('FLIP')
+        switch(col.type){
+            case 'Image':
+                    return <img src={`http://localhost:3001/api/v1/images/${col.path}`} alt='Image' />
+            case 'Text':
+                console.log(col.value)
+                return col.value
+            case 'Audio':
+                return col.path ? <audio controls src={`http://localhost:3001/api/v1/audio/${col.path}`} alt="Audio" /> : 'Nothing to show!'
+            default: 
+                return 'Nothing to show!'
         }
     }
 
@@ -29,26 +50,33 @@ const PlayingCard = (props) => {
     <Container>
         <Card className={"flipCard"}>
             <Card.Header className={"bg-blue text-white text-center"}>
-                {cardText}
+                {side ? 'Backside': 'Frontside'}
                 <span className={"pointer float-right"} onClick={() => turnCard()}>
-                    <FontAwesomeIcon icon={faCreativeCommonsSa} className={'fab fa-creative-commons-sa'} title={`Turn card`}/>
+                    <FontAwesomeIcon icon={faSync} title={`Turn card`}/>
                 </span>
             </Card.Header>
             <div className="pointer card" id="card" onClick={() => turnCard()}>
-                <Card.Body className={"side"}>
-                    {props.front || "No question"}
-                </Card.Body>
-                <Card.Body className={"side back"}>
-                    {props.back || "No answer"}
+                {/* <Card.Body className={"side"}> */}
+                    {/* {props.front || "No question"} */}
+                    {/* {showCorrectColumnType(props.front)} */}
+                {/* </Card.Body> */}
+                <Card.Body className={side ? 'side' : 'side'}>
+                    {/* {props.back || "No answer"} */}
+                    {showCorrectColumnType(side ? props.back : props.front )}
                 </Card.Body>
             </div>
         </Card>
         <Row className={"row justify-content-between"}>
-            <Col lg={{span: 4}}>
-                <Button id="correct" className={"btn btn-block btn-green"} onClick={(e) => handleClick(e, "correct")}>Correct</Button>
+            <Col md={{span: 4}} className="order-2 order-md-1">
+                <Button id="correct" className={"btn w-100"} variant="outline-success" onClick={(e) => handleClick(e, "correct")}>Correct</Button>
             </Col>
-            <Col lg={{span: 4}}>
-                <Button id="wrong" className={"btn btn-block btn-red"} onClick={(e) => handleClick(e, "wrong")}>Wrong</Button>
+            <Col md={4} className=" order-1 order-md-2"> 
+                <Button variant="outline-primary" className="w-100" onClick={() => turnCard()} title="Flip this card">
+                    <FontAwesomeIcon icon={faSync} />
+                </Button>
+            </Col>
+            <Col md={{span: 4}} className=" order-3 order-md 3">
+                <Button id="wrong" className={"btn w-100"} variant="outline-danger" onClick={(e) => handleClick(e, "wrong")}>Wrong</Button>
             </Col>
         </Row>
     </Container>

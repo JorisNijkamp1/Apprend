@@ -9,6 +9,7 @@ const upload = require('../../../middleware/uploadMiddleware')
 const Resize = require('../../../Resize')
 const fileUpload = require('express-fileupload');
 const crypto = require('crypto')
+const fs = require('fs')
 
 
 v1.get('/', (req, res) => {
@@ -19,29 +20,15 @@ v1.get('/', (req, res) => {
 
 // Gets an image from the file system root/files/images/:pathParam
 v1.get('/images/:pathParam', async (req, res) => {
-    res.sendFile(`${req.params.pathParam}`, {root: path.join(__dirname, '../../../public/images')})
+    res.sendFile(`${req.params.pathParam}`, {root: path.join(__dirname, '../../../public/images')}, err => {
+        if (err) return res.status(500).json({message: 'Something went wrong'})
+
+    })
 })
 
 v1.get('/audio/:pathParam', async (req, res) => {
     res.sendFile(`${req.params.pathParam}`, {root: path.join(__dirname, '../../../public/audio')})
 })
-
-// v1.post('/upload/image', upload.single('image'), async (req, res) => {
-//     try {
-//         const imagePath = path.join(__dirname, '../../../public/images');
-//         const ext = path.extname(req.file.originalname)
-        
-//         const fileUpload = new Resize(imagePath, ext);
-//         if (!req.file) {
-//           return res.status(400).json({message: 'Please provide an image'});
-//         }
-//         const filename = await fileUpload.save(req.file.buffer);
-//         return res.status(200).json({ message: 'Image uploaded' ,data: filename, success: true });
-//     } catch (err) {
-//         console.log(err)
-//         return res.status(500).json({message: 'We couldn\'t catch your file'})
-//     }
-// })
 
 v1.post('/upload/*', fileUpload())
 

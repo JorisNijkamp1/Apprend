@@ -34,11 +34,10 @@ export default (props) => {
     }
 
     const checkAllColumns = () => {
-        let bool
-        for (let [key, value] in Object.entries(props.columns)){
-            console.log(value)
-            if (!value) bool = true
-        }
+        let bool = false
+        Object.entries(props.columns).forEach(([key, value]) => {
+            if (typeof value === 'string') bool = true
+        })
         return bool
     }
 
@@ -48,8 +47,8 @@ export default (props) => {
             {side('front')}
             {side('back')}
             <Col xs={12}> 
-                {checkAllColumns() ? 'choose sides' :
-                <Button variant="success">
+                {checkAllColumns() ? <h5>Please choose a column for each side</h5> :
+                <Button onClick={props.funcSetColumns} variant="success" className="my-3" title="Start the game">
                     Start game
                 </Button> }
             </Col>

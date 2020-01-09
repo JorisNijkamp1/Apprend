@@ -79,7 +79,7 @@ const PlayingComponent = (props) => {
         }
 
         if (nCardsAnswered === nCardsInDeck) {
-            props.doUpdateGame(deckId, props.gameId, currentCard, [], status);
+            // props.doUpdateGame(deckId, props.gameId, currentCard, [], status);
             props.doSetActiveCardAction('');
             history.push(`/decks/${deckId}/score`);
             return;
@@ -96,7 +96,7 @@ const PlayingComponent = (props) => {
         }
 
         props.doSetActiveCardAction(nextCard);
-        props.doUpdateGame(deckId, props.gameId, currentCard, nextCard, status);
+        // props.doUpdateGame(deckId, props.gameId, currentCard, nextCard, status);
     };
 
     const setupGame = () => {
@@ -115,6 +115,7 @@ const PlayingComponent = (props) => {
             }
 
             let session = results.data.session + 1;
+            console.log(results.data.flashcards)
             let allCards = leitnerSelectCards(results.data.flashcards, session);
             let counter = 0;
 
@@ -129,6 +130,7 @@ const PlayingComponent = (props) => {
             props.doSetGame(deckId, allCards);
             props.doSetActiveCardAction(allCards[0]);
             props.doUpdateDeckSession(deckId, props.username, session);
+            console.log(allCards)
             props.doSetCards(allCards);
             setCurrentSession(session);
             setIsLoading(false)
@@ -145,6 +147,10 @@ const PlayingComponent = (props) => {
             if (columns.front === index) sides.front = ''
         }
         setColumns({...sides, [side]: index})
+    }
+
+    const handleSetColumns = () => {
+        setColumnsChosen(true)
     }
 
     if (props.error !== null) {
@@ -169,7 +175,7 @@ const PlayingComponent = (props) => {
     } else {
         if (!columnsChosen){
             loader = (
-                <ColumnSelector deck={props.deck} func={handleColumnSelector} columns={columns}/>
+                <ColumnSelector deck={props.deck} func={handleColumnSelector} funcSetColumns={handleSetColumns} columns={columns}/>
             )
         } else 
         loader = (
@@ -185,8 +191,10 @@ const PlayingComponent = (props) => {
                 </Col>
                 <PlayingCard changeScore={changeScore}
                              activeCard={props.activeCard}
-                            //  front={props.activeCard.question}
+                            //  front={props.activeCard.columns}
                             //  back={props.activeCard.answer}
+                            front={props.activeCard.columns[columns.front]}
+                            back={props.activeCard.columns[columns.back]}
                              />
                 <Row className={'justify-content-between'}>
                     <Col lg={{span: 4}} className={'text-center'}>

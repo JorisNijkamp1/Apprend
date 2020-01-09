@@ -187,11 +187,10 @@ export const getGameData = (deckId, gameId) => {
 };
 
 export const updateDeckSession = (deckId, creatorId, session) => {
-    console.log(creatorId)
     return async dispatch => {
         const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
         const options = {
-            method: 'PATCH',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -214,9 +213,6 @@ export const updateDeckSession = (deckId, creatorId, session) => {
             return results.data;
         }
 
-        console.log(response)
-
-        console.log(`(${response.status}) ${results.message}`);
         dispatch(errorOccurred('Something went wrong, please try again...'));
     }
 };
