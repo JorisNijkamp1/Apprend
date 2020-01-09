@@ -76,7 +76,7 @@ export function errorOccurred(error) {
 
 export const getDeck = (creatorId, deckId) => {
     return async dispatch => {
-        await dispatch(setLoadingAction(true));
+        // await dispatch(setLoadingAction(true));
         const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
         const options = {
             method: 'GET',
@@ -187,6 +187,7 @@ export const getGameData = (deckId, gameId) => {
 };
 
 export const updateDeckSession = (deckId, creatorId, session) => {
+    console.log(creatorId)
     return async dispatch => {
         const url = `${API_URL}/users/${creatorId}/decks/${deckId}`;
         const options = {
@@ -212,6 +213,8 @@ export const updateDeckSession = (deckId, creatorId, session) => {
         if (response.status === 201) {
             return results.data;
         }
+
+        console.log(response)
 
         console.log(`(${response.status}) ${results.message}`);
         dispatch(errorOccurred('Something went wrong, please try again...'));
