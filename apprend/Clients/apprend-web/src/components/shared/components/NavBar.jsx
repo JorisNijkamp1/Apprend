@@ -85,7 +85,7 @@ const NavbarUI = (props) => {
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse className={"justify-content-end"} id="basic-navbar-nav">
-                    <Nav className={'w-100'}>
+                    <Nav>
                         <SearchDecksInput className={'pull-right'} linkTo={`/search?q=${props.searchValue}`}
                                           navBar={true}/>
                         <Nav.Link as={Link} className="pull-right text-white pl-30" to="/decks/create">Create

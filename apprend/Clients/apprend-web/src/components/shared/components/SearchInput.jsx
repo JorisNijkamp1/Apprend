@@ -95,14 +95,6 @@ const SearchInput = (props) => {
         history.push(props.linkTo)
     };
 
-    const inputProps = {
-        placeholder: "Search for something...",
-        value,
-        onChange: onChange,
-        className: 'form-control',
-        style: {width: '100%'}
-    };
-
     const searchButton = () => {
         if (!props.navBar) {
             return (
@@ -122,18 +114,24 @@ const SearchInput = (props) => {
                 </div>
             )
         }
-    }
+    };
+
+    const inputProps = {
+        placeholder: "Search for something...",
+        value,
+        onChange: onChange,
+        className: 'form-control',
+        style: {width: '100%'}
+    };
 
     return (
         <>
-            <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search-deck'}
-                  className={props.navBar ? 'extra-class-navbar' : ''}>
-                <div className={props.navBar ? '' : 'row'}>
-                    <div className={props.navBar ? '' : 'col-md-10 offset-md-1'}>
+            <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search-deck'}>
+                <div className={'row'}>
+                    <div className={'col-md-10 offset-md-1'}>
                         <Row>
-                            <div className={props.navBar ? 'w-70' : 'col-lg-6 col-md-8 col-8 offset-lg-2 offset-md-1'}>
-                                {/*<Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>*/}
-                                <InputGroup className={`mb-3`}>
+                            <div className={'col-lg-6 col-md-8 col-8 offset-lg-2 offset-md-1'}>
+                                <InputGroup>
                                     <Autosuggest
                                         multiSection={true}
                                         suggestions={suggestions}
@@ -145,7 +143,6 @@ const SearchInput = (props) => {
                                         getSectionSuggestions={getSectionSuggestions}
                                         inputProps={inputProps}/>
                                 </InputGroup>
-                                {/*</Col>*/}
                             </div>
                             {searchButton()}
                         </Row>

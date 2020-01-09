@@ -681,8 +681,8 @@ progress[value]::-webkit-progress-value {
 }
 
 .extra-class-navbar {
-    width: 55%;
-    padding-top: 10px;
+    /*width: 55%;*/
+    /*padding-top: 10px;*/
 }
 
 .pt-15{
@@ -696,5 +696,5 @@ progress[value]::-webkit-progress-value {
 }
 
 .w-70 {
-    width: 70%;
+    /*width: 70%;*/
 }

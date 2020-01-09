@@ -41,7 +41,6 @@ const CreateDeckFormComponent = (props) => {
             description: e.target.description.value,
             private: status,
             tags: props.tags,
-            columns: [typeOne, typeTwo],
             columns: [
                 {
                     type: typeOne,
