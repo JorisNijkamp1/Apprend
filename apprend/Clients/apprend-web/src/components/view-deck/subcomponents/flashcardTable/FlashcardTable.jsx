@@ -270,7 +270,7 @@ const FlashcardTableComponent = (props) => {
                         state={props.expandTable}
                         label="Make table wider??"
                         handleSwitch={handleExpandTable}
-                        text={props.expandTable ? 'man of culture': 'I prefer scrolling'}
+                        text={props.expandTable ? 'Yes': 'No'}
                         />
                     </Col>
                     <Col>
@@ -279,7 +279,7 @@ const FlashcardTableComponent = (props) => {
                         state={props.quickDelete}
                         label="Enable quick delete?"
                         handleSwitch={handleDeleteSwitch}
-                        text={props.quickDelete ? 'YOLO': 'im a pussy'}
+                        text={props.quickDelete ? 'Yes': 'No'}
                         />
                     </Col>
                 </Row>

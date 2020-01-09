@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 export default (props) => {
 
@@ -42,15 +43,30 @@ export default (props) => {
     }
 
     return (
-        <Container>
+        <Container className="my-5">
         <Row className="text-center">
+            <Col xs={12} className="my-3">
+                <h4>Columnselection</h4>
+            </Col>
             {side('front')}
             {side('back')}
-            <Col xs={12}> 
-                {checkAllColumns() ? <h5>Please choose a column for each side</h5> :
-                <Button onClick={props.funcSetColumns} variant="success" className="my-3" title="Start the game">
-                    Start game
-                </Button> }
+            <Col xs={12} className="my-3"> 
+                <Row>
+                    <Col>
+                        <Link to={`/decks/${props.deck._id}`}>
+                            <Button variant="info" className="w-100">
+                                Back to deck
+                            </Button>
+                        </Link>
+                    </Col>
+                    <Col>
+                    {checkAllColumns() ? <h5>Please choose a column for each side</h5> :
+                        <Button onClick={props.funcSetColumns} className="w-100" variant="success"  title="Start the game">
+                            Start game
+                        </Button> }
+                    </Col>
+                </Row>
+
             </Col>
         </Row>
     </Container>

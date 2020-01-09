@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Container, Row, Col, Button, Card} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCreativeCommonsSa} from "@fortawesome/free-brands-svg-icons";
 import { faSync } from "@fortawesome/free-solid-svg-icons";
 
 
@@ -31,12 +30,10 @@ const PlayingCard = (props) => {
     }
 
     const showCorrectColumnType = (col) => {
-        console.log('FLIP')
         switch(col.type){
             case 'Image':
-                    return <img src={`http://localhost:3001/api/v1/images/${col.path}`} alt='Image' />
+                    return col.path ? <img className="h-100" src={col.source === 'web' ? col.path : `http://localhost:3001/api/v1/images/${col.path}`} alt='Image' /> : 'Nothing to show!'
             case 'Text':
-                console.log(col.value)
                 return col.value
             case 'Audio':
                 return col.path ? <audio controls src={`http://localhost:3001/api/v1/audio/${col.path}`} alt="Audio" /> : 'Nothing to show!'
