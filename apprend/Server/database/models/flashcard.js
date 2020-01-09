@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Column = require('./columns')
 
 //Create schema
 const flashcardSchema = new mongoose.Schema({
@@ -19,14 +20,7 @@ const flashcardSchema = new mongoose.Schema({
     },
     columns: {
         type: [
-            {
-                'type': {
-                    type: String
-                },
-                value: {
-                    type: String
-                }
-            }
+            Column
         ]
     }
 });

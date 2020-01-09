@@ -676,6 +676,10 @@ progress[value]::-webkit-progress-value {
     background-color: transparent;
 }
 
+.di-f{
+    display: flex;
+}
+
 .flex-direction-row-reverse {
     flex-direction: row-reverse !important;
 }

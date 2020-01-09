@@ -27,7 +27,6 @@ import ImportButton from "./subcomponents/ImportButton";
 import ConfirmationBox from "./subcomponents/ConfirmationBox";
 import {Notification} from '../shared/components/Notification';
 import {addTag, clearTags, deleteTag} from '../create-deck/actions';
-
 import FlashcardsOverview from "./subcomponents/OverviewFlashcards";
 import {FlashcardTable} from './subcomponents/flashcardTable/FlashcardTable'
 import DeckDescription from "./subcomponents/DeckDescription";
@@ -174,8 +173,8 @@ const UserDecks = (props) => {
     }
 
     const showOptions = (icons) => {
-        return icons.map(icon => (
-            <Col xs={6} md={3}>
+        return icons.map((icon, index) => (
+            <Col xs={6} md={3} key={'key'+index}>
                 {icon}
             </Col>
         ))
@@ -355,12 +354,19 @@ const UserDecks = (props) => {
                     {deck}
                 </Row>
                 {/* <Row> */}
-                <FlashcardTable />
                 {/* </Row> */}
                 {showDeleteConfirmationBox()}
                 {/* {showFlashcards()} */}
                 {/* {flashcardsComp} */}
             </>
+        )
+    }
+
+    const showTable = (loading, expand) => {
+        if (!loading) return (
+            <div>
+                <FlashcardTable />
+            </div>
         )
     }
     return (
@@ -369,6 +375,10 @@ const UserDecks = (props) => {
             <Container>
                 {showContent()}
             </Container>
+            <div className="container">
+            {showContent()}
+            </div>
+            {showTable(isLoading, props.expandTable)}
             <Footer/>
         </>
     )
@@ -380,7 +390,7 @@ function mapStateToProps(state) {
         deck: state.decks.deck,
         isLoading: state.decks.isLoading,
         tags: state.createDeck.tags,
-        deckEdit: state.decks.deckEdit
+        deckEdit: state.decks.deckEdit,
     }
 }
 

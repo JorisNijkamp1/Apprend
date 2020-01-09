@@ -110,22 +110,22 @@ function editFlashcardColumn(column){
     }
 }
 
-export const editFlashcard = (value, creator, deck, flashcard, index) => {
+export const editFlashcard = (props, creator, deck, flashcard, column) => {
     return async dispatch => {
-        console.log(value, creator, deck, flashcard, index)
-        const url = `http://localhost:3001/api/v1/users/${creator}/decks/${deck}/flashcards/${flashcard}/columns/${index}`
+        const url = `http://localhost:3001/api/v1/users/${creator}/decks/${deck}/flashcards/${flashcard}/columns/${column}`
         const options = {
             method: 'PATCH',
             credentials: 'include',
-            body: JSON.stringify({column: {value: value}}),
+            body: JSON.stringify(props),
             headers: {
                 'Content-Type': 'application/json'
             }
         } 
         const response = await fetch(url, options)
         const data = await response.json()
-        if (response.status === 200){
-            dispatch(editFlashcardColumn({index: index, value: data.data, _id: flashcard}))
+        if (response.status === 201){
+            console.log(props)
+            dispatch(editFlashcardColumn({index: column, props: props, _id: flashcard}))
         }
 
         return data
@@ -157,5 +157,34 @@ export const deleteFlashcard = (flashcard, creator, deck) => {
             data.success = true
         }
         return data
+    }
+}
+
+export const setQuickDeleteAction = (bool) =>{
+    console.log('action wordt aangeroepen')
+    return {
+        type: 'DECKS_TOGGLE_QUICKDELETE',
+        payload: bool
+    }
+}
+
+export const uploadFile = (file, type) => {
+    return async dispatch => {
+        const url = `http://localhost:3001/api/v1/upload/${type ? type : ''}`
+        const options = {
+            method: 'POST',
+            credentials: 'include',
+            body: file,
+        }
+        const result = await fetch(url, options)
+        const data = await result.json()
+        return data
+    }
+}
+
+export function setExpandTable(bool){
+    return {
+        type: 'CLIENT_TOGGLE_EXPAND_TABLE',
+        payload: bool
     }
 }

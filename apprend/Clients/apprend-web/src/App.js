@@ -15,9 +15,10 @@ import 'react-notifications-component/dist/theme.css'
 import 'animate.css/animate.css'
 import Search from './components/search/Search';
 import {isLoggedIn} from './components/shared/actions/actions';
-import TagOverview from './components/filter-tags/TagOverview';
 import Privacy from './components/privacy/Privacy';
 import PrivacyPopUp from './components/privacy-pop-up/PrivacyPopUp';
+import TagOverview from "./components/filter-tags/TagOverview";
+import {MyProfile} from "./components/my-profile/MyProfile";
 
 function App(props) {
     //Check if user is logged in
@@ -46,6 +47,9 @@ function App(props) {
                 <Route path={'/login'}>
                     <PrivacyPopUp/>
                     <LoginPage/>
+                </Route>
+                <Route path={'/profile/:userId'}>
+                    <MyProfile/>
                 </Route>
                 <Route path={'/decks/:deckId/play'}>
                     <PrivacyPopUp/>
