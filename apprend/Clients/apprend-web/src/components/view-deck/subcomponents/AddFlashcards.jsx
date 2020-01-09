@@ -10,7 +10,7 @@ import {
 import EditableFlashcard from "./EditableFlashcard";
 import {changeDeckFlashcards} from "../../shared/actions/actions";
 import {AddFlashcardIcon} from "./AddFlashcardIcon";
-import {NavigatieBar} from "../../shared/components/NavigatieBar";
+import {NavBar} from "../../shared/components/NavBar";
 import {Footer} from "../../shared/components/Footer";
 import {editDeckFlashcardsAction, getDeckFlashcardsAction} from "../../shared/actions/actions";
 import Loader from "react-loaders";
@@ -121,7 +121,7 @@ const Flashcards = (props) => {
 
         return (
             <>
-                <NavigatieBar/>
+                <NavBar/>
                 <Container className={"py-5"}>
                     <Card style={{backgroundColor: "#EEEEEE"}} className={'pt-3'} text={'dark'}>
                         {deckHeader()}
