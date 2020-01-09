@@ -353,29 +353,79 @@ const UserDecks = (props) => {
                 <Row>
                     {deck}
                 </Row>
-                {/* <Row> */}
-                {/* </Row> */}
+
                 {showDeleteConfirmationBox()}
-                {/* {showFlashcards()} */}
-                {/* {flashcardsComp} */}
+
             </>
         )
     }
 
-    const showTable = (loading, expand) => {
+    const showTable = (loading) => {
         if (!loading) return (
             <div>
                 <FlashcardTable />
             </div>
+        ) 
+        return ''
+    }
+
+    const showCards = (loading) => {
+        if (loading) return ''
+
+        const showCorrectType = (col) => {
+            if (col.type === 'Text'){
+                return (
+                    <small>{col.value ? col.value : 'No text!'}</small>
+                )
+            } else if (col.type === 'Audio'){
+                return (
+                    <div>
+                    {col.path ? 
+                    <audio controls src={`http://localhost:3001/api/v1/audio/${col.path}`} alt="Audio" />
+                    : <small>No audio!</small> }
+                    </div>
+
+                )
+            } else if (col.type === 'Image'){
+                return (
+                    <div className="w-100">
+                        {col.path ? 
+                        <img style={{'overflow': 'hidden', 'maxHeight': '140px'}} src={col.source === 'web' ? col.path :`http://localhost:3001/api/v1/images/${col.path}`} alt="image"/>
+                        : <small>No image!</small>}
+                    </div>
+                )
+            }
+        }
+
+        return (
+            <div className="container">
+                <Row className="d-flex align-items-stretch">
+                    {props.deck ? props.deck.flashcards ? props.deck.flashcards.map(card => (
+                        <Col xs={12} md={6} lg={4}>
+                            <Card className="text-center my-3">
+                                <Card.Body>
+                                    {card.columns.map(col => (
+                                        <div className="my-1">
+                                        <h6><strong>{col.type}</strong></h6>
+                                        {showCorrectType(col)}
+                                        </div>
+                                    ))}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    )) : '' : ''}
+                </Row>
+            </div>
         )
     }
+
     return (
         <>
             <NavBar/>
-            <Container>
-                {showContent()}
-            </Container>
-            {showTable(isLoading, props.expandTable)}
+            <div className="container">
+            {showContent()}
+            </div>
+            {props.deck.creatorId === props.username ? showTable(isLoading, props.expandTable) : showCards(isLoading)}
             <Footer/>
         </>
     )
