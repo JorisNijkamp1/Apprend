@@ -71,7 +71,8 @@ decks.get('/', async (req, res) => {
                             "_id": "$_id",
                             "type": "user",
                             "email": "$email",
-                            "signupDate": "$signupDate"
+                            "signupDate": "$signupDate",
+                            "decks": "$decks",
                         }
                     }
                 ],
@@ -122,7 +123,8 @@ decks.get('/', async (req, res) => {
                 if (result.type === 'user' && result.email) finalResults[0].results.push({
                     name: result._id,
                     type: result.type,
-                    signupDate: result.signupDate
+                    signupDate: result.signupDate,
+                    decks: result.decks.length
                 });
                 if (result.type === 'deck') finalResults[1].results.push({
                     ...result.deck,

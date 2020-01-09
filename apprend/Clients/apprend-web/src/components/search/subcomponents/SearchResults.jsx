@@ -62,6 +62,7 @@ const SearchResults = (props) => {
     const userResults = () => {
         if (results.length > 0 && results[0].results.length > 0 && typeResults === 'users') {
             return results[0].results.map((user) => {
+                console.log(user)
                     const event = new Date(user.signupDate);
                     const options = {year: 'numeric', month: 'long', day: 'numeric'};
                     return (
@@ -75,7 +76,7 @@ const SearchResults = (props) => {
                                         <h4 className="search-result-item-heading ">
                                             <a href={`/${user.name}/decks`}>{user.name}</a>
                                         </h4>
-                                        <p className="info">4 decks</p>
+                                        <p className="info">{user.decks} decks</p>
                                         <p className="description w-100" style={{height: 40}}>
                                             User account created on <i>{event.toLocaleDateString('en-EN', options)}</i>
                                         </p>
