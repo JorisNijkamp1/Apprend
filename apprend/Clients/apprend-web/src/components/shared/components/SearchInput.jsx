@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import {Link} from "react-router-dom";
 import {getSearchSuggestions, setSearchValue} from "../actions/actions";
-import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import {useHistory} from "react-router-dom";
 
@@ -17,11 +15,6 @@ const SearchInput = (props) => {
     const [value, setValue] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     let lastRequestId = null;
-
-    // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
-    function escapeRegexCharacters(str) {
-        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
 
     function getSuggestionValue(suggestion) {
         return suggestion.name;
@@ -68,7 +61,6 @@ const SearchInput = (props) => {
     };
 
     const onSuggestionsFetchRequested = ({value}) => {
-        // console.log('onSuggestionsFetchRequested');
         loadSuggestions(value);
     };
 
@@ -117,7 +109,7 @@ const SearchInput = (props) => {
     };
 
     const inputProps = {
-        placeholder: "Search for something...",
+        placeholder: props.navBar ? 'Search...' : 'Search for something...',
         value,
         onChange: onChange,
         className: 'form-control',

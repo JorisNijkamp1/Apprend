@@ -3,19 +3,23 @@ import * as ReactRedux from 'react-redux'
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import {getSearchSuggestions, setIsLoading, setSearchValue} from "../../shared/actions/actions";
+import {useHistory} from "react-router";
 
 const SearchResults = (props) => {
     const [results, setResults] = useState([]);
     const [typeResults, setTypeResults] = useState('decks');
     const urlParams = new URLSearchParams(window.location.search);
-    let searchValue = (urlParams.get('q') === 'null') ? '' : urlParams.get('q');
+    let searchValue = (props.searchValue === null) ? (urlParams.get('q') === 'null') ? '' : urlParams.get('q') : props.searchValue;
 
+    let history = useHistory()
     useEffect(() => {
         props.getSearchSuggestions(searchValue, false)
             .then(data => {
                 setResults(data);
+                setTypeResults(data[1].results.length === 0 ? 'users' : 'decks')
+                history.push(`/search?q=${searchValue}`)
             })
-    }, []);
+    }, [props.searchValue]);
 
     const noResultsFound = () => {
         if (!props.isLoading) return (
@@ -28,7 +32,7 @@ const SearchResults = (props) => {
     const deckResults = () => {
         if (results.length > 0 && results[1].results.length > 0 && typeResults === 'decks') {
             return results[1].results.map((deck) => (
-                    <section className="search-result-item">
+                    <section className="search-result-item" key={deck._id}>
                         <a className="image-link" href={`/decks/${deck._id}`}>
                             <img className="image"
                                  src={`https://via.placeholder.com/200/00B5FB/FFFFFF?text=${deck.flashcards} cards`}/>
@@ -61,7 +65,7 @@ const SearchResults = (props) => {
                     const event = new Date(user.signupDate);
                     const options = {year: 'numeric', month: 'long', day: 'numeric'};
                     return (
-                        <section className="search-result-item">
+                        <section className="search-result-item" key={user.name}>
                             <a className="image-link" href={`/${user.name}/decks`}>
                                 <img className="image" src={`https://api.adorable.io/avatars/200/${user.name}`}/>
                             </a>
@@ -128,7 +132,7 @@ const SearchResults = (props) => {
 
     return (
         <>
-            <Row className={'mt-5'}>
+            <Row className={'pt-4'}>
                 {searchResults()}
             </Row>
         </>

@@ -10,6 +10,7 @@ import {Notification} from "./Notification";
 import SearchDecksInput from "./SearchInput";
 
 const NavbarUI = (props) => {
+
     const history = useHistory();
     const logout = () => {
         if (!props.anonymousUser) {
@@ -76,6 +77,16 @@ const NavbarUI = (props) => {
                 </>
             )
         }
+    };
+
+    const searchInput = () => {
+        if (window.location.pathname !== '/' && window.location.pathname !== '/search') {
+            return (
+                <SearchDecksInput className={'pull-right'}
+                                  linkTo={`/search?q=${props.searchValue}`}
+                                  navBar={true}/>
+            )
+        }
     }
 
     return (
@@ -86,8 +97,7 @@ const NavbarUI = (props) => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse className={"justify-content-end"} id="basic-navbar-nav">
                     <Nav>
-                        <SearchDecksInput className={'pull-right'} linkTo={`/search?q=${props.searchValue}`}
-                                          navBar={true}/>
+                        {searchInput()}
                         <Nav.Link as={Link} className="pull-right text-white pl-30" to="/decks/create">Create
                             Deck</Nav.Link>
                         {loggedIn()}
@@ -96,12 +106,13 @@ const NavbarUI = (props) => {
             </Container>
         </Navbar>
     )
-}
+};
 
 function mapStateToProps(state) {
     return {
         username: state.login.username,
-        anonymousUser: state.login.anonymousUser
+        anonymousUser: state.login.anonymousUser,
+        searchValue: state.search.searchValue
     }
 }
 
