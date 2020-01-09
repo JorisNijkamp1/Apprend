@@ -1,19 +1,17 @@
 import {API_URL} from '../../../../redux/urls';
-import image from './img_avatar.png'
-const fs = require('fs')
 
-xdescribe('Upload an image', () => {
-
+describe('Upload an image', () => {
     const user = 'Joris'
     const password = 'han'
 
     let login = {
         username: user,
         password: password
-    }
-    let deck
+    };
 
-    beforeAll( async () => {
+    let deck;
+
+    beforeAll(async () => {
         const response = await fetch('http://localhost:3001/api/v1/login', {
             method: 'POST',
             credentials: 'include',
@@ -21,30 +19,23 @@ xdescribe('Upload an image', () => {
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
-        const getAllDecks = await fetch(`http://localhost:3001/api/v1/users/${user}/decks`)
-        const data = await getAllDecks.json()
-        deck = data.data.decks[0]
-    })
+        });
 
-    xtest('Edit the value of a column', async () => {
-        let file = new FormData()
-        let x 
-        await fs.readFile(`${__dirname}/img_avatar.png`, async (err, data) => {
-            x = data
-            let i = await new File(data.buffer, 'avatar.png', {type: 'image/png'})
-            file.append('image', i)
+        const getAllDecks = await fetch(`http://localhost:3001/api/v1/users/${user}/decks`);
+        const data = await getAllDecks.json();
+        deck = data.data.decks[0];
+    });
 
-        })
-        console.log(file)
-        // console.log(i)
-        // file.append('image', i)
+    test('Upload not a file', async () => {
         const response = await fetch(`${API_URL}/upload/image`, {
             method: 'POST',
             credentials: 'include',
-            body: file
-        })
-        const data = await response.json()
-        console.log(data.message)
+            body: 'testString'
+        });
+
+        const data = await response.json();
+
+        expect(response.status).toBe(400);
+        expect(data.message).toBe('No files were uploaded');
     })
-})
+});
