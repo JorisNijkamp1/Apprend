@@ -353,11 +353,9 @@ const UserDecks = (props) => {
                 <Row>
                     {deck}
                 </Row>
-                {/* <Row> */}
-                {/* </Row> */}
+
                 {showDeleteConfirmationBox()}
-                {/* {showFlashcards()} */}
-                {/* {flashcardsComp} */}
+
             </>
         )
     }
@@ -423,7 +421,7 @@ const UserDecks = (props) => {
 
     return (
         <>
-            <NavigatieBar/>
+            <NavBar/>
             <div className="container">
             {showContent()}
             </div>
