@@ -40,7 +40,7 @@ v1.post('/upload/image', async (req, res) => {
         const fileName = crypto.randomBytes(20).toString('hex')
 
         // Check if file is < ~ 10MB
-        if (req.files.image.size > 100000000) return res.status(400).json({message: 'File too large'})
+        if (req.files.image.size > 10000000) return res.status(400).json({message: 'File too large'})
 
           let sampleFile = req.files.image;
 
