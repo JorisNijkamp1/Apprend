@@ -114,7 +114,7 @@ h2 {
 }
 
 .flipCard .card.flipped {
-    transform: rotatey(-180deg);
+    transform: rotatey(-360deg);
 }
 
 .flipCard .card {
@@ -141,7 +141,7 @@ h2 {
 }
 
 .flipCard .card .back {
-    transform: rotatey(-180deg);
+    transform: rotatey(-360deg);
 }
 
 .btn-green, .btn-green:focus {

@@ -11,9 +11,9 @@ const PlayingCard = (props) => {
     const handleClick = (event, status) => {
         event.preventDefault();
         props.changeScore(props.activeCard, status);
-        if (cardText === "Definition") {
-            turnCard()
-        }
+        // if (cardText === "Definition") {
+        //     turnCard()
+        // }
         setSide(false)
     }
 
@@ -52,7 +52,7 @@ const PlayingCard = (props) => {
                     <FontAwesomeIcon icon={faSync} title={`Turn card`}/>
                 </span>
             </Card.Header>
-            <div className="pointer card" id="card" onClick={() => turnCard()}>
+            <div className={`pointer card ${side ? 'flipped': ''}`} id="card" onClick={() => turnCard()}>
                 {/* <Card.Body className={"side"}> */}
                     {/* {props.front || "No question"} */}
                     {/* {showCorrectColumnType(props.front)} */}
