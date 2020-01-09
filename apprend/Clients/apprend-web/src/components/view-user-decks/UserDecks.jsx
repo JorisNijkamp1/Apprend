@@ -325,7 +325,7 @@ const Deck = (props) => {
     }
 
     const showContent = () => {
-        if (isLoading) return <LoadingComponent loadingText="Fetching all decks" />
+        if (isLoading) return <LoadingComponent loadingText="Loading all decks" />
         return (
             <>
             <Row>

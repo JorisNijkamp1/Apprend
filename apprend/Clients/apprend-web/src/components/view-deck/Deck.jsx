@@ -375,9 +375,6 @@ const UserDecks = (props) => {
             <Container>
                 {showContent()}
             </Container>
-            <div className="container">
-            {showContent()}
-            </div>
             {showTable(isLoading, props.expandTable)}
             <Footer/>
         </>
