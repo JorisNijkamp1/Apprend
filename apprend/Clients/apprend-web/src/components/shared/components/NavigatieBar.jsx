@@ -82,11 +82,13 @@ const NavbarUI = (props) => {
         <Navbar className={"bg-nav"} expand="lg">
             <Container>
                 <Navbar.Brand as={Link} className={"text-white"} to="/"><h1>Apprend</h1></Navbar.Brand>
-                <SearchDecksInput linkTo={`/search?q=${props.searchValue}`} navBar={true}/>
+
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse className={"justify-content-end"} id="basic-navbar-nav">
-                    <Nav>
-                        <Nav.Link as={Link} className="text-white pl-30" to="/decks/create">Create
+                    <Nav className={'w-100'}>
+                        <SearchDecksInput className={'pull-right'} linkTo={`/search?q=${props.searchValue}`}
+                                          navBar={true}/>
+                        <Nav.Link as={Link} className="pull-right text-white pl-30" to="/decks/create">Create
                             Deck</Nav.Link>
                         {loggedIn()}
                     </Nav>

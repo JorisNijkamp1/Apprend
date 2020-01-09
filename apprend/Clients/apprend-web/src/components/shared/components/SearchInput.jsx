@@ -111,12 +111,13 @@ const SearchInput = (props) => {
 
     return (
         <>
-            <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search-deck'}>
-                <Row>
-                    <Col md={{span: 10, offset: 1}}>
+            <Form onSubmit={(e) => onSubmit(e)} id={'auto-suggest-search-deck'} className={props.navBar ? 'extra-class-navbar' : ''}>
+                <div className={props.navBar ? '' : 'row'}>
+                    <div className={props.navBar ? '' : 'col-md-10 offset-md-1'}>
                         <Row>
-                            <Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>
-                                <InputGroup className={`mb-3 ${props.navBar ? 'navbar-class' : ''}`}>
+                            <div className={props.navBar ? 'w-70' : 'col-lg-6 col-md-8 col-8 offset-lg-2 offset-md-1'}>
+                                {/*<Col xs={{span: 8}} md={{span: 8, offset: 1}} lg={{span: 6, offset: 2}}>*/}
+                                <InputGroup className={`mb-3`}>
                                     <Autosuggest
                                         multiSection={true}
                                         suggestions={suggestions}
@@ -128,8 +129,9 @@ const SearchInput = (props) => {
                                         getSectionSuggestions={getSectionSuggestions}
                                         inputProps={inputProps}/>
                                 </InputGroup>
-                            </Col>
-                            <Col xs={{span: 2}} md={{span: 2}} lg={{span: 2}}>
+                                {/*</Col>*/}
+                            </div>
+                            <div className={props.navBar ? 'pl-30' : 'col-lg-2 col-md-2 col-2'}>
                                 <InputGroup.Append>
                                     <Link to={props.linkTo}>
                                         <Button className={'bg-blue text-white hover-shadow'}>
@@ -142,10 +144,10 @@ const SearchInput = (props) => {
                                         </Button>
                                     </Link>
                                 </InputGroup.Append>
-                            </Col>
+                            </div>
                         </Row>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </Form>
         </>
     );

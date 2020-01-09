@@ -375,7 +375,7 @@ progress[value]::-webkit-progress-value {
 }
 
 .react-autosuggest__suggestion {
-     padding: unset;
+    padding: unset;
 }
 
 .custom-control-label:before, .custom-control-label:after {
@@ -526,21 +526,21 @@ progress[value]::-webkit-progress-value {
     display: unset;
 }
 
-.search-result-categories>li>a {
+.search-result-categories > li > a {
     color: #b6b6b6;
     font-weight: 400
 }
 
-.search-result-categories>li>a:hover {
+.search-result-categories > li > a:hover {
     background-color: #ddd;
     color: #555
 }
 
-.search-result-categories>li>a>.glyphicon {
+.search-result-categories > li > a > .glyphicon {
     margin-right: 5px
 }
 
-.search-result-categories>li>a>.badge {
+.search-result-categories > li > a > .badge {
     float: right
 }
 
@@ -571,7 +571,7 @@ progress[value]::-webkit-progress-value {
     border-bottom-left-radius: 4px
 }
 
-@media (min-width:768px) {
+@media (min-width: 768px) {
     .search-result-item .image-link {
         display: inline-block;
         margin: -20px 0 -20px -20px;
@@ -580,7 +580,7 @@ progress[value]::-webkit-progress-value {
     }
 }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
     .search-result-item .image-link {
         max-height: 200px
     }
@@ -600,11 +600,11 @@ progress[value]::-webkit-progress-value {
     font-size: 13px
 }
 
-.search-result-item+.search-result-item {
+.search-result-item + .search-result-item {
     margin-top: 20px
 }
 
-@media (min-width:768px) {
+@media (min-width: 768px) {
     .search-result-item-body {
         margin-left: 200px
     }
@@ -614,11 +614,11 @@ progress[value]::-webkit-progress-value {
     font-weight: 400
 }
 
-.search-result-item-heading>a {
+.search-result-item-heading > a {
     color: #555
 }
 
-@media (min-width:768px) {
+@media (min-width: 768px) {
     .search-result-item-heading {
         margin: 0
     }
@@ -629,15 +629,17 @@ progress[value]::-webkit-progress-value {
     height: 5px;
     border-radius: 5px;
 }
+
 ::-webkit-scrollbar-thumb {
     background: #00B5FB;
 }
+
 ::-webkit-scrollbar-track {
     background: #f5f6fa;
     border: 0;
 }
 
-.di-f{
+.di-f {
     display: flex;
 }
 
@@ -672,4 +674,27 @@ progress[value]::-webkit-progress-value {
 
 .transparent {
     background-color: transparent;
+}
+
+.flex-direction-row-reverse {
+    flex-direction: row-reverse !important;
+}
+
+.extra-class-navbar {
+    width: 55%;
+    padding-top: 10px;
+}
+
+.pt-15{
+    padding-top: 15px;
+}
+
+@media screen and (max-width: 788px) {
+    .extra-class-navbar {
+        display: none;
+    }
+}
+
+.w-70 {
+    width: 70%;
 }
