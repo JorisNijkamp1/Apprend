@@ -25,7 +25,7 @@ async function seedUsers() {
     await Users.insertMany([
         {
             "_id": "Joris",
-            "email": "jorisnijkamp@gmail.com",
+            "email": "johndoe@gmail.com",
             "password": "$2a$10$jAeV7PFZ4REdverFjPiDx.3ZNd7tdqdx1VRQ/2ZqQQxL1y.TRE5Gq",
             "decks": [
                 {
