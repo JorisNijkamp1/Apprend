@@ -156,7 +156,7 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 - **AVG-melding**
 	> De gebruiker ziet op elke pagina een AVG-melding met korte informatie onderin het scherm. De gebruiker kan vervolgens alle voorwaarden lezen of de voorwaarden accepteren. Wanneer de gebruiker de voorwaarden accepteert zal de melding niet meer getoond worden.
 
-- **Filteren op tags**
+- **Filteren op tags** [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Filter-Decks-With-Tags.svg)
 	> De gebruiker kan op zijn overzicht met decks filteren op tags. De gebruiker ziet vervolgens
 	
 	
