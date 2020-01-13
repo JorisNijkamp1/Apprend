@@ -268,6 +268,7 @@ Deze map bevat overige functies die in principe los staan van alle features, maa
   
 **Decks endpoints**:  
   Bestand: Server/routes/api/v1/decks/decks.js
+
 | Method | URL                              | Beschrijving                                                                  |
 |--------|----------------------------------|-------------------------------------------------------------------------------|
 | GET    | /api/v1/decks/tags               | Ophalen van een deck op basis van een gezochte tag                            |
@@ -281,6 +282,7 @@ Deze map bevat overige functies die in principe los staan van alle features, maa
 
 **Users endpoints**:
 Bestand: Server/routes/api/v1/users/decks/decks.js
+
 | Methode | URL                                 | Beschrijving                                                                                        |
 |---------|-------------------------------------|-----------------------------------------------------------------------------------------------------|
 | GET     | /api/v1/users/:userId/decks/:deckId | Haalt een deck op                                                                                   |
