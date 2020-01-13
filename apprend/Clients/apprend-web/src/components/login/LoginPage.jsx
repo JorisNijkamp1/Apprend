@@ -27,30 +27,31 @@ const LoginPageUI = (props) => {
     return (
         <>
             <NavBar/>
-            <Container className={"pt-5 pb-5"}>
+            <Container>
                 <Row>
-                    <Col xs={{'span': 10, 'offset': 1}} md={{'span': 6, 'offset': 3}}>
-                        <h3 className={'text-center'}>Login with your account</h3>
+                    <Col xs={{'span': 10, 'offset': 1}} md={{'span': 6, 'offset': 3}} className="text-center">
+                        <h2 className={'text-center my-5'}>Login to Apprend</h2>
                         <Form name={"login"} onSubmit={handleSubmit}>
                             <FormGroup>
-                                <FormLabel column={false}>Username</FormLabel>
-                                <FormControl placeholder={'johndoe'}
+                                <FormLabel column={false}><strong>Enter username</strong></FormLabel>
+                                <FormControl placeholder={'Your username'}
                                              type={'text'}
                                              id={'loginUsernameInput'}
                                              required
                                              onChange={(e) => setUsername(e.target.value)}/>
                             </FormGroup>
                             <FormGroup>
-                                <FormLabel column={false}>Password</FormLabel>
-                                <FormControl placeholder={'...'}
+                                <FormLabel column={false}><strong>Enter password</strong></FormLabel>
+                                <FormControl placeholder={'Your password'}
                                              type={'password'}
                                              id={'loginPasswordInput'}
                                              required
                                              onChange={(e) => setPassword(e.target.value)}/>
                             </FormGroup>
                             <FormLabel className={"text-danger w-100"} column={false}>{errorMessage}</FormLabel>
-                            <Button className={"bg-blue text-white hover-shadow"}
+                            <Button className={"w-100"}
                                     type={'submit'}
+                                    // variant="primary"
                                     id={'loginSubmitButton'}>Login</Button>
                         </Form>
                     </Col>
