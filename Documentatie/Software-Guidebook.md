@@ -315,7 +315,7 @@ Bestand: Server/routes/api/v1/users/decks/columns/columns.js
 
 ### Algemeen
 
-
+![Infrastructure](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Infrastructure%20Architecture.svg)
 
 
 ### Leitner systeem
