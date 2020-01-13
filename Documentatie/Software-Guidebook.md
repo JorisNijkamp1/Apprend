@@ -303,7 +303,15 @@ Bestand: Server/routes/api/v1/users/decks/columns/columns.js
 
 
 **Login endpoints**:
+Bestand: Server/routes/api/v1/login
 
+| Methode | URl                  | Beschrijving                                      |
+|---------|----------------------|---------------------------------------------------|
+| GET     | /api/v1/login/succes | redirect URL voor als het ingeloggen is gelukt    |
+| GET     | /api/v1/login/error  | redirect URL voor als het inloggen niet is gelukt |
+| GET     | /api/v1/login/logout | wordt gebruikt om uit te loggen                   |
+| POST    | /api/v1/login        | Wordt gebruikt om in te loggen                    |
+| POST    | /api/v1/login/check  | Check of de gebruiker is ingelogd                 |
 
 
 ### MongoDB Database
