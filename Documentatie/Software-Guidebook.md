@@ -248,13 +248,19 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 De folderstructuur van de client-applicatie bevat drie belangrijke mappen:
 
 **components**
+
 Deze map bevat verschillende mappen die een feature van de applicatie omvatten. Zo'n map bevat een hoofdcomponent (JSX-bestand), een map met subcomponenten, bijbehorende reducers en bijbehorende actions & async-actions. Wanneer iets zoals een component in meerdere features gebruikt wordt, zal deze in de 'shared' map te vinden zijn.
 
+
 **redux-config**
+
 Deze map bevat alle Redux-setup-bestanden. Het bevat de mainReducer, die alle reducers samenvoegt tot één, maar ook alle action-types en API-configuraties. Dat laatste bestand bevat bijvoorbeeld de URL waar de API-calls naartoe gestuurd moeten worden.
 
+
 **util**
+
 Deze map bevat overige functies die in principe los staan van alle features, maar toch door bepaalde features gebruikt worden. Het bevat het Leitner-systeem en formuliervalidaties. Deze functies zouden in principe als losse modules kunnen worden gezien, en het voordeel hiervan is dat deze flexibel bij verschillende features ingezet kunnen worden waar en wanneer nodig.
+  
   
 ### NodeJS server  
   
