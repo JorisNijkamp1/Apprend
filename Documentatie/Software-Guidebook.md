@@ -188,7 +188,7 @@ De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevo
   
 - **Kennis van het projectteam**  
   > Het projectteam was niet bekend met Jest (unittests), Puppeteer (end-to-end tests) en React Native. Jest en Puppeteer moesten sowieso geïmplementeerd worden. <br />  
- Er is een keuze gemaakt om niet alles te testen met end-to-end tests, aangezien de applicatie steeds veranderde. Het aanpassen van end-to-end tests kostte te veel tijd.<br /><br /> De opdrachtgever had ook graag een mobiele app willen zien als er tijd over was. Het team heeft besloten om React Native hiervoor te gaan gebruiken. Er is een onderzoek uitgevoerd om in te schatten of het omzetten van de webapplicatie naar React Native gemakkelijk en haalbaar is. Het team vertrouwt er op dat dit gaat lukken, maar er is nog geen tijd gevonden om dit te kunnen doen. De prioriteit is zeer laag.   
+ Er is een keuze gemaakt om niet alles te testen met end-to-end tests, aangezien de applicatie steeds veranderde. Het aanpassen van end-to-end tests kostte te veel tijd.<br /><br /> De opdrachtgever had ook graag een mobiele app willen zien als er tijd over was. Het team heeft besloten om React Native hiervoor te gaan gebruiken. Er is een onderzoek uitgevoerd om in te schatten of het omzetten van de webapplicatie naar React Native gemakkelijk en haalbaar is. De prioriteit is zeer laag.   
 - **Gebruik van de Scrum methode.**  
   > Het projectteam heeft gebruik moeten maken van Scrum. Door deze flexibele methode te gebruiken zijn de meest gewenste user-stories geïmplementeerd en minder belangrijke mogelijk niet. Toch is de applicatie een werkend product, wat de bedoeling is van de Scrum methode. Zie het [Product Backlog](https://github.com/HANICA-DWA/sep2019-project-kiwi/projects/2?fullscreen=true&card_filter_query=label%3A%22user+story%22) voor een lijst met alle user-stories.  
   
@@ -221,6 +221,7 @@ De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevo
 - Unittests hebben een hogere prioriteit dan end-to-end tests.  
 - Async action creators staan in een apart bestand.  
 - Zo min mogelijk DRY code.  
+- Componenten staan samen met subcomponentent, reducers en actions in een map voor die functionaliteit, als deze toch ergens anders gebruikt worden zullen zij in de shared map staan.
   
 **Server**  
   
@@ -229,6 +230,7 @@ De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevo
 - API-endpoint URL's zijn RESTful waar mogelijk.  
 - "Build before buy", de applicatie bevat vooral zelfgemaakte algoritmes en functionaliteiten.  
 - Zo min mogelijk DRY code.  
+- Zo veel mogelijk authenticatie en acties laten behandelen door middleware.
   
 ## Software Architecture  
 De applicatie bestaat uit drie grote componenten zoals te zien in het onderstaande container diagram.  
