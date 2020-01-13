@@ -1,4 +1,4 @@
-import {API_URL} from '../../../../redux/urls';
+import {API_URL} from '../../../../redux-config/urls';
 
 describe('Home search-deck API', function () {
     const valueDeck = "Filipino";

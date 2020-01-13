@@ -1,9 +1,9 @@
-import {set_DecksHome} from '../../redux/actionTypes';
-import {API_URL} from '../../redux/urls';
+import {SET_DECKS_HOME} from '../../redux-config/actionTypes';
+import {API_URL} from '../../redux-config/urls';
 
 export function setHomepageDecksAction(name) {
     return {
-        type: set_DecksHome,
+        type: SET_DECKS_HOME,
         payload: name
     }
 }

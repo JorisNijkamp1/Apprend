@@ -1,4 +1,4 @@
-import {API_URL} from '../../redux/urls';
+import {API_URL} from '../../redux-config/urls';
 import {
     SET_PLAYING_CARDS,
     SET_CORRECT_CARDS,
@@ -9,7 +9,7 @@ import {
     SET_GAME_ID,
     SET_PLAYING_DECK,
     PLAYING_ERROR_OCCURRED
-} from '../../redux/actionTypes';
+} from '../../redux-config/actionTypes';
 import {leitnerGetNewBox} from '../../util/leitner-system/leitnerSystem';
 
 export function setCardsAction(cards) {

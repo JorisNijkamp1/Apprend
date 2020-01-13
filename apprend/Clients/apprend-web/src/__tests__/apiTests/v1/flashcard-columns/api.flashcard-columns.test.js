@@ -1,4 +1,4 @@
-import {API_URL} from '../../../../redux/urls';
+import {API_URL} from '../../../../redux-config/urls';
 
 describe('Edit the value of a column of a flashcard', () => {
 

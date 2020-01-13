@@ -1,4 +1,4 @@
-import {API_URL} from '../../../../redux/urls';
+import {API_URL} from '../../../../redux-config/urls';
 
 describe('Filter API tests', function () {
     test('Fail to get all decks belonging to a specific user', async () => {

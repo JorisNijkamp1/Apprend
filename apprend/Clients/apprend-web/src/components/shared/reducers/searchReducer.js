@@ -1,5 +1,5 @@
 import produce from 'immer'
-import {SEARCH_SUGGESTIONS, SEARCH_SET_IS_LOADING, SEARCH_SET_SEARCH_VALUE} from "../../../redux/actionTypes";
+import {SEARCH_SUGGESTIONS, SEARCH_SET_IS_LOADING, SEARCH_SET_SEARCH_VALUE} from "../../../redux-config/actionTypes";
 
 const initialState = {
     searchValue: null,
