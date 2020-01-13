@@ -293,6 +293,15 @@ Bestand: Server/routes/api/v1/users/decks/decks.js
 |         |                                     |                                                                                                     |
 |         |                                     |                                                                                                     |
 
+Bestand: Server/routes/api/v1/users/decks/columns/columns.js
+
+| Methode | URl                                                  | Beschrijving                 |
+|---------|------------------------------------------------------|------------------------------|
+| POST    | /api/v1/user/:userId/decks/:deckId/columns           | Kolom toevoegen aan een deck |
+| PATCH   | /api/v1/user/:userId/decks/:deckId/columns/:columnId | Aanpassen van kolommen       |
+| DELETE  | /api/v1/user/:userId/decks/:deckId/columns/:columnId | Verwijder van een kolom      |
+
+
 **Login endpoints**:
 
 
