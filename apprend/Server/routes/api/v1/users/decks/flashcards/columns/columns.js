@@ -14,13 +14,6 @@ const Column = mongoose.model('Column')
 
 const auth = require('../../../../../../../authentication/authentication')
 
-// MIDDLEWARE - Check if {columdId} exists
-// columns.use('/:columnId/', async (req, res, next) => {
-//     req.column = req.flashcard.columns[req.params.columnId]
-//     if (!req.column) return res.status(404).json({message: 'Column does not exist'})
-//     return next()
-// })
-
 columns.use('/:columnId/', async (req, res, next) => {
     req.column = req.flashcard.columns.id(req.params.columnId)
     if (!req.column) return res.status(404).json({message: 'Column does not exist'})
