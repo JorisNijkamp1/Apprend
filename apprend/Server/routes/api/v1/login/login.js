@@ -67,8 +67,7 @@ login.get('/success', (req, res) => {
 login.get('/error', (req, res) => {
     res.json({
         success: false,
-        error: "You aren't logged in",
-        session: req.session // <-- for testing
+        error: "You aren't logged in"
     });
 });
 
