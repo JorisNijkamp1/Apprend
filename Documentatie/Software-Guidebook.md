@@ -267,40 +267,33 @@ Deze map bevat overige functies die in principe los staan van alle features, maa
 ![Apprend NodeJS server component diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)  
   
 **Decks endpoints**:  
-  
-| Method | URL                                                      | Beschrijving                                            |
-|--------|----------------------------------------------------------|---------------------------------------------------------|
-| GET    | /api/v1/decks/home                                       | Haal de decks voor de homepage op.                      |
-| GET    | /api/v1/decks/:deckId                                    | Haalt een specifiek deck op.                            |
-| GET    | /api/v1/decks/:deckId/flashcards                         | Haalt alle flashcard van een deck op.                   |
-| GET	 | /api/v1/decks/:username/tags	                            | Haalt alle decks van een user op.	                      |
-| POST   | /api/v1/decks                                            | Maakt een nieuw deck aan.                               |
-| POST	 | /api/v1/decks/:deckId                                    | Importeer een deck van een ander                        |
-| POST   | /api/v1/decks/:deckId/flashcards                         | Edit flashcards van een specifiek deck.                 |
-| PUT    | /api/v1/decks/:deckId/flashcards/:flashcardId/leitnerSelectCards    | Update box en sessionPlayed van een flashcard.          |
-| PUT    | /api/v1/decks/:deckId/session                            | Update session van een deck.                            |
-| DELETE | /api/v1/decks/:deckId                                    | Verwijdert een specifiek deck.                          |
-| PATCH | /api/v1/decks/:deckId                                    | Zet een deck op public of private (toggle)                         |
+  Bestand: Server/routes/api/v1/decks/decks.js
+| Method | URL                              | Beschrijving                                                                  |
+|--------|----------------------------------|-------------------------------------------------------------------------------|
+| GET    | /api/v1/decks/tags               | Ophalen van een deck op basis van een gezochte tag                            |
+| GET    | /api/v1/decks/                   | Zoeken naar decks en gebruikers                                               |
+| GET    | /api/v1/decks/home               | Decks ophalen die getoond worden op de homepage                               |
+| GET    | /api/v1/decks/:deckId            | Deck ophalen op basis van een deckId                                          |
+| GET    | /api/v1/decks/:deckId/flashcards | Alle flashcards van een deck ophalen op basis van deckId                      |
+| POST   | /api/v1/decks/                   | Deck aanmaken en als je nog geen gebruiker bent een anoniem account aanmaken. |
+| POST   | /api/v1/decks/:deckId/flashcards | Flashcards aanpassen van een deck                                             |
 
 
 **Users endpoints**:
-
-| Method | URL                           | Beschrijving                                |
-|--------|-------------------------------|---------------------------------------------|
-| GET    | /api/v1/users/:username/decks | Haalt alle deck van een specifieke user op. |
-| GET    | /api/v1/users/:id             | Haalt een gebruik op basis van id op.       |
-| GET    | /api/v1/users/:id/_id         | Haalt een gebruik op bij ID bij het _id.    |
-| GET    | /api/v1/users/email           | Haal een gebruiker op op basis van email.   |
-| POST   | /api/v1/users/                | Maak een nieuwe gebruiker aan.              |
-| DELETE | /api/v1/users/:id             | Verwijder een gebruiken op basis van id.    |
+Bestand: Server/routes/api/v1/users/decks/decks.js
+| Methode | URL                                 | Beschrijving                                                                                        |
+|---------|-------------------------------------|-----------------------------------------------------------------------------------------------------|
+| GET     | /api/v1/users/:userId/decks/:deckId | Haalt een deck op                                                                                   |
+| POST    | /api/v1/users/:userId/decks/:deckId | Importeren van een deck en hierbij een anoniemand gebruiker aanmaken als je nog niet ingelogd bent. |
+| PUT     | /api/v1/users/:userId/decks/:deckId | Aanpassen van deck informatie                                                                       |
+| PATCH   | /api/v1/users/:userId/decks/:deckId | Deck public of private maken                                                                        |
+| DELETE  | /api/v1/users/:userId/decks/:deckId | Verwijderen van een deck                                                                            |
+|         |                                     |                                                                                                     |
+|         |                                     |                                                                                                     |
 
 **Login endpoints**:
 
-| Method | URL                  | Beschrijving                  |
-|--------|----------------------|-------------------------------|
-| GET    | /api/v1/login/succes | Redirect als het success is.  |
-| GET    | /api/v1/login/error  | Redirect als er een error is. |
-| POST   | /api/v1/login/check  | Kijk of de gegevens kloppen.  |
+
 
 ### MongoDB Database
 
