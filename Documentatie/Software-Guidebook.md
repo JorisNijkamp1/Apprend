@@ -45,6 +45,7 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
     - De gebruiker kan een beschrijving opgeven.
     - De gebruiker kan tags toevoegen aan zijn deck.
     - De gebruiker kan het deck public of private maken, standaard instelling is public.
+    - De gebruiker kan kiezen welke typen kolommen er in mogen komen.
 
 - **Deck spelen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Deck-playing.svg)
@@ -56,62 +57,75 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
     - Aangeven of hij/zij de flashcard fout had;
     - Het spel beëindigen;
     - Een scoreboard inzien wanneer het spelen voorbij is;
+    - De gebruiker kan vooraf kiezen welke kolommen op de voor- en achterzijde getoond zullen worden;
+    - De gebruiker kan audiokolommen afspelen;
 
 - **Decks bewerken**
-[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/edit-deck.svg)
+[Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/edit-deck.svg) [Wireframes](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/wireframes%20flashcards%20table.svg)
 
 	> Wanneer een gebruiker een overzicht van decks bekijkt waarvan hij de eigenaar/maker is, dan ziet de gebruiker een icon met een papier en pen. De gebruiker kan op deze icon drukken om dat specifieke deck te kunnen aanpassen. De gebruiker kan de wijzigingen opslaan door op het bevestigknopje te drukken of annuleren door nogmaals op hetzelfde icoontje of het annuleerknopje te drukken. De bevestiging- en annuleerknoppen worden zichtbaar nadat de gebruiker kiest om een deck aan te willen passen.\
 	\
-	Wanneer de gebruiker een deck aan het aanpassen is, dan zullen deze wijzigingen opgeslagen worden in de state van het component. Als de gebruiker zijn wijziging opslaat, dan wordt de wijziging-state opgestuurd naar de server. Als de gebruiker besluit om de wijzigingen te annuleren, dan wordt de wijziging-state gereset.\
+	Een gebruiker kan zijn deck wijzigen op de pagina met al zijn decks, maar ook op de pagina van een deck zelf. Wanneer de gebruiker een deck aan het aanpassen is, dan zullen deze wijzigingen opgeslagen worden in de state van het component. Als de gebruiker zijn wijziging opslaat, dan wordt de wijziging-state opgestuurd naar de server. Als de gebruiker besluit om de wijzigingen te annuleren, dan wordt de wijziging-state gereset.\
 	\
-	De volgende invoervelden zijn aanwezig:\
+	De volgende invoervelden zijn aanwezig op de pagina met alle decks:\
+		- De gebruiker kan een naam aanpassen.\
+		- De gebruiker kan een beschrijving aanpassen.
+	\
+	De volgende invoervelden zijn aanwezig op de pagina van het deck zelf:\
 		- De gebruiker kan een naam aanpassen.\
 		- De gebruiker kan een beschrijving aanpassen.
 		- De gebruiker kan tags toevoegen en verwijderen.
+		- De gebruiker kan tekst, audio of afbeelding kolommen toevoegen of weghalen.
+		- De gebruiker kan een kolom een naam geven.
 
 - **Decks verwijderen**
-	> Wanneer een gebruiker een overzicht van decks bekijkt waarvan hij de eigenaar/maker is, dan ziet de gebruiker een vuilnisbak-icon. De gebruiker kan op deze icon drukken om dat specifieke deck te verwijderen. Wanneer de gebruiker op deze knop drukt wordt in de state van het component opgeslagen dat deze deck verwijderd dient te worden. De gebruiker dient vervolgens op de bevestigingsknop te drukken om het deck te verwijderen of kan het annuleren door nogmaals op de vuilnisbak-icon te klikken, op de annuleerknop of simpelweg niets te doen.
+	> Wanneer een gebruiker een overzicht van decks bekijkt waarvan hij de eigenaar/maker is, dan ziet de gebruiker een vuilnisbak-icon. De gebruiker kan op deze icon drukken om dat specifieke deck te verwijderen. Wanneer de gebruiker op deze knop drukt wordt in de state van het component opgeslagen dat deze deck verwijderd dient te worden. De gebruiker dient vervolgens op de bevestigingsknop te drukken om het deck te verwijderen of kan het annuleren door nogmaals op de vuilnisbak-icon te klikken, op de annuleerknop of simpelweg niets te doen. Een deck verwijderen kan ook op de pagina van het deck zelf.
 	> De gebruiker krijgt een bevestigingsmelding.
 	
 - **Flashcards filteren**
-	> De gebruiker kan filteren tussen alle flashcards d.m.v een zoek balk
-	> De gebruiker krijgt een melding als er geen resultaten zijn
+	> De gebruiker kan op de pagina van het deck filteren tussen alle flashcards d.m.v een zoek balk.
+	> De gebruiker kan alleen filteren op text-type kolommen.
 
 - **Flashcards bewerken**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
 	>	De volgende invoervelden zijn aanwezig:
-    - De gebruiker kan een vraag/term aanpassen op de ene kant.
-    - De gebruiker kan een antwoord/definitie aanpassen op de andere kant.
+    - De gebruiker kan een flashcard toevoegen met content dat past bij de gekozen type kolommen van het deck
+    - De gebruiker kan een stuk tekst toevoegen bij tekstkolommen.
+    - De gebruiker kan een afbeelding uploaden (van maximaal dan 10mb) of een link opgeven bij afbeeldingkolommen.
+    - De gebruiker kan een audiobestand uploaden (van maximaal dan 10mb) bij audiokolommen.
 
 - **Flashcards uit een deck verwijderen**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Flashcard-create-modify.svg)
 	> De gebruiker kan een oneindig aantal flashcards toevoegen.<br />
 	<br />
 	De volgende invoervelden zijn aanwezig:
-    - De gebruiker kan een vraag/term opgeven op de ene kant.
-    - De gebruiker kan een antwoord/definitie opgeven op de andere kant.
     - De gebruiker krijgt een bevestigingsmelding.
 
 - **Importeren van een deck**
-	> Als gast of (anonieme) gebruiker wil ik decks kunnen importeren van een andere Apprend gebruiker, zodat ik iets kan oefenen zonder dat ik daarvoor een deck aan moet maken.
-	De volgende invoervelden zijn aanwezig:
-    - Een deck importeren en hem daarna zelf aanpassen
-    - Een deck alleen importeren als dit deck public is.
-    - De gebruiker krijgt een bevestigingsmelding.
+	> Als gast of (anonieme) gebruiker wil ik decks kunnen importeren van een andere Apprend gebruiker, zodat ik iets kan oefenen zonder dat ik daarvoor een deck aan moet maken. De gebruiker kan zien hoe vaak het deck al geïmporteerd is, en kan op een knop klikken om het deck te importeren. Er wordt een kopie gemaakt en de gebruiker wordt doorgestuurd naar het nieuwe geïmporteerde deck. De gebruiker kan daarnaast ook met een knop terug naar het originele deck.
     
 - **Decks afschermen voor andere gebruikers**
-	> Als gast of (anonieme) gebruiker wil ik decks kunnen private kunnen maken.
+	> Als gast of (anonieme) gebruiker wil ik decks private kunnen maken.
 	De gebruiker kan:
     - Bij het aanmaken van een deck kiezen tussen een public of private deck.
-    - Achteraf op de specifieke deckpagina of in het overzicht van al zijn decks een deck private/public maken door op een knop te drukken die de huidige sharestatus laat zien.
+    - Achteraf op de specifieke deckpagina, of in het overzicht van al zijn decks, een deck private/public maken door op een knop te drukken die de huidige sharestatus laat zien.
 
 
-- **Zoeken naar decks**
+- **Zoeken naar decks** [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-home-webapp-search%20page.svg) [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-home-webapp-homepage-with-search.svg)
 	> Als gast of (anonieme) gebruiker wil ik decks kunnen zoeken.
 	De gebruiker kan:
     - Een deck zoeken aan de hand van een invoerveld.
     - Geholpen worden met zoeken aan de hand van suggesties.
     - Gelijk naar een deck gaan door op een suggestie te klikken.
+    - De gebruiker gaat naar een resultatenpagina wanneer hij op enter of de zoekknop drukt.
+    
+- **Zoeken naar gebruikers** [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-home-webapp-search%20page.svg) [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-home-webapp-homepage-with-search.svg)
+	> Als gast of (anonieme) gebruiker wil ik gebruikers kunnen zoeken.
+	De gebruiker kan:
+    - Een andere gebruiker zoeken aan de hand van een invoerveld.
+    - Geholpen worden met zoeken aan de hand van suggesties.
+    - Gelijk naar een gebruiker gaan door op een suggestie te klikken.
+    - De gebruiker gaat naar een resultatenpagina wanneer hij op enter of de zoekknop drukt.
 
 - **Registreren nieuw account**
 [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Apprend-registreren-webapp.svg)
@@ -131,10 +145,20 @@ De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het 
 - **Uitloggen**
 	> De gebruiker kan op uitloggen klikken om uit te loggen.
 	> De gebruiker krijg een melding te zien dat hij of zij uitgelogd is.
+	> De gebruiker wordt doorgestuurd naar de homepagina.
 	
-- **Deck importeren**
-	> Een anonieme of ingelogde gebruiker kan een deck importeren.
-	> De gebruiker krijgt een melding dat het deck geïmporteerd is.
+- **Accountgegevens wijzigen**
+	> De gebruiker kan op zijn profielpagina zijn E-mailadres en wachtwoord aanpassen.
+
+- **Account verwijderen**
+	> De gebruiker heeft de optie om zijn account volledig te verwijderen. De gebruiker logt vervolgens uit en wordt doorgestuurd naar de homepagina.
+
+- **AVG-melding**
+	> De gebruiker ziet op elke pagina een AVG-melding met korte informatie onderin het scherm. De gebruiker kan vervolgens alle voorwaarden lezen of de voorwaarden accepteren. Wanneer de gebruiker de voorwaarden accepteert zal de melding niet meer getoond worden.
+
+- **Filteren op tags** [Wireframe](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Wireframes/Filter-Decks-With-Tags.svg)
+	> De gebruiker kan op zijn overzicht met decks filteren op tags. De gebruiker ziet vervolgens
+	
 	
 ## Quality Attributes  
 De onderstaande lijst bevat een overzicht van niet-functionele kwaliteitsattributen van het systeem.  
@@ -164,7 +188,7 @@ De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevo
   
 - **Kennis van het projectteam**  
   > Het projectteam was niet bekend met Jest (unittests), Puppeteer (end-to-end tests) en React Native. Jest en Puppeteer moesten sowieso geïmplementeerd worden. <br />  
- Er is een keuze gemaakt om niet alles te testen met end-to-end tests, aangezien de applicatie steeds veranderde. Het aanpassen van end-to-end tests kostte te veel tijd.<br /><br /> De opdrachtgever had ook graag een mobiele app willen zien als er tijd over was. Het team heeft besloten om React Native hiervoor te gaan gebruiken. Er is een onderzoek uitgevoerd om in te schatten of het omzetten van de webapplicatie naar React Native gemakkelijk en haalbaar is. Het team vertrouwt er op dat dit gaat lukken, maar er is nog geen tijd gevonden om dit te kunnen doen. De prioriteit is zeer laag.   
+ Er is een keuze gemaakt om niet alles te testen met end-to-end tests, aangezien de applicatie steeds veranderde. Het aanpassen van end-to-end tests kostte te veel tijd.<br /><br /> De opdrachtgever had ook graag een mobiele app willen zien als er tijd over was. Het team heeft besloten om React Native hiervoor te gaan gebruiken. Er is een onderzoek uitgevoerd om in te schatten of het omzetten van de webapplicatie naar React Native gemakkelijk en haalbaar is. De prioriteit is zeer laag.   
 - **Gebruik van de Scrum methode.**  
   > Het projectteam heeft gebruik moeten maken van Scrum. Door deze flexibele methode te gebruiken zijn de meest gewenste user-stories geïmplementeerd en minder belangrijke mogelijk niet. Toch is de applicatie een werkend product, wat de bedoeling is van de Scrum methode. Zie het [Product Backlog](https://github.com/HANICA-DWA/sep2019-project-kiwi/projects/2?fullscreen=true&card_filter_query=label%3A%22user+story%22) voor een lijst met alle user-stories.  
   
@@ -197,6 +221,7 @@ De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevo
 - Unittests hebben een hogere prioriteit dan end-to-end tests.  
 - Async action creators staan in een apart bestand.  
 - Zo min mogelijk DRY code.  
+- Componenten staan samen met subcomponentent, reducers en actions in een map voor die functionaliteit, als deze toch ergens anders gebruikt worden zullen zij in de shared map staan.
   
 **Server**  
   
@@ -205,6 +230,7 @@ De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevo
 - API-endpoint URL's zijn RESTful waar mogelijk.  
 - "Build before buy", de applicatie bevat vooral zelfgemaakte algoritmes en functionaliteiten.  
 - Zo min mogelijk DRY code.  
+- Zo veel mogelijk authenticatie en acties laten behandelen door middleware.
   
 ## Software Architecture  
 De applicatie bestaat uit drie grote componenten zoals te zien in het onderstaande container diagram.  

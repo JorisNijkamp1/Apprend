@@ -1,0 +1,4 @@
+- Taken Software Guidebook opsplitsen
+- Elke ochtend paar uur doen ipv hele dag documenteren
+- Deployment = instructies voor runnen tests en technisch
+- Installatie = instructies voor opzetten applicatie voor productie

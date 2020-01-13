@@ -27,7 +27,7 @@ const TagOverview = (props) => {
         const match = [];
         for (let i = 0; i < decks.length; i++) {
             for (let j = 0; j < decks[i].decks.tags.length; j++) {
-                if (decks[i].decks.tags[j] === tag.trim().toLowerCase()) {
+                if (decks[i].decks.tags[j] === tag.trim()) {
                     match.push(decks[i].decks)
                 }
             }
