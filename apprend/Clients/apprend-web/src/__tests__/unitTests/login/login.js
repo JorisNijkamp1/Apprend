@@ -1,5 +1,5 @@
 import {setLoginAction} from '../../../components/login/actions';
-import {SET_LOGINACTION} from '../../../redux/actionTypes';
+import {SET_LOGINACTION} from '../../../redux-config/actionTypes';
 
 test('Action type SET_LOGINACTION is correct', () => {
     const expected = SET_LOGINACTION;

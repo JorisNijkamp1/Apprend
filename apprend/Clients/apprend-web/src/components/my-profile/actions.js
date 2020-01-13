@@ -1,5 +1,5 @@
-import {API_URL} from '../../redux/urls';
-import {SET_USER} from "../../redux/actionTypes";
+import {API_URL} from '../../redux-config/urls';
+import {SET_USER} from "../../redux-config/actionTypes";
 import {setUserDecksDecksAction} from "../shared/actions/actions";
 
 export function setUser(user) {

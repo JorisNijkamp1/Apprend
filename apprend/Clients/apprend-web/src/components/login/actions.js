@@ -1,4 +1,4 @@
-import {SET_ANONYMOUS_USER, SET_LOGINACTION} from '../../redux/actionTypes'
+import {SET_ANONYMOUS_USER, SET_LOGINACTION} from '../../redux-config/actionTypes'
 
 export function setLoginAction(username) {
     return {

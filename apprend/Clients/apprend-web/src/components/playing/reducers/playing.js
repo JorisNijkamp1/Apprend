@@ -8,7 +8,7 @@ import {
     SET_ISLOADING,
     SET_GAME_ID,
     PLAYING_ERROR_OCCURRED
-} from '../../../redux/actionTypes';
+} from '../../../redux-config/actionTypes';
 
 const initialState = {
     deck: null,

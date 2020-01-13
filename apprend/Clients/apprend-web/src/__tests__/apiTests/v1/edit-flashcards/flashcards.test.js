@@ -1,5 +1,5 @@
 'use strict';
-import {API_URL} from "../../../../redux/urls";
+import {API_URL} from "../../../../redux-config/urls";
 
 describe('Get flashcards from a deck', () => {
     const deckId = "5ddfadab612b09570c6f3a33"

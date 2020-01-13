@@ -4,7 +4,7 @@
 |-----------------------------------------------------------
  */
 
-import {API_URL} from '../../../../redux/urls';
+import {API_URL} from '../../../../redux-config/urls';
 import {seedUsers} from '../../../../../../../Server/seed';
 
 describe('Decks API tests', function () {

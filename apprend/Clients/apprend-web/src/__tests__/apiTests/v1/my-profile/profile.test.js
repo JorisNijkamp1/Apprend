@@ -1,4 +1,4 @@
-import {API_URL} from '../../../../redux/urls';
+import {API_URL} from '../../../../redux-config/urls';
 
 describe('Update user email & password', () => {
     const user = {

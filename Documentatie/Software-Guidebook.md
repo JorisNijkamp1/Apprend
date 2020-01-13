@@ -244,46 +244,75 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 ### React WebApp  
   
 ![Apprend container diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20React%20Native%20App%20Component.svg)  
+
+De folderstructuur van de client-applicatie bevat drie belangrijke mappen:
+
+**components**
+
+Deze map bevat verschillende mappen die een feature van de applicatie omvatten. Zo'n map bevat een hoofdcomponent (JSX-bestand), een map met subcomponenten, bijbehorende reducers en bijbehorende actions & async-actions. Wanneer iets zoals een component in meerdere features gebruikt wordt, zal deze in de 'shared' map te vinden zijn.
+
+
+**redux-config**
+
+Deze map bevat alle Redux-setup-bestanden. Het bevat de mainReducer, die alle reducers samenvoegt tot één, maar ook alle action-types en API-configuraties. Dat laatste bestand bevat bijvoorbeeld de URL waar de API-calls naartoe gestuurd moeten worden.
+
+
+**util**
+
+Deze map bevat overige functies die in principe los staan van alle features, maar toch door bepaalde features gebruikt worden. Het bevat het Leitner-systeem en formuliervalidaties. Deze functies zouden in principe als losse modules kunnen worden gezien, en het voordeel hiervan is dat deze flexibel bij verschillende features ingezet kunnen worden waar en wanneer nodig.
+  
   
 ### NodeJS server  
   
 ![Apprend NodeJS server component diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)  
   
 **Decks endpoints**:  
-  
-| Method | URL                                                      | Beschrijving                                            |
-|--------|----------------------------------------------------------|---------------------------------------------------------|
-| GET    | /api/v1/decks/home                                       | Haal de decks voor de homepage op.                      |
-| GET    | /api/v1/decks/:deckId                                    | Haalt een specifiek deck op.                            |
-| GET    | /api/v1/decks/:deckId/flashcards                         | Haalt alle flashcard van een deck op.                   |
-| GET	 | /api/v1/decks/:username/tags	                            | Haalt alle decks van een user op.	                      |
-| POST   | /api/v1/decks                                            | Maakt een nieuw deck aan.                               |
-| POST	 | /api/v1/decks/:deckId                                    | Importeer een deck van een ander                        |
-| POST   | /api/v1/decks/:deckId/flashcards                         | Edit flashcards van een specifiek deck.                 |
-| PUT    | /api/v1/decks/:deckId/flashcards/:flashcardId/leitnerSelectCards    | Update box en sessionPlayed van een flashcard.          |
-| PUT    | /api/v1/decks/:deckId/session                            | Update session van een deck.                            |
-| DELETE | /api/v1/decks/:deckId                                    | Verwijdert een specifiek deck.                          |
-| PATCH | /api/v1/decks/:deckId                                    | Zet een deck op public of private (toggle)                         |
+  Bestand: Server/routes/api/v1/decks/decks.js
+
+| Method | URL                              | Beschrijving                                                                  |
+|--------|----------------------------------|-------------------------------------------------------------------------------|
+| GET    | /api/v1/decks/tags               | Ophalen van een deck op basis van een gezochte tag                            |
+| GET    | /api/v1/decks/                   | Zoeken naar decks en gebruikers                                               |
+| GET    | /api/v1/decks/home               | Decks ophalen die getoond worden op de homepage                               |
+| GET    | /api/v1/decks/:deckId            | Deck ophalen op basis van een deckId                                          |
+| GET    | /api/v1/decks/:deckId/flashcards | Alle flashcards van een deck ophalen op basis van deckId                      |
+| POST   | /api/v1/decks/                   | Deck aanmaken en als je nog geen gebruiker bent een anoniem account aanmaken. |
+| POST   | /api/v1/decks/:deckId/flashcards | Flashcards aanpassen van een deck                                             |
 
 
 **Users endpoints**:
+Bestand: Server/routes/api/v1/users/decks/decks.js
 
-| Method | URL                           | Beschrijving                                |
-|--------|-------------------------------|---------------------------------------------|
-| GET    | /api/v1/users/:username/decks | Haalt alle deck van een specifieke user op. |
-| GET    | /api/v1/users/:id             | Haalt een gebruik op basis van id op.       |
-| GET    | /api/v1/users/:id/_id         | Haalt een gebruik op bij ID bij het _id.    |
-| GET    | /api/v1/users/email           | Haal een gebruiker op op basis van email.   |
-| POST   | /api/v1/users/                | Maak een nieuwe gebruiker aan.              |
-| DELETE | /api/v1/users/:id             | Verwijder een gebruiken op basis van id.    |
+| Methode | URL                                 | Beschrijving                                                                                        |
+|---------|-------------------------------------|-----------------------------------------------------------------------------------------------------|
+| GET     | /api/v1/users/:userId/decks/:deckId | Haalt een deck op                                                                                   |
+| POST    | /api/v1/users/:userId/decks/:deckId | Importeren van een deck en hierbij een anoniemand gebruiker aanmaken als je nog niet ingelogd bent. |
+| PUT     | /api/v1/users/:userId/decks/:deckId | Aanpassen van deck informatie                                                                       |
+| PATCH   | /api/v1/users/:userId/decks/:deckId | Deck public of private maken                                                                        |
+| DELETE  | /api/v1/users/:userId/decks/:deckId | Verwijderen van een deck                                                                            |
+|         |                                     |                                                                                                     |
+|         |                                     |                                                                                                     |
+
+Bestand: Server/routes/api/v1/users/decks/columns/columns.js
+
+| Methode | URl                                                  | Beschrijving                 |
+|---------|------------------------------------------------------|------------------------------|
+| POST    | /api/v1/user/:userId/decks/:deckId/columns           | Kolom toevoegen aan een deck |
+| PATCH   | /api/v1/user/:userId/decks/:deckId/columns/:columnId | Aanpassen van kolommen       |
+| DELETE  | /api/v1/user/:userId/decks/:deckId/columns/:columnId | Verwijder van een kolom      |
+
 
 **Login endpoints**:
+Bestand: Server/routes/api/v1/login
 
-| Method | URL                  | Beschrijving                  |
-|--------|----------------------|-------------------------------|
-| GET    | /api/v1/login/succes | Redirect als het success is.  |
-| GET    | /api/v1/login/error  | Redirect als er een error is. |
-| POST   | /api/v1/login/check  | Kijk of de gegevens kloppen.  |
+| Methode | URl                  | Beschrijving                                      |
+|---------|----------------------|---------------------------------------------------|
+| GET     | /api/v1/login/succes | redirect URL voor als het ingeloggen is gelukt    |
+| GET     | /api/v1/login/error  | redirect URL voor als het inloggen niet is gelukt |
+| GET     | /api/v1/login/logout | wordt gebruikt om uit te loggen                   |
+| POST    | /api/v1/login        | Wordt gebruikt om in te loggen                    |
+| POST    | /api/v1/login/check  | Check of de gebruiker is ingelogd                 |
+
 
 ### MongoDB Database
 
@@ -294,7 +323,7 @@ De server praat vervolgens met de database om gegevens op te halen of op te slaa
 
 ### Algemeen
 
-
+![Infrastructure](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Infrastructure%20Architecture.svg)
 
 
 ### Leitner systeem

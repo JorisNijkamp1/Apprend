@@ -1,4 +1,4 @@
-import {API_URL} from '../../../redux/urls';
+import {API_URL} from '../../../redux-config/urls';
 import {
     SEARCH_SET_IS_LOADING,
     SEARCH_SET_SEARCH_VALUE,
@@ -17,7 +17,7 @@ import {
     DELETE_FILTERED_TAG,
     FILTER_SET_TAGS,
     CLEAR_FILTERED_TAGS
-} from '../../../redux/actionTypes';
+} from '../../../redux-config/actionTypes';
 import {setAnonymousUserAction, setLoginAction} from "../../login/actions";
 import { Notification } from '../components/Notification'
 

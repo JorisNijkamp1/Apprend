@@ -1,4 +1,4 @@
-import {set_DecksHome} from "../../../redux/actionTypes";
+import {SET_DECKS_HOME} from "../../../redux-config/actionTypes";
 import produce from 'immer'
 
 const initialState = {
@@ -11,7 +11,7 @@ const initialState = {
 export default function clientReducer(state = initialState, action) {
     return produce(state, draft => {
         switch (action.type) {
-            case set_DecksHome:
+            case SET_DECKS_HOME:
                 draft['decksHome'] = action.payload
                 break
             case 'DECKS_TOGGLE_QUICKDELETE':
