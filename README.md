@@ -130,3 +130,5 @@ Voor End-to-end Tests:
 ```
 > npm run e2e
 ```
+
+De testresultaten zullen weergeven worden in de console waar deze zijn uitgevoerd.
