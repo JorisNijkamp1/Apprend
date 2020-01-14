@@ -20,7 +20,7 @@ Lars Tijsma
 ### Skills 
 Helen Visser
 
-# Deployment
+# Installatie & Deployment
 
 ### Vereisten
 Zorg dat de laatste versies van [NodeJS](https://nodejs.org/) en [MongoDB](https://www.mongodb.com/) beschikbaar en gestart zijn op de deployment server.
