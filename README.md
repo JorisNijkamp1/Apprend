@@ -114,7 +114,7 @@ De applicatie bevat 3 soorten automatische tests: Unit Tests, API-tests & End-to
 > npm test
 ```
 
-Om specifiek tests uit te voeren:
+**Specifieke tests uitvoeren**
 
 Voor Unit Tests:
 ```
