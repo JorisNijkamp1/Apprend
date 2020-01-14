@@ -31,7 +31,6 @@ export default props => {
                                                 style={{'display': 'none'}}
                                                 type="file"
                                                 label="image"
-                                                id={'123'}
                                                 name="image"
                                             />  
                         </label>
@@ -49,6 +48,7 @@ export default props => {
                                 size={'1x'}
                                 />
                         </Button> :                         <input 
+                            id={props.giveId}
                             name={`input-${props.column._id}`}
                             style={{'minWidth': '80px'}} 
                             placeholder="Image url" 

@@ -121,7 +121,8 @@ const FlashcardTableComponent = (props) => {
                 {buttons.map((button, index) => (
                     <Col xs={12} md={4} key={button.type + index + 'col'}>
                         <AddColumnButton 
-                            key={button.type + index} 
+                            key={button.type + index}
+                            giveId={`button-${button.type}-${index}`} 
                             name={button.type} value={''} 
                             buttonType={button.type} 
                             onClick={handleAddColumn}/>
@@ -136,6 +137,7 @@ const FlashcardTableComponent = (props) => {
         return columns.map((column, index) => (
             <td key={column.type + column.name + index + '-type'}>
                 <input 
+                    id={`column-name-${column.type}-${column.index}`}
                     name={column.name + '!' + index}
                     defaultValue={column.name} 
                     placeholder={column.name} 
@@ -152,6 +154,7 @@ const FlashcardTableComponent = (props) => {
                 <strong>{column.type}</strong>
                 {upForDelete !== index ? 
                 <DeleteButton
+                    id={`delete-${column.type}-${column.index}`}
                     onClick={() => handleAllDeleteActions(() => handleDeleteColumn(index), index)}
                     columnId={column._id}
                     />
@@ -197,6 +200,7 @@ const FlashcardTableComponent = (props) => {
                     <strong># {indexFlashcard + 1}</strong>
                     {upForDelete !== flashcard._id ? 
                     <DeleteButton
+                        giveId={`delete-${flashcard._id}`}
                         columnId={flashcard._id}
                         onClick={() => handleAllDeleteActions(() => handleDeleteFlashcard(flashcard._id), flashcard._id)}
                         />
@@ -207,7 +211,7 @@ const FlashcardTableComponent = (props) => {
 
                     if (column.type === 'Image'){
                         return (
-                            <td>
+                            <td key={column.id}>
                                 <Row className="align-content-center">
                                     <Col>
                                         <ColumnImage 
@@ -219,6 +223,7 @@ const FlashcardTableComponent = (props) => {
                                             flashcardId={flashcard._id}
                                             columnId={column._id}
                                             handleLink={handleEditFlashcardColumn}
+                                            giveId={`column-${indexFlashcard}-${indexColumn}`}
                                             />
                                     </Col>
                                 </Row>
@@ -228,7 +233,7 @@ const FlashcardTableComponent = (props) => {
 
                     if (column.type === 'Audio'){
                         return (
-                            <td>
+                            <td key={column.id}>
                                 <Row className="align-content-center d-flex flex-nowrap">
                                     <Col>
                                         <ColumnAudio 
@@ -239,6 +244,7 @@ const FlashcardTableComponent = (props) => {
                                             column={column}
                                             columnId={column._id}
                                             handleLink={handleEditFlashcardColumn}
+                                            giveId={`column-${indexFlashcard}-${indexColumn}`}
                                             />
                                     </Col>
                                 </Row>
@@ -248,6 +254,7 @@ const FlashcardTableComponent = (props) => {
                     return (
                         <td key={column._id}>
                             <textarea 
+                                id={`column-${indexFlashcard}-${indexColumn}`}
                                 className="form-control"
                                 defaultValue={column.value}
                                 placeholder={column.value}
@@ -285,6 +292,7 @@ const FlashcardTableComponent = (props) => {
                 </Row>
                 <AddColumnButtons />
                 <AddColumnButton
+                    giveId={`add-flashcard-1`}
                     className="my-3"
                     variant="outline-success"
                     buttonType={'FLASHCARD'}
@@ -320,6 +328,7 @@ const FlashcardTableComponent = (props) => {
             </div>
             <div className="container">
             <AddColumnButton
+                giveId={`add-flashcard-2`}
                 variant="outline-success"
                 buttonType={'FLASHCARD'}
                 onClick={handleAddFlashcard}

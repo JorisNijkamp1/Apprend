@@ -61,6 +61,7 @@ export default props => {
                             size={'1x'}
                         /> {props.column.path ? 'Change' : 'Upload'} 
                                         <input
+                                            id={props.giveId}
                                             accept='audio/*'
                                             onChange={(e) => {
                                                 props.handler(e, 'audio', props.creatorId, props.deckId, props.flashcardId, props.columnId)
@@ -68,7 +69,6 @@ export default props => {
                                             style={{'display': 'none'}}
                                             type="file"
                                             label="audio"
-                                            id={'123'}
                                             name="audio"
                                         />  
                     </label>
