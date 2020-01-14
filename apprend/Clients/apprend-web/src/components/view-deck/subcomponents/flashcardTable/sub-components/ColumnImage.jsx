@@ -31,7 +31,6 @@ export default props => {
                                                 style={{'display': 'none'}}
                                                 type="file"
                                                 label="image"
-                                                id={'123'}
                                                 name="image"
                                             />  
                         </label>
@@ -49,6 +48,7 @@ export default props => {
                                 size={'1x'}
                                 />
                         </Button> :                         <input 
+                            id={props.giveId}
                             name={`input-${props.column._id}`}
                             style={{'minWidth': '80px'}} 
                             placeholder="Image url" 
@@ -58,6 +58,7 @@ export default props => {
                             onChange={(e) => {
                                 props.handleLink({props: [{prop: 'path', value: e.target.value}, {prop: 'source', value: 'web'}]}, props.creatorId, props.deckId, props.flashcardId, props.columnId)}
                             }
+                            id={'image-' + props.index}
                             />}
             </Col>
         </Row>
