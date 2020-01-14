@@ -170,7 +170,6 @@ describe(`Complete test`, () => {
         expect(nameField).toBeDefined()
     });
 
-    for(let i = 0; i < 3; i++) {
     for (let i = 0; i < 3; i++) {
         test(`Add a flashcard`, async () => {
             const addFlashcardButton = await page.$(`#FLASHCARD`)
