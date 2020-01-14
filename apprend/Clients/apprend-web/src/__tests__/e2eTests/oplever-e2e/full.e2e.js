@@ -151,6 +151,20 @@ describe(`Complete test`, () => {
         await deleteButton.click()
     });
 
+    for(let i = 0; i < 2; i++) {
+        test(`Add a name for a column`, async () => {
+            await page.type(`input#index-` + i, `text` + i, {delay: 5})
+            const nameField = await page.$(`input#index-` + i)
+            expect(nameField).toBeDefined()
+        });
+    }
+
+    test(`Add a name for a column`, async () => {
+        await page.type(`input#index-2`, `image1`, {delay: 5})
+        const nameField = await page.$(`input#index-2`)
+        expect(nameField).toBeDefined()
+    });
+
     for(let i = 0; i < 3; i++) {
         test(`Add a flashcard`, async () => {
             const addFlashcardButton = await page.$(`#FLASHCARD`)
@@ -158,4 +172,36 @@ describe(`Complete test`, () => {
             await addFlashcardButton.click()
         });
     }
+
+    for(let i = 0; i < 2; i++) {
+        test(`Add data to a flashcard`, async () => {
+            await page.type('tr#row-1 textarea#text-' + i, `textcol` + (i + 1), {delay: 5})
+            const nameField = await page.$('tr#row-1 textarea#text-' + i)
+            expect(nameField).toBeDefined()
+        });
+    }
+
+    test(`Add data to a flashcard`, async () => {
+        await page.type('tr#row-1 input#image-2', `https://iculture.textopus.nl/wp-content/uploads/2014/06/The-Test-Fun-for-Friends-iPhone-iPad.png`)
+        const nameField = await page.$('tr#row-1 input#image-2')
+        expect(nameField).toBeDefined()
+    });
+
+    test(`Remove a flashcard`, async () => {
+        const addFlashcardButton = await page.$(`tr#row-0 #delete-0`)
+        expect(addFlashcardButton).toBeDefined()
+        await addFlashcardButton.click()
+    });
+
+    test(`Click the green icon to really delete the column`, async () => {
+        const deleteButton = await page.$(`#faCheck`)
+        expect(deleteButton).toBeDefined()
+        await deleteButton.click()
+    });
+
+    test(`Toggle the status of the deck`, async () => {
+        const deleteButton = await page.$(`#toggle-status-deck-button`)
+        expect(deleteButton).toBeDefined()
+        await deleteButton.click()
+    });
 });

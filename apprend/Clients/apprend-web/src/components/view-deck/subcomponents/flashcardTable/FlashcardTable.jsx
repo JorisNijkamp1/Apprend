@@ -141,6 +141,7 @@ const FlashcardTableComponent = (props) => {
                     placeholder={column.name} 
                     className="form-control" 
                     onInput={(e) => handleEditColumnName(e, index, column._id)}
+                    id={'index-' + index}
                     />
             </td>
         ))
@@ -193,13 +194,14 @@ const FlashcardTableComponent = (props) => {
 
     const ShowFlashCards = (flashcards) => {
         return flashcards.map((flashcard, indexFlashcard) => (
-            <tr key={flashcard._id} className="tr">
+            <tr key={flashcard._id} className="tr" id={'row-' + indexFlashcard}>
                 <td>
                     <strong># {indexFlashcard + 1}</strong>
                     {upForDelete !== flashcard._id ? 
                     <DeleteButton
                         columnId={flashcard._id}
                         onClick={() => handleAllDeleteActions(() => handleDeleteFlashcard(flashcard._id), flashcard._id)}
+                        index={indexFlashcard}
                         />
 
                     : <ConfirmationButtons onDelete={() => handleDeleteFlashcard(flashcard._id)} onCancel={() => setUpForDelete(undefined)} /> }
@@ -208,7 +210,7 @@ const FlashcardTableComponent = (props) => {
 
                     if (column.type === 'Image'){
                         return (
-                            <td>
+                            <td id={'column-' + indexColumn}>
                                 <Row className="align-content-center">
                                     <Col>
                                         <ColumnImage 
@@ -220,6 +222,7 @@ const FlashcardTableComponent = (props) => {
                                             flashcardId={flashcard._id}
                                             columnId={column._id}
                                             handleLink={handleEditFlashcardColumn}
+                                            index={indexColumn}
                                             />
                                     </Col>
                                 </Row>
@@ -240,6 +243,7 @@ const FlashcardTableComponent = (props) => {
                                             column={column}
                                             columnId={column._id}
                                             handleLink={handleEditFlashcardColumn}
+                                            id={'audio-' + indexColumn}
                                             />
                                     </Col>
                                 </Row>
@@ -253,6 +257,7 @@ const FlashcardTableComponent = (props) => {
                                 defaultValue={column.value}
                                 placeholder={column.value}
                                 onChange={(e) => handleEditFlashcardColumn({props: [{prop: 'value', value: e.target.value}]}, props.deck.creatorId,props.deck._id, flashcard._id, column._id )}
+                                id={'text-' + indexColumn}
                                 />
                         </td>
                     )
