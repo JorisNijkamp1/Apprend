@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 
 jest.setTimeout(30000);
 
-describe(`Playing`, () => {
+describe(`Complete test`, () => {
     let browser, page
 
     beforeAll(async () => {
@@ -93,16 +93,29 @@ describe(`Playing`, () => {
         await confirmButton.click()
     })
 
+    test(`Go to create deck`, async () => {
+        await page.goto(`http://localhost:3000/decks/create`)
+        await page.waitFor(`input#create-deck-form-deckname`)
+        const nameField = await page.$(`input#create-deck-form-deckname`)
+        expect(nameField).toBeDefined()
+    })
+
     test(`Fill deck name`, async () => {
-        await page.type(`input#create-deck-form-deckname`, `test`, {delay: 5});
+        await page.type(`input#create-deck-form-deckname`, `test`, {delay: 5})
+        const nameField = await page.$(`input#create-deck-form-deckname`)
+        expect(nameField).toBeDefined()
     })
 
     test(`Fill deck description`, async () => {
         await page.type(`textarea#create-deck-form-description`, `Mooie omschrijving`, {delay: 5})
+        const descriptionField = await page.$(`textarea#create-deck-form-description`)
+        expect(descriptionField).toBeDefined()
     })
 
     test(`Fill in a tag`, async () => {
         await page.type(`input#tags`, `test`, {delay: 5})
+        const tagsField = await page.$(`input#tags`)
+        expect(tagsField).toBeDefined()
     });
 
     test(`Add a tag`, async () => {
