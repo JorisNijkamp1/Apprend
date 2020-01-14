@@ -115,13 +115,18 @@ De applicatie bevat 3 soorten automatische tests: Unit Tests, API-tests & End-to
 ```
 
 Om specifiek tests uit te voeren:
-```
+
 Voor Unit Tests:
+```
 > npm run unit
+```
 
 Voor API-tests:
+```
 > npm run api
+```
 
 Voor End-to-end Tests:
+```
 > npm run e2e
 ```
