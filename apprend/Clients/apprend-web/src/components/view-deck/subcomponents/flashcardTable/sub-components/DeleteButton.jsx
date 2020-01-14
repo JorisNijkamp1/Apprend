@@ -13,6 +13,7 @@ export default (props) => {
                 name={'delete-'+props.columnId}
                 onClick={props.onClick}
                 size={'1x'}
+                id={'delete-'+props.index}
                 />
         </>
     )

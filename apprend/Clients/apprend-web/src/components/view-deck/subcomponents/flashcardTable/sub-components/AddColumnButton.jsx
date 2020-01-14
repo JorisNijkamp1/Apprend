@@ -7,7 +7,7 @@ export default props => {
 
     return (
         <>
-            <Button className={`w-100 ${props.className}`} variant={props.variant ? props.variant : 'outline-dark'} name={props.name} onClick={props.onClick} value={props.value}>
+            <Button className={`w-100 ${props.className}`} variant={props.variant ? props.variant : 'outline-dark'} name={props.name} onClick={props.onClick} value={props.value} id={props.buttonType}>
                 <FontAwesomeIcon icon={faPlus} size={'1x'} /> {props.buttonType}
             </Button>
         </>

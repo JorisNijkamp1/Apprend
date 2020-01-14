@@ -154,6 +154,7 @@ const FlashcardTableComponent = (props) => {
                 <DeleteButton
                     onClick={() => handleAllDeleteActions(() => handleDeleteColumn(index), index)}
                     columnId={column._id}
+                    index={index}
                     />
                 : <ConfirmationButtons onDelete={() => handleDeleteColumn(index)} onCancel={() => setUpForDelete(undefined)} />}
             </td>
