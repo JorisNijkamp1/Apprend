@@ -109,7 +109,8 @@ Als alles is uitgevoerd hoort de applicatie er als onderstaande figuur uit te zi
 
 
 ### Eventueel uitvoeren automatische tests
-De applicatie bevat 3 soorten automatische tests: Unit Tests, API-tests & End-to-end Tests. Om alle testen uit te voeren kun je het onderstaande commando uitvoeren:
+De applicatie bevat 3 soorten automatische tests: Unit Tests, API-tests & End-to-end Tests. Deze tests bevinden zich in **apprend/Clients/apprend-web/src/\_\_tests\_\_**.
+Om alle testen uit te voeren kun je het onderstaande commando uitvoeren:
 ```
 > npm test
 ```
