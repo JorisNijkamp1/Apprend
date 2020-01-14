@@ -320,9 +320,9 @@ Deze map bevat overige functies die in principe los staan van alle features, maa
 ### NodeJS server  
   
 ![Apprend NodeJS server component diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/NodeJS-server.svg)  
-  
-**Decks endpoints**:  
-  Bestand: Server/routes/api/v1/decks/decks.js
+
+#### Decks endpoints
+Bestand: Server/routes/api/v1/decks/decks.js
 
 | Method | URL                              | Beschrijving                                                                  |
 |--------|----------------------------------|-------------------------------------------------------------------------------|
@@ -335,7 +335,7 @@ Deze map bevat overige functies die in principe los staan van alle features, maa
 | POST   | /api/v1/decks/:deckId/flashcards | Flashcards aanpassen van een deck                                             |
 
 
-**Users endpoints**:
+#### Users endpoints
 Bestand: Server/routes/api/v1/users/decks/decks.js
 
 | Methode | URL                                 | Beschrijving                                                                                        |
@@ -380,7 +380,7 @@ Bestand: Server/routes/api/v1/users/decks/flashcards/columns/columns.js
 |---------|--------------------------------------------------|----------------------------------------------------------------|
 | PATCH   | /api/v1/users/decks/flashcards/columns/:columnId | Wordt gebruikt voor het aanpassen van een flashcard columnuser |
 
-**Login endpoints**:
+#### Login endpoints
 Bestand: Server/routes/api/v1/login
 
 | Methode | URl                  | Beschrijving                                      |
@@ -398,31 +398,37 @@ Bestand: Server/routes/api/v1/login
 
 
 ## Infrastructure Architecture
-Dit hoofdstuk is niet van toepassing op deze applicatie. De applicatie draait lokaal en is ook zo ontwikkeld.
+Dit hoofdstuk is niet van toepassing op deze applicatie. De applicatie draait lokaal en is ook zo ontwikkeld. (Voor school: dit is overlegd en goedgekeurd door onze begeleiders.)
 
 ## Deployment
-Dit hoofdstuk bevat een stappenplan voor het opzetten, het installeren en het opstarten van de Apprend-applicatie. Aan het einde van dit hoofdstuk staat ook een korte uitleg over het uitvoeren van de automatische testen die zijn opgesteld. Omdat deze applicatie lokaal ontwikkeld is en gedeployd wordt, is er geen deployment diagram beschikbaar.
+Dit hoofdstuk is niet van toepassing op deze applicatie. Omdat deze applicatie lokaal ontwikkeld is en gedeployd wordt, is er geen deployment diagram of informatie beschikbaar. (Voor school: dit is overlegd en goedgekeurd door onze begeleiders.)
+
+## Operation and Support
+Dit hoofdstuk bevat een stappenplan voor het opzetten, het installeren en het opstarten van de Apprend-applicatie. Aan het einde van dit hoofdstuk staat ook een korte uitleg over het uitvoeren van de automatische testen die zijn opgesteld en bekende bugs en problemen in de applicatie.
 
 ### Vereisten
 Zorg dat de laatste versies van [NodeJS](https://nodejs.org/) en [MongoDB](https://www.mongodb.com/) beschikbaar en gestart zijn op de deployment server.
 
-### Stap 1 - De repository clonen
+
+## Installatie
+
+#### Stap 1 - De repository clonen
 Clone de [master](https://github.com/HANICA-DWA/sep2019-project-kiwi/tree/master) branch van de [Apprend-repository](https://github.com/HANICA-DWA/sep2019-project-kiwi/tree/master).
 
-### Stap 2 - Installeren packages client
+#### Stap 2 - Installeren packages client
 Er zijn eigenlijk twee applicaties aanwezig in deze repository, een client en een server applicatie. Hiervoor moeten aparte packages worden geïnstalleerd. 
 Voer de volgende commando's uit in de **apprend\Clients\apprend-web** folder:
 ```
 > npm i
 ```
 
-### Stap 3 - Installeren packages server
+#### Stap 3 - Installeren packages server
 Voer de volgende commando's uit in de **apprend\Server** folder:
 ```
 > npm i
 ```
 
-### Stap 4 - Opzetten algemene configuraties op de server
+#### Stap 4 - Opzetten algemene configuraties op de server
 Voeg het bestand **apprend\Server\config.js** toe. Deze moet de onderstaande code bevatten. Voer hier zelf jouw database-gegevens in of laat deze file met rust wanneer je het lokaal gaat installeren.
 ```js
 // De gebruikersnaam voor database-toegang.
@@ -446,7 +452,7 @@ const PASSWORD_SALT = 10;
 module.exports = {USERNAME, PASSWORD, HOST, PORT, DB, PASSWORD_SALT};
 ```
 
-### Stap 5 (optioneel) - Verwisselen van database-connecties 
+#### Stap 5 (optioneel) - Verwisselen van database-connecties 
 In **apprend\Server\app.js** en **apprend\Server\seed.js** staan twee regels (regel 55, 56) code voor een verbinding met de database. 
 De eerste regel wordt gebruikt voor lokale ontwikkeling. De tweede regel code moet gebruikt worden voor op de deployment server.
 **Als je lokaal test hoef je niets aan te passen!**
@@ -458,23 +464,23 @@ mongoose.connect(`mongodb://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvCon
 // mongoose.connect(`mongodb+srv://${srvConfig.USERNAME}:${srvConfig.PASSWORD}@${srvConfig.HOST}/${srvConfig.DB}?retryWrites=true&w=majority`, {
 ```
 
-### Stap 6 - Opzetten Redux-configuraties op de server
+#### Stap 6 - Opzetten Redux-configuraties op de server
 Vervang de API_URL-variabele met de huidige server-URL in **apprend\Clients\apprend-web\src\redux\urls.js**.
 Dit is de URL die gebruikt wordt door de client-applicatie om de server-API te bereiken.
 
-### Stap 7 - Opstarten van de server
+#### Stap 7 - Opstarten van de server
 Voer de volgende commando's uit in **apprend\Server** om de server te starten:
 ```
 > node app.js
 ```
 
-### Stap 8 - Opstarten van de client
+#### Stap 8 - Opstarten van de client
 Voer de volgende commando's uit in **apprend\Clients\apprend-web** om de client-applicatie te starten:
 ```
 > npm start
 ```
 
-### Stap 9 (optioneel) - Seed file runnen
+#### Stap 9 (optioneel) - Seed file runnen
 De seed file bevat testgegevens voor de database en de applicatie. Het bevat een aantal gebruikers met decks en daarin flashcards.
 
 Om de seed file te runnen moet je het script **apprend\Server\seed.js** uitvoeren. Dit zorgt er voor dat testgegevens in de database komen te staan. Als het goed is heb je de database-verbinding correct ingesteld bij bovenstaande stap 5.
@@ -483,7 +489,7 @@ Na het uitvoeren van dit script moet de database er ongeveer uitzien als onderst
 
 ![Screenshot database seed file](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Screenshot%20database.svg)
 
-### Eindresultaat
+#### Eindresultaat
 Als alles is uitgevoerd hoort de applicatie er als onderstaande figuur uit te zien. Let op dat de teksten kunnen verschillen op basis van de gegevens in de database!
 
 ![Screenshot client eindresultaat](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Screenshot%20client.svg)
@@ -515,5 +521,9 @@ Voor End-to-end Tests:
 
 De testresultaten zullen weergeven worden in de console waar deze zijn uitgevoerd.
 
-## Operation and Support
-Hier komt Operation and Support (POST GAME)
+
+### Bekende problemen & bugs
+De onderstaande lijst bevat bekende problemen of bugs binnen de Apprend applicatie:
+
+**Fenomeen veel connecties in database**
+Tijdens het ontwikkelen is een vreemd fenomeen voorgekomen. We hebben gezien dat er heel veel databaseverbindingen werden geopend, bijna het maximaal aantal dat was toegestaan. Wij vermoeden dat dit komt door veel tests achter elkaar runnen. Deze tests openen namelijk ook connecties en deze worden mogelijk even opgelaten.
