@@ -103,13 +103,14 @@ Na het uitvoeren van dit script moet de database er ongeveer uitzien als onderst
 ![Screenshot database seed file](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Screenshot%20database.svg)
 
 ### Eindresultaat
-Als alles is uitgevoerd hoort de applicatie er als onderstaande figuur uit te zien.
+Als alles is uitgevoerd hoort de applicatie er als onderstaande figuur uit te zien. Let op dat de teksten kunnen verschillen op basis van de gegevens in de database!
 
 ![Screenshot client eindresultaat](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/Screenshot%20client.svg)
 
 
 ### Eventueel uitvoeren automatische tests
-De applicatie bevat 3 soorten automatische tests: Unit Tests, API-tests & End-to-end Tests. Om alle testen uit te voeren kun je het onderstaande commando uitvoeren:
+De applicatie bevat 3 soorten automatische tests: Unit Tests, API-tests & End-to-end Tests. Deze tests bevinden zich in **apprend/Clients/apprend-web/src/\_\_tests\_\_**.
+Om alle testen uit te voeren kun je het onderstaande commando uitvoeren:
 ```
 > npm test
 ```
