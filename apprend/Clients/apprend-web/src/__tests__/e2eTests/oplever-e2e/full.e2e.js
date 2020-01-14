@@ -18,7 +18,7 @@ describe(`Complete test`, () => {
         await browser.close()
     });
 
-    xtest(`Load home`, async () => {
+    test(`Load home`, async () => {
         await page.goto(`http://localhost:3000/`)
         await page.waitFor(`title`);
         const theTitle = await page.title();
@@ -31,7 +31,7 @@ describe(`Complete test`, () => {
         await cookie.click();
     })
 
-    xtest(`Search for a deck`, async () => {
+    test(`Search for a deck`, async () => {
         await page.waitFor(`#auto-suggest-search`);
         await page.type(`div.react-autosuggest__container > input`, `Aaron`, {delay: 15});
         const aaronProfile = await page.$(`[id="react-autowhatever-auto-suggest-home-section-0-item-0"]`)
@@ -39,28 +39,28 @@ describe(`Complete test`, () => {
         await aaronProfile.click();
     });
 
-    xtest(`Go to first deck of Aaron's decks`, async () => {
+    test(`Go to first deck of Aaron's decks`, async () => {
         await page.waitFor(`#card-0`);
         const deck = await page.$(`[id="card-0-link"]`);
         expect(deck).toBeDefined();
         await deck.click();
     })
 
-    xtest(`Import deck from aaron`, async () => {
+    test(`Import deck from aaron`, async () => {
         await page.waitFor(`#import-deck-button`);
         const importButton = await page.$(`[id="import-deck-button"]`);
         expect(importButton).toBeDefined();
         await importButton.click();
     })
 
-    xtest(`Click edit button`, async () => {
+    test(`Click edit button`, async () => {
         await page.waitFor(`#edit-deck-button`);
         const editButton = await page.$(`[id="edit-deck-button"]`);
         expect(editButton).toBeDefined();
         await editButton.click()
     })
 
-    xtest(`Input Name, Description, Tags`, async () => {
+    test(`Input Name, Description, Tags`, async () => {
         await page.waitFor(`#input-name`);
         await page.waitFor(`#input-description`);
         await page.waitFor(`#tags`);
@@ -88,7 +88,7 @@ describe(`Complete test`, () => {
         await addTag.click();
     })
 
-    xtest(`Confirm edit deck`, async () => {
+    test(`Confirm edit deck`, async () => {
         await page.waitFor('#confirm-undefined-icon-button');
 
         const confirmButton = await page.$(`[id="confirm-undefined-icon-button"]`);
@@ -98,45 +98,45 @@ describe(`Complete test`, () => {
         await confirmButton.click()
     })
 
-    xtest(`Go to create deck`, async () => {
+    test(`Go to create deck`, async () => {
         await page.goto(`http://localhost:3000/decks/create`)
         await page.waitFor(`input#create-deck-form-deckname`)
         const nameField = await page.$(`input#create-deck-form-deckname`)
         expect(nameField).toBeDefined()
     })
 
-    xtest(`Fill deck name`, async () => {
-        await page.type(`input#create-deck-form-deckname`, `xtest`, {delay: 5})
+    test(`Fill deck name`, async () => {
+        await page.type(`input#create-deck-form-deckname`, `test`, {delay: 5})
         const nameField = await page.$(`input#create-deck-form-deckname`)
         expect(nameField).toBeDefined()
     })
 
-    xtest(`Fill deck description`, async () => {
+    test(`Fill deck description`, async () => {
         await page.type(`textarea#create-deck-form-description`, `Mooie omschrijving`, {delay: 5})
         const descriptionField = await page.$(`textarea#create-deck-form-description`)
         expect(descriptionField).toBeDefined()
     })
 
-    xtest(`Fill in a tag`, async () => {
-        await page.type(`input#tags`, `xtest`, {delay: 5})
+    test(`Fill in a tag`, async () => {
+        await page.type(`input#tags`, `test`, {delay: 5})
         const tagsField = await page.$(`input#tags`)
         expect(tagsField).toBeDefined()
     });
 
-    xtest(`Add a tag`, async () => {
+    test(`Add a tag`, async () => {
         const tagButton = await page.$(`#addTag`)
         expect(tagButton).toBeDefined()
         await tagButton.click()
     });
 
-    xtest(`Go to create flashcards`, async () => {
+    test(`Go to create flashcards`, async () => {
         const loginButton = await page.$(`#create-deck-button`)
         expect(loginButton).toBeDefined()
         await loginButton.click()
     })
 
     for (let i = 0; i < 2; i++) {
-        xtest(`Add a image column`, async () => {
+        test(`Add a image column`, async () => {
             await page.waitFor(`#Image`);
             const imageButton = await page.$(`#Image`)
             expect(imageButton).toBeDefined()
@@ -144,20 +144,20 @@ describe(`Complete test`, () => {
         });
     }
 
-    xtest(`Delete the last image column`, async () => {
+    test(`Delete the last image column`, async () => {
         const deleteButton = await page.$(`#delete-3`)
         expect(deleteButton).toBeDefined()
         await deleteButton.click()
     });
 
-    xtest(`Click the green icon to really delete the column`, async () => {
+    test(`Click the green icon to really delete the column`, async () => {
         const deleteButton = await page.$(`#faCheck`)
         expect(deleteButton).toBeDefined()
         await deleteButton.click()
     });
 
     for (let i = 0; i < 3; i++) {
-        xtest(`Add a flashcard`, async () => {
+        test(`Add a flashcard`, async () => {
             const addFlashcardButton = await page.$(`#FLASHCARD`)
             expect(addFlashcardButton).toBeDefined()
             await addFlashcardButton.click()
