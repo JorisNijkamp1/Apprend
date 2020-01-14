@@ -27,7 +27,7 @@ const HomepageUI = (props) => {
             return tags.map((tag, index) => {
                     if (index <= 3) {
                         return (
-                            <span className={'badge badge-light text-center'} style={{color: '#000', margin: '0 10px',}}>
+                            <span key={tag + index} id={tag+'-'+index} className={'badge badge-light text-center'} style={{color: '#000', margin: '0 10px',}}>
                                     {tag}
                                 </span>
 
@@ -51,7 +51,7 @@ const HomepageUI = (props) => {
                             <div className={"imgBx"}>
                                 <h2>{deck.name}</h2>
                                 <strong>
-                                    <Link id="creator" to={`/${deck.creatorId}/decks`}>
+                                    <Link id={'creator-'+deck.creatorId} to={`/${deck.creatorId}/decks`}>
                                         <span style={{marginLeft: 5, color: '#fff'}}>Made by {deck.creatorId}</span>
                                     </Link>
                                 </strong>
