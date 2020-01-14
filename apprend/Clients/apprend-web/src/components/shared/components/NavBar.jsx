@@ -30,7 +30,7 @@ const NavbarUI = (props) => {
     const profile = () => {
         if (!props.anonymousUser) {
             return (
-                <Nav.Link as={Link} className="pl-30" to={'/profile/' + props.username}>My Profile</Nav.Link>
+                <Nav.Link id={'my-profile'} as={Link} className="pl-30" to={'/profile/' + props.username}>My Profile</Nav.Link>
             )
         }
     }
