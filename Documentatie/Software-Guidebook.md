@@ -21,7 +21,7 @@
  9. Operation and Support
 
 
-## Context
+## 1. Context
 Apprend is een nieuwe webapplicatie, gebouwd met het React framework en ondersteund door een NodeJS server, waarbij gebruikers door middel van flashcards hun geheugen kunnen trainen. Het is bedoeld voor bijvoorbeeld leerlingen van de HAN, maar ook oudere mensen zouden hun geheugen kunnen trainen met behulp van deze applicatie.
 
 De applicatie is ontwikkeld om te concurreren met soortgelijke applicaties zoals Quizlet, Anki en Duolingo. 
@@ -34,7 +34,7 @@ Gebruikers kunnen ook registreren (en inloggen) om daarmee hun aangemaakte decks
 
 
 
-## Functional Overview
+## 2. Functional Overview
 De onderstaande functionaliteiten beschrijven wat de gebruiker kan doen met het systeem. Zie ook het [Product Backlog](https://github.com/HANICA-DWA/sep2019-project-kiwi/projects/2?fullscreen=true&card_filter_query=label%3A%22user+story%22) voor een lijst met alle user-stories. Aan het einde van dit hoofdstuk staat een uitgebereide uitleg over het [Leitner Systeem](https://en.wikipedia.org/wiki/Leitner_system) dat van toepassing is op het spelen.
 
 - **Decks aanmaken**
@@ -215,7 +215,7 @@ We hebben deze situatie opgelost door sessies over te slaan totdat er kaarten aa
 Stel je voor dat de gebruiker stopt met spelen in het midden van het spel. De kaarten die niet zijn gespeeld zullen nooit meer aan bod komen omdat de het sessionPlayed-nummer niet werd geüpdatet (dit gebeurt pas bij het opgeven van een antwoord). Dit hebben we opgelost door niet meer te kijken of (*huidige sessienummer - VARIABELE **gelijk** is aan de 'sessionPlayed' van de kaart*), maar *huidige sessienummer - VARIABELE **groter of gelijk** is aan de 'sessionPlayed' van de kaart*. Deze "verloren" kaarten zullen op deze manier altijd aan bod komen.
 	
 	
-## Quality Attributes  
+## 3. Quality Attributes  
 De onderstaande lijst bevat een overzicht van niet-functionele kwaliteitsattributen van het systeem.  
   
 **Reliability**  
@@ -232,7 +232,7 @@ De onderstaande lijst bevat een overzicht van niet-functionele kwaliteitsattribu
 **Legal, compliance and regulatory requirements**  
     - Voldoet aan de AVG-wetten.  
   
-## Constraints  
+## 4. Constraints  
 De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevormd tijdens het ontwikkelen. De meeste van deze beperkingen zijn door de product owner aan ons voorgelegd.  
   
 - **Tijd**  
@@ -266,7 +266,7 @@ De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevo
 - **Verwerking AVG voorwaarden**  
   > Het is wettelijk verplicht om aan te geven dat persoonsgegevens opgeslagen worden in een database. De product owner heeft ons verplicht om de gebruikers op de website cookie-meldingen te geven. Daarnaast moet de gebruiker akkoord gaan met algemene voorwaarden.  
   
-## Principles  
+## 5. Principles  
   
 **Client**  
   
@@ -287,7 +287,7 @@ De onderstaande lijst bevat een aantal beperkingen die de applicatie hebben gevo
 - Zo min mogelijk DRY code.  
 - Zo veel mogelijk authenticatie en acties laten behandelen door middleware.
   
-## Software Architecture  
+## 6. Software Architecture  
 De applicatie bestaat uit drie grote componenten zoals te zien in het onderstaande container diagram.  
   
 ![Apprend container diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20model%20-%20Apprend%20Container.svg)  
@@ -397,13 +397,13 @@ Bestand: Server/routes/api/v1/login
 ![Apprend MongoDB Database component diagram](https://github.com/HANICA-DWA/sep2019-project-kiwi/blob/development/Documentatie/C4%20Model%20-%20MongoDB%20Database%20Component.svg)
 
 
-## Infrastructure Architecture
+## 7. Infrastructure Architecture
 Dit hoofdstuk is niet van toepassing op deze applicatie. De applicatie draait lokaal en is ook zo ontwikkeld. (Voor school: dit is overlegd en goedgekeurd door onze begeleiders.)
 
-## Deployment
+## 8. Deployment
 Dit hoofdstuk is niet van toepassing op deze applicatie. Omdat deze applicatie lokaal ontwikkeld is en gedeployd wordt, is er geen deployment diagram of informatie beschikbaar. (Voor school: dit is overlegd en goedgekeurd door onze begeleiders.)
 
-## Operation and Support
+## 9. Operation and Support
 Dit hoofdstuk bevat een stappenplan voor het opzetten, het installeren en het opstarten van de Apprend-applicatie. Aan het einde van dit hoofdstuk staat ook een korte uitleg over het uitvoeren van de automatische testen die zijn opgesteld en bekende bugs en problemen in de applicatie.
 
 ### Vereisten
