@@ -301,6 +301,16 @@ Bestand: Server/routes/api/v1/users/decks/columns/columns.js
 | PATCH   | /api/v1/user/:userId/decks/:deckId/columns/:columnId | Aanpassen van kolommen       |
 | DELETE  | /api/v1/user/:userId/decks/:deckId/columns/:columnId | Verwijder van een kolom      |
 
+Bestand: Server/routes/api/v1/users/users.js
+
+| Methode | URL                     | Bescrhijving                                            |
+|---------|-------------------------|---------------------------------------------------------|
+| GET     | /api/v1/users/:id/_id   | Get a user ID by its ID (username)                      |
+| GET     | /api/v1/users/:id       | Get a user by its ID (username).                        |
+| POST    | /api/v1/users/email     | Get a user E-mail by its E-mail address.                |
+| POST    | /api/v1/users           | Wordt gebruikt om een account aan te maken (registeren) |
+| DELETE  | /api/v1/users/:id       | Wordt gebruikt om een gebruikersaccount te verwijderen  |
+| PATCH   | /api/v1/users/:username | Update user username and password                       |
 
 **Login endpoints**:
 Bestand: Server/routes/api/v1/login
