@@ -321,6 +321,12 @@ Bestand: Server/routes/api/v1/users/decks/flashcards/flashcards.js
 | PATCH   | /api/v1/users/decks/flashcards/:flashcardId | Wordt gebruikt om een flashcard te updaten                        |
 | DELETE  | /api/v1/users/decks/flashcards/:flashcardId | Wordt gebruikt om een flashcard van een deck te verwijderen       |
 
+Bestand: Server/routes/api/v1/users/decks/flashcards/columns/columns.js
+
+| Methode | URL                                              | Beschrijving                                                   |
+|---------|--------------------------------------------------|----------------------------------------------------------------|
+| PATCH   | /api/v1/users/decks/flashcards/columns/:columnId | Wordt gebruikt voor het aanpassen van een flashcard columnuser |
+
 **Login endpoints**:
 Bestand: Server/routes/api/v1/login
 
