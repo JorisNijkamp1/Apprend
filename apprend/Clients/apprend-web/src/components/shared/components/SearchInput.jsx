@@ -125,6 +125,7 @@ const SearchInput = (props) => {
                             <div className={props.navBar ? '' : 'col-lg-6 col-md-8 col-8 offset-lg-2 offset-md-1'}>
                                 <InputGroup className={'pl-45'}>
                                     <Autosuggest
+                                        id={'auto-suggest-home'}
                                         multiSection={true}
                                         suggestions={suggestions}
                                         onSuggestionsFetchRequested={onSuggestionsFetchRequested}
