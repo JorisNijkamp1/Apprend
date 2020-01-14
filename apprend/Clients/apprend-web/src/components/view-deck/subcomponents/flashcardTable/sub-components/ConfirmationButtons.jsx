@@ -8,6 +8,7 @@ export default props => {
         <>
         <div className="float-right">
         <FontAwesomeIcon
+            id={`confirm-delete`}
             icon={faCheck}
             size={`1x`}
             className="text-green mr-3"
@@ -16,6 +17,7 @@ export default props => {
             id={'faCheck'}
             />
         <FontAwesomeIcon
+            id={`cancel-delete`}
             icon={faTimes}
             size={`1x`}
             className="text-red"
