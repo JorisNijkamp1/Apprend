@@ -312,6 +312,15 @@ Bestand: Server/routes/api/v1/users/users.js
 | DELETE  | /api/v1/users/:id       | Wordt gebruikt om een gebruikersaccount te verwijderen  |
 | PATCH   | /api/v1/users/:username | Update user username and password                       |
 
+Bestand: Server/routes/api/v1/users/decks/flashcards/flashcards.js
+
+| Methode | URL                                         | Beschrijving                                                      |
+|---------|---------------------------------------------|-------------------------------------------------------------------|
+| GET     | /api/v1/users/decks/flashcards              | Wordt gebruikt om een nieuwe flashcard aan een deck toe te voegen |
+| GET     | /api/v1/users/decks/flashcards/:flashcardId | Wordt gebruikt om een flashcard op te halen                       |
+| PATCH   | /api/v1/users/decks/flashcards/:flashcardId | Wordt gebruikt om een flashcard te updaten                        |
+| DELETE  | /api/v1/users/decks/flashcards/:flashcardId | Wordt gebruikt om een flashcard van een deck te verwijderen       |
+
 **Login endpoints**:
 Bestand: Server/routes/api/v1/login
 
