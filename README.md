@@ -26,7 +26,7 @@ Helen Visser
 Zorg dat de laatste versies van [NodeJS](https://nodejs.org/) en [MongoDB](https://www.mongodb.com/) beschikbaar en gestart zijn op de deployment server.
 
 ### Stap 1 - De repository clonen
-Clone de **master** branch van de [Apprend-repository](https://github.com/HANICA-DWA/sep2019-project-kiwi/tree/master).
+Clone de [master](https://github.com/HANICA-DWA/sep2019-project-kiwi/tree/master) branch van de [Apprend-repository](https://github.com/HANICA-DWA/sep2019-project-kiwi/tree/master).
 
 ### Stap 2 - Installeren packages client
 Er zijn eigenlijk twee applicaties aanwezig in deze repository, een client en een server applicatie. Hiervoor moeten aparte packages worden geïnstalleerd. 
@@ -116,8 +116,12 @@ De applicatie bevat 3 soorten automatische tests: Unit Tests, API-tests & End-to
 
 Om specifiek tests uit te voeren:
 ```
-Voor Unit Tests:w
+Voor Unit Tests:
 > npm run unit
+
+Voor API-tests:
 > npm run api
+
+Voor End-to-end Tests:
 > npm run e2e
 ```
