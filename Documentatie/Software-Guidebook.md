@@ -526,4 +526,5 @@ De testresultaten zullen weergeven worden in de console waar deze zijn uitgevoer
 De onderstaande lijst bevat bekende problemen of bugs binnen de Apprend applicatie:
 
 **Fenomeen veel connecties in database**
+
 Tijdens het ontwikkelen is een vreemd fenomeen voorgekomen. We hebben gezien dat er heel veel databaseverbindingen werden geopend, bijna het maximaal aantal dat was toegestaan. Wij vermoeden dat dit komt door veel tests achter elkaar runnen. Deze tests openen namelijk ook connecties en deze worden mogelijk even opgelaten.
