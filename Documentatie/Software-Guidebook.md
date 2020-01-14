@@ -290,8 +290,6 @@ Bestand: Server/routes/api/v1/users/decks/decks.js
 | PUT     | /api/v1/users/:userId/decks/:deckId | Aanpassen van deck informatie                                                                       |
 | PATCH   | /api/v1/users/:userId/decks/:deckId | Deck public of private maken                                                                        |
 | DELETE  | /api/v1/users/:userId/decks/:deckId | Verwijderen van een deck                                                                            |
-|         |                                     |                                                                                                     |
-|         |                                     |                                                                                                     |
 
 Bestand: Server/routes/api/v1/users/decks/columns/columns.js
 
