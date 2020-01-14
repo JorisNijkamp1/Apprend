@@ -8,6 +8,7 @@ export default (props) => {
         <>
             <FontAwesomeIcon 
                 icon={faTrash}
+                id={props.giveId}
                 className="trash-icon float-right"
                 style={{'cursor': 'pointer', 'color': 'red'}}
                 name={'delete-'+props.columnId}
