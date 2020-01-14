@@ -5,13 +5,10 @@ import {Notification} from '../shared/components/Notification';
 import {NavLink, useParams} from 'react-router-dom';
 import {NavBar} from '../shared/components/NavBar';
 import {Footer} from '../shared/components/Footer';
-import {Container, Row, Col, Button, Card} from 'react-bootstrap';
+import {Container, Row, Col} from 'react-bootstrap';
 import PlayingCard from './subcomponents/PlayingCard';
 import {
     getDeck,
-    setGame,
-    updateGame,
-    getGameData,
     updateDeckSession,
     moveFlashcardToBox, errorOccurred, setPlayingDeck
 } from './actions';
@@ -21,11 +18,9 @@ import {
     setActiveCardAction,
     resetStateAction, setCardsAction
 } from './actions';
-import Loader from 'react-loaders';
 import 'loaders.css/src/animations/square-spin.scss';
 import {leitnerSelectCards} from '../../util/leitner-system/leitnerSystem';
 import {isLoggedIn} from '../shared/actions/actions';
-import { setIsLoading } from '../create-deck/actions';
 import { LoadingComponent } from '../shared/components/LoadingComponent';
 import ColumnSelector from './subcomponents/ColumnSelector';
 
@@ -79,7 +74,6 @@ const PlayingComponent = (props) => {
         }
 
         if (nCardsAnswered === nCardsInDeck) {
-            // props.doUpdateGame(deckId, props.gameId, currentCard, [], status);
             props.doSetActiveCardAction('');
             history.push(`/decks/${deckId}/score`);
             return;
@@ -96,7 +90,6 @@ const PlayingComponent = (props) => {
         }
 
         props.doSetActiveCardAction(nextCard);
-        // props.doUpdateGame(deckId, props.gameId, currentCard, nextCard, status);
     };
 
     const setupGame = () => {
@@ -115,7 +108,6 @@ const PlayingComponent = (props) => {
             }
 
             let session = results.data.session + 1;
-            console.log(results.data.flashcards)
             let allCards = leitnerSelectCards(results.data.flashcards, session);
             let counter = 0;
 
@@ -127,10 +119,8 @@ const PlayingComponent = (props) => {
                 if (counter > 500) break;
             }
             props.doSetPlayingDeck(results.data)
-            props.doSetGame(deckId, allCards);
             props.doSetActiveCardAction(allCards[0]);
             props.doUpdateDeckSession(deckId, props.username, session);
-            console.log(allCards)
             props.doSetCards(allCards);
             setCurrentSession(session);
             setIsLoading(false)
@@ -191,10 +181,8 @@ const PlayingComponent = (props) => {
                 </Col>
                 <PlayingCard changeScore={changeScore}
                              activeCard={props.activeCard}
-                            //  front={props.activeCard.columns}
-                            //  back={props.activeCard.answer}
-                            front={props.activeCard.columns[columns.front]}
-                            back={props.activeCard.columns[columns.back]}
+                             front={props.activeCard.columns[columns.front]}
+                             back={props.activeCard.columns[columns.back]}
                              />
                 <Row className={'justify-content-between'}>
                     <Col lg={{span: 4}} className={'text-center'}>
@@ -243,9 +231,6 @@ const mapDispatchToProps = dispatch => {
         doSetWrongCardsAction: (cards) => dispatch(setWrongCardsAction(cards)),
         doSetActiveCardAction: (card) => dispatch(setActiveCardAction(card)),
         doGetDeck: (creatorId, deckId) => dispatch(getDeck(creatorId, deckId)),
-        doSetGame: (deckId, flashcards) => dispatch(setGame(deckId, flashcards)),
-        doUpdateGame: (deckId, gameId, oldCard, newCard, status) => dispatch(updateGame(deckId, gameId, oldCard, newCard, status)),
-        doGetGameData: (deckId, gameId) => dispatch(getGameData(deckId, gameId)),
         doResetStateAction: () => dispatch(resetStateAction()),
         doMoveFlashcardToBox: (deckId, deckCreator, flashcard, currentSession, answeredCorrect) => dispatch(moveFlashcardToBox(deckId, deckCreator, flashcard, currentSession, answeredCorrect)),
         doUpdateDeckSession: (deckId, creatorId, currentSession) => dispatch(updateDeckSession(deckId, creatorId, currentSession)),

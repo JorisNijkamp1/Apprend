@@ -39,6 +39,10 @@ export default (props) => {
         Object.entries(props.columns).forEach(([key, value]) => {
             if (typeof value === 'string') bool = true
         })
+
+        // Check if the deck has less then 2 columns, if so, disable button
+        if (props.deck.columns && props.deck.columns.length < 2) bool = true
+
         return bool
     }
 

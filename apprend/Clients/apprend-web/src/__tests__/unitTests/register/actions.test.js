@@ -9,7 +9,7 @@ import {
     SET_EMAIL_EXISTS,
     SET_REGISTER_SUCCESS,
     SET_USERNAME_EXISTS
-} from '../../../redux/actionTypes';
+} from '../../../redux-config/actionTypes';
 
 test('Action type SET_REGISTER_SUCCESS is correct', () => {
     expect(setRegisterSuccess().type).toBe(SET_REGISTER_SUCCESS);

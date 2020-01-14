@@ -1,5 +1,5 @@
-import {SET_REGISTER_SUCCESS, SET_USERNAME_EXISTS, SET_EMAIL_EXISTS, ERROR_OCCURRED} from '../../redux/actionTypes';
-import {API_URL} from '../../redux/urls';
+import {SET_REGISTER_SUCCESS, SET_USERNAME_EXISTS, SET_EMAIL_EXISTS, ERROR_OCCURRED} from '../../redux-config/actionTypes';
+import {API_URL} from '../../redux-config/urls';
 import {setAnonymousUserAction, setLoginAction} from '../login/actions';
 
 export const setRegisterSuccess = function (registered = true) {

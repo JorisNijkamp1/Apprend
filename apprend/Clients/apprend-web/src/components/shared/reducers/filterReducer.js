@@ -1,5 +1,5 @@
 import produce from 'immer'
-import {FILTER_SET_TAGS, DELETE_FILTERED_TAG, CLEAR_FILTERED_TAGS} from '../../../redux/actionTypes'
+import {FILTER_SET_TAGS, DELETE_FILTERED_TAG, CLEAR_FILTERED_TAGS} from '../../../redux-config/actionTypes'
 
 const initialState = {
     filteredTags: []

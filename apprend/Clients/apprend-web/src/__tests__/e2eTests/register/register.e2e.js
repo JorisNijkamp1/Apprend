@@ -1,4 +1,4 @@
-import {API_URL} from '../../../redux/urls';
+import {API_URL} from '../../../redux-config/urls';
 
 const puppeteer = require('puppeteer');
 const E2E_DELAY = 10;

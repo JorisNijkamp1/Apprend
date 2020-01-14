@@ -1,5 +1,5 @@
-import { CREATEDECK_EDIT_DECKNAME, CREATEDECK_SET_ISLOADING, CREATEDECK_ADD_TAG, CREATEDECK_DELETE_TAG, CREATEDECK_CLEAR_TAGS } from '../../redux/actionTypes'
-import {API_URL} from '../../redux/urls';
+import { CREATEDECK_EDIT_DECKNAME, CREATEDECK_SET_ISLOADING, CREATEDECK_ADD_TAG, CREATEDECK_DELETE_TAG, CREATEDECK_CLEAR_TAGS } from '../../redux-config/actionTypes'
+import {API_URL} from '../../redux-config/urls';
 
 export function changeDeckName(name){
     return {
