@@ -76,7 +76,7 @@ const NavbarUI = (props) => {
                 <>
                     <Nav.Link as={Link} className="text-white pl-30" to={'/' + props.username + '/decks'}>My
                         Decks</Nav.Link>
-                    <NavDropdown title={props.anonymousUser ? 'Welcome Guest' : 'Welcome ' + props.username}
+                    <NavDropdown title={props.anonymousUser ? 'Welcome' : 'Welcome ' + props.username}
                                  id="basic-nav-dropdown" className="text-white pl-30">
                         {profile()}
                         {login()}

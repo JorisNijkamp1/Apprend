@@ -343,7 +343,7 @@ const UserDecks = (props) => {
                                             </Col>
                                             <Col xs={12} md={12}>
                                                 <span className="float-left"><b>Created
-                                                    by: </b></span><span className="float-right">{props.deck.creatorId ? props.deck.creatorId.length === 32 ? 'Anon' : props.deck.creatorId : ''}</span>
+                                                    by: </b></span><span className="float-right"><Link to={`/${props.deck.creatorId}/decks`}>{props.deck.creatorId ? props.deck.creatorId.length === 32 ? 'Anonymous' : props.deck.creatorId : ''}</Link></span>
                                             </Col>
                                             <Col xs={12} md={12}>
                                                 <span className="float-left"><b>Total flashcards: </b></span><span className="float-right">{totalFlashcards}</span>
@@ -357,26 +357,13 @@ const UserDecks = (props) => {
                                             </Col>
                                             <Col xs={12} md={12}>
                                                 {props.username === props.deck.creatorId && props.deck.originalDeck ?
-                                                <Link to={`/decks/${props.deck.originalDeck}`} onClick={() => {
-                                                    props.getDeck(props.deck.originalDeck, setIsLoading).then(response => {
-                                                        if (response === 'Deck was not found') {
-                                                            Notification(response, 'danger')
-                                                            history.push('/')
-                                                        }
-                                                    })
-                                                }}>
+                                                <Link to={`/decks/${props.deck.originalDeck}`}>
                                                     <small className="mt-2">This deck was imported</small>
                                                 </Link>
                                                 : '' }
-                                                {/* <Button href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link transparent'} id={'original'}>
-                                                    Original deck
-                                                </Button></> : ''} */}
                                             </Col>
                                         </Row>
                                     </Col>
-                                </Row>
-                                <Row className={'mt-3'}>
-
                                 </Row>
                             </Card.Subtitle>
 
