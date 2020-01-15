@@ -96,6 +96,7 @@ const MyProfileUI = (props) => {
                                     <td><b>E-mail</b></td>
                                     <td>
                                         <Form.Control type="email"
+                                                      id={'formEmail'}
                                                       name={userId}
                                                       placeholder={'Enter your new email!'}
                                                       onChange={(e) => setEditEmail(e.target.value)}
@@ -132,10 +133,12 @@ const MyProfileUI = (props) => {
                                     type={'submit'}
                                     variant="primary"
                                     className={'ml-2'}
+                                    id={'confirm'}
                                 >Confirm</Button> :
                                 <Button
                                     disabled={false}
                                     type={'submit'}
+                                    id={'confirm'}
                                     variant="primary"
                                     className={'ml-2'}
                                 >Confirm</Button>
@@ -158,6 +161,7 @@ const MyProfileUI = (props) => {
                             <Col md={{'span': 12}} className={'mb-3'}>
                                 <Form.Control type="password"
                                               name={userId}
+                                              id={'password'}
                                               placeholder={'Password'}
                                               onChange={(e) => setEditPassword(e.target.value)}
                                               isValid={passwordValid(editPassword)}
@@ -170,6 +174,7 @@ const MyProfileUI = (props) => {
                             </Col>
                             <Col md={{'span': 12}}>
                                 <Form.Control type="password"
+                                              id={'repeat-password'}
                                               name={userId}
                                               placeholder={'Password'}
                                               onChange={(event) => setEditRepeatPassword(event.target.value)}
@@ -194,12 +199,14 @@ const MyProfileUI = (props) => {
                                 <Button
                                     disabled={false}
                                     type={'submit'}
+                                    id={'confirm'}
                                     variant="primary"
                                     className={''}
                                 >Confirm</Button> :
                                 <Button
                                     disabled={true}
                                     type={'submit'}
+                                    id={'confirm'}
                                     variant="primary"
                                     className={''}
                                 >Confirm</Button>
@@ -242,6 +249,7 @@ const MyProfileUI = (props) => {
                         <Col className={'justify-content-center di-f'}>
                             <Button
                                 variant="primary"
+                                id={'change-password'}
                                 onClick={() => {
                                     setEditPassword(true)
                                 }}>Change password</Button>
@@ -251,6 +259,7 @@ const MyProfileUI = (props) => {
                         <Col className={'justify-content-center di-f mt-4'}>
                             <Button
                                 variant={'danger'}
+                                id={'delete-account'}
                                 onClick={() => {
                                     setConfirm(true);
                                 }}>

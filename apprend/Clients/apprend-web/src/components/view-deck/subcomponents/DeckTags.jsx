@@ -35,7 +35,7 @@ export default props => {
                             onChange={e => props.setInput(e.target.value)}
                         />
                         <InputGroup.Append>
-                            <Button className={'bg-blue text-white hover-shadow'} onClick={() => props.getTagValue()}>Add tag</Button>
+                            <Button id={'add-tag-button'} className={'bg-blue text-white hover-shadow'} onClick={() => props.getTagValue()}>Add tag</Button>
                         </InputGroup.Append>
                     </InputGroup>
         
