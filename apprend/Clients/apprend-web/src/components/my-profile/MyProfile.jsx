@@ -9,7 +9,6 @@ import {NavBar} from "../shared/components/NavBar";
 import Button from "react-bootstrap/Button";
 import {setAccountDetailsAction, deleteUserAction} from "./actions";
 import {
-    emailValid,
     passwordValid,
     repeatPasswordValid
 } from "../../util/form-validation/validationRules";
@@ -76,9 +75,6 @@ const MyProfileUI = (props) => {
         }
     };
 
-    const maySubmitEmail = function (email) {
-        return emailValid(email);
-    };
 
     const maySubmitPassword = function (password, repeatPassword) {
         return repeatPasswordValid(password, repeatPassword);
