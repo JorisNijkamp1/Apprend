@@ -33,12 +33,20 @@ const Deck = (props) => {
     const isCreator = (props.username === props.userDecks.userId);
 
     const [decks, setDecks] = useState()
+    const [currentUsername ,setCurrentUsername] = useState('')
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         props.getUserDecks(username, setIsLoading)
         props.setFilteredDecks([])
     }, []);
+
+    useEffect( () => {
+        if (username !== currentUsername){
+            setCurrentUsername(username)
+            props.getUserDecks(username, setIsLoading)
+        }
+    })
 
     const handleDeleteDeck = async event => {
         const deckId = event.currentTarget.getAttribute('name')

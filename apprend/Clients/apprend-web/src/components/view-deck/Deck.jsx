@@ -34,6 +34,7 @@ import DeckName from './subcomponents/DeckName';
 import DeckTags from "./subcomponents/DeckTags";
 import {LoadingComponent} from "../shared/components/LoadingComponent";
 import ImportList from './subcomponents/ImportList'
+import { Link } from 'react-router-dom'
 
 const UserDecks = (props) => {
     const {deckId} = useParams();
@@ -46,6 +47,8 @@ const UserDecks = (props) => {
     const [isLoading, setIsLoading] = useState(true)
     const [input, setInput] = useState('')
     const [listStatus, setListStatus] = useState(false)
+
+    const [currentDeck, setCurrentDeck] = useState('')
 
     const history = useHistory()
 
@@ -60,6 +63,18 @@ const UserDecks = (props) => {
         })
         props.clearTags()
     }, []);
+
+    useEffect(() => {
+        if (deckId !== currentDeck) {
+            setCurrentDeck(deckId)
+            props.getDeck(deckId, setIsLoading).then(response => {
+                if (response === 'Deck was not found') {
+                    Notification(response, 'danger')
+                    history.push('/')
+                }
+            })
+        }
+    })
 
     const checkAdded = (tagValue) => {
         let tags = props.deckEdit.data.tags.concat(props.tags)
@@ -300,9 +315,10 @@ const UserDecks = (props) => {
                                             </Col>
                                         </Row>
                                         <Row>
+                                            {props.deck.tags && props.deck.tags.length > 0 ?
                                             <Col xs={12}>
                                                 <h5>Tags</h5>
-                                            </Col>
+                                            </Col> : '' }
                                             <Col xs={12}>
                                                 {Decktags()}
                                             </Col>
@@ -336,14 +352,25 @@ const UserDecks = (props) => {
                                                 <span className="float-left"><b>Imported: </b></span><span className="float-right">{props.deck.imported ? props.deck.imported.length : 0}
                                                 {props.deck.imported ? props.deck.imported.length === 1 ? <b> time</b> : <b> times</b> : <b> times</b>}</span>
                                             </Col>
-                                            <Col xs={12} md={12}>
-                                                {props.username === props.deck.creatorId && props.deck.originalDeck ?
-                                                <Button href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link transparent'} id={'original'}>
-                                                    Original deck
-                                                </Button> : ''}
-                                            </Col>
                                             <Col xs={12} className="mt-2">
                                                 {props.deck.imported ? props.deck.imported.length > 0 ? Importlist() : '' : ''}
+                                            </Col>
+                                            <Col xs={12} md={12}>
+                                                {props.username === props.deck.creatorId && props.deck.originalDeck ?
+                                                <Link to={`/decks/${props.deck.originalDeck}`} onClick={() => {
+                                                    props.getDeck(props.deck.originalDeck, setIsLoading).then(response => {
+                                                        if (response === 'Deck was not found') {
+                                                            Notification(response, 'danger')
+                                                            history.push('/')
+                                                        }
+                                                    })
+                                                }}>
+                                                    <small className="mt-2">This deck was imported</small>
+                                                </Link>
+                                                : '' }
+                                                {/* <Button href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link transparent'} id={'original'}>
+                                                    Original deck
+                                                </Button></> : ''} */}
                                             </Col>
                                         </Row>
                                     </Col>
