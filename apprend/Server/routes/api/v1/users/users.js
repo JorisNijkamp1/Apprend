@@ -60,7 +60,7 @@ users.post('/email', async (req, res) => {
         const user = await User.findOne({'email': req.body.email}).select('email');
 
         if (user === undefined || user === null) {
-            res.status(404).json({
+            return res.status(404).json({
                 'message': 'The user E-mail could not be found...'
             });
         }

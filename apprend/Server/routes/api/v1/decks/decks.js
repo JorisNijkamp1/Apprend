@@ -1,7 +1,5 @@
 const express = require('express');
 const decks = express.Router();
-const path = require('path');
-const session = require('express-session');
 const mongoose = require('mongoose');
 require('../../../../database/models/deck');
 const Decks = mongoose.model('Deck');
