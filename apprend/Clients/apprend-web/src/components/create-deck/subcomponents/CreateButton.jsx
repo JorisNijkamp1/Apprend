@@ -4,9 +4,6 @@ import {
     Button,
     Spinner
 } from 'react-bootstrap'
-import {Notification} from "../../shared/components/Notification";
-import {changeDeckName} from '../actions'
-import {createDeck} from '../actions'
 
 const CreateButtonComponent = (props) => {
 

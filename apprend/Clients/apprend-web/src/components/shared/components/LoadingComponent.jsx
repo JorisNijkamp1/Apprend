@@ -1,9 +1,6 @@
 import React from 'react'
 import Loader from "react-loaders";
-import { Row, Button } from 'react-bootstrap'
-import {Redirect} from 'react-router';
-import { Link } from 'react-router-dom'
-
+import { Row } from 'react-bootstrap'
 
 export const LoadingComponent = (props) => {
 
