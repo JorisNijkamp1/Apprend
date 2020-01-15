@@ -94,10 +94,9 @@ users.use('/:userId*', async (req, res, next) => {
 | Get a user by its ID (username).
 |---------------------------------------------
  */
-users.get('/:id', auth.user, async (req, res) => {
+users.get('/:id', async (req, res) => {
     try {
         req.user.password = 'password';
-        // console.log(req.user)
         return res.status(200).json({
             'data': req.user,
             'message': 'The user has been found!'
