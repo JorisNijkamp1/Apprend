@@ -109,6 +109,26 @@ const HomepageUI = (props) => {
         }
     }
 
+    const showExplanation = () => {
+        return (
+            <>
+                <Row className={'mt-7'}>
+                    <Col lg={{span: 8, offset: 2}} className="text-justify">
+                        <h1 className={'mb-5 text-center'}>How learning with Apprend works</h1>
+                        <p>
+                            Create a deck or import a deck from someone else.
+                            Choose a deck that you want to play with.
+                            Select the columns that you want to use to learn.
+                        </p>
+                        <p>The first time that you play a deck you get 10 cards from that deck to play with.</p>
+                        <p>Our application uses the Leitner Systeem, this is based on spaced repetition. This means that the cards you answered wrong will come back the next round, while the correct cards will wait 3 or 5 rounds before coming back, depending on their box.</p>
+                        <p>Every other time you play the deck you get 10 cards which you've never had before, if there are still any cards left that you didn't play yet. On top of these 10 cards you will get all the cards that you answered wrong the last round.</p>
+                    </Col>
+                </Row>
+            </>
+        )
+    }
+
     return (
         <>
             <NavBar/>
@@ -137,6 +157,7 @@ const HomepageUI = (props) => {
                 </div>
 
                 {showContent()}
+                {showExplanation()}
 
             </Container>
             <Footer/>

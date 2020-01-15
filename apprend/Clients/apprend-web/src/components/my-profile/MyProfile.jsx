@@ -1,22 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {Col, Container, Form, FormText} from "react-bootstrap";
-import Row from "react-bootstrap/Row";
-import {FormLabel} from "react-bootstrap/FormLabel";
-import {getUser} from "./actions";
-import {useParams} from "react-router";
-import {NavBar} from "../shared/components/NavBar";
-import Button from "react-bootstrap/Button";
-import {setAccountDetailsAction, deleteUserAction} from "./actions";
+import {Col, Container, Form, FormText, Table} from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
+import {FormLabel} from 'react-bootstrap/FormLabel';
+import {getUser} from './actions';
+import {useParams} from 'react-router';
+import {NavBar} from '../shared/components/NavBar';
+import Button from 'react-bootstrap/Button';
+import {setAccountDetailsAction, deleteUserAction} from './actions';
 import {
     passwordValid,
     repeatPasswordValid
-} from "../../util/form-validation/validationRules";
-import {checkEmailExists} from "../register/actions";
+} from '../../util/form-validation/validationRules';
+import {checkEmailExists} from '../register/actions';
 import {Notification} from '../shared/components/Notification';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
-import {logoutAction} from "../shared/actions/actions";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCheck, faEdit, faTimes} from '@fortawesome/free-solid-svg-icons';
+import {logoutAction} from '../shared/actions/actions';
 import {useHistory} from 'react-router'
 
 const MyProfileUI = (props) => {
@@ -46,7 +46,7 @@ const MyProfileUI = (props) => {
     const deleteUser = async () => {
         const response = await props.deleteUser(userId);
         props.logout();
-        Notification(response, "success");
+        Notification(response, 'success');
         history.push('/');
     }
 
@@ -57,13 +57,13 @@ const MyProfileUI = (props) => {
                     <Col md={{span: 2, offset: 5}} className="text-center mt-4" xs={8}>
                         Are you sure?
                         <Col className="text-green">
-                            <FontAwesomeIcon icon={faCheck} name={'check'} id={"green"}
+                            <FontAwesomeIcon icon={faCheck} name={'check'} id={'green'}
                                              onClick={() => {
                                                  deleteUser()
                                              }}/>
                         </Col>
                         <Col className="text-red">
-                            <FontAwesomeIcon icon={faTimes} name={'times'} id={"red"}
+                            <FontAwesomeIcon icon={faTimes} name={'times'} id={'red'}
                                              onClick={() => {
                                                  setConfirm(false);
                                              }}/>
@@ -84,45 +84,42 @@ const MyProfileUI = (props) => {
         if (editAccountDetails) {
             return (
                 <Form onSubmit={(e) => onSubmit(e)}>
-                    <Row className={'d-flex justify-content-center'}>
-                        <Col md={{'span': 12}}>
-                            <Form.Label className="text-center" column sm="12">
-                                <b>Username:</b>
-                            </Form.Label>
+                    <Row>
+                        <Col md={{span: 6, offset: 3}} className={'mt-3 mb-3'}>
+                            <Table bordered>
+                                <tbody>
+                                <tr>
+                                    <td><b>Username</b></td>
+                                    <td>{props.user._id}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>E-mail</b></td>
+                                    <td>
+                                        <Form.Control type="email"
+                                                      name={userId}
+                                                      placeholder={'Enter your new email!'}
+                                                      onChange={(e) => setEditEmail(e.target.value)}
+                                                      onBlur={() => {
+                                                          props.doCheckEmailExists(editEmail)
+                                                      }}
+                                                      isInvalid={props.emailExists}
+                                        />
+                                        {(props.emailExists) ?
+                                            <FormText className="text-muted" id={'emailExistsWarning'}>
+                                                '{editEmail}' is already in use!
+                                            </FormText> : ''}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </Table>
                         </Col>
-                        <Col md={{'span': 12}}>
-                            <p className={'text-center'}>{props.user._id}</p>
-                        </Col>
-                    </Row>
-                    <Row className={'d-flex justify-content-center'}>
-                        <Form.Group controlId="formEmail" className={'text-center'}>
-                            <Col md={{'span': 12}}>
-                                <Form.Label className="text-center" column sm="12">
-                                    <b>Email:</b>
-                                </Form.Label>
-                            </Col>
-                            <Col md={{'span': 12}}>
-                                <Form.Control type="email"
-                                              name={userId}
-                                              placeholder={'Enter your new email!'}
-                                              onChange={(e) => setEditEmail(e.target.value)}
-                                              onBlur={() => {
-                                                  props.doCheckEmailExists(editEmail)
-                                              }}
-                                              isInvalid={props.emailExists}
-                                />
-                                {(props.emailExists) ? <FormText className="text-muted" id={'emailExistsWarning'}>
-                                    '{editEmail}' is already in use!
-                                </FormText> : ''}
-                            </Col>
-                        </Form.Group>
                     </Row>
                     <Row>
                         <Col className={'d-flex justify-content-center'}>
                             <Button
                                 disabled={false}
                                 type={'submit'}
-                                variant="outline-warning"
+                                variant="warning"
                                 className={'mr-2'}
                                 onClick={() => {
                                     setEditAccountDetails(false);
@@ -133,13 +130,13 @@ const MyProfileUI = (props) => {
                                 <Button
                                     disabled={true}
                                     type={'submit'}
-                                    variant="outline-primary"
+                                    variant="primary"
                                     className={'ml-2'}
                                 >Confirm</Button> :
                                 <Button
                                     disabled={false}
                                     type={'submit'}
-                                    variant="outline-primary"
+                                    variant="primary"
                                     className={'ml-2'}
                                 >Confirm</Button>
                             }
@@ -155,7 +152,7 @@ const MyProfileUI = (props) => {
                         <Form.Group controlId="formPassword" className={'text-center'}>
                             <Col md={{'span': 12}}>
                                 <Form.Label className="text-center" column sm="12">
-                                    <b>New password:</b>
+                                    <b>New password</b>
                                 </Form.Label>
                             </Col>
                             <Col md={{'span': 12}} className={'mb-3'}>
@@ -168,7 +165,7 @@ const MyProfileUI = (props) => {
                             </Col>
                             <Col md={{'span': 12}}>
                                 <Form.Label className="text-center" column sm="12">
-                                    <b>Repeat password:</b>
+                                    <b>Repeat password</b>
                                 </Form.Label>
                             </Col>
                             <Col md={{'span': 12}}>
@@ -186,7 +183,7 @@ const MyProfileUI = (props) => {
                             <Button
                                 disabled={false}
                                 type={'submit'}
-                                variant="outline-warning"
+                                variant="warning"
                                 className={'mr-2'}
                                 onClick={() => {
                                     setEditAccountDetails(false);
@@ -197,13 +194,13 @@ const MyProfileUI = (props) => {
                                 <Button
                                     disabled={false}
                                     type={'submit'}
-                                    variant="outline-primary"
+                                    variant="primary"
                                     className={''}
                                 >Confirm</Button> :
                                 <Button
                                     disabled={true}
                                     type={'submit'}
-                                    variant="outline-primary"
+                                    variant="primary"
                                     className={''}
                                 >Confirm</Button>
                             }
@@ -215,46 +212,45 @@ const MyProfileUI = (props) => {
             return (
                 <>
                     <Row>
-                        <Col md={{'span': 12}}>
-                            <Form.Label className="text-center" column sm="12">
-                                <b>Username:</b>
-                            </Form.Label>
-                        </Col>
-                        <Col md={{'span': 12}}>
-                            <p className={'text-center'}>{props.user._id}</p>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={{'span': 12}}>
-                            <Form.Label className="text-center" column sm="12">
-                                <b>Email:</b>
-                            </Form.Label>
-                        </Col>
-                        <Col md={{'span': 12}}>
-                            <p className={'text-center'}>{props.user.email}</p>
+                        <Col md={{span: 6, offset: 3}} className={'mt-3 mb-3'}>
+                            <Table bordered>
+                                <tbody>
+                                <tr>
+                                    <td><b>Username</b></td>
+                                    <td>{props.user._id}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>E-mail</b></td>
+                                    <td>
+                                        {props.user.email}
+                                        <FontAwesomeIcon
+                                            icon={faEdit}
+                                            className={'float-right mt-1 color-green cursor-pointer pointer'}
+                                            onClick={() => {
+                                                setEditAccountDetails(true)
+                                            }}
+                                            id={'edit-account'}
+                                            size={`${props.buttonSize ? props.buttonSize : 1}x`}
+                                        />
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </Table>
                         </Col>
                     </Row>
                     <Row>
                         <Col className={'justify-content-center di-f'}>
                             <Button
-                                variant="outline-success"
-                                className={'pull-right mr-3'}
-                                onClick={() => {
-                                    setEditAccountDetails(true)
-                                }}>Edit account details</Button>
-                            <Button
-                                variant="outline-primary"
-                                className={'ml-2'}
+                                variant="primary"
                                 onClick={() => {
                                     setEditPassword(true)
                                 }}>Change password</Button>
                         </Col>
                     </Row>
                     <Row>
-                        <Col md={{span: 4, offset: 4}} className={'mt-4'}>
+                        <Col className={'justify-content-center di-f mt-4'}>
                             <Button
-                                variant={'outline-danger'}
-                                className={'w-100'}
+                                variant={'danger'}
                                 onClick={() => {
                                     setConfirm(true);
                                 }}>
@@ -271,7 +267,7 @@ const MyProfileUI = (props) => {
     return (
         <>
             <NavBar/>
-            <Container className={"pt-5 pb-5"}>
+            <Container className={'pt-5 pb-5'}>
                 <Row>
                     <Form.Label className="text-center" column sm="12">
                         <h2 className={'text-center'}>Account details</h2>
