@@ -59,10 +59,10 @@ export const RegisterPageComponent = props => {
                             </p> : ''}
                         {(props.error !== null) ?
                             <p className={'bg-danger text-white text-center rounded p-2'}>{props.error}</p> : ''}
-                        <Form>
+                        <Form className={'text-center'}>
                             <FormGroup>
-                                <FormLabel column={false}>Username</FormLabel>
-                                <FormControl placeholder={'e.g. johndoe'}
+                                <FormLabel column={false}><b>Username</b></FormLabel>
+                                <FormControl placeholder={'Enter username'}
                                              type={'text'}
                                              id={'registerUsernameInput'}
                                              onChange={(event) => setUsername(event.target.value)}
@@ -75,8 +75,8 @@ export const RegisterPageComponent = props => {
                                 </FormText> : ''}
                             </FormGroup>
                             <FormGroup>
-                                <FormLabel column={false}>E-mail</FormLabel>
-                                <FormControl placeholder={'e.g. johndoe@foo.com'}
+                                <FormLabel column={false}><b>Email</b></FormLabel>
+                                <FormControl placeholder={'Enter email'}
                                              type={'email'}
                                              id={'registerEmailInput'}
                                              onChange={(event) => setEmail(event.target.value)}
@@ -89,8 +89,8 @@ export const RegisterPageComponent = props => {
                                 </FormText> : ''}
                             </FormGroup>
                             <FormGroup>
-                                <FormLabel column={false}>Password</FormLabel>
-                                <FormControl placeholder={'...'}
+                                <FormLabel column={false}><b>Password</b></FormLabel>
+                                <FormControl placeholder={'Enter password'}
                                              type={'password'}
                                              id={'registerPasswordInput'}
                                              onChange={(event) => setPassword(event.target.value)}
@@ -98,8 +98,8 @@ export const RegisterPageComponent = props => {
                                              required/>
                             </FormGroup>
                             <FormGroup>
-                                <FormLabel column={false}>Repeat password</FormLabel>
-                                <FormControl placeholder={'...'}
+                                <FormLabel column={false}><b>Repeat password</b></FormLabel>
+                                <FormControl placeholder={'Repeat password'}
                                              type={'password'}
                                              id={'registerRepeatPasswordInput'}
                                              onChange={(event) => setRepeatPassword(event.target.value)}
