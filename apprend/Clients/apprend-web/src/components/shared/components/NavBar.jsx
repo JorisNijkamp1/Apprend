@@ -74,8 +74,9 @@ const NavbarUI = (props) => {
         } else {
             return (
                 <>
-                    <Nav.Link as={Link} className="text-white pl-30" to={'/' + props.username + '/decks'}>My
-                        Decks</Nav.Link>
+                    <Nav.Link name={'my-decks'} as={Link} className="text-white pl-30" to={'/' + props.username + '/decks'}>
+                        My Decks
+                    </Nav.Link>
                     <NavDropdown title={props.anonymousUser ? 'Welcome Guest' : 'Welcome ' + props.username}
                                  id="basic-nav-dropdown" className="text-white pl-30">
                         {profile()}
@@ -103,7 +104,7 @@ const NavbarUI = (props) => {
             <Container>
                 <Navbar.Brand as={Link} className={"text-white"} to="/"><h1>Apprend</h1></Navbar.Brand>
 
-                <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" id={'nav-ham-icon'}/>
                 <Navbar.Collapse className={"justify-content-end"} id="basic-navbar-nav">
                     <Nav>
                         {searchInput()}

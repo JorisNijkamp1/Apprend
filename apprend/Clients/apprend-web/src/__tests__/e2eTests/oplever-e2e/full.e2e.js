@@ -9,7 +9,8 @@ describe(`Complete test`, () => {
         browser = await puppeteer.launch({
             headless: false,
             slowMo: 50,
-            args: [`--window-size=800,800`, `--window-position=0,0`]
+            defaultViewport: null,
+            args: [`--window-size=1200,1200`, `--window-position=0,0`]
         })
         page = await browser.newPage()
     });
@@ -132,8 +133,8 @@ describe(`Complete test`, () => {
 
     for(let i = 0; i < 2; i++) {
         test(`Add a image column`, async () => {
-            await page.waitFor(`#Image`);
-            const imageButton = await page.$(`#Image`)
+            await page.waitFor(`#button-Image-1`);
+            const imageButton = await page.$(`#button-Image-1`)
             expect(imageButton).toBeDefined()
             await imageButton.click()
         });
@@ -167,7 +168,7 @@ describe(`Complete test`, () => {
 
     for(let i = 0; i < 3; i++) {
         test(`Add a flashcard`, async () => {
-            const addFlashcardButton = await page.$(`#FLASHCARD`)
+            const addFlashcardButton = await page.$(`#add-flashcard-2`)
             expect(addFlashcardButton).toBeDefined()
             await addFlashcardButton.click()
         });
@@ -182,15 +183,15 @@ describe(`Complete test`, () => {
     }
 
     test(`Add data to a flashcard`, async () => {
-        await page.type('tr#row-1 input#image-2', `https://iculture.textopus.nl/wp-content/uploads/2014/06/The-Test-Fun-for-Friends-iPhone-iPad.png`)
-        const nameField = await page.$('tr#row-1 input#image-2')
+        await page.type('tr#row-1 input#column-1-2', `https://iculture.textopus.nl/wp-content/uploads/2014/06/The-Test-Fun-for-Friends-iPhone-iPad.png`)
+        const nameField = await page.$('tr#row-1 input#column-1-2')
         expect(nameField).toBeDefined()
     });
 
     test(`Remove a flashcard`, async () => {
-        const addFlashcardButton = await page.$(`tr#row-0 #delete-0`)
-        expect(addFlashcardButton).toBeDefined()
-        await addFlashcardButton.click()
+        const deleteButton = await page.$(`tr#row-0 #delete-0`)
+        expect(deleteButton).toBeDefined()
+        await deleteButton.click()
     });
 
     test(`Click the green icon to really delete the column`, async () => {
@@ -200,8 +201,71 @@ describe(`Complete test`, () => {
     });
 
     test(`Toggle the status of the deck`, async () => {
-        const deleteButton = await page.$(`#toggle-status-deck-button`)
-        expect(deleteButton).toBeDefined()
-        await deleteButton.click()
+        const statusButton = await page.$(`#toggle-status-deck-button`)
+        expect(statusButton).toBeDefined()
+        await statusButton.click()
+    });
+
+    test(`Go to the "my decks" page`, async () => {
+        const decksButton = await page.$(`a[name="my-decks"]`)
+        expect(decksButton).toBeDefined()
+        await decksButton.click()
+    });
+
+    test(`Delete a deck`, async () => {
+        await page.waitFor(`#delete-icon-button-0`);
+        const deleteDeckButton = await page.$(`#delete-icon-button-0`)
+        expect(deleteDeckButton).toBeDefined()
+        await deleteDeckButton.click()
+    });
+
+    test(`Confirm deleting a deck`, async () => {
+        const deleteDeckButton = await page.$(`#confirm-icon-button-0`)
+        expect(deleteDeckButton).toBeDefined()
+        await deleteDeckButton.click()
+    });
+
+    test(`Click the play a deck button`, async () => {
+        const playButton = await page.$(`#card-0-play-link`)
+        expect(playButton).toBeDefined()
+        await playButton.click()
+    });
+
+    test(`Play a deck`, async () => {
+        await page.waitFor(`#play-game`);
+        const playButton = await page.$(`#play-game`)
+        expect(playButton).toBeDefined()
+        await playButton.click()
+    });
+
+    test(`Flip a card`, async () => {
+        await page.waitFor(`#flip`);
+        const flipButton = await page.$(`#flip`)
+        expect(flipButton).toBeDefined()
+        await flipButton.click()
+    });
+
+    test(`Click on correct`, async () => {
+        const correctButton = await page.$(`#correct`)
+        expect(correctButton).toBeDefined()
+        await correctButton.click()
+    });
+
+    test(`Click on wrong`, async () => {
+        const wrongButton = await page.$(`#wrong`)
+        expect(wrongButton).toBeDefined()
+        await wrongButton.click()
+    });
+
+    test(`Click on correct`, async () => {
+        const correctButton = await page.$(`#correct`)
+        expect(correctButton).toBeDefined()
+        await correctButton.click()
+    });
+
+    test(`Click on the back button`, async () => {
+        const backButton = await page.$(`#back`)
+        expect(backButton).toBeDefined()
+        await backButton.click()
     });
 });
