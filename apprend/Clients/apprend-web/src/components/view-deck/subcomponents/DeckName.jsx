@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Col, Row } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 
 export default props => {
     if (props.state){

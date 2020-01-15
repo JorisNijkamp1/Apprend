@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {Card, Col, Container, Form, FormControl, FormGroup, FormText} from "react-bootstrap";
+import {Col, Container, Form, FormText} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {FormLabel} from "react-bootstrap/FormLabel";
 import {getUser} from "./actions";
@@ -11,8 +11,7 @@ import {setAccountDetailsAction, deleteUserAction} from "./actions";
 import {
     emailValid,
     passwordValid,
-    repeatPasswordValid,
-    usernameValid
+    repeatPasswordValid
 } from "../../util/form-validation/validationRules";
 import {checkEmailExists} from "../register/actions";
 import {Notification} from '../shared/components/Notification';
