@@ -307,10 +307,13 @@ const UserDecks = (props) => {
                                                 {Decktags()}
                                             </Col>
                                         </Row>
+                                        {showEditConfirmationBox()}
+
                                         <Row className="mt-3">
                                             <Col xs={12}>
                                                 <h5>Actions</h5>
                                             </Col>
+
                                             {showOptions(findAllOptions(isCreator))}
                                         </Row>
                                     </Col>
@@ -369,15 +372,8 @@ const UserDecks = (props) => {
         if (isLoading) return <LoadingComponent loadingText="Loading deck for you"/>
         return (
             <>
-                <Row>
-                    <Col lg={{span: 8, offset: 2}}>
-                        <div className="mx-auto text-center pt-5">
-                        </div>
-                    </Col>
-                </Row>
                 {loader}
                 {error}
-                {showEditConfirmationBox()}
                 <Row>
                     {deck}
                 </Row>
@@ -429,11 +425,11 @@ const UserDecks = (props) => {
             <div className="container">
                 <Row className="d-flex align-items-stretch">
                     {props.deck ? props.deck.flashcards ? props.deck.flashcards.map(card => (
-                        <Col xs={12} md={6} lg={4}>
+                        <Col xs={12} md={6} lg={4} key={`flashcard-${card._id}`}>
                             <Card className="text-center my-3">
                                 <Card.Body>
                                     {card.columns.map(col => (
-                                        <div className="my-1">
+                                        <div className="my-1" key={`column-${col._id}`}>
                                         <h6><strong>{col.type}</strong></h6>
                                         {showCorrectType(col)}
                                         </div>

@@ -46,7 +46,6 @@ export default props => {
     } else {
         if (props.deck && props.deck.tags && props.deck.tags.length > 0) {
             const allTags = props.deck.tags.map(tag => (
-                <>
                     <Col xs={6} md={3} className="text-center my-1" key={`col-${tag}`}>
                         <Card>
                             <Link key={tag} to={`/tags/${tag}`} className={'search-deck-suggestions-link'}>
@@ -54,7 +53,6 @@ export default props => {
                             </Link>
                         </Card>
                     </Col>
-                </>
             ))
 
             return  (
