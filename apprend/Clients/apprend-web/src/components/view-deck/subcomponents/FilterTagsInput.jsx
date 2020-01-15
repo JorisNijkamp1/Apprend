@@ -151,7 +151,7 @@ const FilterTagsInput = (props) => {
                                     id={'Filter'}
                                     value={value}
                                     onChange={e => renderSuggestions(e.target.value)}
-                                    autocomplete='off'
+                                    autoComplete='off'
                                 />
                                 <InputGroup.Append>
                                     <Button className={'bg-blue text-white hover-shadow'} onClick={() => AddFilteredTag()}>
