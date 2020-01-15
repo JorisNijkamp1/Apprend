@@ -9,10 +9,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
 const authenticationMiddleware = require('./authentication/middleware');
-const config = require('../../../../config');
 
 // Body parser
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 login.use(bodyParser.urlencoded({extended: false})) // parse application/x-www-form-urlencoded
 login.use(bodyParser.json()) // parse application/json
