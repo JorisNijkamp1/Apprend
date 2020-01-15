@@ -8,7 +8,7 @@ describe(`Complete test`, () => {
     beforeAll(async () => {
         browser = await puppeteer.launch({
             headless: false,
-            slowMo: 50,
+            slowMo: 150,
             defaultViewport: null,
             args: [`--window-size=1200,1200`, `--window-position=0,0`]
         })
@@ -66,8 +66,13 @@ describe(`Complete test`, () => {
         await page.waitFor(`#input-description`);
         await page.waitFor(`#tags`);
 
+        await page.evaluate(() => document.getElementById("input-name").value = "");
         await page.type(`[id="input-name"]`, `Import`, {delay: 15});
+
+        await page.evaluate(() => document.getElementById("input-description").value = "");
         await page.type(`[id="input-description"]`, `ik ben geimporteerd`, {delay: 15});
+
+        await page.evaluate(() => document.getElementById("tags").value = "");
         await page.type(`[id="tags"]`, `import`, {delay: 15});
 
         const nameField = await page.$(`[id="input-name"]`);
@@ -131,7 +136,7 @@ describe(`Complete test`, () => {
         await loginButton.click()
     })
 
-    for(let i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++) {
         test(`Add a image column`, async () => {
             await page.waitFor(`#button-Image-1`);
             const imageButton = await page.$(`#button-Image-1`)
@@ -166,7 +171,7 @@ describe(`Complete test`, () => {
         expect(nameField).toBeDefined()
     });
 
-    for(let i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
         test(`Add a flashcard`, async () => {
             const addFlashcardButton = await page.$(`#add-flashcard-2`)
             expect(addFlashcardButton).toBeDefined()
@@ -268,4 +273,60 @@ describe(`Complete test`, () => {
         expect(backButton).toBeDefined()
         await backButton.click()
     });
+
+
+    test('Load register page', async () => {
+        await page.goto('http://localhost:3000/register');
+        await page.waitFor(`title`);
+
+        const theTitle = await page.title();
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
+    });
+
+    test('Can register', async () => {
+        const username = 'testuser';
+        const email = 'testuser@test.com';
+        const password = 'test';
+
+        await page.waitFor('#registerUsernameInput');
+        const registerUsernameInput = await page.$('#registerUsernameInput');
+        await registerUsernameInput.click({clickCount: 3});
+        await registerUsernameInput.type(username);
+
+        await page.waitFor('#registerEmailInput');
+        const registerEmailInput = await page.$('#registerEmailInput');
+        await registerEmailInput.click({clickCount: 3});
+        await registerEmailInput.type(email);
+
+        await page.waitFor('#registerPasswordInput');
+        const registerPasswordInput = await page.$('#registerPasswordInput');
+        await registerPasswordInput.click({clickCount: 3});
+        await registerPasswordInput.type(password);
+
+        await page.waitFor('#registerRepeatPasswordInput');
+        const registerRepeatPasswordInput = await page.$('#registerRepeatPasswordInput');
+        await registerRepeatPasswordInput.click({clickCount: 3});
+        await registerRepeatPasswordInput.type(password);
+
+        const registerButton = await page.$('#registerSubmitButton');
+        expect(registerButton).toBeDefined();
+        await registerButton.click();
+    });
+
+    test('Click on my profile', async () => {
+        await page.waitFor(`title`);
+
+        const theTitle = await page.title();
+        expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
+
+        await page.waitFor('#my-profile');
+
+        const myprofileButton = await page.$(`[id="my-profile"]`);
+
+        expect(myprofileButton).toBeDefined();
+
+        await myprofileButton.click()
+
+    })
+
 });
