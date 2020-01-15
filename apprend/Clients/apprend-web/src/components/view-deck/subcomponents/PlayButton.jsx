@@ -17,7 +17,7 @@ export default (props) => {
             <Col xs={12} className={`text-center ${props.textColor ? props.textColor : 'text-green'}`}>
             <FontAwesomeIcon 
             icon={faPlay}
-            size={`${props.buttonSize ? props.buttonSize : 2}x`}
+            size={`${props.buttonSize ? props.buttonSize : 1}x`}
             />
             </Col>
             <Col xs={12} className={'text-center'}>

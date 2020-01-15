@@ -701,3 +701,7 @@ progress[value]::-webkit-progress-value {
 .pl-45 {
     padding-left: 45px;
 }
+
+.borderBottomPurple {
+    border-bottom: 1px solid purple
+}

@@ -229,79 +229,6 @@ const UserDecks = (props) => {
         }
     }
 
-    let loader, deck, error, flashcardsComp;
-    if (props.isLoading) {
-        loader = (
-            <Row className="mx-auto align-items-center flex-column py-5">
-                <Loader type="square-spin" active={true} color={'#758BFE'}/>
-                <h2>Loading decks...</h2>
-            </Row>
-        )
-    } else if (props.deck) {
-        if (props.deck.toString() === 'Deck was not found') {
-            error = (
-                <Row className="mx-auto align-items-center flex-column py-5">
-                    <h2>Deck not found... ☹️</h2>
-                </Row>
-            )
-        }
-
-        let totalFlashcards = 0;
-        if (props.deck.flashcards) {
-            totalFlashcards = props.deck.flashcards.length
-        }
-        if (props.deck.toString() !== 'Deck was not found') {
-            const datum = new Date(props.deck.creationDate).toLocaleDateString()
-            deck = (
-                <>
-                    <Card style={{width: '100%'}} bg={'light'} className={'my-5 text-center'}>
-                        <Card.Body>
-                            <Card.Subtitle>
-                                <Row>
-                                    <Col xs={12} md={4}>
-                                        <b>Created on: </b>{datum ? datum : ''}
-                                    </Col>
-                                    <Col xs={12} md={4}>
-                                        <b>Created
-                                            by: </b>{props.deck.creatorId ? props.deck.creatorId.length === 32 ? 'Anon' : props.deck.creatorId : ''}
-                                    </Col>
-                                    <Col xs={12} md={4}>
-                                        <b>Total flashcards: </b>{totalFlashcards}
-                                    </Col>
-                                </Row>
-                                <Row className={'mt-3'}>
-                                    <Col xs={12} md={4}>
-                                        <b>Imported: </b>{props.deck.imported ? props.deck.imported.length : 0}
-                                        {props.deck.imported ? props.deck.imported.length === 1 ? <b> time</b> : <b> times</b> : <b> times</b>}
-                                    </Col>
-                                    <Col xs={12} md={4}>
-                                        {props.username === props.deck.creatorId && props.deck.originalDeck ?
-                                        <Button href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link transparent'} id={'original'}>
-                                            Original deck
-                                        </Button> : ''}
-                                    </Col>
-                                </Row>
-                                <Row className={'mt-3'}>
-                                    <Col>
-                                        {props.deck.imported ? props.deck.imported.length > 0 ? Importlist() : '' : ''}
-                                    </Col>
-                                </Row>
-                            </Card.Subtitle>
-
-                        </Card.Body>
-                    </Card>
-                    {showOptions(findAllOptions(isCreator))}
-                </>
-            )
-
-            flashcardsComp = (
-                <>
-                    {showFlashcards()}
-                </>
-            )
-        }
-    }
-
     const Deckname = () => {
         return <DeckName
             state={editState}
@@ -334,6 +261,110 @@ const UserDecks = (props) => {
                     />
     }
 
+    let loader, deck, error, flashcardsComp;
+    if (props.isLoading) {
+        loader = (
+            <Row className="mx-auto align-items-center flex-column py-5">
+                <Loader type="square-spin" active={true} color={'#758BFE'}/>
+                <h2>Loading decks...</h2>
+            </Row>
+        )
+    } else if (props.deck) {
+        if (props.deck.toString() === 'Deck was not found') {
+            error = (
+                <Row className="mx-auto align-items-center flex-column py-5">
+                    <h2>Deck not found... ☹️</h2>
+                </Row>
+            )
+        }
+
+        let totalFlashcards = 0;
+        if (props.deck.flashcards) {
+            totalFlashcards = props.deck.flashcards.length
+        }
+        if (props.deck.toString() !== 'Deck was not found') {
+            const datum = new Date(props.deck.creationDate).toLocaleDateString()
+            deck = (
+                <>
+                    <Card style={{width: '100%'}} bg={'light'} className={'my-3 text-center'}>
+                        <Card.Body>
+                            <Card.Subtitle>
+                                <Row>
+                                    <Col md={8}>
+                                        <Row>
+                                            <Col xs={12}>
+                                                {Deckname()}
+                                            </Col>
+                                            <Col xs={12}>
+                                                {Deckdescription()}
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs={12}>
+                                                <h5>Tags</h5>
+                                            </Col>
+                                            <Col xs={12}>
+                                                {Decktags()}
+                                            </Col>
+                                        </Row>
+                                        <Row className="mt-3">
+                                            <Col xs={12}>
+                                                <h5>Actions</h5>
+                                            </Col>
+                                            {showOptions(findAllOptions(isCreator))}
+                                        </Row>
+                                    </Col>
+                                    <Col md={4}>
+                                        <Row>
+                                            <Col xs={12}>
+                                                <h2 className="borderBottomPurple">Info</h2>
+                                            </Col>
+                                            <Col xs={12} md={12}>
+                                                <span className="float-left"><b>Created on: </b></span>{datum ? <span className="float-right">{datum}</span> : ''}
+                                            </Col>
+                                            <Col xs={12} md={12}>
+                                                <span className="float-left"><b>Created
+                                                    by: </b></span><span className="float-right">{props.deck.creatorId ? props.deck.creatorId.length === 32 ? 'Anon' : props.deck.creatorId : ''}</span>
+                                            </Col>
+                                            <Col xs={12} md={12}>
+                                                <span className="float-left"><b>Total flashcards: </b></span><span className="float-right">{totalFlashcards}</span>
+                                            </Col>
+                                            <Col xs={12} md={12}>
+                                                <span className="float-left"><b>Imported: </b></span><span className="float-right">{props.deck.imported ? props.deck.imported.length : 0}
+                                                {props.deck.imported ? props.deck.imported.length === 1 ? <b> time</b> : <b> times</b> : <b> times</b>}</span>
+                                            </Col>
+                                            <Col xs={12} md={12}>
+                                                {props.username === props.deck.creatorId && props.deck.originalDeck ?
+                                                <Button href={`/decks/${props.deck.originalDeck}`} className={'search-deck-suggestions-link transparent'} id={'original'}>
+                                                    Original deck
+                                                </Button> : ''}
+                                            </Col>
+                                            <Col xs={12} className="mt-2">
+                                                {props.deck.imported ? props.deck.imported.length > 0 ? Importlist() : '' : ''}
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                                <Row className={'mt-3'}>
+
+                                </Row>
+                            </Card.Subtitle>
+
+                        </Card.Body>
+                    </Card>
+                </>
+            )
+
+            flashcardsComp = (
+                <>
+                    {showFlashcards()}
+                </>
+            )
+        }
+    }
+
+
+
     const showContent = () => {
         if (isLoading) return <LoadingComponent loadingText="Loading deck for you"/>
         return (
@@ -341,9 +372,6 @@ const UserDecks = (props) => {
                 <Row>
                     <Col lg={{span: 8, offset: 2}}>
                         <div className="mx-auto text-center pt-5">
-                            {Deckname()}
-                            {Deckdescription()}
-                            {Decktags()}
                         </div>
                     </Col>
                 </Row>
