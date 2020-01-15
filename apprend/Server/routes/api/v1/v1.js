@@ -6,7 +6,6 @@ const decksRoute = require('./decks/decks')
 const usersRoute = require('./users/users')
 const loginRoute = require('./login/login')
 const upload = require('../../../middleware/uploadMiddleware')
-const Resize = require('../../../Resize')
 const fileUpload = require('express-fileupload');
 const crypto = require('crypto')
 const fs = require('fs')
