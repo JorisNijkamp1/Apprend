@@ -5,13 +5,8 @@
  */
 
 import {API_URL} from '../../../../redux-config/urls';
-import {seedUsers} from '../../../../../../../Server/seed';
 
 describe('Decks API tests', function () {
-    beforeAll(async () => {
-        await seedUsers();
-    });
-
     test('Test updating deck session', async () => {
         const deckId = '5ddfadab612b09570c6f3a34';
         const url = `${API_URL}/decks/${deckId}/session`;

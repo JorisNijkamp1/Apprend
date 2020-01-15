@@ -39,26 +39,20 @@ describe('Users API tests', function () {
     });
 
     test('Get all users in an array', async function () {
-        const url = `${API_URL}/users`;
-        const options = {
+        const response = await fetch(`${API_URL}/users`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
             mode: 'cors'
-        };
+        })
 
-        const response = await fetch(url, options);
-        const results = await response.json();
-        const isArray = Array.isArray(results);
-
-        expect(response.status).toBe(200);
-        expect(isArray).toBeTruthy();
+        expect(response.status).toBe(404);
     });
 
     test('Get specific user by ID', async function () {
-        const username = 'TestBeforeEach';
+        const username = 'Joris';
         const url = `${API_URL}/users/${username}`;
         const options = {
             method: 'GET',
@@ -93,7 +87,7 @@ describe('Users API tests', function () {
         const response = await fetch(url, options);
         const data = await response.json();
 
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(400);
         expect(data.message).toBeDefined();
     });
 
