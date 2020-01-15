@@ -2,8 +2,8 @@ import {API_URL} from '../../../../redux-config/urls';
 
 describe('Edit the value of a column of a flashcard', () => {
 
-    const user = 'Joris'
-    const password = 'han'
+    const user = 'Aaron'
+    const password = 'ica'
 
     let login = {
         username: user,
