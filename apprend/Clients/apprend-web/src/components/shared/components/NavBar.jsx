@@ -30,7 +30,8 @@ const NavbarUI = (props) => {
     const profile = () => {
         if (!props.anonymousUser) {
             return (
-                <Nav.Link name={'my-profile'} as={Link} className="pl-30" to={'/profile/' + props.username}>My Profile</Nav.Link>
+                <Nav.Link name={'my-profile'} as={Link} className="pl-30" to={'/profile/' + props.username}>My
+                    Profile</Nav.Link>
             )
         }
     }
@@ -74,10 +75,14 @@ const NavbarUI = (props) => {
         } else {
             return (
                 <>
-                    <Nav.Link as={Link} className="text-white pl-30" to={'/' + props.username + '/decks'}>My
-                        Decks</Nav.Link>
+                    <Nav.Link as={Link}
+                              className="text-white pl-30"
+                              to={'/' + props.username + '/decks'}
+                              name={'my-decks'}>
+                        My Decks
+                    </Nav.Link>
                     <NavDropdown title={props.anonymousUser ? 'Welcome' : 'Welcome ' + props.username}
-                                 id="basic-nav-dropdown" className="text-white pl-30" name={'dropdown'}> 
+                                 id="basic-nav-dropdown" className="text-white pl-30" name={'dropdown'}>
                         {profile()}
                         {login()}
                         {register()}
@@ -107,7 +112,8 @@ const NavbarUI = (props) => {
                 <Navbar.Collapse className={"justify-content-end"} id="basic-navbar-nav">
                     <Nav>
                         {searchInput()}
-                        <Nav.Link name={'create-deck'} as={Link} className="pull-right text-white pl-30" to="/decks/create">Create
+                        <Nav.Link name={'create-deck'} as={Link} className="pull-right text-white pl-30"
+                                  to="/decks/create">Create
                             Deck</Nav.Link>
                         {loggedIn()}
                     </Nav>
