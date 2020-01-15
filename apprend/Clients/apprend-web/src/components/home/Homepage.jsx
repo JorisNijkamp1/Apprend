@@ -6,14 +6,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {Footer} from '../shared/components/Footer'
 import {getHomepageDecks} from './actions';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import {isLoggedIn} from '../shared/actions/actions'
 import SearchDecksInput from "../shared/components/SearchInput";
 import {LoadingComponent} from '../shared/components/LoadingComponent'
 
 const HomepageUI = (props) => {
-
     const [isLoading, setisLoading] = useState(false)
+    const history = useHistory();
 
     //Check if user is logged in
     useEffect(() => {
@@ -40,7 +40,8 @@ const HomepageUI = (props) => {
         } else {
             return null
         }
-    }
+    };
+
 
     const decksHomepage = () => {
         if (props.deckName) {
@@ -51,9 +52,12 @@ const HomepageUI = (props) => {
                             <div className={"imgBx"}>
                                 <h2>{deck.name}</h2>
                                 <strong>
-                                    <Link id={'creator-'+deck.creatorId} to={`/${deck.creatorId}/decks`}>
+                                    <p id={'creator-'+deck.creatorId} onClick={(e) => {
+                                        e.preventDefault();
+                                        history.push(`/${deck.creatorId}/decks`);
+                                    }}>
                                         <span style={{marginLeft: 5, color: '#fff'}}>Made by {deck.creatorId}</span>
-                                    </Link>
+                                    </p>
                                 </strong>
                                 <div className={"amount-flashcards"}>
                                     {deck.flashcards.length}
