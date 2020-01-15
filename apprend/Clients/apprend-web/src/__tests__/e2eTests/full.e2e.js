@@ -8,7 +8,7 @@ describe(`Complete test`, () => {
     beforeAll(async () => {
         browser = await puppeteer.launch({
             headless: false,
-            slowMo: 150,
+            slowMo: 50,
             defaultViewport: null,
             args: [`--window-size=1200,1200`, `--window-position=0,0`]
         })
