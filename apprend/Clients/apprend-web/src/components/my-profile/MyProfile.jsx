@@ -136,12 +136,14 @@ const MyProfileUI = (props) => {
                             >Cancel</Button>
                             {(props.emailExists || !editEmail) ?
                                 <Button
+                                    id={'confirm'}
                                     disabled={true}
                                     type={'submit'}
                                     variant="outline-primary"
                                     className={'ml-2'}
                                 >Confirm</Button> :
                                 <Button
+                                    id={'confirm'}
                                     disabled={false}
                                     type={'submit'}
                                     variant="outline-primary"
@@ -164,7 +166,8 @@ const MyProfileUI = (props) => {
                                 </Form.Label>
                             </Col>
                             <Col md={{'span': 12}} className={'mb-3'}>
-                                <Form.Control type="password"
+                                <Form.Control id={'password'}
+                                              type="password"
                                               name={userId}
                                               placeholder={'Password'}
                                               onChange={(e) => setEditPassword(e.target.value)}
@@ -177,7 +180,8 @@ const MyProfileUI = (props) => {
                                 </Form.Label>
                             </Col>
                             <Col md={{'span': 12}}>
-                                <Form.Control type="password"
+                                <Form.Control id={'repeat-password'}
+                                              type="password"
                                               name={userId}
                                               placeholder={'Password'}
                                               onChange={(event) => setEditRepeatPassword(event.target.value)}
@@ -200,12 +204,14 @@ const MyProfileUI = (props) => {
                             >Cancel</Button>
                             {(maySubmitPassword(editPassword, editRepeatPassword)) ?
                                 <Button
+                                    id={'confirm'}
                                     disabled={false}
                                     type={'submit'}
                                     variant="outline-primary"
                                     className={''}
                                 >Confirm</Button> :
                                 <Button
+                                    id={'confirm'}
                                     disabled={true}
                                     type={'submit'}
                                     variant="outline-primary"
@@ -242,12 +248,14 @@ const MyProfileUI = (props) => {
                     <Row>
                         <Col className={'justify-content-center di-f'}>
                             <Button
+                                id={'edit-account'}
                                 variant="outline-success"
                                 className={'pull-right mr-3'}
                                 onClick={() => {
                                     setEditAccountDetails(true)
                                 }}>Edit account details</Button>
                             <Button
+                                id={'change-password'}
                                 variant="outline-primary"
                                 className={'ml-2'}
                                 onClick={() => {
@@ -258,6 +266,7 @@ const MyProfileUI = (props) => {
                     <Row>
                         <Col md={{span: 4, offset: 4}} className={'mt-4'}>
                             <Button
+                                id={'delete-account'}
                                 variant={'outline-danger'}
                                 className={'w-100'}
                                 onClick={() => {

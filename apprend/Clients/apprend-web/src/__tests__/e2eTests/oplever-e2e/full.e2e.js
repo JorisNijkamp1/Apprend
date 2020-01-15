@@ -80,7 +80,6 @@ describe(`Complete test`, () => {
         const tagsField = await page.$(`[id="tags"]`);
         const addTag = await page.$(`[id="add-tag-button"]`);
 
-
         expect(nameField).toBeDefined()
         expect(descriptionField).toBeDefined()
         expect(tagsField).toBeDefined()
@@ -91,22 +90,20 @@ describe(`Complete test`, () => {
 
     test(`Confirm edit deck`, async () => {
         await page.waitFor('#confirm-undefined-icon-button');
-
-        const confirmButton = await page.$(`[id="confirm-undefined-icon-button"]`);
-
+        const confirmButton = await page.$(`#confirm-undefined-icon-button`);
         expect(confirmButton).toBeDefined();
-
         await confirmButton.click()
     })
 
     test(`Go to create deck`, async () => {
-        await page.goto(`http://localhost:3000/decks/create`)
-        await page.waitFor(`input#create-deck-form-deckname`)
-        const nameField = await page.$(`input#create-deck-form-deckname`)
-        expect(nameField).toBeDefined()
+        await page.waitFor('[name="create-deck"]');
+        const createDeckButton = await page.$(`[name="create-deck"]`);
+        expect(createDeckButton).toBeDefined();
+        await createDeckButton.click()
     })
 
     test(`Fill deck name`, async () => {
+        await page.waitFor(`input#create-deck-form-deckname`);
         await page.type(`input#create-deck-form-deckname`, `test`, {delay: 5})
         const nameField = await page.$(`input#create-deck-form-deckname`)
         expect(nameField).toBeDefined()
@@ -157,18 +154,21 @@ describe(`Complete test`, () => {
         await deleteButton.click()
     });
 
-    for(let i = 0; i < 2; i++) {
-        test(`Add a name for a column`, async () => {
-            await page.type(`input#index-` + i, `text` + i, {delay: 5})
-            const nameField = await page.$(`input#index-` + i)
-            expect(nameField).toBeDefined()
-        });
-    }
+    test(`Add a name for each column`, async () => {
+        await page.waitFor(`input#index-0`);
+        await page.type(`input#index-0`, `text0`)
+        const text1Field = await page.$(`input#index-0`)
+        expect(text1Field).toBeDefined()
 
-    test(`Add a name for a column`, async () => {
-        await page.type(`input#index-2`, `image1`, {delay: 5})
-        const nameField = await page.$(`input#index-2`)
-        expect(nameField).toBeDefined()
+        await page.waitFor(`input#index-1`);
+        await page.type(`input#index-1`, `text1`)
+        const text2Field = await page.$(`input#index-1`)
+        expect(text2Field).toBeDefined()
+
+        await page.waitFor(`input#index-2`);
+        await page.type(`input#index-2`, `image1`)
+        const image1Field = await page.$(`input#index-2`)
+        expect(image1Field).toBeDefined()
     });
 
     for (let i = 0; i < 3; i++) {
@@ -188,7 +188,8 @@ describe(`Complete test`, () => {
     }
 
     test(`Add data to a flashcard`, async () => {
-        await page.type('tr#row-1 input#column-1-2', `https://iculture.textopus.nl/wp-content/uploads/2014/06/The-Test-Fun-for-Friends-iPhone-iPad.png`)
+        await page.$eval('tr#row-1 input#column-1-2', el => el.value = 'https://iculture.textopus.nl/wp-content/uploads/2014/06/The-Test-Fun-for-Friends-iPhone-iPad.');
+        await page.type('tr#row-1 input#column-1-2', `png`)
         const nameField = await page.$('tr#row-1 input#column-1-2')
         expect(nameField).toBeDefined()
     });
@@ -274,13 +275,18 @@ describe(`Complete test`, () => {
         await backButton.click()
     });
 
+    test('Click on the dropdown menu', async () => {
+        await page.waitFor('[name="dropdown"]');
+        const dropdownButton = await page.$(`[name="dropdown"]`);
+        expect(dropdownButton).toBeDefined();
+        await dropdownButton.click()
+    });
 
-    test('Load register page', async () => {
-        await page.goto('http://localhost:3000/register');
-        await page.waitFor(`title`);
-
-        const theTitle = await page.title();
-        expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
+    test('Click on register', async () => {
+        await page.waitFor('[name="register"]');
+        const registerButton = await page.$(`[name="register"]`);
+        expect(registerButton).toBeDefined();
+        await registerButton.click()
     });
 
     test('Can register', async () => {
@@ -313,20 +319,79 @@ describe(`Complete test`, () => {
         await registerButton.click();
     });
 
+    test('Click on the dropdown menu', async () => {
+        await page.waitFor('[name="dropdown"]');
+        const dropdownButton = await page.$(`[name="dropdown"]`);
+        expect(dropdownButton).toBeDefined();
+        await dropdownButton.click()
+    });
+
     test('Click on my profile', async () => {
-        await page.waitFor(`title`);
-
-        const theTitle = await page.title();
-        expect(theTitle).toBe(`Apprend | Flashcard learning platform`);
-
-        await page.waitFor('#my-profile');
-
-        const myprofileButton = await page.$(`[id="my-profile"]`);
-
+        await page.waitFor('[name="my-profile"]');
+        const myprofileButton = await page.$(`[name="my-profile"]`);
         expect(myprofileButton).toBeDefined();
-
         await myprofileButton.click()
+    });
 
-    })
+    test('Click on the edit account button', async () => {
+        await page.waitFor('#edit-account');
+        const editButton = await page.$(`#edit-account`);
+        expect(editButton).toBeDefined();
+        await editButton.click()
+    });
 
+    test('Fill in a new e-mail', async () => {
+        await page.type('input#formEmail', `testuser2@test.com`)
+        const emailField = await page.$eval('input#formEmail', el => el.value)
+        expect(emailField).toEqual("testuser2@test.com")
+    });
+
+    test('Click on the confirm button', async () => {
+        const confirmButton = await page.$(`#confirm`);
+        expect(confirmButton).toBeDefined();
+        await confirmButton.click()
+    });
+
+    test('Click on the change password button', async () => {
+        await page.waitFor('#change-password');
+        const editButton = await page.$(`#change-password`);
+        expect(editButton).toBeDefined();
+        await editButton.click()
+    });
+
+    test('Fill in a new password', async () => {
+        await page.type('input#password', `test2`)
+        const passwordField = await page.$('input#password')
+        expect(passwordField).toBeDefined()
+
+        await page.type('input#repeat-password', `test2`)
+        const repeatPasswordField = await page.$('input#repeat-password')
+        expect(repeatPasswordField).toBeDefined()
+    });
+
+    test('Click on the confirm button', async () => {
+        const confirmButton = await page.$(`#confirm`);
+        expect(confirmButton).toBeDefined();
+        await confirmButton.click()
+    });
+
+    test('Click on the delete account button', async () => {
+        await page.waitFor('#delete-account');
+        const confirmButton = await page.$(`#delete-account`);
+        expect(confirmButton).toBeDefined();
+        await confirmButton.click()
+    });
+
+    test('Click on the are you sure confirm button', async () => {
+        await page.waitFor('#green');
+        const confirmButton = await page.$(`#green`);
+        expect(confirmButton).toBeDefined();
+        await confirmButton.click()
+    });
+
+    test(`Check if you are in the homepage`, async () => {
+        await page.waitFor(`title`);
+        const url = page.url()
+        expect(url).toEqual('http://localhost:3000/')
+    });
 });
