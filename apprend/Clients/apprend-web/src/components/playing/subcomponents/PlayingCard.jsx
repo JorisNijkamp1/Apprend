@@ -68,7 +68,7 @@ const PlayingCard = (props) => {
                 <Button id="correct" className={"btn w-100"} variant="outline-success" onClick={(e) => handleClick(e, "correct")}>Correct</Button>
             </Col>
             <Col md={4} className=" order-1 order-md-2"> 
-                <Button variant="outline-primary" className="w-100" onClick={() => turnCard()} title="Flip this card">
+                <Button id="flip" variant="outline-primary" className="w-100" onClick={() => turnCard()} title="Flip this card">
                     <FontAwesomeIcon icon={faSync} />
                 </Button>
             </Col>

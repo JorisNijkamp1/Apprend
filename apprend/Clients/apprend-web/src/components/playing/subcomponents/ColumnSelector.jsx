@@ -65,7 +65,7 @@ export default (props) => {
                     </Col>
                     <Col>
                     {checkAllColumns() ? <h5>Please choose a column for each side</h5> :
-                        <Button onClick={props.funcSetColumns} className="w-100" variant="success"  title="Start the game">
+                        <Button onClick={props.funcSetColumns} className="w-100" variant="success"  title="Start the game" id={'play-game'}>
                             Start game
                         </Button> }
                     </Col>

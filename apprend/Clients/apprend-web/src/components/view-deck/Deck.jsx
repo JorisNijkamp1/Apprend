@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import * as ReactRedux from "react-redux"
 import {NavBar} from "../shared/components/NavBar";
-import {Container, Row, Col, Button} from "react-bootstrap";
+import {Row, Col, Button} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import {Footer} from "../shared/components/Footer";
 import {
@@ -403,7 +403,7 @@ const UserDecks = (props) => {
             <div>
                 <FlashcardTable />
             </div>
-        ) 
+        )
         return ''
     }
 
@@ -418,7 +418,7 @@ const UserDecks = (props) => {
             } else if (col.type === 'Audio'){
                 return (
                     <div>
-                    {col.path ? 
+                    {col.path ?
                     <audio controls src={`http://localhost:3001/api/v1/audio/${col.path}`} alt="Audio" />
                     : <small>No audio!</small> }
                     </div>
@@ -427,7 +427,7 @@ const UserDecks = (props) => {
             } else if (col.type === 'Image'){
                 return (
                     <div className="w-100">
-                        {col.path ? 
+                        {col.path ?
                         <img style={{'overflow': 'hidden', 'maxHeight': '140px'}} src={col.source === 'web' ? col.path :`http://localhost:3001/api/v1/images/${col.path}`} alt="image"/>
                         : <small>No image!</small>}
                     </div>

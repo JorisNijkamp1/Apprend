@@ -34,7 +34,6 @@ describe('Delete a user', () => {
             mode: 'cors'
         });
         const result = await response.json();
-        console.log(result)
         expect(expectedResult.data).toEqual(result.data);
         expect(expectedResult.message).toEqual(result.message);
 
@@ -54,7 +53,6 @@ describe('Delete a user', () => {
             mode: 'cors'
         });
         const result = await response.json();
-        console.log(result)
         expect(expectedResult.message).toEqual(result.message);
 
     })

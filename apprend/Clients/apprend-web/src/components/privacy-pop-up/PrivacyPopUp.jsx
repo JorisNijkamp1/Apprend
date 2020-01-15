@@ -1,7 +1,7 @@
 import * as ReactRedux from 'react-redux';
 import React, {useState} from 'react';
 import Row from 'react-bootstrap/Row';
-import {Container} from 'react-bootstrap';
+import {Col, Container} from 'react-bootstrap';
 
 const PrivacyPopUpUI = (props) => {
     const [accepted = false, setAccepted] = useState();
@@ -17,27 +17,32 @@ const PrivacyPopUpUI = (props) => {
     }
 
     return <div className={`privacy-pop-up`}>
-        <Container className={'pt-5 pb-5'}>
-            <Row>
-                <div className="privacy-pop-up-inner">
-                    <p>
-                        <b>Privacy Policy for ApprendLearning</b>
-                        <br/>
-                        <br/>
-                        At Apprend, accessible from https://apprend-learning.com, one of our main priorities is the
-                        privacy
-                        of our visitors. This Privacy Policy document contains types of information that is collected
-                        and
-                        recorded by Apprend and how we use it.
-                        <br/>
-                        <br/>
-                        If you have additional questions or require more information about our Privacy Policy, do not
-                        hesitate to contact us.
-                    </p>
-                    <a href="/privacy">Read more</a>
-                    <div className="btn-green privacy-accept-button" id="cookie" onClick={acceptPrivacyPopUp}>Accept</div>
-                </div>
-            </Row>
+        <Container className={'pt-3 pb-2'}>
+            <div className="privacy-pop-up-inner">
+                <Row>
+                    <Col md={{span: 9}}>
+                        <p>
+                            <b>Privacy Policy for ApprendLearning</b>
+                            <br/>
+                            At Apprend, accessible from apprend-learning.com, one of our main priorities is the
+                            privacy
+                            of our visitors. This Privacy Policy document contains types of information that is
+                            collected
+                            and
+                            recorded by Apprend and how we use it.
+                        </p>
+                    </Col>
+                    <Col md={{span: 3}}>
+                        <div className="row justify-content-center align-items-center h-100">
+                            <div className="btn-green privacy-accept-button m-4" id="cookie"
+                                 onClick={acceptPrivacyPopUp}>Accept
+                            </div>
+                            <br/>
+                            <a href="/privacy">Read more</a>
+                        </div>
+                    </Col>
+                </Row>
+            </div>
         </Container>
     </div>;
 };

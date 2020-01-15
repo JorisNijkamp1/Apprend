@@ -319,7 +319,7 @@ const Deck = (props) => {
         }
 
         return decks.map((deck, index) => (
-            <Col xs={12} sm={6} lg={4} className="my-2">
+            <Col xs={12} sm={6} lg={4} className="my-2" key={index}>
                 <div className={"deck-effect"}>
                     <Card key={deck.name + index} id={'card-' + index}>
                         <Card.Body>

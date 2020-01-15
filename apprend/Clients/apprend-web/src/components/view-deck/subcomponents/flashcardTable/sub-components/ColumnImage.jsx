@@ -58,6 +58,7 @@ export default props => {
                             onChange={(e) => {
                                 props.handleLink({props: [{prop: 'path', value: e.target.value}, {prop: 'source', value: 'web'}]}, props.creatorId, props.deckId, props.flashcardId, props.columnId)}
                             }
+                            id={props.giveId}
                             />}
             </Col>
         </Row>

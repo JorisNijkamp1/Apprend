@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import * as ReactRedux from 'react-redux'
-import {Link, useParams} from 'react-router-dom';
+import {Link, useHistory, useParams} from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {Col, Card, Row, Container} from "react-bootstrap";
@@ -11,6 +11,8 @@ import {NavBar} from '../shared/components/NavBar';
 const TagOverview = (props) => {
     const [decks, setDecks] = useState([]);
     const {tag} = useParams();
+    const history = useHistory();
+
 
     useEffect(() => {
         props.setIsLoading(true);
@@ -82,7 +84,10 @@ const TagOverview = (props) => {
                                     {deck.description}
                                 </p>
                                 <strong>
-                                    <Link id="creator" to={`/${deck.creatorId}/decks`}>
+                                    <p id="creator" onClick={(e) => {
+                                        e.preventDefault();
+                                        history.push(`/${deck.creatorId}/decks`);
+                                    }}>
                                         <FontAwesomeIcon icon={faUser}
                                                          size={'1x'}
                                                          title={`Search`}
@@ -91,7 +96,7 @@ const TagOverview = (props) => {
                                         <span style={{marginLeft: 5, color: '#000'}}>
                                             {(deck.creatorId.length === 32) ? 'Guest' : deck.creatorId}
                                         </span>
-                                    </Link>
+                                    </p>
                                     <span className={'float-right'} style={{color: '#000'}}>
                                         <span className={'font-weight-bold'}>Flashcards: {deck.flashcards.length}</span>
                                     </span>
