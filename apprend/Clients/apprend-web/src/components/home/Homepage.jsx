@@ -42,6 +42,18 @@ const HomepageUI = (props) => {
         }
     };
 
+    const parseText = text => {
+        if (text.length > 30) {
+            for (let i = 30; i > 0; i--) {
+                if (text.charAt(i) === ' ' && (text.charAt(i-1) != ','||text.charAt(i-1) != '.'||text.charAt(i-1) != ';')) {
+                    return text.substring(0, i) + '...';
+                }
+            }
+             return text.substring(0, 30) + '...';
+        } else {
+            return text;
+        }
+    };
 
     const decksHomepage = () => {
         if (props.deckName) {
@@ -66,7 +78,7 @@ const HomepageUI = (props) => {
                             <div className={"details"}>
                                 <>
                                     <p className={'text-center description-cutoff'} style={{color: '#000'}}>
-                                        {deck.description}
+                                        {parseText(deck.description)}
                                     </p>
                                     <Row className={"justify-content-center"}>
                                         {deckTags(deck.tags)}
